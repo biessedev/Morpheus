@@ -1,0 +1,197 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+MORPHEUS
+</name>
+</assembly>
+<members>
+<member name="T:MORPHEUS.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:MORPHEUS.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:MORPHEUS.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="P:MORPHEUS.My.Resources.Resources.administrator">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:MORPHEUS.My.Resources.Resources.billiard_marker">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:MORPHEUS.My.Resources.Resources.Bitron_BEC">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:MORPHEUS.My.Resources.Resources.hlocchart">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:MORPHEUS.My.Resources.Resources.text">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:MORPHEUS.My.Resources.Resources.traffic_lights_green">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:MORPHEUS.My.Resources.Resources.traffic_lights_red">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:MORPHEUS.My.Resources.Resources.traffic_lights_yellow">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="F:MORPHEUS.ftp._Host">
+ <summary>
+ Host FTP
+ </summary>
+</member>
+<member name="F:MORPHEUS.ftp._UserName">
+ <summary>
+ Username
+ </summary>
+</member>
+<member name="F:MORPHEUS.ftp._Password">
+ <summary>
+ Password
+ </summary>
+</member>
+<member name="F:MORPHEUS.ftp._FtpRequest">
+ <summary>
+ Richiesta FTP
+ </summary>
+</member>
+<member name="F:MORPHEUS.ftp._FtpResponse">
+ <summary>
+ Risposta ftp
+ </summary>
+</member>
+<member name="F:MORPHEUS.ftp._UseSSL">
+ <summary>
+ Flag SSL
+ </summary>
+</member>
+<member name="P:MORPHEUS.ftp.Host">
+ <summary>
+ FTP Host URI
+ </summary>
+</member>
+<member name="P:MORPHEUS.ftp.UserName">
+ <summary>
+ FTP User Name
+ </summary>
+</member>
+<member name="P:MORPHEUS.ftp.Password">
+ <summary>
+ FTP Password
+ </summary>
+</member>
+<member name="P:MORPHEUS.ftp.UseSSL">
+ <summary>
+ Flag utilizzo SSL
+ </summary>
+</member>
+<member name="M:MORPHEUS.PublicFunction.TreeViewToFromXml.SetTreeView(System.Windows.Forms.TreeView@)">
+ <summary>
+ Sets the given TreeView
+ </summary>
+ <param name="tree"></param>
+ <remarks></remarks>
+</member>
+<member name="M:MORPHEUS.PublicFunction.TreeViewToFromXml.ExportToFile(System.String)">
+ <summary>
+ Exports the Treeview as Xml to the given File
+ </summary>
+ <param name="path"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:MORPHEUS.PublicFunction.TreeViewToFromXml.ExportToString">
+ <summary>
+ Exports the Treeview to Xml
+ </summary>
+ <returns>Xml-Code as String</returns>
+ <remarks></remarks>
+</member>
+<member name="M:MORPHEUS.PublicFunction.TreeViewToFromXml.ExportToXmlDocument">
+ <summary>
+ Exports the Treeview to xml As XmlDocument
+ </summary>
+ <returns>XmlDocument</returns>
+ <remarks></remarks>
+</member>
+<member name="M:MORPHEUS.PublicFunction.TreeViewToFromXml.GenerateXml">
+ <summary>
+ Generates the valid XML
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:MORPHEUS.PublicFunction.TreeViewToFromXml.XmlAddNode(System.Windows.Forms.TreeNode,System.Xml.XmlNode)">
+ <summary>
+ Recursive Function for adding all Nodes to XmlDocument
+ </summary>
+ <param name="ActualTreeNode"></param>
+ <param name="ActualNode"></param>
+ <remarks></remarks>
+</member>
+<member name="M:MORPHEUS.PublicFunction.TreeViewToFromXml.ImportFromFile(System.String)">
+ <summary>
+ Imports the TreeView using XML in given File
+ </summary>
+ <param name="path"></param>
+ <returns>True on success</returns>
+ <remarks></remarks>
+</member>
+<member name="M:MORPHEUS.PublicFunction.TreeViewToFromXml.Import(System.String)">
+ <summary>
+ Imports the TreeView using given XML-Code
+ </summary>
+ <param name="xml">Valid Xml</param>
+ <returns>True on success</returns>
+ <remarks></remarks>
+</member>
+<member name="M:MORPHEUS.PublicFunction.TreeViewToFromXml.Import(System.Xml.XmlDocument)">
+ <summary>
+ Imports the TreeView using given XmlDocument
+ </summary>
+ <param name="xml">An XmlDocument</param>
+ <returns>True on success</returns>
+ <remarks></remarks>
+</member>
+<member name="M:MORPHEUS.PublicFunction.TreeViewToFromXml.GenerateTree">
+ <summary>
+ Generates the TreeView using the given XML
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:MORPHEUS.PublicFunction.TreeViewToFromXml.TreeviewAddNode(System.Xml.XmlNode@,System.Windows.Forms.TreeNode@)">
+ <summary>
+ Recursive Function for adding all Nodes to the TreeView
+ </summary>
+ <param name="TXmlNode"></param>
+ <param name="TreeViewNode"></param>
+ <remarks></remarks>
+</member>
+</members>
+</doc>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="SrvDoc">
+</Property><Property Name="Solution File" Value="D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\SrvDoc.sln">
+</Property><Property Name="User Options File" Value="D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\SrvDoc.suo">
+</Property><Property Name="Date" Value="Monday, July 09, 2012">
+</Property><Property Name="Time" Value="15:58 PM">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="SrvDoc.sln" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\SrvDoc.sln">
+</Event><Event ErrorLevel="0" Project="" Source="SrvDoc.suo" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\SrvDoc.suo">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="SrvDoc.vbproj" Description="Project file successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\SrvDoc.vbproj">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="SrvDoc.vbproj.user" Description="Project user file successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\SrvDoc.vbproj.user">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="ApplicationEvents.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\ApplicationEvents.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="BomManager.Designer.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\BomManager.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="BomManager.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\BomManager.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="Class1.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\Class1.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormCommit.Designer.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormCommit.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormCommit.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormCommit.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormInfoOffer.Designer.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormInfoOffer.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormInfoOffer.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormInfoOffer.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormOrcadSearch.Designer.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormOrcadSearch.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormOrcadSearch.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormOrcadSearch.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormOpenIssue.Designer.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormOpenIssue.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormOpenIssue.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormOpenIssue.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormGroup.Designer.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormGroup.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormGroup.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormGroup.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormAbaut.Designer.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormAbaut.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormAbaut.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormAbaut.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormAdministration.Designer.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormAdministration.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormAdministration.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormAdministration.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormCalcCost.Designer.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormCalcCost.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormCalcCost.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormCalcCost.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormECR.Designer.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormECR.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormECR.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormECR.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormLoadDoc.Designer.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormLoadDoc.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormLoadDoc.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormLoadDoc.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormProduct.Designer.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormProduct.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormProduct.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormProduct.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormStart.Designer.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormStart.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormStart.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormStart.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormTypeAdmin.Designer.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormTypeAdmin.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormTypeAdmin.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormTypeAdmin.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormCredentials.Designer.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormCredentials.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormCredentials.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormCredentials.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormDownload.Designer.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormDownload.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormDownload.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormDownload.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="ftp.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\ftp.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormOffer.Designer.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormOffer.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormOffer.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormOffer.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="PublicFunction.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\PublicFunction.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="My Project\AssemblyInfo.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\My Project\AssemblyInfo.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="My Project\Application.Designer.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\My Project\Application.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="My Project\Resources.Designer.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\My Project\Resources.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="My Project\Settings.Designer.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\My Project\Settings.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormSamples.Designer.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormSamples.Designer.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormSamples.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormSamples.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="Settings.vb" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\Settings.vb">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="My Project\Application.myapp" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\My Project\Application.myapp">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="My Project\Settings.settings" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\My Project\Settings.settings">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="My Project\app.manifest" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\My Project\app.manifest">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="app.config" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\app.config">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="Resources\PNG\Button Add.png" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\Resources\PNG\Button Add.png">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="Resources\PNG\Button Cancel.png" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\Resources\PNG\Button Cancel.png">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="Resources\PNG\Button Close.png" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\Resources\PNG\Button Close.png">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="Resources\PNG\Button Delete.png" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\Resources\PNG\Button Delete.png">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="Resources\PNG\Button Fast Forward.png" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\Resources\PNG\Button Fast Forward.png">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="Resources\PNG\Button First.png" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\Resources\PNG\Button First.png">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="Resources\PNG\Button Help.png" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\Resources\PNG\Button Help.png">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="Resources\PNG\Button Info.png" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\Resources\PNG\Button Info.png">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="Resources\PNG\Button Last.png" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\Resources\PNG\Button Last.png">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="Resources\PNG\Button Next.png" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\Resources\PNG\Button Next.png">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="Resources\PNG\Button Pause.png" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\Resources\PNG\Button Pause.png">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="Resources\PNG\Button Play.png" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\Resources\PNG\Button Play.png">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="Resources\PNG\Button Previous.png" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\Resources\PNG\Button Previous.png">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="Resources\PNG\Button Refresh.png" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\Resources\PNG\Button Refresh.png">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="Resources\PNG\Button Reload.png" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\Resources\PNG\Button Reload.png">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="Resources\PNG\Button Rewind.png" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\Resources\PNG\Button Rewind.png">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="Resources\PNG\Button Stop.png" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\Resources\PNG\Button Stop.png">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="BomManager.resx" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\BomManager.resx">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormCommit.resx" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormCommit.resx">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormInfoOffer.resx" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormInfoOffer.resx">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormOrcadSearch.resx" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormOrcadSearch.resx">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormOpenIssue.resx" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormOpenIssue.resx">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormGroup.resx" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormGroup.resx">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormAbaut.resx" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormAbaut.resx">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormAdministration.resx" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormAdministration.resx">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormCalcCost.resx" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormCalcCost.resx">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormECR.resx" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormECR.resx">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormLoadDoc.resx" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormLoadDoc.resx">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormProduct.resx" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormProduct.resx">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormStart.resx" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormStart.resx">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormTypeAdmin.resx" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormTypeAdmin.resx">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormCredentials.resx" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormCredentials.resx">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormDownload.resx" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormDownload.resx">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="My Project\Resources.resx" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\My Project\Resources.resx">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormSamples.resx" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormSamples.resx">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="FormOffer.resx" Description="File successfully backed up as D:\WORK\3DEQ\Sviluppo\SrvDoc\SrvDoc\Backup\FormOffer.resx">
+</Event><Event ErrorLevel="1" Project="SrvDoc" Source="SrvDoc.vbproj" Description="Your project is targeting .NET Framework 2.0 or 3.0. If your project uses assemblies requiring a newer .NET Framework, your project will fail to build. You can change the .NET Framework version by clicking Properties on the project menu and then selecting a new version in the '.NET Framework' dropdown box. (In Visual Basic, this is located on the Compile tab by clicking the 'Advanced Compiler Options...' button.)">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="SrvDoc.vbproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="SrvDoc" Source="SrvDoc.vbproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="SrvDoc.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="SrvDoc.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="SrvDoc" Source="SrvDoc.vbproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

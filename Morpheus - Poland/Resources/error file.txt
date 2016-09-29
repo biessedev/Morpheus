@@ -1,0 +1,38 @@
+﻿ 
+ 
+Tipo documenti
+S firma richiesta
+R controllo revisione richiesto
+P prodotto 
+PA richiesto in caso A
+PB richiesto in caso B
+PH richisto in caso H
+P1 sempre richiesto
+
+Right
+
+T   Type modification permission
+W   capacita modifica prodotti
+Z   Amministratore con 3
+
+N	Quality
+Q   Industrial Eng.
+P	Production
+E	Engineering
+R	R&D
+U	Purchasing
+A	Administration
+F	Finance
+L	Logistic
+C	Customer Service
+I	IT
+
+3   Sign right 
+2   Editor right 
+1   Can see 
+0   can't see
+
+
+Q0P0E0R0U0A0F0L0C0I0T2P2Z0N0
+
+
