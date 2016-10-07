@@ -2,10 +2,8 @@
 
 Imports MySql.Data.MySqlClient
 Imports System.IO
-Imports System.Net
 Imports System.Data.SqlClient
 Imports System.Globalization
-Imports System.Net.Dns
 Imports System.Xml
 
 
@@ -179,17 +177,11 @@ Module PublicFunction
     Public Function ToDateTime(ByVal _
           dataGG_MM_AAAA As String) As DateTime
 
-
-
-        Dim myCultureInfo As New  _
-           System.Globalization.CultureInfo("en-US", _
-           True)
-
-        myCultureInfo = System.Globalization.CultureInfo.CurrentCulture
+        Dim myCultureInfo As CultureInfo = CultureInfo.CurrentCulture
         dataGG_MM_AAAA = Replace(dataGG_MM_AAAA, "-", "/")
-        Dim formato As String = "MM/dd/yyyy"
+        Dim formato = "MM/dd/yyyy"
         Return _
-          System.DateTime.ParseExact(dataGG_MM_AAAA, _
+          Date.ParseExact(dataGG_MM_AAAA, _
              formato, myCultureInfo)
     End Function
 
@@ -315,7 +307,7 @@ Module PublicFunction
     Sub WriteFile(ByVal a As String, ByVal append As Boolean)
 
         ' Create an instance of StreamWriter to write text to a file.
-        Using sw As StreamWriter = New StreamWriter(System.IO.Path.GetTempPath & "SrvQueryLog.txt", append)
+        Using sw = New StreamWriter(Path.GetTempPath & "SrvQueryLog.txt", append)
             ' Add some text to the file.
             sw.WriteLine(a)
             sw.Close()
@@ -333,7 +325,7 @@ Module PublicFunction
     Sub WriteTxtFile(ByVal file As String, ByVal text As String, ByVal append As Boolean)
 
         ' Create an instance of StreamWriter to write text to a file.
-        Using sw As StreamWriter = New StreamWriter(file, append)
+        Using sw = New StreamWriter(file, append)
             ' Add some text to the file.
             sw.WriteLine(text)
             sw.Close()
@@ -346,7 +338,7 @@ Module PublicFunction
         Dim csvFileContents As New System.Text.StringBuilder
         Dim CurrLine As String = String.Empty
         'Write out the column names as headers for the csv file.
-        For columnIndex As Int32 = 0 To lstview.Columns.Count - 1
+        For columnIndex = 0 To lstview.Columns.Count - 1
             CurrLine &= (String.Format("{0};", lstview.Columns(columnIndex).Text))
         Next
         'Remove trailing comma
@@ -366,7 +358,7 @@ Module PublicFunction
         SaveFileDialog1.FileName = "ProductList.csv"
         SaveFileDialog1.ShowDialog()
         Try
-            Dim Sys As New System.IO.StreamWriter(SaveFileDialog1.FileName)
+            Dim Sys As New StreamWriter(SaveFileDialog1.FileName)
             Sys.WriteLine(csvFileContents.ToString)
             Sys.Flush()
             Sys.Dispose()
@@ -515,7 +507,6 @@ Module PublicFunction
         End Try
 
     End Function
-
 
     Function ParameterTableWrite(ByVal param As String, ByVal value As String) As String
 
@@ -754,7 +745,7 @@ Module PublicFunction
             If TXmlNode.HasChildNodes() Then
                 xml_NodeList = TXmlNode.ChildNodes
 
-                For I As Integer = 0 To xml_NodeList.Count - 1
+                For I = 0 To xml_NodeList.Count - 1
                     xml_SingleNode = TXmlNode.ChildNodes(I)
 
                     TreeViewNode.Nodes.Add(New TreeNode(XmlConvert.DecodeName(xml_SingleNode.Name).Replace(":", ":")))

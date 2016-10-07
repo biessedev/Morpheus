@@ -5,12 +5,7 @@ Imports System.IO
 Imports System.Data.SqlClient
 Imports System.Text.RegularExpressions
 
-
-
 Public Class FormProduct
-
-
-
 
     Dim index As Long = 1
     Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", MySqlconnection)
@@ -1764,59 +1759,4 @@ Public Class FormProduct
 
     End Function
 
-    Private Sub TextBoxDAI_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBoxDAI.TextChanged
-
-    End Sub
-
-    Private Sub ComboBoxStatus_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBoxStatus.SelectedIndexChanged
-
-    End Sub
-
-    Private Sub CheckBoxci_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxci.CheckedChanged
-
-    End Sub
-
-    Private Sub Label4_Click(sender As Object, e As EventArgs) Handles Label4.Click
-
-    End Sub
-
-    Private Sub CheckBoxCe_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxCe.CheckedChanged
-
-    End Sub
-
-    Private Sub CheckBoxcm_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxcm.CheckedChanged
-
-    End Sub
-
-    Private Sub ComboBoxMch_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxMch.SelectedIndexChanged
-
-    End Sub
-
-    Private Sub CheckBoxCa_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxCa.CheckedChanged
-
-    End Sub
-
-    Private Sub TextBoxProduct_TextChanged(sender As Object, e As EventArgs) Handles TextBoxProduct.TextChanged
-
-    End Sub
-
-    Private Sub CheckBoxcl_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxcl.CheckedChanged
-
-    End Sub
-
-    Private Sub TextBoxPiastra_TextChanged(sender As Object, e As EventArgs) Handles TextBoxPiastra.TextChanged
-
-    End Sub
-
-    Private Sub ComboBoxCustomer_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxCustomer.SelectedIndexChanged
-
-    End Sub
-
-    Private Sub ListView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListView1.SelectedIndexChanged
-
-    End Sub
-
-    Private Sub ListViewMch_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListViewMch.SelectedIndexChanged
-
-    End Sub
 End Class

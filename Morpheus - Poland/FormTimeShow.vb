@@ -2,10 +2,6 @@
 Option Compare Text
 Imports MySql.Data.MySqlClient
 Imports System.IO
-Imports System.Data.SqlClient
-Imports System.Data.OleDb
-Imports System.Text.RegularExpressions
-Imports System.Globalization
 
 
 Public Class FormTimeShow
@@ -18,11 +14,11 @@ Public Class FormTimeShow
 
 
 
-    Private Sub FormShow_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+    Private Sub FormShow_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
         FormStart.Show()
     End Sub
 
-    Private Sub FormTimeShow_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub FormTimeShow_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
         TreeViewProjectList.HideSelection = False
         AdapterTP.Fill(DsTP, "TimeProject")
@@ -96,7 +92,7 @@ Public Class FormTimeShow
 
     End Function
 
-    Private Sub TimerShow_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TimerShow.Tick
+    Private Sub TimerShow_Tick(ByVal sender As System.Object, ByVal e As EventArgs) Handles TimerShow.Tick
 
         DsTP.Clear()
         tblTP.Clear()
@@ -582,7 +578,7 @@ Public Class FormTimeShow
 
     End Function
 
-    Private Sub ButtonShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonShow.Click
+    Private Sub ButtonShow_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonShow.Click
         If ButtonShow.Text = "Show" Then
             ButtonShow.Text = "Stop"
             TimerShow.Enabled = True
@@ -664,7 +660,7 @@ Public Class FormTimeShow
 
     End Function
 
-    Private Sub ButtonClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonClose.Click
+    Private Sub ButtonClose_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonClose.Click
         Me.Dispose()
     End Sub
 
@@ -674,15 +670,8 @@ Public Class FormTimeShow
 
     End Sub
 
-    Private Sub TimerProjectList_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TimerProjectList.Tick
+    Private Sub TimerProjectList_Tick(ByVal sender As System.Object, ByVal e As EventArgs) Handles TimerProjectList.Tick
         UpdateTreeProjectList(True)
     End Sub
 
-    Private Sub PictureBoxF_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PictureBoxF.Click
-
-    End Sub
-
-    Private Sub PictureBoxC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PictureBoxC.Click
-
-    End Sub
 End Class

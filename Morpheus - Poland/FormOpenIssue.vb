@@ -1,8 +1,6 @@
 ﻿Option Explicit On
 Option Compare Text
 Imports MySql.Data.MySqlClient
-Imports System.Globalization
-
 
 Public Class FormOpenIssue
 
@@ -45,17 +43,14 @@ Public Class FormOpenIssue
         End If
     End Sub
 
-
-    Private Sub FormGroup_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub FormGroup_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         FormGroup.ComboBoxGroup.Sorted = True
         AdapterProd.Fill(DsProd, "product")
         tblProd = DsProd.Tables("product")
         fillList()
     End Sub
 
-
-
-    Private Sub ComboBoxGroup_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBoxGroup.TextChanged
+    Private Sub ComboBoxGroup_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxGroup.TextChanged
 
         Dim i As Integer, result As DataRow(), k As Integer, n As Integer, j As Integer
         tblProd.Clear()
@@ -88,7 +83,7 @@ Public Class FormOpenIssue
 
     End Sub
   
-    Private Sub ButtonAddMch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonAdd.Click
+    Private Sub ButtonAddMch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAdd.Click
 
         Dim sql As String, cmd As MySqlCommand
         If ComboBoxName.Text <> "" And ComboBoxGroup.Text <> "" Then
@@ -106,35 +101,7 @@ Public Class FormOpenIssue
         ComboBoxGroup_TextChanged(Me, e)
     End Sub
 
-    'Private Sub ButtonRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonRemove.Click
-
-    '    Dim sql As String, cmd As MySqlCommand, oldOpenIssue As String
-    '    oldOpenIssue = OpenIssue
-
-    '    If ComboBoxName.Text <> "" Then
-
-    '        OpenIssue = Replace(OpenIssue, ComboBoxGroup.Text & "[" & ComboBoxName.Text & "];", "", , , CompareMethod.Text)
-    '        Try
-    '            sql = "UPDATE `srvdoc`.`product` SET `OpenIssue` = '" & OpenIssue & _
-    '            "' WHERE `product`.`BitronPN` = '" & Trim(FormProduct.TextBoxProduct.Text) & "' ;"
-    '            cmd = New MySqlCommand(sql, MySqlconnection)
-    '            cmd.ExecuteNonQuery()
-    '        Catch ex As Exception
-    '        End Try
-    '    End If
-
-    '    fillList()
-
-    '    If Len(oldOpenIssue) = Len(OpenIssue) Then
-    '        MsgBox("Issue Not find " & ComboBoxGroup.Text & "[" & ComboBoxName.Text & "]")
-    '    Else
-    '        MsgBox("Issue Deleted " & ComboBoxGroup.Text & "[" & ComboBoxName.Text & "]")
-    '    End If
-    '    ComboBoxGroup_TextChanged(Me, e)
-
-    'End Sub
-
-    Private Sub ButtonRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonRemove.Click
+    Private Sub ButtonRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRemove.Click
 
         Dim sql As String, cmd As MySqlCommand, oldOpenIssue As String, dept As String, opi As String
         oldOpenIssue = OpenIssue
@@ -167,7 +134,7 @@ Public Class FormOpenIssue
 
     End Sub
 
-    Private Sub ComboBoxGroup_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBoxGroup.SelectedIndexChanged
+    Private Sub ComboBoxGroup_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxGroup.SelectedIndexChanged
 
     End Sub
 

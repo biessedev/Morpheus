@@ -11,25 +11,24 @@ Public Class FormTypeAdmin
     Dim DsDoc As New DataSet
     Dim builder As MySqlCommandBuilder = New MySqlCommandBuilder(AdapterType)
 
-    Private Sub FormDownload_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+    Private Sub FormDownload_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
         FormStart.Show()
         tblDocType.Dispose()
         DsType.Dispose()
         AdapterType.Dispose()
     End Sub
 
-    Private Sub FormTypeAdmin_load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub FormTypeAdmin_load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         FormStart.Hide()
-        Dim ds As New DataSet
         AdapterType.Fill(DsType, "doctype")
         tblDocType = DsType.Tables("doctype")
-        Adapterdoc.Fill(DsDoc, "doc")
+        AdapterDoc.Fill(DsDoc, "doc")
         tblDoc = DsDoc.Tables("doc")
         FillComboFirstType()
         TextBoxPropriety.Text = "S?R?P?Y?C?"
     End Sub
 
-    Private Sub ComboBoxFirstType_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBoxFirstType.TextChanged
+    Private Sub ComboBoxFirstType_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxFirstType.TextChanged
         Dim strOld As String = ""
         Dim returnValue As DataRow()
 
@@ -50,7 +49,7 @@ Public Class FormTypeAdmin
 
     End Sub
 
-    Private Sub ComboBoxSecondType_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBoxSecondType.TextChanged
+    Private Sub ComboBoxSecondType_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxSecondType.TextChanged
         Dim strOld As String = ""
         Dim returnValue As DataRow()
 
@@ -69,7 +68,7 @@ Public Class FormTypeAdmin
         TextBoxExtension.Text = ""
 
     End Sub
-    Private Sub ComboBoxThirdType_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBoxThirdType.TextChanged
+    Private Sub ComboBoxThirdType_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxThirdType.TextChanged
 
         TextBoxPropriety.Text = "S?R?P?Y?C?"
         TextBoxExtension.Text = ""
@@ -77,7 +76,7 @@ Public Class FormTypeAdmin
     End Sub
     ' Function to create new type
 
-    Private Sub ButtonTypeAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonTypeAdd.Click
+    Private Sub ButtonTypeAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonTypeAdd.Click
         Dim returnValue As DataRow()
         Dim AllOk As Boolean = False
         Dim myrow As DataRow
@@ -139,11 +138,11 @@ Public Class FormTypeAdmin
 
     End Sub
 
-    Private Sub ButtonRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonRefresh.Click
+    Private Sub ButtonRefresh_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRefresh.Click
         UpdatePropriety()
     End Sub
 
-    Private Sub ButtonDelete_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonDelete.Click
+    Private Sub ButtonDelete_Click_1(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDelete.Click
         Dim returnValue As DataRow(), cmd As MySqlCommand, sql As String
         If controlRight("T") >= 3 And controlRight(Mid(ComboBoxFirstType.Text, 3, 1)) >= 2 Then
             If vbYes = MsgBox(StrSettingRead("0035"), MsgBoxStyle.YesNo) Then
@@ -209,12 +208,9 @@ Public Class FormTypeAdmin
 
     Function CheckFieldType(ByVal s As String) As Boolean
 
-        Dim BooNoNumeric As Boolean
         Dim BooTratSpace As Boolean
         Dim Boofilled As Boolean
-
         If s <> "" Then Boofilled = True
-        BooNoNumeric = True ' NoNumeric(s) ' can use also numeric
         BooTratSpace = TratPositionSpace(s)
         CheckFieldType = BooTratSpace And BooTratSpace And Boofilled
 
@@ -312,21 +308,21 @@ Public Class FormTypeAdmin
     End Sub
 
 
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
-        MsgBox("First Type: 3 letters - Description" & vbCrLf & _
-                "Second Type: 3 letters - Description" & vbCrLf & _
-                "Third Type: 3 letters - Description" & " (Example: LAB - Label Specification)" & vbCrLf & _
-                vbCrLf & _
-                "Please fill in the document properties: " & vbCrLf & _
-                "S{X} X=0 Sign not requested, X=1 Sign requested, " & vbCrLf & _
-                "R{X} X=0 Revision not requested, X=1 Revision requested, " & vbCrLf & _
-                "P{X} X=0 No product file, X=1 Product file, " & vbCrLf & _
-                "Y{X} X=0 File not required, X=1 File always required, X is a letter defining a process" & vbCrLf & _
-                "C{X} X=0 Free naming (General_Description), X=1 BitronCode, X=2 BitronCode - Description " & vbCrLf & _
-                "Example: S1R1P1Y1C0" & vbCrLf & _
-                vbCrLf & _
-                "Please fill in the file extension whith possible extensions of document:" & vbCrLf & _
-                "Example:pdf;docx;doc;xls;xlsx;zip;" & vbCrLf & _
+    Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
+        MsgBox("First Type: 3 letters - Description" & vbCrLf &
+                "Second Type: 3 letters - Description" & vbCrLf &
+                "Third Type: 3 letters - Description" & " (Example: LAB - Label Specification)" & vbCrLf &
+                vbCrLf &
+                "Please fill in the document properties: " & vbCrLf &
+                "S{X} X=0 Sign not requested, X=1 Sign requested, " & vbCrLf &
+                "R{X} X=0 Revision not requested, X=1 Revision requested, " & vbCrLf &
+                "P{X} X=0 No product file, X=1 Product file, " & vbCrLf &
+                "Y{X} X=0 File not required, X=1 File always required, X is a letter defining a process" & vbCrLf &
+                "C{X} X=0 Free naming (General_Description), X=1 BitronCode, X=2 BitronCode - Description " & vbCrLf &
+                "Example: S1R1P1Y1C0" & vbCrLf &
+                vbCrLf &
+                "Please fill in the file extension whith possible extensions of document:" & vbCrLf &
+                "Example:pdf;docx;doc;xls;xlsx;zip;" & vbCrLf &
                 "Each file extension is followed by ';' and no SPACE are allowed between them. " & vbCrLf)
     End Sub
 

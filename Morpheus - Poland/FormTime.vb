@@ -23,6 +23,7 @@ Public Class FormTime
     Dim NodeSelect As Integer
     Dim CurrentNodeIndex As Integer
     Dim yelloDelay As Integer = 5
+
     Private Sub FormTime_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         AdapterTP.Fill(DsTP, "TimeProject")
         tblTP = DsTP.Tables("TimeProject")
@@ -1350,7 +1351,6 @@ Public Class FormTime
                             excelApp.Cells(rowExcel, i) = PresenceTmp
                         End If
 
-
                         If excelApp.Cells(rowExcel, 3).text = "CRITIC" Then
                             excelApp.Cells(rowExcel, i).interior.color = ColorTranslator.ToOle(Color.Orange)
                             excelApp.Cells(rowExcel, i) = PresenceTmp
@@ -1490,6 +1490,5 @@ Public Class FormTime
     Private Sub ComboBoxCompleated_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBoxCompleated.TextChanged
         If Not IsNumeric(ComboBoxQuality.Text) Or Val(ComboBoxQuality.Text) > 100 Then ComboBoxQuality.Text = ""
     End Sub
-
 
 End Class

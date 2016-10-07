@@ -117,7 +117,7 @@ Public Class FormSamples
 
     End Sub
 
-    Private Sub FormSamples_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub FormSamples_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
         System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US")
 
@@ -295,14 +295,11 @@ Public Class FormSamples
                     rootChildren1 = New TreeNode("<> " & row("idactivity").ToString & " -- " & row("statusactivity").ToString & Mid("_______", 1, 7 - Len(row("statusactivity").ToString)) & " -- " & IIf(row("idactivity").ToString <> 0, row("NameActivity").ToString, "NOT ASSIGNED"))
                     rootChildren1.NodeFont = New Font("Courier New", 12, FontStyle.Italic)
 
-
-
                     If row("statusactivity").ToString = "CLOSED" Then
 
                         rootChildren1.BackColor = Color.Gray
                         currentColor = Color.Gray
                     End If
-
 
                     If row("statusactivity").ToString = "STANDBY" Then
                         rootChildren1.BackColor = Color.LightBlue
@@ -359,34 +356,14 @@ Public Class FormSamples
         TextBoxProduct.Text = ""
         TextBoxProductQt.Text = ""
         TextBoxETD.Text = ""
-        ' TreeViewActivity.SelectedNode = TreeViewActivity.Nodes.Item(0)
-
-
-        'SaveFileDialog1.ShowDialog()
-        'Dim path As String = SaveFileDialog1.FileName
-        'WriteTxtFile(path, "Export " & Now, False)
-
-        'Dim XmlTree As New TreeViewToFromXml, s As String
-        'XmlTree.SetTreeView(TreeViewActivity)
-        's = XmlTree.ExportToString()
-        'TreeViewActivity.Nodes.Clear()
-        'XmlTree.Import(s)
-
-        'SaveTree(TreeViewActivity.Nodes.Item(0), path)
-        'rootNode.StateImageKey = 1
-        'rootNode = TreeViewActivity.Nodes.Item(0)
-        'TreeViewActivity.Nodes.Clear()
-        'For Each node In rootNode.Nodes
-        '    TreeViewActivity.Nodes.Add(node)
-        'Next
         TreeViewActivity.EndUpdate()
     End Sub
 
-    Private Sub CheckBoxOrderActivity_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub CheckBoxOrderActivity_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
         UpdateTreeSample()
     End Sub
 
-    Private Sub TreeViewActivity_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewActivity.AfterSelect
+    Private Sub TreeViewActivity_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewActivity.AfterSelect
         If Mid(TreeViewActivity.SelectedNode.Text, 1, 2) = "<>" Then
             currentActivityID = Int(Trim(Mid(TreeViewActivity.SelectedNode.Text, 4, InStr(TreeViewActivity.SelectedNode.Text, "--") - 5)))
             currentProductCode = ""
@@ -509,7 +486,7 @@ Public Class FormSamples
         Next
     End Sub
 
-    Private Sub DateTimePickerETD_CloseUp(ByVal sender As Object, ByVal e As System.EventArgs) Handles DateTimePickerETD.CloseUp
+    Private Sub DateTimePickerETD_CloseUp(ByVal sender As Object, ByVal e As EventArgs) Handles DateTimePickerETD.CloseUp
         TextBoxETD.Text = DateTimePickerETD.Text
     End Sub
 
@@ -517,7 +494,7 @@ Public Class FormSamples
         TextBoxETD.Text = ""
     End Sub
 
-    Private Sub Buttonrefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Buttonrefresh.Click
+    Private Sub Buttonrefresh_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Buttonrefresh.Click
         Dim tblProd As DataTable
         Dim DsProd As New DataSet
         AdapterProd.Fill(DsProd, "Product")
@@ -525,7 +502,7 @@ Public Class FormSamples
         UpdateTreeSample()
     End Sub
 
-    Private Sub ButtonLink_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonLink.Click
+    Private Sub ButtonLink_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonLink.Click
         Dim tblProd As DataTable
         Dim DsProd As New DataSet, canDelete As Boolean = False
         Dim rowShow As DataRow()
@@ -583,7 +560,7 @@ Public Class FormSamples
 
     End Sub
 
-    Private Sub TextBoxProduct_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TextBoxProduct.TextChanged
+    Private Sub TextBoxProduct_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxProduct.TextChanged
         If TextBoxProduct.Text <> "" And ComboBoxActivityID.Text <> "" Then
             If controlRight("R") >= 2 Then ButtonLink.Enabled = True
             If controlRight("R") >= 2 Then ButtonNewCommit.Enabled = True
@@ -599,7 +576,7 @@ Public Class FormSamples
         End If
     End Sub
 
-    Private Sub ComboBoxActivityID_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBoxActivityID.TextChanged
+    Private Sub ComboBoxActivityID_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxActivityID.TextChanged
 
 
         If ComboBoxActivityID.Text <> "" Then
@@ -635,15 +612,15 @@ Public Class FormSamples
 
     End Sub
 
-    Private Sub ButtonCollapse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonCollapse.Click
+    Private Sub ButtonCollapse_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonCollapse.Click
         TreeViewActivity.CollapseAll()
     End Sub
 
-    Private Sub ButtonUncollapse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonUncollapse.Click
+    Private Sub ButtonUncollapse_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonUncollapse.Click
         TreeViewActivity.ExpandAll()
     End Sub
 
-    Private Sub ButtonUpdateStatus_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonUpdateStatus.Click
+    Private Sub ButtonUpdateStatus_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonUpdateStatus.Click
         Dim tblProd As DataTable
         Dim DsProd As New DataSet
         Dim rowShow As DataRow()
@@ -695,7 +672,7 @@ Public Class FormSamples
 
     'End Function
 
-    Private Sub ButtonNewCommit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonNewCommit.Click
+    Private Sub ButtonNewCommit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonNewCommit.Click
 
         Dim DsProd As New DataSet
         Dim strActiv As String
@@ -779,7 +756,7 @@ Public Class FormSamples
         End If
     End Function
 
-    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonFolder.Click
+    Private Sub Button3_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonFolder.Click
         If ComboBoxActivityID.Text <> "" And Mid(ComboBoxActivityID.Text, 1, 1) <> "0" Then
             Try
                 If Directory.Exists(ParameterTable("PathMorpheus") & ParameterTable("PathNPI") & ParameterTable("PathActivityDoc") & ComboBoxActivityID.Text) Then
@@ -860,7 +837,7 @@ Public Class FormSamples
 
     End Function
 
-    Private Sub ComboBoxActivityStatus_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBoxActivityStatus.TextChanged
+    Private Sub ComboBoxActivityStatus_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxActivityStatus.TextChanged
         If ComboBoxActivityID.Text <> "" And ComboBoxActivityStatus.Text <> "" Then
             If controlRight("R") >= 2 Then ButtonUpdateStatus.Enabled = True
         Else
@@ -881,7 +858,7 @@ Public Class FormSamples
 
 #Region "task"
 
-    Private Sub TabControlNPI_TabIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles _
+    Private Sub TabControlNPI_TabIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles _
                 TabControlNPI.SelectedIndexChanged, ComboBoxType.SelectedIndexChanged
 
         If InStr(TabControlNPI.SelectedTab.Text, "Task") > 0 Then
@@ -1086,7 +1063,7 @@ Public Class FormSamples
         End If
     End Sub
 
-    Private Sub ButtonSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonSave.Click
+    Private Sub ButtonSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSave.Click
         Dim tblProd As DataTable
         Dim DsProd As New DataSet
         Dim rowShow As DataRow()
@@ -1115,7 +1092,7 @@ Public Class FormSamples
         End If
     End Sub
 
-    Private Sub ButtonReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonReset.Click
+    Private Sub ButtonReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonReset.Click
 
         If currentActivityID > 0 Then
             Dim tblProd As DataTable
@@ -1153,7 +1130,7 @@ Public Class FormSamples
 
     End Sub
 
-    Private Sub ButtonNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonNew.Click
+    Private Sub ButtonNew_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonNew.Click
         If currentActivityID > 0 Then
             Dim tblProd As DataTable
             Dim DsProd As New DataSet
@@ -1200,7 +1177,7 @@ Public Class FormSamples
 
     End Sub
 
-    Private Sub ButtonDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonDelete.Click
+    Private Sub ButtonDelete_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDelete.Click
         If currentActivityID > 0 Then
             Dim tblProd As DataTable
             Dim DsProd As New DataSet
@@ -1254,7 +1231,7 @@ Public Class FormSamples
 
     End Sub
 
-    Private Sub ButtonUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonUpdate.Click
+    Private Sub ButtonUpdate_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonUpdate.Click
         If Not IsNothing(TreeViewTask.SelectedNode) And currentActivityID > 0 Then
             Dim tblProd As DataTable
             Dim DsProd As New DataSet
@@ -1288,11 +1265,11 @@ Public Class FormSamples
         End If
     End Sub
 
-    Private Sub ButtonTaskCollapse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonTaskCollapse.Click
+    Private Sub ButtonTaskCollapse_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonTaskCollapse.Click
         TreeViewTask.CollapseAll()
     End Sub
 
-    Private Sub ButtonExpand_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonExpand.Click
+    Private Sub ButtonExpand_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonExpand.Click
         TreeViewTask.ExpandAll()
     End Sub
 
@@ -1307,7 +1284,7 @@ Public Class FormSamples
 
     End Sub
 
-    Private Sub ButtonExport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonExport.Click
+    Private Sub ButtonExport_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonExport.Click
         SaveFileDialog1.DefaultExt = "txt"
         SaveFileDialog1.InitialDirectory = My.Computer.FileSystem.SpecialDirectories.MyDocuments
         SaveFileDialog1.ShowDialog()
@@ -1332,7 +1309,7 @@ Public Class FormSamples
 
     End Sub
 
-    Private Sub TimerTask_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles TimerTask.Tick
+    Private Sub TimerTask_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerTask.Tick
         If Val(TextBoxBomTime.Text) > 1 Then
             TextBoxBomTime.Text = Val(TextBoxBomTime.Text) - 1
         Else
@@ -1356,7 +1333,7 @@ Public Class FormSamples
         End If
     End Sub
 
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
         TextBoxETD.Text = ""
     End Sub
 
@@ -1418,7 +1395,7 @@ Public Class FormSamples
         Next
     End Sub
 
-    Private Sub ButtonUpdateMagBox_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonUpdateMagBox.Click
+    Private Sub ButtonUpdateMagBox_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonUpdateMagBox.Click
 
         Dim tblProd As DataTable
         Dim DsProd As New DataSet
@@ -1800,14 +1777,14 @@ Public Class FormSamples
     '    versionOffer = rowShow.Length
     'End Function
 
-    Private Sub ButtonSaveDefault_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonSaveDefault.Click
+    Private Sub ButtonSaveDefault_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSaveDefault.Click
         If MsgBox("Are you sure to save and change current configuration?", MsgBoxStyle.YesNo) = vbYes Then
             XmlTree.SetTreeView(TreeViewTask)
             ParameterTableWrite("sop_task", XmlTree.ExportToString)
         End If
     End Sub
 
-    Private Sub TextBoxTaskHeader_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBoxTaskHeader.TextChanged
+    Private Sub TextBoxTaskHeader_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxTaskHeader.TextChanged
         If Mid(TextBoxTaskHeader.Text, 1, 1) = "[" Or Mid(TextBoxTaskHeader.Text, 1, 1) = "{" Then
             TextBoxTaskHeader.Enabled = False
         Else
@@ -1820,7 +1797,7 @@ Public Class FormSamples
         End If
     End Sub
 
-    Private Sub CheckBoxClosed_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBoxClosed.CheckedChanged
+    Private Sub CheckBoxClosed_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBoxClosed.CheckedChanged
         UpdateActivityID()
     End Sub
 
@@ -2205,7 +2182,7 @@ Public Class FormSamples
 
     End Sub
 
-    Private Sub Btn_Add_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Btn_Add.Click
+    Private Sub Btn_Add_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Add.Click
         Dim cmd As New MySqlCommand()
         Dim Sql As String
         Dim selectrowNo As Integer
@@ -2249,7 +2226,7 @@ Public Class FormSamples
 
     End Sub
 
-    Private Sub Btn_Del_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Btn_Del.Click
+    Private Sub Btn_Del_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Del.Click
         Dim cmd As New MySqlCommand()
         Dim sql As String
         Dim selectrowNo As Integer = DGV_NPI.CurrentRow.Index
@@ -2275,7 +2252,7 @@ Public Class FormSamples
 
     End Sub
 
-    Private Sub Btn_Save_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Btn_Save.Click
+    Private Sub Btn_Save_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Save.Click
         Dim cmd As New MySqlCommand()
         Dim sql As String
 
@@ -2314,7 +2291,7 @@ Public Class FormSamples
 
     End Sub
 
-    Private Sub Btn_Search_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Btn_Search.Click
+    Private Sub Btn_Search_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Search.Click
 
         Call DGV_Fill()
 
@@ -2412,7 +2389,7 @@ Public Class FormSamples
 
     'End Sub
 
-    Private Sub Btn_UpLoadFile_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles Btn_UpLoadFile.Click
+    Private Sub Btn_UpLoadFile_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_UpLoadFile.Click
 
         Dim selectrowNo As Integer = DGV_NPI.CurrentRow.Index
 
@@ -2633,7 +2610,7 @@ Public Class FormSamples
 
     End Sub
 
-    Private Sub DTP_Date_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DTP_Date.ValueChanged
+    Private Sub DTP_Date_ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles DTP_Date.ValueChanged
 
         'MessageBox.Show(DTP_Date.Value.ToString)
         DateStart = DTP_Date.Value.Date
@@ -2644,7 +2621,7 @@ Public Class FormSamples
 
     End Sub
 
-    Private Sub DTP_PlanCloseDate_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DTP_PlanCloseDate.ValueChanged
+    Private Sub DTP_PlanCloseDate_ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles DTP_PlanCloseDate.ValueChanged
 
         DateClosed = DTP_PlanCloseDate.Value.Date
 

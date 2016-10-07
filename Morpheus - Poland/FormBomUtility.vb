@@ -2,16 +2,11 @@
 Option Explicit On
 Option Compare Text
 
-Imports System.IO
 Imports System.Data.SqlClient
 Imports System
 Imports Microsoft.VisualBasic
-Imports System.Runtime.InteropServices
-Imports System.Globalization
 Imports System.Data
 Imports MySql.Data.MySqlClient
-Imports System.Data.OleDb
-Imports System.Text.RegularExpressions
 
 Public Class FormBomUtility
     Dim DsDocComp As New DataSet
@@ -400,11 +395,6 @@ Public Class FormBomUtility
 
 
     Private Sub ButtonCompactElux_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonCompactElux.Click
-
-
-
-
-
         Dim pathExcel As String = "", reference As String = ""
         System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US")
         Dim avl(10000, 100) As String, name(100) As String
@@ -570,16 +560,11 @@ Public Class FormBomUtility
             Catch ex As Exception
                 MsgBox(ex.Message)
             End Try
-
             Me.Focus()
             Me.Show()
             KillLastExcel()
 
         End If
-
-
-
-
     End Sub
 
 

@@ -18,13 +18,13 @@ Public Class FormECR
     Dim CultureInfo_ja_JP As New System.Globalization.CultureInfo("ja-JP", False)
     Dim needSave As Boolean = False
 
-    Private Sub FormECR_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+    Private Sub FormECR_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
         checkSave()
 
         FormStart.Show()
     End Sub
 
-    Private Sub FormECR_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub FormECR_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         FormStart.Hide()
         AdapterEcr.SelectCommand = New MySqlCommand("SELECT * FROM ecr ORDER BY NUMBER;", MySqlconnection)
         AdapterEcr.Fill(DsEcr, "ecr")
@@ -433,31 +433,31 @@ Public Class FormECR
 
     End Sub
 
-    Private Sub ButtonN_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonN.Click
+    Private Sub ButtonN_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonN.Click
         ManagePushButton("N")
     End Sub
-    Private Sub ButtonP_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonP.Click
+    Private Sub ButtonP_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonP.Click
         ManagePushButton("P")
     End Sub
-    Private Sub ButtonL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonL.Click
+    Private Sub ButtonL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonL.Click
         ManagePushButton("L")
     End Sub
-    Private Sub ButtonA_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonA.Click
+    Private Sub ButtonA_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonA.Click
         ManagePushButton("A")
     End Sub
-    Private Sub ButtonR_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonR.Click
+    Private Sub ButtonR_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonR.Click
         ManagePushButton("R")
     End Sub
-    Private Sub ButtonE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonE.Click
+    Private Sub ButtonE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonE.Click
         ManagePushButton("E")
     End Sub
-    Private Sub ButtonQ_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonQ.Click
+    Private Sub ButtonQ_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonQ.Click
         ManagePushButton("Q")
     End Sub
-    Private Sub ButtonU_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonU.Click
+    Private Sub ButtonU_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonU.Click
         ManagePushButton("U")
     End Sub
-    Private Sub ButtonB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonB.Click
+    Private Sub ButtonB_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonB.Click
         ManagePushButton("B")
     End Sub
 
@@ -656,11 +656,11 @@ Public Class FormECR
     End Sub
 
 
-    Private Sub ComboBoxEcr_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBoxEcr.SelectedValueChanged
+    Private Sub ComboBoxEcr_SelectedValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxEcr.SelectedValueChanged
         UpdateField()
     End Sub
 
-    Private Sub ButtonAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonAdd.Click
+    Private Sub ButtonAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAdd.Click
         Dim pos As Integer, exist As Boolean
 
         If ComboBoxProd.Text <> "" Then
@@ -700,7 +700,7 @@ Public Class FormECR
         End If
     End Sub
 
-    Private Sub ButtonRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonRemove.Click
+    Private Sub ButtonRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRemove.Click
         Dim i As Integer
         If ListViewProd.Items.Count > 0 Then
             If ComboBoxEcr.Text <> "" Then
@@ -876,7 +876,7 @@ Public Class FormECR
 
     End Function
 
-    Private Sub ButtonOpen_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ButtonOpen.Click
+    Private Sub ButtonOpen_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonOpen.Click
         Dim fileOpen As String
         fileOpen = downloadFileWinPath(ComboBoxEcr.Text)
         If ComboBoxEcr.Text <> "" Then Process.Start(fileOpen)
@@ -993,13 +993,13 @@ Public Class FormECR
         End If
 
     End Sub
-    Private Sub ComboBoxPay_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBoxPay.LostFocus
+    Private Sub ComboBoxPay_LostFocus(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxPay.LostFocus
         WriteField("cusPay", ComboBoxPay.Text)
     End Sub
     'Private Sub ButtonCalc_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonCalc.Click
     '    FormCalcCost.Show()
     'End Sub
-    Private Sub ButtonSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonSave.Click
+    Private Sub ButtonSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSave.Click
         WriteField(userDep3 & "cost", TextBoxStepCost.Text)
         WriteField(userDep3 & "note", Replace(Replace(RichTextBoxStep.Rtf, "\", "\\"), "'", ""))
 
@@ -1008,7 +1008,7 @@ Public Class FormECR
         UpdateField()
     End Sub
 
-    Private Sub CheckConfirm_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles CheckConfirm.Click
+    Private Sub CheckConfirm_Click(ByVal sender As Object, ByVal e As EventArgs) Handles CheckConfirm.Click
         If CheckConfirm.Checked = True Then
             If AllSign() Then
                 If vbYes = MsgBox("Are you sure to confirm the ECR? After the automatic notification you can't stop it.", MsgBoxStyle.YesNo, "SrvDoc ECR confirm of Introducing") Then
@@ -1024,11 +1024,11 @@ Public Class FormECR
         UpdateField()
     End Sub
 
-    Private Sub CheckBoxOpen_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBoxOpen.CheckedChanged
+    Private Sub CheckBoxOpen_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBoxOpen.CheckedChanged
         fillEcrComboTable()
     End Sub
 
-    Private Sub RichTextBoxStep_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RichTextBoxStep.TextChanged
+    Private Sub RichTextBoxStep_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles RichTextBoxStep.TextChanged
         ButtonSave.BackColor = Color.OrangeRed
         needSave = True
     End Sub
@@ -1063,7 +1063,7 @@ Public Class FormECR
 
     End Function
 
-    Private Sub ButtonEcrCheck_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonEcrCheck.Click
+    Private Sub ButtonEcrCheck_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonEcrCheck.Click
 
         If controlRight("R") = 3 And controlRight("J") = 3 And ComboBoxEcr.Text <> "" Then
 
@@ -1093,14 +1093,14 @@ Public Class FormECR
 
     End Sub
 
-    Private Sub ButtonQL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonQL.Click, ButtonBL.Click
+    Private Sub ButtonQL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonQL.Click, ButtonBL.Click
 
     End Sub
-    Private Sub Label15_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label15.Click, Label17.Click
+    Private Sub Label15_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Label15.Click, Label17.Click
 
     End Sub
 
-    Private Sub UpdateDate(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DateTimePickerU.ValueChanged, DateTimePickerR.ValueChanged, DateTimePickerQ.ValueChanged, DateTimePickerp.ValueChanged, DateTimePickerL.ValueChanged, DateTimePickerE.ValueChanged, DateTimePickerB.ValueChanged
+    Private Sub UpdateDate(ByVal sender As Object, ByVal e As EventArgs) Handles DateTimePickerU.ValueChanged, DateTimePickerR.ValueChanged, DateTimePickerQ.ValueChanged, DateTimePickerp.ValueChanged, DateTimePickerL.ValueChanged, DateTimePickerE.ValueChanged, DateTimePickerB.ValueChanged
 
     End Sub
 

@@ -1,10 +1,6 @@
 ﻿Option Explicit On
 Option Compare Text
 Imports MySql.Data.MySqlClient
-Imports System.IO
-Imports System.Data.SqlClient
-Imports System.Data.OleDb
-Imports System.Text.RegularExpressions
 Imports Microsoft.VisualBasic
 
 Public Class FormEqItem
@@ -29,14 +25,9 @@ Public Class FormEqItem
         AdapterEQ.Fill(DsEQ, "EQUIPMENTS")
         tblEQ = DsEQ.Tables("EQUIPMENTS")
         ComboBoxRDA.Items.Add("NEED_PRICE")
-
-
         AdapterEQAsset.Fill(DsEQAsset, "EqAsset")
         tblEQAsset = DsEQAsset.Tables("EqAsset")
-
-
         FillTreeViewEQAsset()
-
         TextBoxTotalCost.Text = CostRecalculation()
         loadComboDai()
         loadComboResponsible()
@@ -674,7 +665,7 @@ Public Class FormEqItem
 
 
     Private Sub TreeViewEQAsset_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles TreeViewEQAsset.DoubleClick
-        Dim name As String = ""
+        Dim name = ""
         If CurrentAssetId() > 0 Then
             name = Trim(UCase(Replace(InputBox("Change the bame the item name: ", ), "'", "")))
             If name <> "" Then

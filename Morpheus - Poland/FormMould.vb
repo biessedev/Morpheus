@@ -95,29 +95,6 @@ Public Class FormMould
 
     Function IFPStatus(ByVal ifpDocId As Integer, ByVal refresh As Boolean) As String
 
-
-
-
-
-
-
-
-
     End Function
 
-
-
-
-
-    Private Sub TableLayoutPanel1_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles TableLayoutPanel1.Paint
-
-    End Sub
-
-    Private Sub TreeViewIfp_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles TreeViewIfp.AfterSelect
-
-    End Sub
-
-    Private Sub ComboBox4_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox4.SelectedIndexChanged
-
-    End Sub
 End Class
