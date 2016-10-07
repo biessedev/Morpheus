@@ -13,8 +13,8 @@ Public Class FormCredentials
         If TextBoxPassword.Text <> "" And TextBoxUserName.Text <> "" Then
             'OpenConnectionMySql(TextBoxhost.Text, TextBoxDatabase.Text, "BEC_W", "arpacanta")
             OpenConnectionMySql(TextBoxhost.Text, TextBoxDatabase.Text, "root", "bitron")
-            If MySqlconnection.State = ConnectionState.Open Then
 
+            If MySqlconnection.State = ConnectionState.Open Then
                 strFtpServerUser = ParameterTable("MorpheusFtpUser")
                 strFtpServerPsw = ParameterTable("MorpheusFtpPsw")
 
@@ -26,7 +26,7 @@ Public Class FormCredentials
                 If tblCredentials.Rows.Count = 1 Then
                     CreAccount.strUserName = LCase(TextBoxUserName.Text)
                     CreAccount.strPassword = LCase(TextBoxPassword.Text)
-                    CreAccount.strHost = TextBoxHost.Text
+                    CreAccount.strHost = TextBoxhost.Text
                     CreAccount.strDatabase = TextBoxDatabase.Text
                     CreAccount.strSign = tblCredentials.Rows(0)("sign")
                     CreAccount.intId = tblCredentials.Rows(0)("id")

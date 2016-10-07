@@ -224,7 +224,7 @@ Public Class FormCoding
 
     End Sub
 
-    Private Sub ButtonDecrypt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonDecrypt.Click
+    Private Sub ButtonDecrypt_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonDecrypt.Click
         TextBoxdecrypted.Text = RijndaelDecrypt(TextBoxPsw.Text, ToBin(TextBoxencrypted.Text))
     End Sub
 

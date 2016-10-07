@@ -853,7 +853,7 @@ Public Class FormDownload
             End If
             Dim c As DataColumn, i As Integer
 
-            Dim Widht(tblDoc.Columns.Count - 1) As Integer, j As Integer
+            Dim Widht(tblDoc.Columns.Count - 1) As Integer
 
             If CheckBox1.Checked Then Widht(0) = 70 Else Widht(0) = 0
             If CheckBox2.Checked Then Widht(1) = 140 Else Widht(1) = 0

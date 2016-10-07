@@ -251,9 +251,9 @@ Public Class FormSamples
         Else
             activity = Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " "))))
         End If
-        rowShow = tblProd.Select(IIf(CheckBoxOpenProduct.Checked, "((status='SOP_SAMPLE') or (statusActivity='OPEN')) ", "status LIKE '*'") & _
-                  IIf(ComboBoxActivityID.Text <> "", " AND idactivity = " & activity, "") & _
-                  IIf(ComboBoxActivityStatus.Text <> "", " AND (statusActivity='" & ComboBoxActivityStatus.Text & "') ", IIf(CheckBoxClosed.Checked, " AND statusActivity LIKE '*'", " AND statusActivity <> 'CLOSED'")), _
+        rowShow = tblProd.Select(IIf(CheckBoxOpenProduct.Checked, "((status='SOP_SAMPLE') or (statusActivity='OPEN')) ", "status LIKE '*'") &
+                  IIf(ComboBoxActivityID.Text <> "", " AND idactivity = " & activity, "") &
+                  IIf(ComboBoxActivityStatus.Text <> "", " AND (statusActivity='" & ComboBoxActivityStatus.Text & "') ", IIf(CheckBoxClosed.Checked, " AND statusActivity LIKE '*'", " AND statusActivity <> 'CLOSED'")),
                   IIf(CheckBoxOrderByDate.Checked, " etd desc, customer, idActivity ", IIf(CheckBoxCustomer.Checked = True, "customer, idActivity ,etd", "idActivity,customer  ,etd")))
         customer = ""
         activity = -1
@@ -261,7 +261,7 @@ Public Class FormSamples
             If CheckBoxOrderByDate.Checked = True Then
                 TreeViewActivity.Font = New Font("Courier New", 10, FontStyle.Bold)
                 rootNode = New TreeNode(row("etd").ToString & Mid("__________", 1, 10 - Len(row("etd").ToString)) & " -- " & row("idactivity").ToString _
-                & " - " & row("statusactivity").ToString & Mid("_______", 1, 7 - Len(row("statusactivity").ToString)) & " -- " & row("npieces").ToString & _
+                & " - " & row("statusactivity").ToString & Mid("_______", 1, 7 - Len(row("statusactivity").ToString)) & " -- " & row("npieces").ToString &
                 Mid("___________", 1, 6 - Len(Str(row("npieces").ToString))) & " pcs -- [" & row("bitronpn").ToString & "]  " & row("name").ToString)
 
                 If row("statusactivity") = "OPEN" And row("etd").ToString <> "" Then
@@ -538,7 +538,7 @@ Public Class FormSamples
                 ComboBoxActivityStatus.Text = rowShow(0).Item("Statusactivity")
                 Dim cmd As New MySqlCommand()
                 Dim sql As String
-                If Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " ")))) <> Int(rowShow(0).Item("idactivity")) And _
+                If Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " ")))) <> Int(rowShow(0).Item("idactivity")) And
                     NumberProduct(Int(rowShow(0).Item("idactivity"))) = 1 Then
                     canDelete = MsgBox("This is the last product for this activity. If you delete this product you will delete also the activity and all linked tasks! Are you sure?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes
                 Else
@@ -546,14 +546,14 @@ Public Class FormSamples
                 End If
                 If canDelete Then
                     Try
-                        sql = "UPDATE `" & DBName & "`.`product` SET " & _
-                        " `etd` = '" & TextBoxETD.Text & _
-                        "', `statusActivity` = '" & IIf(NumberProduct(Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " "))))) >= 1, _
-                        ActivityStatus(Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " "))))), "") & _
-                        "',`npieces` = " & Int(TextBoxProductQt.Text) & _
-                        ",`BomLocation` = '" & (ComboBoxBomLocation.Text) & _
-                        "',`idactivity` = " & Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " ")))) & _
-                        ",`nameactivity` = '" & Replace(Mid(ComboBoxActivityID.Text, InStr(ComboBoxActivityID.Text, " -- ") + 4), "NOT ASSIGNED", "") & _
+                        sql = "UPDATE `" & DBName & "`.`product` SET " &
+                        " `etd` = '" & TextBoxETD.Text &
+                        "', `statusActivity` = '" & IIf(NumberProduct(Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " "))))) >= 1,
+                        ActivityStatus(Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " "))))), "") &
+                        "',`npieces` = " & Int(TextBoxProductQt.Text) &
+                        ",`BomLocation` = '" & (ComboBoxBomLocation.Text) &
+                        "',`idactivity` = " & Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " ")))) &
+                        ",`nameactivity` = '" & Replace(Mid(ComboBoxActivityID.Text, InStr(ComboBoxActivityID.Text, " -- ") + 4), "NOT ASSIGNED", "") &
                         "' WHERE `product`.`bitronpn` = '" & Trim(Mid(TextBoxProduct.Text, 1, InStr(TextBoxProduct.Text, " "))) & "' ;"
                         cmd = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
@@ -658,9 +658,9 @@ Public Class FormSamples
                     Dim sql As String
 
                     Try
-                        sql = "UPDATE `" & DBName & "`.`product` SET " & _
-                        "`Statusactivity` = '" & ComboBoxActivityStatus.Text & _
-                        "', `delay` = '" & IIf(ComboBoxActivityStatus.Text = "CLOSED", InputBox("Insert the closing activity delay (day):"), "") & _
+                        sql = "UPDATE `" & DBName & "`.`product` SET " &
+                        "`Statusactivity` = '" & ComboBoxActivityStatus.Text &
+                        "', `delay` = '" & IIf(ComboBoxActivityStatus.Text = "CLOSED", InputBox("Insert the closing activity delay (day):"), "") &
                         "' WHERE `product`.`bitronpn` = '" & row("bitronpn") & "' ;"
                         cmd = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
@@ -706,18 +706,18 @@ Public Class FormSamples
 
             strActiv = InputBox("Please insert the name of new activity : " & vbCrLf & "PCB_1 -- PCB_ 2 -- Activity Description")
 
-            If Regex.IsMatch(strActiv, "^[0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Or _
-                Regex.IsMatch(strActiv, "^[0-9]{8} -- [0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Or _
-                Regex.IsMatch(strActiv, "^[0-9]{8} -- [0-9]{8} -- [0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Or _
-                Regex.IsMatch(strActiv, "^[0-9]{8} -- [0-9]{8} -- [0-9]{8} -- [0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Or _
-                Regex.IsMatch(strActiv, "^[0-9]{8} -- [0-9]{8} -- [0-9]{8} -- [0-9]{8} -- [0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Or _
+            If Regex.IsMatch(strActiv, "^[0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Or
+                Regex.IsMatch(strActiv, "^[0-9]{8} -- [0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Or
+                Regex.IsMatch(strActiv, "^[0-9]{8} -- [0-9]{8} -- [0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Or
+                Regex.IsMatch(strActiv, "^[0-9]{8} -- [0-9]{8} -- [0-9]{8} -- [0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Or
+                Regex.IsMatch(strActiv, "^[0-9]{8} -- [0-9]{8} -- [0-9]{8} -- [0-9]{8} -- [0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Or
                 Regex.IsMatch(strActiv, "^[0-9]{8} -- [0-9]{8} -- [0-9]{8} -- [0-9]{8} -- [0-9]{8} -- [0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Then
 
                 Try
-                    sql = "UPDATE `" & DBName & "`.`product` SET " & _
-                    "`Statusactivity` = 'OPEN'" & _
-                    ", `idactivity` = " & LastIDActivity() + 1 & _
-                    ", `nameactivity` = '" & Trim(ReplaceChar(UCase(strActiv))) & _
+                    sql = "UPDATE `" & DBName & "`.`product` SET " &
+                    "`Statusactivity` = 'OPEN'" &
+                    ", `idactivity` = " & LastIDActivity() + 1 &
+                    ", `nameactivity` = '" & Trim(ReplaceChar(UCase(strActiv))) &
                     "' WHERE `product`.`bitronpn` = '" & currentProductCode & "' ;"
                     cmd = New MySqlCommand(sql, MySqlconnection)
                     cmd.ExecuteNonQuery()
@@ -1070,8 +1070,8 @@ Public Class FormSamples
             Dim cmd As New MySqlCommand()
             Dim sql As String
             Try
-                sql = "UPDATE `" & DBName & "`.`product` SET " & _
-                "`" & ComboBoxType.Text & "` = '" & S & _
+                sql = "UPDATE `" & DBName & "`.`product` SET " &
+                "`" & ComboBoxType.Text & "` = '" & S &
                 "' WHERE `product`.`idactivity` = " & currentActivityID & " ;"
                 cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
@@ -1176,15 +1176,15 @@ Public Class FormSamples
 
                 If Not IsNothing(TreeViewTask.SelectedNode) Then
                     Dim rootNode As New TreeNode
-                    rootNode.Text = (Mid("0%", 1, 4) & " - " & _
-                    UCase(Mid(" * * new * *" & "__________________________", 1, 25)) & " - " & _
+                    rootNode.Text = (Mid("0%", 1, 4) & " - " &
+                    UCase(Mid(" * * new * *" & "__________________________", 1, 25)) & " - " &
                     Mid(" * * new * *", 1))
                     TreeViewTask.SelectedNode.Nodes.Add(rootNode)
                     ButtonSave.BackColor = Color.Orange
                 Else
                     Dim rootNode As New TreeNode
-                    rootNode.Text = (Mid("0%", 1, 4) & " - " & _
-                    UCase(Mid(" * * new * *" & "__________________________", 1, 25)) & " - " & _
+                    rootNode.Text = (Mid("0%", 1, 4) & " - " &
+                    UCase(Mid(" * * new * *" & "__________________________", 1, 25)) & " - " &
                     Mid(" * * new * *", 1))
                     TreeViewTask.Nodes.Add(rootNode)
                     ButtonSave.BackColor = Color.Orange
@@ -1275,8 +1275,8 @@ Public Class FormSamples
                 TimerTask.Start()
                 OpenSession = True
 
-                TreeViewTask.SelectedNode.Text = UCase(Mid(ComboBoxTaskStatus.Text, 1, 4) & " - " & _
-                UCase(Mid(TextBoxTaskHeader.Text & "__________________________", 1, 25)) & " - " & _
+                TreeViewTask.SelectedNode.Text = UCase(Mid(ComboBoxTaskStatus.Text, 1, 4) & " - " &
+                UCase(Mid(TextBoxTaskHeader.Text & "__________________________", 1, 25)) & " - " &
                 Mid(TextBoxTaskNote.Text, 1))
                 ButtonSave.BackColor = Color.Orange
             Else
@@ -1425,7 +1425,6 @@ Public Class FormSamples
         Dim rowShow As DataRow()
         Dim rowShowSigip As DataRow()
         Dim BomName As String = "", verN As Integer = 0
-        Dim rowShowOffer As DataRow()
         Dim sql As String
         Dim i As Integer = 0
         Dim commandMySql As New MySqlCommand
@@ -1476,12 +1475,12 @@ Public Class FormSamples
         Application.DoEvents()
         For Each rowShowMy In tblMySql.Rows
 
-            sql = "UPDATE `materialrequest` SET `warehouse3d`='',`RequestQt`=0, `BomList`='',`delta`='',`DeltaUsedFlag`=''," & _
-                    "`RequestQt_1`=" & rowShowMy("RequestQt").ToString & "," & _
-                    "`RequestQt_2`=" & rowShowMy("RequestQt_1").ToString & "," & _
-                    "`RequestQt_3`=" & rowShowMy("RequestQt_2").ToString & "," & _
-                    "`RequestQt_4`=" & rowShowMy("RequestQt_3").ToString & "," & _
-                    "`RequestQt_5`=" & rowShowMy("RequestQt_4").ToString & "," & _
+            sql = "UPDATE `materialrequest` SET `warehouse3d`='',`RequestQt`=0, `BomList`='',`delta`='',`DeltaUsedFlag`=''," &
+                    "`RequestQt_1`=" & rowShowMy("RequestQt").ToString & "," &
+                    "`RequestQt_2`=" & rowShowMy("RequestQt_1").ToString & "," &
+                    "`RequestQt_3`=" & rowShowMy("RequestQt_2").ToString & "," &
+                    "`RequestQt_4`=" & rowShowMy("RequestQt_3").ToString & "," &
+                    "`RequestQt_5`=" & rowShowMy("RequestQt_4").ToString & "," &
                     "`ProductionUsed`='' where bitronpn = '" & rowShowMy("bitronpn") & "'"
 
             Try
@@ -1622,7 +1621,6 @@ Public Class FormSamples
     End Sub
 
     Function order(ByVal bitronpn As String, ByVal refrash As Boolean) As Single
-        Dim sql As String
         Static AdapterOrder As New MySqlDataAdapter("SELECT * FROM `order`", MySqlconnection)
         Static tblOrder As DataTable
         Static DsOrder As New DataSet
@@ -1637,12 +1635,8 @@ Public Class FormSamples
 
             End Try
 
-
-
             AdapterOrder.Fill(DsOrder, "order")
             tblOrder = DsOrder.Tables("order")
-
-
         Else
             rowShow = tblOrder.Select("identif ='" & bitronpn & "' and stato_item ='0'")
             For Each row In rowShow
@@ -1652,8 +1646,6 @@ Public Class FormSamples
 
 
         End If
-
-
 
     End Function
 
@@ -1718,8 +1710,8 @@ Public Class FormSamples
         stockvalue = Str(Stock(bitronPN))
         If tblMySql.Rows.Count < 1 Then
             strBomList = des_bom & "[" & Trim(Str(IIf(qt = Int(qt), Int(qt), Math.Round(Val(qt), 5)))) & "]"
-            sql = "INSERT INTO `srvdoc`.`materialrequest` (`DeltaUsedFlag`,`ProductionUsed`,`bitronPN`,`des_pn`,`Brand`,`BrandALT`,`pfp`,`warehouse3d`,`Delta`,`RequestQt`,`BomList`,`doc`) VALUES ('" & IIf(SigipUsed(bitronPN) <> "" Or _
-            (stockvalue - Val(strQt)) < Val(strQt) * 0.1, "YES", "NO") & "','" & SigipUsed(bitronPN) & "','" & bitronPN & "','" & des_PN & "','" & brand & "','" & brandAlt & "','" & pfp(bitronPN) & "','" & stockvalue & "','" & _
+            sql = "INSERT INTO `srvdoc`.`materialrequest` (`DeltaUsedFlag`,`ProductionUsed`,`bitronPN`,`des_pn`,`Brand`,`BrandALT`,`pfp`,`warehouse3d`,`Delta`,`RequestQt`,`BomList`,`doc`) VALUES ('" & IIf(SigipUsed(bitronPN) <> "" Or
+            (stockvalue - Val(strQt)) < Val(strQt) * 0.1, "YES", "NO") & "','" & SigipUsed(bitronPN) & "','" & bitronPN & "','" & des_PN & "','" & brand & "','" & brandAlt & "','" & pfp(bitronPN) & "','" & stockvalue & "','" &
              stockvalue - Val(Str(Val(qt) * Val(npieces))) & "','" & Trim(Str(Val(qt) * Val(npieces))) & "','" & strBomList & "','" & Doc & "')"
         Else
             strQt = Trim(Str(Val(tblMySql.Rows.Item(0)("requestqt")) + Str(Val(qt) * Val(npieces))))
@@ -2236,8 +2228,8 @@ Public Class FormSamples
         If Trim(Txt_BitronPN.Text) <> "" Then
             Try
 
-                Sql = "INSERT INTO npi_openissue (BS,DATE,Issue_description,Bitron_PN,Area,Owner,Temp_corr_action,Final_corr_action,ETC,Status,FilePath ) VALUES ('" & _
-                Txt_description.Text & "','" & DateStart & "','" & Txt_IssueDescription.Text & "','" & Txt_BitronPN.Text & "','" & Txt_Area.Text & "','" & _
+                Sql = "INSERT INTO npi_openissue (BS,DATE,Issue_description,Bitron_PN,Area,Owner,Temp_corr_action,Final_corr_action,ETC,Status,FilePath ) VALUES ('" &
+                Txt_description.Text & "','" & DateStart & "','" & Txt_IssueDescription.Text & "','" & Txt_BitronPN.Text & "','" & Txt_Area.Text & "','" &
                 Cob_Owner.Text & "','" & Txt_TempCorrectAction.Text & "','" & Txt_FinalCorrectAction.Text & "','" & DateClosed & "','" & Cob_Status.Text & "','" & Txt_FilePath.Text & "');"
 
                 cmd = New MySqlCommand(Sql, MySqlconnection)
@@ -2299,9 +2291,9 @@ Public Class FormSamples
         If Trim(Txt_BitronPN.Text) <> "" Then
             Try
 
-                sql = "UPDATE npi_openissue SET BS = '" & Txt_description.Text & "',DATE = '" & DateStart & "',Issue_description ='" & _
-                Txt_IssueDescription.Text & "',Bitron_PN = '" & Txt_BitronPN.Text & "',Area = '" & Txt_Area.Text & "',Owner = '" & Cob_Owner.Text & "',Temp_corr_action = '" & _
-                Txt_TempCorrectAction.Text & "',Final_corr_action = '" & Txt_FinalCorrectAction.Text & "',ETC = '" & DateClosed & "',Status = '" & _
+                sql = "UPDATE npi_openissue SET BS = '" & Txt_description.Text & "',DATE = '" & DateStart & "',Issue_description ='" &
+                Txt_IssueDescription.Text & "',Bitron_PN = '" & Txt_BitronPN.Text & "',Area = '" & Txt_Area.Text & "',Owner = '" & Cob_Owner.Text & "',Temp_corr_action = '" &
+                Txt_TempCorrectAction.Text & "',Final_corr_action = '" & Txt_FinalCorrectAction.Text & "',ETC = '" & DateClosed & "',Status = '" &
                 Cob_Status.Text & "',FilePath ='" & Txt_FilePath.Text & "' WHERE ID = '" & Txt_Index.Text & "'"
 
                 cmd = New MySqlCommand(sql, MySqlconnection)

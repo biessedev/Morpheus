@@ -532,7 +532,7 @@ Public Class FormAdministration
 
     Sub EcrMailScheduler()
 
-        Dim RowSearchEcr As DataRow(), sql As String, us As String, dt As Date, refresh As Boolean = True
+        Dim RowSearchEcr As DataRow(), us As String, dt As Date, refresh As Boolean = True
         RowSearchEcr = tblEcr.Select("")
         For Each row In RowSearchEcr
 

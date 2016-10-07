@@ -19,5 +19,4 @@
         Return returnVal
     End Function
 
-
 End Class

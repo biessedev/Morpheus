@@ -1,9 +1,6 @@
 Imports System
-Imports System.Collections.Generic
-Imports System.Text
 Imports System.Net
 imports System.IO
-imports System.Collections
 
 Public Class ftp
 

@@ -6,7 +6,6 @@ Imports System
 
 Public Class FormCredentials
 
-
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
 
         If TextBoxPassword.Text <> "" And TextBoxUserName.Text <> "" Then

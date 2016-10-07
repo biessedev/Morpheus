@@ -4143,7 +4143,6 @@ Public Class FormOffer
         tblOff.Dispose()
     End Function
 
-
     Private Sub ButtonBomImportSigipBom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBomImportSigipBom.Click
         Dim cmd As New MySqlCommand()
         Dim sql As String
@@ -4254,8 +4253,6 @@ Public Class FormOffer
             TotQtSigip = Val(TotQtSigip) + Val(rowShowOffer(i - 1).Item("qt").ToString)
         Next
 
-
-
     End Function
 
 
@@ -4272,8 +4269,6 @@ Public Class FormOffer
 
         End Try
     End Sub
-
-
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         NoInfoBomBest = True
@@ -4330,7 +4325,6 @@ Public Class FormOffer
 
         End Try
 
-
     End Sub
 
     Private Sub ButtonOpenOfferBrandAlt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonOpenOfferBrandAlt.Click
@@ -4363,11 +4357,7 @@ Public Class FormOffer
     End Sub
 
 
-
-
-
     Private Sub ButtonPredict_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonPredict.Click
-
 
         Dim cmd As New MySqlCommand()
         Dim sql As String
@@ -4381,8 +4371,6 @@ Public Class FormOffer
         Dim AdapterOffMY As New MySqlDataAdapter("SELECT * FROM offer", MySqlconnection)
         AdapterOffMY.Fill(DsOff, "Offer")
         tblOff = DsOff.Tables("Offer")
-
-
 
         If vbYes = MsgBox("Do you want fill all class based on description?", vbYesNo) Then
 
@@ -4421,9 +4409,6 @@ Public Class FormOffer
     End Sub
 
 
-
-
-
     Private Sub CheckBoxOrderByNumber_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBoxOrderByNumber.CheckedChanged
         UpdateTreeBomOffer()
     End Sub
@@ -4444,8 +4429,6 @@ Public Class FormOffer
     Private Sub CheckBoxEstimation_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBoxEstimation.CheckedChanged
         UpdateTreeBomOffer()
     End Sub
-
-
 
     Private Sub ButtonComponentsImportImportORCAD_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonComponentsImportORCAD.Click
         ComboBoxComponentALTBrand.Items.Clear()
@@ -4484,9 +4467,6 @@ Public Class FormOffer
         UpdateTreeBomOffer()
         ProgressBarBom.Value = 0
     End Sub
-
-
-
 
     Private Sub ComboBoxBomStatusFilter_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBoxBomStatusFilter.SelectedIndexChanged
         UpdateTreeBomOffer()

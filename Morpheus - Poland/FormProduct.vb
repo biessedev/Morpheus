@@ -143,10 +143,10 @@ Public Class FormProduct
         If controlRight("W") = 3 Then
             If ComboBoxCustomer.Text <> "" And TextBoxProduct.Text <> "" And TextBoxDescription.Text <> "" Then
                 Try
-                    sql = "INSERT INTO `" & DBName & "`.`product` (`BitronPN` ,`Name` ,`Customer` ,`Status` ,`DocFlag` ,`pcbCode`,`PiastraCode`,`StatusUpdateDate`,`MchElement`) VALUES ('" & _
-                    Trim(TextBoxProduct.Text) & "', '" & Trim(UCase(TextBoxDescription.Text)) & "', '" & Trim(ComboBoxCustomer.Text) & "', '" & _
-                    "" & "', '" & strControl() & "', '" & Trim(TextBoxPcb.Text) & "', '" & _
-                    Trim(TextBoxPiastra.Text) & "', 'INSERT[" & date_to_string(Today) & "]','" & _
+                    sql = "INSERT INTO `" & DBName & "`.`product` (`BitronPN` ,`Name` ,`Customer` ,`Status` ,`DocFlag` ,`pcbCode`,`PiastraCode`,`StatusUpdateDate`,`MchElement`) VALUES ('" &
+                    Trim(TextBoxProduct.Text) & "', '" & Trim(UCase(TextBoxDescription.Text)) & "', '" & Trim(ComboBoxCustomer.Text) & "', '" &
+                    "" & "', '" & strControl() & "', '" & Trim(TextBoxPcb.Text) & "', '" &
+                    Trim(TextBoxPiastra.Text) & "', 'INSERT[" & date_to_string(Today) & "]','" &
                     mch & "'" & ");"
 
                     cmd = New MySqlCommand(sql, MySqlconnection)
@@ -181,12 +181,12 @@ Public Class FormProduct
         If controlRight("W") >= 2 Then
             If TextBoxProduct.Text <> "" And TextBoxDescription.Text <> "" And (TextBoxDAI.Text = "" Or TextBoxDAI.Text = "NO_DAI" Or (Regex.IsMatch(TextBoxDAI.Text, "^K[0-9]+")) And Len(TextBoxDAI.Text) = 8) Then
                 Try
-                    sql = "UPDATE `" & DBName & "`.`product` SET `Name` = '" & Trim(UCase(TextBoxDescription.Text)) & _
-                    "',`Customer` = '" & Trim(ComboBoxCustomer.Text) & _
-                    "',`PiastraCode` = '" & Trim(TextBoxPiastra.Text) & _
-                    "',`LS_rmb` = '" & TextBoxLS.Text & _
-                    "',`dai` = '" & UCase(Trim(TextBoxDAI.Text)) & _
-                    "',`mchElement` = '" & (mch) & _
+                    sql = "UPDATE `" & DBName & "`.`product` SET `Name` = '" & Trim(UCase(TextBoxDescription.Text)) &
+                    "',`Customer` = '" & Trim(ComboBoxCustomer.Text) &
+                    "',`PiastraCode` = '" & Trim(TextBoxPiastra.Text) &
+                    "',`LS_rmb` = '" & TextBoxLS.Text &
+                    "',`dai` = '" & UCase(Trim(TextBoxDAI.Text)) &
+                    "',`mchElement` = '" & (mch) &
                     "',`DocFlag` = '" & Trim(strControl()) & "' WHERE `product`.`BitronPN` = '" & Trim(TextBoxProduct.Text) & "' ;"
                     cmd = New MySqlCommand(sql, MySqlconnection)
                     cmd.ExecuteNonQuery()
@@ -397,16 +397,16 @@ Public Class FormProduct
 
     ' FUNCTION
     Function strControl() As String
-        strControl = "A" & IIf(CheckBoxCa.Checked, "1", "0") & _
-        "B" & IIf(CheckBoxCb.Checked, "1", "0") & _
-        "C" & IIf(CheckBoxCc.Checked, "1", "0") & _
-        "D" & IIf(CheckBoxCd.Checked, "1", "0") & _
-        "E" & IIf(CheckBoxCe.Checked, "1", "0") & _
-        "F" & IIf(CheckBoxCf.Checked, "1", "0") & _
-        "G" & IIf(CheckBoxCg.Checked, "1", "0") & _
-        "H" & IIf(CheckBoxCh.Checked, "1", "0") & _
-        "I" & IIf(CheckBoxci.Checked, "1", "0") & _
-        "L" & IIf(CheckBoxcl.Checked, "1", "0") & _
+        strControl = "A" & IIf(CheckBoxCa.Checked, "1", "0") &
+        "B" & IIf(CheckBoxCb.Checked, "1", "0") &
+        "C" & IIf(CheckBoxCc.Checked, "1", "0") &
+        "D" & IIf(CheckBoxCd.Checked, "1", "0") &
+        "E" & IIf(CheckBoxCe.Checked, "1", "0") &
+        "F" & IIf(CheckBoxCf.Checked, "1", "0") &
+        "G" & IIf(CheckBoxCg.Checked, "1", "0") &
+        "H" & IIf(CheckBoxCh.Checked, "1", "0") &
+        "I" & IIf(CheckBoxci.Checked, "1", "0") &
+        "L" & IIf(CheckBoxcl.Checked, "1", "0") &
         "M" & IIf(CheckBoxcm.Checked, "1", "0")
     End Function
 
@@ -502,13 +502,13 @@ Public Class FormProduct
 
         tblProd = DsProd.Tables("product")
 
-        rowShow = tblProd.Select("Status like '*" & IIf(Trim(ComboBoxStatus.Text) <> "", Trim(ComboBoxStatus.Text), "*") & _
-        "*' and bitronpn like '*" & IIf(TextBoxProduct.Text <> "", TextBoxProduct.Text, "*") & _
-        "*' and customer like '*" & IIf(ComboBoxCustomer.Text <> "", ComboBoxCustomer.Text, "*") & _
-        "*' and pcbCode like '*" & IIf(TextBoxPcb.Text <> "", TextBoxPcb.Text, "*") & _
-        "*' and dai like '*" & IIf(TextBoxDAI.Text <> "", TextBoxDAI.Text, "*") & _
-        "*' and PiastraCode like '*" & IIf(TextBoxPiastra.Text <> "", TextBoxPiastra.Text, "*") & _
-        "*' and " & IIf(ComboBoxStatus.Text = "OBSOLETE", "Status like 'OBSOLETE", "not Status like 'OBSOLETE") & _
+        rowShow = tblProd.Select("Status like '*" & IIf(Trim(ComboBoxStatus.Text) <> "", Trim(ComboBoxStatus.Text), "*") &
+        "*' and bitronpn like '*" & IIf(TextBoxProduct.Text <> "", TextBoxProduct.Text, "*") &
+        "*' and customer like '*" & IIf(ComboBoxCustomer.Text <> "", ComboBoxCustomer.Text, "*") &
+        "*' and pcbCode like '*" & IIf(TextBoxPcb.Text <> "", TextBoxPcb.Text, "*") &
+        "*' and dai like '*" & IIf(TextBoxDAI.Text <> "", TextBoxDAI.Text, "*") &
+        "*' and PiastraCode like '*" & IIf(TextBoxPiastra.Text <> "", TextBoxPiastra.Text, "*") &
+        "*' and " & IIf(ComboBoxStatus.Text = "OBSOLETE", "Status like 'OBSOLETE", "not Status like 'OBSOLETE") &
         "*' and name like '*" & IIf(Trim(TextBoxDescription.Text) <> "", TextBoxDescription.Text, "*") & "*'", "Customer")
 
         ListView1.Clear()
@@ -659,7 +659,7 @@ Public Class FormProduct
         tblProd = DsProd.Tables("product")
         User3 = user()
 
-        Dim i As Integer, result As DataRow()
+        Dim result As DataRow()
         OpenIssue = ""
         If TextBoxProduct.Text <> "" Then
 
@@ -1286,25 +1286,25 @@ Public Class FormProduct
                     amm = Replace(excelSheet.Cells(xlsRow, 14).Text, ",", ".")
                     spe = Replace(excelSheet.Cells(xlsRow, 15).Text, ",", ".")
 
-                    sql = "(" & index & "," & _
-                    "'" & bom & "'," & _
-                    "'" & Replace(des, "'", "") & "'," & _
-                    "'" & nr & "'," & _
-                    "'" & (qt) & "'," & _
-                    "'" & (price) & "'," & _
-                    "'" & currency & "'," & _
-                    "'" & liv & "'," & _
-                    "'" & acq_fab & "'," & _
-                    "'" & Replace(ReplaceChar(bitron_pn), "-", "") & "'," & _
-                    "'" & ReplaceChar(despn) & "'," & _
-                    "'" & mdi & "'," & _
-                    "'" & mdo & "'," & _
-                    "'" & amm & "'," & _
-                    "'" & spe & "'," & _
-                    "'" & mdi_t & "'," & _
-                    "'" & mdo_t & "'," & _
-                    "'" & amm_t & "'," & _
-                    "'" & spe_t & "'" & _
+                    sql = "(" & index & "," &
+                    "'" & bom & "'," &
+                    "'" & Replace(des, "'", "") & "'," &
+                    "'" & nr & "'," &
+                    "'" & (qt) & "'," &
+                    "'" & (price) & "'," &
+                    "'" & currency & "'," &
+                    "'" & liv & "'," &
+                    "'" & acq_fab & "'," &
+                    "'" & Replace(ReplaceChar(bitron_pn), "-", "") & "'," &
+                    "'" & ReplaceChar(despn) & "'," &
+                    "'" & mdi & "'," &
+                    "'" & mdo & "'," &
+                    "'" & amm & "'," &
+                    "'" & spe & "'," &
+                    "'" & mdi_t & "'," &
+                    "'" & mdo_t & "'," &
+                    "'" & amm_t & "'," &
+                    "'" & spe_t & "'" &
                      ")," & sql
 
                 End If

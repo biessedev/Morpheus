@@ -608,7 +608,7 @@ Public Class FormEquipments
     End Function
 
     Private Sub ButtonBomSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonSave.Click
-        Dim id As Integer, n As TreeNode, idSelected As Integer
+        Dim id As Integer, idSelected As Integer
         id = CurrentID()
         If id > 0 Then
             If (ComboBoxStatus.Text <> "" And ComboBoxToolsType.Text <> "") Or (ComboBoxStatus.Text = "NONEED") Then
@@ -619,22 +619,22 @@ Public Class FormEquipments
 
                     Try
 
-                        sql = "UPDATE `" & DBName & "`.`equipments` SET " & _
-                        "`start` = '" & ComboBoxStart.Text & _
-                        "',`IdActivity` = '" & ComboBoxActivityId.Text & _
-                        "',`toolname` = '" & TextBoxToolName.Text & _
-                        "',`type` = '" & ComboBoxToolsType.Text & _
-                        "',`sop` = '" & ComboBoxSop.Text & _
-                        "',`mpa` = '" & ComboBoxmpa.Text & _
-                        "',`start` = '" & ComboBoxStart.Text & _
-                        "',`Asset_ID` = '" & TextBoxToolId.Text & _
-                        "',`HWDebug` = '" & ComboBoxHWDebug.Text & _
-                        "',`HWDoc` = '" & ComboBoxHWDoc.Text & _
-                        "',`HWBuilding` = '" & ComboBoxHWBuilding.Text & _
-                        "',`workhour` = " & Int(Val(TextBoxWorkHours.Text)) & _
-                        ",`SWDebug` = '" & ComboBoxSWDebug.Text & _
-                        "',`note` = '" & Replace(Replace(RichTextBoxNote.Text, "'", ""), "'", "") & _
-                        "',`end` = '" & ComboBoxEnd.Text & _
+                        sql = "UPDATE `" & DBName & "`.`equipments` SET " &
+                        "`start` = '" & ComboBoxStart.Text &
+                        "',`IdActivity` = '" & ComboBoxActivityId.Text &
+                        "',`toolname` = '" & TextBoxToolName.Text &
+                        "',`type` = '" & ComboBoxToolsType.Text &
+                        "',`sop` = '" & ComboBoxSop.Text &
+                        "',`mpa` = '" & ComboBoxmpa.Text &
+                        "',`start` = '" & ComboBoxStart.Text &
+                        "',`Asset_ID` = '" & TextBoxToolId.Text &
+                        "',`HWDebug` = '" & ComboBoxHWDebug.Text &
+                        "',`HWDoc` = '" & ComboBoxHWDoc.Text &
+                        "',`HWBuilding` = '" & ComboBoxHWBuilding.Text &
+                        "',`workhour` = " & Int(Val(TextBoxWorkHours.Text)) &
+                        ",`SWDebug` = '" & ComboBoxSWDebug.Text &
+                        "',`note` = '" & Replace(Replace(RichTextBoxNote.Text, "'", ""), "'", "") &
+                        "',`end` = '" & ComboBoxEnd.Text &
                         "',`status` = '" & ComboBoxStatus.Text & "' WHERE `equipments`.`id` = " & id & " ;"
 
 
@@ -650,8 +650,6 @@ Public Class FormEquipments
                     Catch ex As Exception
                         MsgBox(ex.Message)
                     End Try
-
-
 
                     ButtonSave.BackColor = Color.Green
                     OpenSession = False
@@ -671,13 +669,12 @@ Public Class FormEquipments
 
             Try
 
-                sql = "UPDATE `" & DBName & "`.`equipments` SET " & _
-                "`sop` = '" & ComboBoxSop.Text & _
-                "',`mpa` = '" & ComboBoxmpa.Text & _
-                 "',`customer` = '" & ComboBoxCustomer.Text & _
-                "',`NoteActivity` = '" & Replace(Replace(RichTextBoxNote.Text, "'", ""), "'", "") & _
+                sql = "UPDATE `" & DBName & "`.`equipments` SET " &
+                "`sop` = '" & ComboBoxSop.Text &
+                "',`mpa` = '" & ComboBoxmpa.Text &
+                 "',`customer` = '" & ComboBoxCustomer.Text &
+                "',`NoteActivity` = '" & Replace(Replace(RichTextBoxNote.Text, "'", ""), "'", "") &
                 "',`start` = '" & ComboBoxStart.Text & "' WHERE `equipments`.`idactivity` = '" & TreeViewEQ.SelectedNode.Text & "' ;"
-
 
                 cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
@@ -746,15 +743,13 @@ Public Class FormEquipments
 
         End Try
 
-
     End Function
 
     Private Sub Controls_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
-    ComboBoxEnd.TextChanged, ComboBoxHWDoc.TextChanged, ComboBoxHWDebug.TextChanged, ComboBoxHWBuilding.TextChanged, _
-    ComboBoxStart.TextChanged, ComboBoxSWDebug.TextChanged, ComboBoxCustomer.TextChanged, TextBoxToolId.TextChanged, ComboBoxmpa.TextChanged, _
+    ComboBoxEnd.TextChanged, ComboBoxHWDoc.TextChanged, ComboBoxHWDebug.TextChanged, ComboBoxHWBuilding.TextChanged,
+    ComboBoxStart.TextChanged, ComboBoxSWDebug.TextChanged, ComboBoxCustomer.TextChanged, TextBoxToolId.TextChanged, ComboBoxmpa.TextChanged,
     ComboBoxSop.TextChanged, RichTextBoxNote.TextChanged, TextBoxToolName.TextChanged, TextBoxWorkHours.TextChanged
 
-        'If ChartEq.Visible = False Then
         Dim id As Integer
         id = CurrentID()
 
@@ -780,7 +775,6 @@ Public Class FormEquipments
         ElseIf currentActivityID() > 0 And UpdatigTree = False Then
             ButtonSave.BackColor = Color.OrangeRed
         End If
-        'End If
     End Sub
 
     Sub resetField()
@@ -880,7 +874,6 @@ Public Class FormEquipments
     Private Sub DateTimePickerStart_CloseUp(ByVal sender As Object, ByVal e As System.EventArgs) Handles DateTimePickerStart.CloseUp
         ComboBoxStart.Items.Clear()
         ComboBoxStart.Items.Add("")
-        'ComboBoxStart.Items.Add("NA")
         ComboBoxStart.Items.Add("DONE")
         ComboBoxStart.Items.Add(date_to_string(DateTimePickerStart.Text))
         ComboBoxStart.Text = (date_to_string(DateTimePickerStart.Text))
@@ -933,7 +926,6 @@ Public Class FormEquipments
 
         ComboBoxEnd.Items.Clear()
         ComboBoxEnd.Items.Add("")
-        ' ComboBoxEnd.Items.Add("NA")
         ComboBoxEnd.Items.Add("DONE")
         ComboBoxEnd.Items.Add(date_to_string(DateTimePickerEnd.Text))
 
@@ -958,9 +950,6 @@ Public Class FormEquipments
         Catch ex As Exception
 
         End Try
-
-
-
 
     End Function
 
@@ -1155,6 +1144,5 @@ Public Class FormEquipments
         FormEqItem.Show()
 
     End Sub
-
 
 End Class
