@@ -69,14 +69,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MORPHEUS.exe" size="2640896">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MORPHEUS.exe" size="2636800">
       <assemblyIdentity name="MORPHEUS" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>8FCq/8snJYli0ESHtW3gj6zVKfc=</dsig:DigestValue>
+        <dsig:DigestValue>LF1WxIU1E3c7Rd4Z+qGHa1ZaGc4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

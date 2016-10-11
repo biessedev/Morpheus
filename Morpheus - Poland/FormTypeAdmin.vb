@@ -29,7 +29,7 @@ Public Class FormTypeAdmin
     End Sub
 
     Private Sub ComboBoxFirstType_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxFirstType.TextChanged
-        Dim strOld As String = ""
+        Dim strOld = ""
         Dim returnValue As DataRow()
 
         ComboBoxSecondType.Items.Clear()
@@ -50,7 +50,7 @@ Public Class FormTypeAdmin
     End Sub
 
     Private Sub ComboBoxSecondType_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxSecondType.TextChanged
-        Dim strOld As String = ""
+        Dim strOld = ""
         Dim returnValue As DataRow()
 
         ComboBoxThirdType.Items.Clear()
@@ -78,7 +78,7 @@ Public Class FormTypeAdmin
 
     Private Sub ButtonTypeAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonTypeAdd.Click
         Dim returnValue As DataRow()
-        Dim AllOk As Boolean = False
+        Dim AllOk = False
         Dim myrow As DataRow
 
         DisableControl()
@@ -172,8 +172,8 @@ Public Class FormTypeAdmin
 
     Sub FillComboFirstType()
         ComboBoxFirstType.Items.Clear()
-        Dim strOld As String = ""
-        Dim strNew As String = ""
+        Dim strOld = ""
+        Dim strNew = ""
         Dim result As DataRow()
         Dim row As DataRow
         result = tblDocType.Select("FirstType like '*'", "firstType")

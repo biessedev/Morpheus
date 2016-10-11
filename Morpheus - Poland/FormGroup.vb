@@ -56,32 +56,6 @@ Public Class FormGroup
 
     End Sub
 
-    'Private Sub ComboBoxGroup_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBoxGroup.TextChanged
-
-    '    Dim i As Integer, result As DataRow(), k As Integer, n As Integer
-    '    Try
-
-    '        ComboBoxName.Text = ""
-    '        result = tblProd.Select("")
-    '        ComboBoxName.Items.Clear()
-    '        For i = 0 To result.Length - 1
-    '            k = InStr(1, result(i).Item("grouplist").ToString, Mid(ComboBoxGroup.Text, 1, 11))
-    '            If k > 0 Then
-    '                n = InStr(k + 1, result(i).Item("grouplist").ToString, "]")
-    '                If ComboBoxName.FindString(Mid(result(i).Item("grouplist").ToString, k + 12, n - 12 - k)) < 0 Then
-    '                    ComboBoxName.Items.Add(Mid(result(i).Item("grouplist").ToString, k + 12, n - 12 - k))
-    '                End If
-    '            End If
-    '        Next
-    '        If ComboBoxName.Items.Count > 0 Then ComboBoxName.Text = ComboBoxName.Items(ComboBoxName.Items.Count - 1)
-    '    Catch ex As Exception
-
-    '    End Try
-
-
-    'End Sub
-
-    ' Select documents to be added\removed from doc table, not from GroupList (Simona)
     Private Sub ComboBoxGroup_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBoxGroup.TextChanged
 
         Dim i As Integer, resultdoc As DataRow()
@@ -108,7 +82,7 @@ Public Class FormGroup
             GroupList = Replace(GroupList, Mid(ComboBoxGroup.Text, 1, 11) & "[" & ComboBoxName.Text & "];", "")
             GroupList = GroupList & Mid(ComboBoxGroup.Text, 1, 11) & "[" & ComboBoxName.Text & "];"
             Try
-                sql = "UPDATE `srvdoc`.`product` SET `grouplist` = '" & UCase(GroupList) & _
+                sql = "UPDATE `srvdoc`.`product` SET `grouplist` = '" & UCase(GroupList) &
                 "' WHERE `product`.`BitronPN` = '" & Trim(FormProduct.TextBoxProduct.Text) & "' ;"
                 cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
@@ -156,7 +130,7 @@ Public Class FormGroup
             filename = ListViewGRU.SelectedItems.Item(0).SubItems(1).Text
             GroupList = Replace(GroupList, ListViewGRU.SelectedItems.Item(0).SubItems(0).Text & "[" & ListViewGRU.SelectedItems.Item(0).SubItems(1).Text & "];", "", , , CompareMethod.Text)
             Try
-                sql = "UPDATE `srvdoc`.`product` SET `grouplist` = '" & GroupList & _
+                sql = "UPDATE `srvdoc`.`product` SET `grouplist` = '" & GroupList &
                 "' WHERE `product`.`BitronPN` = '" & Trim(FormProduct.TextBoxProduct.Text) & "' ;"
                 cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
@@ -176,15 +150,4 @@ Public Class FormGroup
 
     End Sub
 
-    Private Sub ComboBoxName_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxName.SelectedIndexChanged
-
-    End Sub
-
-    Private Sub ComboBoxGroup_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxGroup.SelectedIndexChanged
-
-    End Sub
-
-    Private Sub ListViewGRU_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListViewGRU.SelectedIndexChanged
-
-    End Sub
 End Class

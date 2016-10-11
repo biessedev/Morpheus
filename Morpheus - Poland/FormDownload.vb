@@ -27,7 +27,7 @@ Public Class FormDownload
     Dim OrcadDBUser = ParameterTable("OrcadDBUser")
     Dim OrcadDBPwd = ParameterTable("OrcadDBPwd")
 
-    Private Sub FormDownload_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+    Private Sub FormDownload_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
         FormStart.Show()
 
         If trdFinish Then CloseConnectionMySqlGru()
@@ -101,7 +101,7 @@ Public Class FormDownload
         trdFinish = True
 
     End Sub
-    Private Sub FormDownload_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub FormDownload_Load(ByVal sender As System.Object, ByVal e As EventArgs) Handles MyBase.Load
         Autoupdate = True
 
         trd = New Thread(AddressOf ThreadTask)
@@ -154,7 +154,7 @@ Public Class FormDownload
         ListView1.Columns.Clear()
         Autoupdate = False
     End Sub
-    Private Sub ComboBoxFirstType_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBoxFirstType.TextChanged
+    Private Sub ComboBoxFirstType_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxFirstType.TextChanged
         Dim strOld As String = ""
         ComboBoxSecondType.Items.Clear()
         Dim returnValue As DataRow()
@@ -170,7 +170,7 @@ Public Class FormDownload
         ComboBoxSecondType.Text = ""
         ComboBoxThirdType.Text = ""
     End Sub
-    Private Sub ComboBoxSecondType_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBoxSecondType.TextChanged
+    Private Sub ComboBoxSecondType_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxSecondType.TextChanged
         Dim returnValue As DataRow()
         ComboBoxThirdType.Items.Clear()
         Dim strOld As String = ""
@@ -185,7 +185,7 @@ Public Class FormDownload
         ComboBoxThirdType.Sorted = True
         ComboBoxThirdType.Text = ""
     End Sub
-    Private Sub ButtonQuery_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonQuery.Click
+    Private Sub ButtonQuery_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonQuery.Click
         Dim Inconsistent As Boolean = False
         If Autoupdate = False Then
             Dim I As Integer, J As Integer, oldBitronPn As String
@@ -512,7 +512,7 @@ Public Class FormDownload
 
     End Sub
 
-    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBrowse.Click
+    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonBrowse.Click
 
         FolderBrowserDialog1.ShowDialog()
         If FolderBrowserDialog1.SelectedPath <> "" Then
@@ -521,17 +521,17 @@ Public Class FormDownload
         FolderBrowserDialog1.Dispose()
     End Sub
 
-    Private Sub RadioButtonGeneralSearch_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RadioButtonGeneralSearch.CheckedChanged
+    Private Sub RadioButtonGeneralSearch_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles RadioButtonGeneralSearch.CheckedChanged
         If RadioButtonProductSearch.Checked And Not RadioButtonGeneralSearch.Checked Then
         Else
             RadioButtonProductSearch.Checked = Not RadioButtonGeneralSearch.Checked
         End If
     End Sub
 
-    Private Sub ButtonReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonReset.Click
+    Private Sub ButtonReset_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonReset.Click
         FillComboFirstType()
     End Sub
-    Private Sub ButtonDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonDelete.Click
+    Private Sub ButtonDelete_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonDelete.Click
         Dim strRes As String
         Dim strPathFtp As String
         Dim objFtp As ftp = New ftp()
@@ -579,7 +579,7 @@ Public Class FormDownload
 
     End Sub
 
-    Private Sub ButtonDownload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonDownload.Click
+    Private Sub ButtonDownload_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonDownload.Click
         Dim objFtp As ftp = New ftp()
         Dim strPathFtp As String
         ListBoxLog.Items.Clear()
@@ -642,14 +642,14 @@ Public Class FormDownload
         ListBoxLog.Items.Add("Download Finish!")
     End Sub
 
-    Private Sub ButtonSel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonSel.Click
+    Private Sub ButtonSel_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonSel.Click
         Dim i As Integer
         For i = 0 To ListView1.Items.Count - 1
             ListView1.Items(i).Checked = True
         Next
     End Sub
 
-    Private Sub ButtonEcr_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub ButtonEcr_Click(ByVal sender As System.Object, ByVal e As EventArgs)
         Dim i As Integer, sql As String, question As String
         Dim cmd As New MySqlCommand()
         For i = 0 To ListView1.Items.Count - 1
@@ -676,7 +676,7 @@ Public Class FormDownload
         Next
     End Sub
 
-    Private Sub ButtonSign_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonSign.Click
+    Private Sub ButtonSign_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonSign.Click
         ListBoxLog.Items.Clear()
         Dim i As Integer, sql As String
         Dim cmd As New MySqlCommand()
@@ -711,11 +711,11 @@ Public Class FormDownload
 
     End Sub
 
-    Private Sub Timer1_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles Timer1.Tick
+    Private Sub Timer1_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles Timer1.Tick
         Application.DoEvents()
     End Sub
 
-    Private Sub CheckGru_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub CheckGru_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
         'ButtonQuery.Enabled = False
         'If loadDoc = False And CheckGru.Checked = True Then
         '    If loadDoc = False Then loadDoc = True
@@ -1259,13 +1259,13 @@ Public Class FormDownload
         End Using
     End Sub
 
-    Private Sub ButtonSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub ButtonSave_Click(ByVal sender As System.Object, ByVal e As EventArgs)
         If SaveFileDialog1.ShowDialog = DialogResult.OK Then
             SalvaFile(SaveFileDialog1.FileName)
         End If
     End Sub
 
-    Private Sub ButtonExport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonExport.Click
+    Private Sub ButtonExport_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonExport.Click
         ExportListview2Excel(ListView1)
     End Sub
 

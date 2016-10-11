@@ -40,11 +40,11 @@ Public Class ftp
     ''' <summary>
     ''' FTP Host URI
     ''' </summary>
-    Public Property Host() As String
+    Public Property Host As String
         Get
             Return _Host
         End Get
-        Set(ByVal value As String)
+        Set
             _Host = value
         End Set
     End Property
@@ -52,11 +52,11 @@ Public Class ftp
     ''' <summary>
     ''' FTP User Name
     ''' </summary>
-    Public Property UserName() As String
+    Public Property UserName As String
         Get
             Return _UserName
         End Get
-        Set(ByVal value As String)
+        Set
             _UserName = value
         End Set
     End Property
@@ -64,11 +64,11 @@ Public Class ftp
     ''' <summary>
     ''' FTP Password
     ''' </summary>
-    Public Property Password() As String
+    Public Property Password As String
         Get
             Return _Password
         End Get
-        Set(ByVal value As String)
+        Set
             _Password = value
         End Set
     End Property
@@ -76,11 +76,11 @@ Public Class ftp
     ''' <summary>
     ''' Flag utilizzo SSL
     ''' </summary>
-    Public Property UseSSL() As Boolean
+    Public Property UseSSL As Boolean
         Get
             Return _UseSSL
         End Get
-        Set(ByVal value As Boolean)
+        Set
             _UseSSL = value
         End Set
     End Property
@@ -124,10 +124,10 @@ Public Class ftp
 
             _FtpResponse = CType(_FtpRequest.GetResponse(), FtpWebResponse)
 
-            Dim liststring As String = ""
+            Dim liststring = ""
 
             Try
-                Dim sr As StreamReader = New StreamReader(_FtpResponse.GetResponseStream(), System.Text.Encoding.ASCII)
+                Dim sr = New StreamReader(_FtpResponse.GetResponseStream(), System.Text.Encoding.ASCII)
                 liststring = sr.ReadToEnd()
                 sr.Close()
                 _FtpResponse.Close()
@@ -151,7 +151,7 @@ Public Class ftp
 
         Dim _fileName As String = LocalPath + "\" + Name
         _fileName = Replace(_fileName, "\\", "\")
-        Dim _File As FileInfo = New FileInfo(_fileName)
+        Dim _File = New FileInfo(_fileName)
         Dim _FileStream As FileStream
 
         Try
@@ -212,7 +212,7 @@ Public Class ftp
 
     Public Function UploadFile(ByVal Path As String, ByVal LocalPath As String, ByVal Name As String) As String
         Dim _fileName As String = LocalPath + "\" + Name
-        Dim _File As FileInfo = New FileInfo(_fileName)
+        Dim _File = New FileInfo(_fileName)
 
         _FtpRequest = CType(WebRequest.Create("ftp://" + _Host + Path + Name), FtpWebRequest)
         _FtpRequest.KeepAlive = False
@@ -261,7 +261,7 @@ Public Class ftp
     Public Sub ResumeDownloadFile(ByVal Path As String, ByVal LocalPath As String, ByVal Name As String)
         Dim _fileName As String = LocalPath + "\" + Name
 
-        Dim _File As FileInfo = New FileInfo(_fileName)
+        Dim _File = New FileInfo(_fileName)
         Dim _FileStream As FileStream
 
         _FtpRequest = CType(WebRequest.Create("ftp://" + _Host + Path + Name), FtpWebRequest)

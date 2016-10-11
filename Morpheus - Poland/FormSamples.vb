@@ -471,7 +471,7 @@ Public Class FormSamples
         Dim tblProd As DataTable
         Dim DsProd As New DataSet
         Dim rowShow As DataRow()
-        Dim activityid As Integer = 0
+        Dim activityid = 0
         ComboBoxActivityID.Items.Clear()
         AdapterProd.Fill(DsProd, "Product")
         tblProd = DsProd.Tables("Product")
@@ -504,9 +504,9 @@ Public Class FormSamples
 
     Private Sub ButtonLink_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonLink.Click
         Dim tblProd As DataTable
-        Dim DsProd As New DataSet, canDelete As Boolean = False
+        Dim DsProd As New DataSet, canDelete = False
         Dim rowShow As DataRow()
-        Dim activityid As Integer = 0
+        Dim activityid = 0
         If TextBoxProduct.Text <> "" And ComboBoxActivityID.Text <> "" And Len(TextBoxProductQt.Text) <= 6 Then
             AdapterProd.Fill(DsProd, "Product")
             tblProd = DsProd.Tables("Product")
@@ -624,7 +624,7 @@ Public Class FormSamples
         Dim tblProd As DataTable
         Dim DsProd As New DataSet
         Dim rowShow As DataRow()
-        Dim activityid As Integer = 0
+        Dim activityid = 0
         If ComboBoxActivityID.Text <> "" And ComboBoxActivityStatus.Text <> "" Then
             AdapterProd.Fill(DsProd, "Product")
             tblProd = DsProd.Tables("Product")
@@ -676,7 +676,7 @@ Public Class FormSamples
 
         Dim DsProd As New DataSet
         Dim strActiv As String
-        Dim activityid As Integer = 0
+        Dim activityid = 0
         Dim cmd As New MySqlCommand()
         Dim sql As String
         If TextBoxProduct.Text <> "" And productActivity(currentProductCode) = 0 Then
@@ -716,7 +716,7 @@ Public Class FormSamples
         Dim tblProd As DataTable
         Dim DsProd As New DataSet
         Dim rowShow As DataRow()
-        Dim activityid As Integer = 0
+        Dim activityid = 0
         AdapterProd.Fill(DsProd, "Product")
         tblProd = DsProd.Tables("Product")
         rowShow = tblProd.Select("bitronpn like '*' ")
@@ -733,7 +733,7 @@ Public Class FormSamples
         Dim tblProd As DataTable
         Dim DsProd As New DataSet
         Dim rowShow As DataRow()
-        Dim activityid As Integer = 0
+        Dim activityid = 0
         AdapterProd.Fill(DsProd, "Product")
         tblProd = DsProd.Tables("Product")
         rowShow = tblProd.Select("idactivity = " & idactivity)
@@ -745,7 +745,7 @@ Public Class FormSamples
         Dim tblProd As DataTable
         Dim DsProd As New DataSet
         Dim rowShow As DataRow()
-        Dim activityid As Integer = 0
+        Dim activityid = 0
         AdapterProd.Fill(DsProd, "Product")
         tblProd = DsProd.Tables("Product")
         rowShow = tblProd.Select("bitronpn = " & productpn)
@@ -956,7 +956,7 @@ Public Class FormSamples
         Dim tblProd As DataTable
         Dim DsProd As New DataSet, rootNode As New TreeNode
         Dim rowShow As DataRow()
-        Dim activityid As Integer = 0
+        Dim activityid = 0
         If currentActivityID > 0 Then
 
             AdapterProd.Fill(DsProd, "Product")
@@ -1042,7 +1042,7 @@ Public Class FormSamples
 
     Sub SaveTreeTask(ByVal S As String)
 
-        Dim activityid As Integer = 0
+        Dim activityid = 0
         If currentActivityID > 0 Then
             Dim cmd As New MySqlCommand()
             Dim sql As String
@@ -1401,9 +1401,9 @@ Public Class FormSamples
         Dim DsProd As New DataSet
         Dim rowShow As DataRow()
         Dim rowShowSigip As DataRow()
-        Dim BomName As String = "", verN As Integer = 0
+        Dim BomName = "", verN = 0
         Dim sql As String
-        Dim i As Integer = 0
+        Dim i = 0
         Dim commandMySql As New MySqlCommand
         Dim adapterMySql As New MySqlDataAdapter
         ButtonUpdateMagBox.Text = "Wait........."
@@ -1674,7 +1674,7 @@ Public Class FormSamples
 
         Dim sql As String
         Dim strQt As String
-        Dim strBomList As String = ""
+        Dim strBomList = ""
         Dim commandMySql As New MySqlCommand
         Dim adapterMySql As New MySqlDataAdapter
         Dim tblMySql As New DataTable
@@ -2302,7 +2302,7 @@ Public Class FormSamples
         'Dim AdapterNPICob As New MySqlDataAdapter("SELECT * FROM npi_openissue WHERE BS = " & Trim(Cob_FilterBS.Text), MySqlconnection)
         'Dim AdapterNPICob As New MySqlDataAdapter("SELECT * FROM npi_openissue WHERE Owner = 'BIC'", MySqlconnection)
 
-        Dim Sql As String = "SELECT * FROM npi_openissue WHERE ID > 0 "
+        Dim Sql = "SELECT * FROM npi_openissue WHERE ID > 0 "
         If (Cob_FilterOwner.Text <> "") Then
             Sql += "And Owner='" & Cob_FilterOwner.Text & "'"
         End If
@@ -2528,7 +2528,7 @@ Public Class FormSamples
     'End Sub
     Function downloadFileWinPath(ByVal fileName As String) As String
         Dim strPathFtp As String
-        Dim objFtp As ftp = New ftp()
+        Dim objFtp = New ftp()
         objFtp.UserName = strFtpServerUser
         objFtp.Password = strFtpServerPsw
         objFtp.Host = strFtpServerAdd

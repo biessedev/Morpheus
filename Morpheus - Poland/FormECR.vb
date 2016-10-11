@@ -13,7 +13,7 @@ Public Class FormECR
     Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM product", MySqlconnection)
     Dim tblDoc As DataTable, tblDocType As DataTable, tblEcr As DataTable, tblProd As DataTable
     Dim DsDoc As New DataSet, DsDocType As New DataSet, DsEcr As New DataSet, DsProd As New DataSet
-    Dim userDep3 As String, stepNote As String
+    Dim userDep3 As String
     Dim cmd As New MySqlCommand
     Dim CultureInfo_ja_JP As New System.Globalization.CultureInfo("ja-JP", False)
     Dim needSave As Boolean = False
@@ -169,8 +169,6 @@ Public Class FormECR
             If userDep3 = "N" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("nnote")
             If userDep3 = "B" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Bnote")
 
-
-            stepNote = RichTextBoxStep.Text
 
             If userDep3 = "E" Then TextBoxStepCost.Text = Result(0).Item("ECost")
             If userDep3 = "L" Then TextBoxStepCost.Text = Result(0).Item("LCost")
@@ -618,7 +616,6 @@ Public Class FormECR
         tblEcr = DsEcr.Tables("ecr")
 
         RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & readField(but & "note", EcrN)
-        stepNote = RichTextBoxStep.Text
         TextBoxStepCost.Text = readField(but & "cost", EcrN)
         UpdateDate()
         ButtonRL.Text = readField("dater", EcrN)
@@ -682,7 +679,7 @@ Public Class FormECR
                     ListViewProd.Items.Add(ii)
                     invalidationProd(Mid(ComboBoxProd.Text, 1, pos - 2), Mid(ComboBoxEcr.Text, 1, InStr(1, ComboBoxEcr.Text, "-", CompareMethod.Text) - 2))
 
-                    Dim prod As String = ""
+                    Dim prod = ""
                     For i = 0 To ListViewProd.Items.Count - 1
                         prod = prod & StrDup(20 - Len(Mid(ListViewProd.Items(i).SubItems(0).Text(), 1, 20)), " ") & Mid(ListViewProd.Items(i).SubItems(0).Text, 1, 40)
                         prod = prod & StrDup(40 - Len(Mid(ListViewProd.Items(i).SubItems(1).Text(), 1, 40)), " ") & Mid(ListViewProd.Items(i).SubItems(1).Text, 1, 40)
@@ -709,7 +706,7 @@ Public Class FormECR
                 For i = ListViewProd.CheckedItems.Count - 1 To 0 Step -1
                     ListViewProd.CheckedItems(i).Remove()
                 Next
-                Dim prod As String = ""
+                Dim prod = ""
                 For i = 0 To ListViewProd.Items.Count - 1
                     prod = prod & StrDup(20 - Len(Mid(ListViewProd.Items(i).SubItems(0).Text(), 1, 20)), " ") & Mid(ListViewProd.Items(i).SubItems(0).Text, 1, 40)
                     prod = prod & StrDup(40 - Len(Mid(ListViewProd.Items(i).SubItems(1).Text(), 1, 40)), " ") & Mid(ListViewProd.Items(i).SubItems(1).Text, 1, 40)
@@ -852,7 +849,7 @@ Public Class FormECR
 
     Function downloadFileWinPath(ByVal fileName As String) As String
         Dim strPathFtp As String
-        Dim objFtp As ftp = New ftp()
+        Dim objFtp = New ftp()
         objFtp.UserName = strFtpServerUser
         objFtp.Password = strFtpServerPsw
         objFtp.Host = strFtpServerAdd
