@@ -89,35 +89,10 @@ Public Class FormGroup
             Catch ex As Exception
             End Try
         End If
-        'StrComboBoxGroup = ComboBoxGroup.Text
         fillList()
-        'ComboBoxGroup_TextChanged(Me, e)
         ComboBoxGroup.Text = StrComboBoxGroup
 
     End Sub
-
-    'Private Sub ButtonRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonRemove.Click
-
-    '    Dim sql As String, cmd As MySqlCommand, oldGroupList As String
-    '    oldGroupList = GroupList
-    '    If ComboBoxName.Text <> "" Then
-    '   
-    '        GroupList = Replace(GroupList, Mid(ComboBoxGroup.Text, 1, 11) & "[" & ComboBoxName.Text & "];", "", , , CompareMethod.Text)
-    '        Try
-    '            sql = "UPDATE `srvdoc`.`product` SET `grouplist` = '" & GroupList & _
-    '            "' WHERE `product`.`BitronPN` = '" & Trim(FormProduct.TextBoxProduct.Text) & "' ;"
-    '            cmd = New MySqlCommand(sql, MySqlconnection)
-    '            cmd.ExecuteNonQuery()
-    '        Catch ex As Exception
-    '        End Try
-    '    End If
-    '    fillList()
-    '    If Len(oldGroupList) = Len(GroupList) Then
-    '        MsgBox(Mid(ComboBoxGroup.Text, 1, 11) & "[" & ComboBoxName.Text & "]" & "not found for selected product")
-    '    Else
-    '        MsgBox(Mid(ComboBoxGroup.Text, 1, 11) & "[" & ComboBoxName.Text & "]" & "deleted for selected product")
-    '    End If
-    'End Sub
 
     Private Sub ButtonRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonRemove.Click
 
