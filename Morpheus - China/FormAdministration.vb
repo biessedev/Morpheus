@@ -394,7 +394,7 @@ Public Class FormAdministration
         End If
     End Sub
 
-    Private Sub ButtonDelDup_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ButtonDelDup.Click
+    Private Sub ButtonDelDup_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDelDup.Click
         DelDuplicate()
     End Sub
 
@@ -554,6 +554,7 @@ Public Class FormAdministration
         End If
 
     End Function
+
     Sub EcrMailScheduler()
 
         Dim RowSearchEcr As DataRow(), sql As String, us As String, dt As Date, refresh As Boolean = True
@@ -1123,7 +1124,6 @@ Public Class FormAdministration
             Application.DoEvents()
             refresh = False
         Next
-
 
     End Sub
 
