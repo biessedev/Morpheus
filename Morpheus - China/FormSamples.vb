@@ -5,6 +5,7 @@ Imports System.IO
 Imports System.Data.SqlClient
 Imports System.Data.OleDb
 Imports System.Text.RegularExpressions
+Imports System.Globalization
 
 Public Class FormSamples
 
@@ -38,9 +39,6 @@ Public Class FormSamples
     Dim tblCred As DataTable
     Dim DsCred As New DataSet
 
-
-
-
     Dim AdapterNPI As New MySqlDataAdapter("SELECT * FROM npi_openissue", MySqlconnection)
     Dim tblNPI As New DataTable
     Dim DsNPI As New DataSet
@@ -67,7 +65,7 @@ Public Class FormSamples
 
             If currentActivityID > 0 Then
                 If OpenSession Then
-                    If vbYes = MsgBox("Session open! Do you want save?", MsgBoxStyle.YesNo) Then
+                    If vbYes = MsgBox("Session open! Do you want to save?", MsgBoxStyle.YesNo) Then
                         ButtonSave_Click(Me, e)
                     Else
                         Dim tblProd As DataTable
@@ -115,11 +113,9 @@ Public Class FormSamples
 
         FormNPIDocMamagement.Close()
 
-
-
     End Sub
 
-    Private Sub FormSamples_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub FormSamples_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         Try
             AdapterProd.Fill(DsProd, "Product")
             tblProd = DsProd.Tables("Product")
@@ -132,7 +128,7 @@ Public Class FormSamples
             UpdateTreeSample()
             UpdateActivityID()
             TextBoxUser.Text = CreAccount.strUserName
-            FillTaskStarus()
+            FillTaskStatus()
             FillTaskType()
 
 
@@ -143,7 +139,7 @@ Public Class FormSamples
             Call CobFilterBSFill()
             Call CobFilterBitronPNFill()
 
-            If controlRight("R") >= 3 Then ButtonSaveDefoult.Enabled = True
+            If controlRight("R") >= 3 Then ButtonSaveDefault.Enabled = True
 
             If controlRight("R") >= 2 Then
 
@@ -171,7 +167,6 @@ Public Class FormSamples
 
             End Try
 
-
             AdapterDoc.Fill(DsDoc, "doc")
             tblDoc = DsDoc.Tables("doc")
 
@@ -179,11 +174,8 @@ Public Class FormSamples
             MsgBox(ex.Message, MsgBoxStyle.Information)
         End Try
 
-
-
         Me.DTP_Date.CustomFormat = "yyyy-MM-dd"
         DTP_Date.Format = DateTimePickerFormat.Custom
-
 
         Me.DTP_PlanCloseDate.CustomFormat = "yyyy-MM-dd"
         DTP_PlanCloseDate.Format = DateTimePickerFormat.Custom
@@ -194,10 +186,6 @@ Public Class FormSamples
         Catch ex As Exception
             MsgBox(ex.Message)
         End Try
-
-
-
-
 
 
     End Sub
@@ -222,9 +210,9 @@ Public Class FormSamples
         Else
             activity = Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " "))))
         End If
-        rowShow = tblProd.Select(IIf(CheckBoxOpenProduct.Checked, "((status='SOP_SAMPLE') or (statusActivity='OPEN')) ", "status LIKE '*'") & _
-                  IIf(ComboBoxActivityID.Text <> "", " AND idactivity = " & activity, "") & _
-                  IIf(ComboBoxActivityStatus.Text <> "", " AND (statusActivity='" & ComboBoxActivityStatus.Text & "') ", IIf(CheckBoxClosed.Checked, " AND statusActivity LIKE '*'", " AND statusActivity <> 'CLOSED'")), _
+        rowShow = tblProd.Select(IIf(CheckBoxOpenProduct.Checked, "((status='SOP_SAMPLE') or (statusActivity='OPEN')) ", "status LIKE '*'") &
+                  IIf(ComboBoxActivityID.Text <> "", " AND idactivity = " & activity, "") &
+                  IIf(ComboBoxActivityStatus.Text <> "", " AND (statusActivity='" & ComboBoxActivityStatus.Text & "') ", IIf(CheckBoxClosed.Checked, " AND statusActivity LIKE '*'", " AND statusActivity <> 'CLOSED'")),
                   IIf(CheckBoxOrderByDate.Checked, " etd desc, customer, idActivity ", IIf(CheckBoxCustomer.Checked = True, "customer, idActivity ,etd", "idActivity,customer  ,etd")))
         customer = ""
         activity = -1
@@ -232,7 +220,7 @@ Public Class FormSamples
             If CheckBoxOrderByDate.Checked = True Then
                 TreeViewActivity.Font = New Font("Courier New", 10, FontStyle.Bold)
                 rootNode = New TreeNode(row("etd").ToString & Mid("__________", 1, 10 - Len(row("etd").ToString)) & " -- " & row("idactivity").ToString _
-                & " - " & row("statusactivity").ToString & Mid("_______", 1, 7 - Len(row("statusactivity").ToString)) & " -- " & row("npieces").ToString & _
+                & " - " & row("statusactivity").ToString & Mid("_______", 1, 7 - Len(row("statusactivity").ToString)) & " -- " & row("npieces").ToString &
                 Mid("___________", 1, 6 - Len(Str(row("npieces").ToString))) & " pcs -- [" & row("bitronpn").ToString & "]  " & row("name").ToString)
 
                 If row("statusactivity") = "OPEN" And row("etd").ToString <> "" Then
@@ -266,14 +254,11 @@ Public Class FormSamples
                     rootChildren1 = New TreeNode("<> " & row("idactivity").ToString & " -- " & row("statusactivity").ToString & Mid("_______", 1, 7 - Len(row("statusactivity").ToString)) & " -- " & IIf(row("idactivity").ToString <> 0, row("NameActivity").ToString, "NOT ASSIGNED"))
                     rootChildren1.NodeFont = New Font("Courier New", 12, FontStyle.Italic)
 
-
-
                     If row("statusactivity").ToString = "CLOSED" Then
 
                         rootChildren1.BackColor = Color.Gray
                         currentColor = Color.Gray
                     End If
-
 
                     If row("statusactivity").ToString = "STANDBY" Then
                         rootChildren1.BackColor = Color.LightBlue
@@ -353,12 +338,11 @@ Public Class FormSamples
         TreeViewActivity.EndUpdate()
     End Sub
 
-
-    Private Sub CheckBoxOrderActivity_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub CheckBoxOrderActivity_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
         UpdateTreeSample()
     End Sub
 
-    Private Sub TreeViewActivity_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewActivity.AfterSelect
+    Private Sub TreeViewActivity_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewActivity.AfterSelect
         If Mid(TreeViewActivity.SelectedNode.Text, 1, 2) = "<>" Then
             currentActivityID = Int(Trim(Mid(TreeViewActivity.SelectedNode.Text, 4, InStr(TreeViewActivity.SelectedNode.Text, "--") - 5)))
             currentProductCode = ""
@@ -429,7 +413,6 @@ Public Class FormSamples
 
         End If
 
-
     End Sub
 
     ' search if there is a product with bom in offer and in sigip bom
@@ -482,7 +465,7 @@ Public Class FormSamples
         Next
     End Sub
 
-    Private Sub DateTimePickerETD_CloseUp(ByVal sender As Object, ByVal e As System.EventArgs) Handles DateTimePickerETD.CloseUp
+    Private Sub DateTimePickerETD_CloseUp(ByVal sender As Object, ByVal e As EventArgs) Handles DateTimePickerETD.CloseUp
         TextBoxETD.Text = DateTimePickerETD.Text
     End Sub
 
@@ -490,7 +473,7 @@ Public Class FormSamples
         TextBoxETD.Text = ""
     End Sub
 
-    Private Sub Buttonrefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Buttonrefresh.Click
+    Private Sub Buttonrefresh_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Buttonrefresh.Click
         Dim tblProd As DataTable
         Dim DsProd As New DataSet
         AdapterProd.Fill(DsProd, "Product")
@@ -498,11 +481,11 @@ Public Class FormSamples
         UpdateTreeSample()
     End Sub
 
-    Private Sub ButtonLink_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonLink.Click
+    Private Sub ButtonLink_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonLink.Click
         Dim tblProd As DataTable
         Dim DsProd As New DataSet, canDelete As Boolean = False
         Dim rowShow As DataRow()
-        Dim activityid As Integer = 0
+        Dim activityid = 0
         If TextBoxProduct.Text <> "" And ComboBoxActivityID.Text <> "" And Len(TextBoxProductQt.Text) <= 6 Then
             AdapterProd.Fill(DsProd, "Product")
             tblProd = DsProd.Tables("Product")
@@ -511,26 +494,26 @@ Public Class FormSamples
                 ComboBoxActivityStatus.Text = rowShow(0).Item("Statusactivity")
                 Dim cmd As New MySqlCommand()
                 Dim sql As String
-                If Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " ")))) <> Int(rowShow(0).Item("idactivity")) And _
+                If Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " ")))) <> Int(rowShow(0).Item("idactivity")) And
                     NumberProduct(Int(rowShow(0).Item("idactivity"))) = 1 Then
-                    canDelete = MsgBox("This is the last product with this Activity. If you delelte you will delete also the activity and all task linked! You are sure?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes
+                    canDelete = MsgBox("This is the last product for this activity. If you delete this product you will delete also the activity and all linked tasks! Are you sure?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes
                 Else
                     canDelete = True
                 End If
                 If canDelete Then
                     Try
-                        sql = "UPDATE `" & DBName & "`.`product` SET " & _
-                        " `etd` = '" & TextBoxETD.Text & _
-                        "', `statusActivity` = '" & IIf(NumberProduct(Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " "))))) >= 1, _
-                        ActivityStatus(Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " "))))), "") & _
-                        "',`npieces` = " & Int(TextBoxProductQt.Text) & _
-                        ",`BomLocation` = '" & (ComboBoxBomLocation.Text) & _
-                        "',`idactivity` = " & Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " ")))) & _
-                        ",`nameactivity` = '" & Replace(Mid(ComboBoxActivityID.Text, InStr(ComboBoxActivityID.Text, " -- ") + 4), "NOT ASSIGNED", "") & _
+                        sql = "UPDATE `" & DBName & "`.`product` SET " &
+                        " `etd` = '" & TextBoxETD.Text &
+                        "', `statusActivity` = '" & IIf(NumberProduct(Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " "))))) >= 1,
+                        ActivityStatus(Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " "))))), "") &
+                        "',`npieces` = " & Int(TextBoxProductQt.Text) &
+                        ",`BomLocation` = '" & (ComboBoxBomLocation.Text) &
+                        "',`idactivity` = " & Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " ")))) &
+                        ",`nameactivity` = '" & Replace(Mid(ComboBoxActivityID.Text, InStr(ComboBoxActivityID.Text, " -- ") + 4), "NOT ASSIGNED", "") &
                         "' WHERE `product`.`bitronpn` = '" & Trim(Mid(TextBoxProduct.Text, 1, InStr(TextBoxProduct.Text, " "))) & "' ;"
                         cmd = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
-                        MsgBox("Update Done!")
+                        MsgBox("Successful update!")
 
                         If NumberProduct(Int(rowShow(0).Item("idactivity"))) = 1 Then
                             UpdateActivityID()
@@ -540,17 +523,17 @@ Public Class FormSamples
                         MsgBox("Mysql update query error!")
                     End Try
                 Else
-                    MsgBox("Update not Done!")
+                    MsgBox("Failed update!")
                 End If
             Else
-                MsgBox("More product selected!")
+                MsgBox("More products selected!")
             End If
         Else
-            MsgBox("Need to set the product and Activity before push link button!")
+            MsgBox("Need to set the product and the activity before pushing Save!")
         End If
     End Sub
 
-    Private Sub TextBoxProduct_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TextBoxProduct.TextChanged
+    Private Sub TextBoxProduct_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxProduct.TextChanged
         If TextBoxProduct.Text <> "" And ComboBoxActivityID.Text <> "" Then
             If controlRight("R") >= 2 Then ButtonLink.Enabled = True
             If controlRight("R") >= 2 Then ButtonNewCommit.Enabled = True
@@ -566,7 +549,7 @@ Public Class FormSamples
         End If
     End Sub
 
-    Private Sub ComboBoxActivityID_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBoxActivityID.TextChanged
+    Private Sub ComboBoxActivityID_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxActivityID.TextChanged
 
 
         If ComboBoxActivityID.Text <> "" Then
@@ -602,15 +585,15 @@ Public Class FormSamples
 
     End Sub
 
-    Private Sub ButtonCollapse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonCollapse.Click
+    Private Sub ButtonCollapse_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonCollapse.Click
         TreeViewActivity.CollapseAll()
     End Sub
 
-    Private Sub ButtonUncollapse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonUncollapse.Click
+    Private Sub ButtonUncollapse_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonUncollapse.Click
         TreeViewActivity.ExpandAll()
     End Sub
 
-    Private Sub ButtonUpdateStatus_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonUpdateStatus.Click
+    Private Sub ButtonUpdateStatus_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonUpdateStatus.Click
         Dim tblProd As DataTable
         Dim DsProd As New DataSet
         Dim rowShow As DataRow()
@@ -625,9 +608,9 @@ Public Class FormSamples
                     Dim sql As String
 
                     Try
-                        sql = "UPDATE `" & DBName & "`.`product` SET " & _
-                        "`Statusactivity` = '" & ComboBoxActivityStatus.Text & _
-                        "', `delay` = '" & IIf(ComboBoxActivityStatus.Text = "CLOSED", InputBox("Insert the closing activity delay (day) :"), "") & _
+                        sql = "UPDATE `" & DBName & "`.`product` SET " &
+                        "`Statusactivity` = '" & ComboBoxActivityStatus.Text &
+                        "', `delay` = '" & IIf(ComboBoxActivityStatus.Text = "CLOSED", InputBox("Insert the closing activity delay (day):"), "") &
                         "' WHERE `product`.`bitronpn` = '" & row("bitronpn") & "' ;"
                         cmd = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
@@ -640,9 +623,9 @@ Public Class FormSamples
 
                 End If
             Next
-            MsgBox("Status Updated!")
+            MsgBox("Status updated!")
         Else
-            MsgBox("Need to fill Activity id and status!")
+            MsgBox("Need to fill activity and status!")
         End If
 
     End Sub
@@ -662,7 +645,7 @@ Public Class FormSamples
 
     'End Function
 
-    Private Sub ButtonNewCommit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonNewCommit.Click
+    Private Sub ButtonNewCommit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonNewCommit.Click
 
         Dim DsProd As New DataSet
         Dim strActiv As String
@@ -671,20 +654,20 @@ Public Class FormSamples
         Dim sql As String
         If TextBoxProduct.Text <> "" And productActivity(currentProductCode) = 0 Then
 
-            strActiv = InputBox("Please insert the Name of new Activity : " & vbCrLf & "PCB_1 -- PCB_ 2 -- Activity Description")
+            strActiv = InputBox("Please insert the name of new activity : " & vbCrLf & "PCB_1 -- PCB_ 2 -- Activity Description")
 
-            If Regex.IsMatch(strActiv, "^[0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Or _
-                Regex.IsMatch(strActiv, "^[0-9]{8} -- [0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Or _
-                Regex.IsMatch(strActiv, "^[0-9]{8} -- [0-9]{8} -- [0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Or _
-                Regex.IsMatch(strActiv, "^[0-9]{8} -- [0-9]{8} -- [0-9]{8} -- [0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Or _
-                Regex.IsMatch(strActiv, "^[0-9]{8} -- [0-9]{8} -- [0-9]{8} -- [0-9]{8} -- [0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Or _
+            If Regex.IsMatch(strActiv, "^[0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Or
+                Regex.IsMatch(strActiv, "^[0-9]{8} -- [0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Or
+                Regex.IsMatch(strActiv, "^[0-9]{8} -- [0-9]{8} -- [0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Or
+                Regex.IsMatch(strActiv, "^[0-9]{8} -- [0-9]{8} -- [0-9]{8} -- [0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Or
+                Regex.IsMatch(strActiv, "^[0-9]{8} -- [0-9]{8} -- [0-9]{8} -- [0-9]{8} -- [0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Or
                 Regex.IsMatch(strActiv, "^[0-9]{8} -- [0-9]{8} -- [0-9]{8} -- [0-9]{8} -- [0-9]{8} -- [0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Then
 
                 Try
-                    sql = "UPDATE `" & DBName & "`.`product` SET " & _
-                    "`Statusactivity` = 'OPEN'" & _
-                    ", `idactivity` = " & LastIDActivity() + 1 & _
-                    ", `nameactivity` = '" & Trim(ReplaceChar(UCase(strActiv))) & _
+                    sql = "UPDATE `" & DBName & "`.`product` SET " &
+                    "`Statusactivity` = 'OPEN'" &
+                    ", `idactivity` = " & LastIDActivity() + 1 &
+                    ", `nameactivity` = '" & Trim(ReplaceChar(UCase(strActiv))) &
                     "' WHERE `product`.`bitronpn` = '" & currentProductCode & "' ;"
                     cmd = New MySqlCommand(sql, MySqlconnection)
                     cmd.ExecuteNonQuery()
@@ -693,10 +676,10 @@ Public Class FormSamples
                     MsgBox("Mysql update query error!")
                 End Try
             Else
-                MsgBox("Need insert regulare name for expression!")
+                MsgBox("Need to insert regulare name for expression!")
             End If
         Else
-            MsgBox("Need to fill Product field or product have yet a activity!")
+            MsgBox("Need to fill in product fields or product has already an activity!")
         End If
         UpdateActivityID()
     End Sub
@@ -746,7 +729,7 @@ Public Class FormSamples
         End If
     End Function
 
-    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonFolder.Click
+    Private Sub Button3_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonFolder.Click
         If ComboBoxActivityID.Text <> "" And Mid(ComboBoxActivityID.Text, 1, 1) <> "0" Then
             Try
                 If Directory.Exists(ParameterTable("ActivityPath") & "\" & ComboBoxActivityID.Text) Then
@@ -773,7 +756,7 @@ Public Class FormSamples
                 '   Process.Start("explorer.exe", ParameterTable("NPI_SHARE_DIR"))
 
             Catch ex As Exception
-                MsgBox("Directory search creation error!" & ex.ToString)
+                MsgBox("Directory creation error!" & ex.ToString)
             End Try
 
         End If
@@ -795,7 +778,7 @@ Public Class FormSamples
 
     End Function
 
-    Private Sub ComboBoxActivityStatus_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBoxActivityStatus.TextChanged
+    Private Sub ComboBoxActivityStatus_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxActivityStatus.TextChanged
         If ComboBoxActivityID.Text <> "" And ComboBoxActivityStatus.Text <> "" Then
             If controlRight("R") >= 2 Then ButtonUpdateStatus.Enabled = True
         Else
@@ -816,7 +799,7 @@ Public Class FormSamples
 
 #Region "task"
 
-    Private Sub TabControlNPI_TabIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles _
+    Private Sub TabControlNPI_TabIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles _
                 TabControlNPI.SelectedIndexChanged, ComboBoxType.SelectedIndexChanged
 
         If InStr(TabControlNPI.SelectedTab.Text, "Task") > 0 Then
@@ -853,7 +836,7 @@ Public Class FormSamples
 
             If currentActivityID > 0 Then
                 If OpenSession Then
-                    If vbYes = MsgBox("Session open! Do you want save?", MsgBoxStyle.YesNo) Then
+                    If vbYes = MsgBox("Session open! Do you want to save?", MsgBoxStyle.YesNo) Then
                         ButtonSave_Click(Me, e)
                     Else
                         Dim tblProd As DataTable
@@ -901,9 +884,8 @@ Public Class FormSamples
             End If
 
 
-            End If
+        End If
     End Sub
-
 
     Sub UpdateTreeTask()
         Dim tblProd As DataTable
@@ -975,8 +957,7 @@ Public Class FormSamples
         If node.Nodes.Count > 0 Then percent = Mid(Int(per / count) & "%   ", 1, 4)
     End Function
 
-
-    Sub FillTaskStarus()
+    Sub FillTaskStatus()
         ComboBoxTaskStatus.Items.Clear()
         ComboBoxTaskStatus.Items.Add("0%  ")
         ComboBoxTaskStatus.Items.Add("100%")
@@ -1001,8 +982,8 @@ Public Class FormSamples
             Dim cmd As New MySqlCommand()
             Dim sql As String
             Try
-                sql = "UPDATE `" & DBName & "`.`product` SET " & _
-                "`" & ComboBoxType.Text & "` = '" & S & _
+                sql = "UPDATE `" & DBName & "`.`product` SET " &
+                "`" & ComboBoxType.Text & "` = '" & S &
                 "' WHERE `product`.`idactivity` = " & currentActivityID & " ;"
                 cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
@@ -1010,14 +991,14 @@ Public Class FormSamples
                 MsgBox("Mysql update query error!")
             End Try
 
-            MsgBox("Tasks Saved!")
+            MsgBox("Tasks saved!")
             ButtonSave.BackColor = Color.Green
         Else
-            MsgBox("Need to fill Activity id and status!")
+            MsgBox("Need to fill in activity and status!")
         End If
     End Sub
 
-    Private Sub ButtonSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonSave.Click
+    Private Sub ButtonSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSave.Click
         Dim tblProd As DataTable
         Dim DsProd As New DataSet
         Dim rowShow As DataRow()
@@ -1046,7 +1027,7 @@ Public Class FormSamples
         End If
     End Sub
 
-    Private Sub ButtonReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonReset.Click
+    Private Sub ButtonReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonReset.Click
 
         If currentActivityID > 0 Then
             Dim tblProd As DataTable
@@ -1082,11 +1063,9 @@ Public Class FormSamples
             End If
         End If
 
-
-
     End Sub
 
-    Private Sub ButtonNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonNew.Click
+    Private Sub ButtonNew_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonNew.Click
         If currentActivityID > 0 Then
             Dim tblProd As DataTable
             Dim DsProd As New DataSet
@@ -1109,15 +1088,15 @@ Public Class FormSamples
 
                 If Not IsNothing(TreeViewTask.SelectedNode) Then
                     Dim rootNode As New TreeNode
-                    rootNode.Text = (Mid("0%", 1, 4) & " - " & _
-                    UCase(Mid(" * * new * *" & "__________________________", 1, 25)) & " - " & _
+                    rootNode.Text = (Mid("0%", 1, 4) & " - " &
+                    UCase(Mid(" * * new * *" & "__________________________", 1, 25)) & " - " &
                     Mid(" * * new * *", 1))
                     TreeViewTask.SelectedNode.Nodes.Add(rootNode)
                     ButtonSave.BackColor = Color.Orange
                 Else
                     Dim rootNode As New TreeNode
-                    rootNode.Text = (Mid("0%", 1, 4) & " - " & _
-                    UCase(Mid(" * * new * *" & "__________________________", 1, 25)) & " - " & _
+                    rootNode.Text = (Mid("0%", 1, 4) & " - " &
+                    UCase(Mid(" * * new * *" & "__________________________", 1, 25)) & " - " &
                     Mid(" * * new * *", 1))
                     TreeViewTask.Nodes.Add(rootNode)
                     ButtonSave.BackColor = Color.Orange
@@ -1133,8 +1112,7 @@ Public Class FormSamples
 
     End Sub
 
-
-    Private Sub ButtonDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonDelete.Click
+    Private Sub ButtonDelete_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDelete.Click
         If currentActivityID > 0 Then
             Dim tblProd As DataTable
             Dim DsProd As New DataSet
@@ -1156,9 +1134,9 @@ Public Class FormSamples
                 OpenSession = True
 
                 Try
-                    If vbYes = MsgBox("You are sure to delete this Node?", MsgBoxStyle.YesNo) Then TreeViewTask.SelectedNode.Remove()
+                    If vbYes = MsgBox("Are you sure to delete this node?", MsgBoxStyle.YesNo) Then TreeViewTask.SelectedNode.Remove()
                 Catch ex As Exception
-                    MsgBox("Error during delete! " & ex.Message)
+                    MsgBox("Error during deleting! " & ex.Message)
                 End Try
                 ButtonSave.BackColor = Color.Orange
             Else
@@ -1188,8 +1166,7 @@ Public Class FormSamples
 
     End Sub
 
-
-    Private Sub ButtonUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonUpdate.Click
+    Private Sub ButtonUpdate_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonUpdate.Click
         If Not IsNothing(TreeViewTask.SelectedNode) And currentActivityID > 0 Then
             Dim tblProd As DataTable
             Dim DsProd As New DataSet
@@ -1210,8 +1187,8 @@ Public Class FormSamples
                 TimerTask.Start()
                 OpenSession = True
 
-                TreeViewTask.SelectedNode.Text = UCase(Mid(ComboBoxTaskStatus.Text, 1, 4) & " - " & _
-                UCase(Mid(TextBoxTaskHeader.Text & "__________________________", 1, 25)) & " - " & _
+                TreeViewTask.SelectedNode.Text = UCase(Mid(ComboBoxTaskStatus.Text, 1, 4) & " - " &
+                UCase(Mid(TextBoxTaskHeader.Text & "__________________________", 1, 25)) & " - " &
                 Mid(TextBoxTaskNote.Text, 1))
                 ButtonSave.BackColor = Color.Orange
             Else
@@ -1223,16 +1200,15 @@ Public Class FormSamples
         End If
     End Sub
 
-
-    Private Sub ButtonTaskCollapse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonTaskCollapse.Click
+    Private Sub ButtonTaskCollapse_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonTaskCollapse.Click
         TreeViewTask.CollapseAll()
     End Sub
 
-    Private Sub ButtonExpand_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonExpand.Click
+    Private Sub ButtonExpand_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonExpand.Click
         TreeViewTask.ExpandAll()
     End Sub
 
-#End Region  ' task 
+#End Region  ' Task 
 
     Sub PrintNode(ByVal FileName As String, ByVal node As TreeNode)
 
@@ -1243,7 +1219,7 @@ Public Class FormSamples
 
     End Sub
 
-    Private Sub ButtonExport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonExport.Click
+    Private Sub ButtonExport_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonExport.Click
         SaveFileDialog1.DefaultExt = "txt"
         SaveFileDialog1.InitialDirectory = My.Computer.FileSystem.SpecialDirectories.MyDocuments
         SaveFileDialog1.ShowDialog()
@@ -1268,7 +1244,7 @@ Public Class FormSamples
 
     End Sub
 
-    Private Sub TimerTask_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles TimerTask.Tick
+    Private Sub TimerTask_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerTask.Tick
         If Val(TextBoxBomTime.Text) > 1 Then
             TextBoxBomTime.Text = Val(TextBoxBomTime.Text) - 1
         Else
@@ -1292,7 +1268,7 @@ Public Class FormSamples
         End If
     End Sub
 
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
         TextBoxETD.Text = ""
     End Sub
 
@@ -1354,7 +1330,7 @@ Public Class FormSamples
         Next
     End Sub
 
-    Private Sub ButtonUpdateMagBox_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonUpdateMagBox.Click
+    Private Sub ButtonUpdateMagBox_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonUpdateMagBox.Click
 
         Dim tblProd As DataTable
         Dim DsProd As New DataSet
@@ -1376,7 +1352,7 @@ Public Class FormSamples
         Application.DoEvents()
         Import_Order()
         Application.DoEvents()
-        ButtonUpdateMagBox.Text = "Import Wharehouse stock....."
+        ButtonUpdateMagBox.Text = "Import Warehouse stock....."
         Application.DoEvents()
         Import_WH_Stock()
         ButtonUpdateMagBox.Text = "Import PFP ....."
@@ -1424,7 +1400,7 @@ Public Class FormSamples
                 commandMySql = New MySqlCommand(sql, MySqlconnection)
                 commandMySql.ExecuteNonQuery()
             Catch ex As Exception
-                MsgBox("Error in DB reset material request")
+                MsgBox("Error in DB, reset material request")
             End Try
 
         Next
@@ -1432,12 +1408,14 @@ Public Class FormSamples
         Application.DoEvents()
         Try
             OpenConnectionSqlOrcad("10.10.10.36", "Orcad1", "orcadw", "orcadw")
+            'OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
         Catch ex As Exception
             CloseConnectionSqlOrcad()
             OpenConnectionSqlOrcad("10.10.10.36", "Orcad1", "orcadw", "orcadw")
+            'OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
         End Try
 
-        ButtonUpdateMagBox.Text = "load orcad data"
+        ButtonUpdateMagBox.Text = "Load Orcad data"
         Application.DoEvents()
         Dim AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where ( valido = 'valido') ", SqlconnectionOrcad)
         tblDocComp.Clear()
@@ -1502,7 +1480,7 @@ Public Class FormSamples
             commandMySql = New MySqlCommand(sql, MySqlconnection)
             commandMySql.ExecuteNonQuery()
         Catch ex As Exception
-            MsgBox("Error in DB reset material request")
+            MsgBox("Error in DB, reset material request")
         End Try
 
         ' rda/order elaboration
@@ -1532,7 +1510,7 @@ Public Class FormSamples
                     commandMySql = New MySqlCommand(sql, MySqlconnection)
                     commandMySql.ExecuteNonQuery()
                 Catch ex As Exception
-                    MsgBox("Error in DB reset material request")
+                    MsgBox("Error in DB, reset material request")
                 End Try
             End If
             Application.DoEvents()
@@ -1546,7 +1524,7 @@ Public Class FormSamples
                 commandMySql = New MySqlCommand(sql, MySqlconnection)
                 commandMySql.ExecuteNonQuery()
             Catch ex As Exception
-                MsgBox("Error in DB reset material request")
+                MsgBox("Error in DB, reset material request")
             End Try
         Next
 
@@ -1556,7 +1534,6 @@ Public Class FormSamples
     End Sub
 
     Function order(ByVal bitronpn As String, ByVal refrash As Boolean) As Single
-        Dim sql As String
         Static AdapterOrder As New MySqlDataAdapter("SELECT * FROM `order`", MySqlconnection)
         Static tblOrder As DataTable
         Static DsOrder As New DataSet
@@ -1571,12 +1548,8 @@ Public Class FormSamples
 
             End Try
 
-
-
             AdapterOrder.Fill(DsOrder, "order")
             tblOrder = DsOrder.Tables("order")
-
-
         Else
             rowShow = tblOrder.Select("identif ='" & bitronpn & "' and stato_item ='0'")
             For Each row In rowShow
@@ -1587,8 +1560,6 @@ Public Class FormSamples
 
         End If
 
-
-
     End Function
 
     Function Rda(ByVal bitronpn As String, ByVal refrash As Boolean) As Single
@@ -1596,6 +1567,7 @@ Public Class FormSamples
         Static tblRda As DataTable
         Static DsRda As New DataSet
         Dim rowShow As DataRow()
+        Dim prodPlant As String
         Rda = 0
 
         If refrash = True Then
@@ -1672,14 +1644,13 @@ Public Class FormSamples
             commandMySql = New MySqlCommand(sql, MySqlconnection)
             commandMySql.ExecuteNonQuery()
         Catch ex As Exception
-            MsgBox("Error in DB update/Insert material request")
+            MsgBox("Error in DB update/insert material request")
         End Try
 
 
     End Sub
 
     Sub ResetMaterial()
-        Dim Sql As String
         Dim cmd As New MySqlCommand()
 
         'Try
@@ -1741,14 +1712,14 @@ Public Class FormSamples
         versionOffer = rowShow.Length
     End Function
 
-    Private Sub ButtonSaveDefoult_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonSaveDefoult.Click
+    Private Sub ButtonSaveDefault_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSaveDefault.Click
         If MsgBox("Are you sure to save and change current configuration?", MsgBoxStyle.YesNo) = vbYes Then
             XmlTree.SetTreeView(TreeViewTask)
             ParameterTableWrite("sop_task", XmlTree.ExportToString)
         End If
     End Sub
 
-    Private Sub TextBoxTaskHeader_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBoxTaskHeader.TextChanged
+    Private Sub TextBoxTaskHeader_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxTaskHeader.TextChanged
         If Mid(TextBoxTaskHeader.Text, 1, 1) = "[" Or Mid(TextBoxTaskHeader.Text, 1, 1) = "{" Then
             TextBoxTaskHeader.Enabled = False
         Else
@@ -1761,7 +1732,7 @@ Public Class FormSamples
         End If
     End Sub
 
-    Private Sub CheckBoxClosed_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBoxClosed.CheckedChanged
+    Private Sub CheckBoxClosed_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBoxClosed.CheckedChanged
         UpdateActivityID()
     End Sub
 
@@ -1781,7 +1752,6 @@ Public Class FormSamples
         Dim xlsWorksheet As Object = xlsWorkbook.Worksheets(1)
         xlsWorksheet.Activate()
         xlsWorksheet.Cells.Replace(What:=",", Replacement:="")
-
 
 
         'empty the PFP table
@@ -1932,8 +1902,6 @@ Public Class FormSamples
         adapterMySql.Fill(dsMySql, "spu")
         tblMySql = dsMySql.Tables("spu")
 
-
-
         Return Val(tblMySql.Rows(0).Item("sum").ToString)
 
     End Function
@@ -1969,12 +1937,13 @@ Public Class FormSamples
 
     Function GetOrcadSupplier(ByVal BitronPN As String) As String
 
-
         Try
             OpenConnectionSqlOrcad("10.10.10.36", "Orcad1", "orcadw", "orcadw")
+            'OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
         Catch ex As Exception
             CloseConnectionSqlOrcad()
             OpenConnectionSqlOrcad("10.10.10.36", "Orcad1", "orcadw", "orcadw")
+            'OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
         End Try
 
         GetOrcadSupplier = ""
@@ -1997,7 +1966,6 @@ Public Class FormSamples
         End Try
 
     End Function
-
     Sub OpenConnectionSqlOrcad(ByVal strHost As String, ByVal strDatabase As String, ByVal strUserName As String, ByVal strPassword As String)
 
         Try
@@ -2011,9 +1979,6 @@ Public Class FormSamples
             MessageBox.Show(ex.ToString())
         End Try
 
-
-
-
     End Sub
 
     Sub CloseConnectionSqlOrcad()
@@ -2025,7 +1990,6 @@ Public Class FormSamples
         Catch ex As Exception
             MessageBox.Show(ex.ToString())
         End Try
-
 
     End Sub
 
@@ -2070,8 +2034,6 @@ Public Class FormSamples
 
     End Function
 
-
-
     Private Sub Cob_StatusFill()
         Cob_Status.Items.Clear()
         Cob_Status.Items.Add("Closed ")
@@ -2080,6 +2042,7 @@ Public Class FormSamples
         Cob_Status.Text = ""
 
     End Sub
+
     Private Sub Cob_FilterStatusFill()
         Cob_FilterStatus.Items.Clear()
         Cob_FilterStatus.Items.Add("")
@@ -2139,12 +2102,9 @@ Public Class FormSamples
         Txt_Index.DataBindings.Add("Text", tblNPI, "ID")
         Txt_FilePath.DataBindings.Add("Text", tblNPI, "FilePath")
 
-
-
     End Sub
 
-
-    Private Sub Btn_Add_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Btn_Add.Click
+    Private Sub Btn_Add_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Add.Click
         Dim cmd As New MySqlCommand()
         Dim Sql As String
         Dim selectrowNo As Integer = DGV_NPI.CurrentRow.Index
@@ -2175,7 +2135,7 @@ Public Class FormSamples
 
     End Sub
 
-    Private Sub Btn_Del_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Btn_Del.Click
+    Private Sub Btn_Del_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Del.Click
         Dim cmd As New MySqlCommand()
         Dim sql As String
         Dim selectrowNo As Integer = DGV_NPI.CurrentRow.Index
@@ -2200,8 +2160,7 @@ Public Class FormSamples
 
     End Sub
 
-
-    Private Sub Btn_Save_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Btn_Save.Click
+    Private Sub Btn_Save_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Save.Click
         Dim cmd As New MySqlCommand()
         Dim sql As String
 
@@ -2239,7 +2198,7 @@ Public Class FormSamples
 
     End Sub
 
-    Private Sub Btn_Search_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Btn_Search.Click
+    Private Sub Btn_Search_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Search.Click
 
         Call DGV_Fill()
 
@@ -2259,7 +2218,6 @@ Public Class FormSamples
             Sql += "And BS='" & Cob_FilterBS.Text & "'"
 
         End If
-
 
         If Cob_FilterBitronPN.Text <> "" Then
             Sql += "And Bitron_PN='" & Cob_FilterBitronPN.Text & "'"
@@ -2283,7 +2241,6 @@ Public Class FormSamples
         Catch ex As Exception
             MsgBox(ex.Message)
         End Try
-          
 
     End Sub
 
@@ -2306,8 +2263,6 @@ Public Class FormSamples
         End If
 
     End Sub
-
-
 
     Private Sub DGV_NPI_MouseDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles DGV_NPI.MouseDoubleClick
 
@@ -2343,7 +2298,7 @@ Public Class FormSamples
 
     'End Sub
 
-    Private Sub Btn_UpLoadFile_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles Btn_UpLoadFile.Click
+    Private Sub Btn_UpLoadFile_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_UpLoadFile.Click
 
         If controlRight("R") >= 2 Then
 
@@ -2379,8 +2334,6 @@ Public Class FormSamples
             End If
 
         Next
-
-
         Cob_FilterOwner.Sorted = True
     End Sub
 
@@ -2517,11 +2470,10 @@ Public Class FormSamples
                 'ComunicationLog("0049") ' Error in ecr Download
             End Try
         Else
-            MsgBox("FilePath is Not exist")
+            MsgBox("FilePath does not exist")
         End If
 
     End Function
-
 
     Private Sub CobFilterBitronPNFill()
         Dim rowResults As DataRow(), Area As String = ""
@@ -2585,7 +2537,7 @@ Public Class FormSamples
 
     'End Sub
 
-    Private Sub Button3_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
+    Private Sub Button3_Click_1(ByVal sender As Object, ByVal e As EventArgs) Handles Button3.Click
 
         SaveFileDialog1.FileName = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\" & "NPIOpenIsusse" & ".xls"
         Dim tblNPIOpenIssue As DataTable

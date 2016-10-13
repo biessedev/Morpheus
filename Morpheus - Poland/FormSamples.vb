@@ -1,5 +1,4 @@
 ﻿Option Explicit On
-
 Option Compare Text
 Imports MySql.Data.MySqlClient
 Imports System.IO
@@ -13,7 +12,7 @@ Public Class FormSamples
     Dim DsDocComp As New DataSet
     Dim tblDocComp As New DataTable
     Dim index As Long = 1
-    Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity, etd", MySqlconnection)
+    Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", MySqlconnection)
     Dim tblProd As DataTable
     Dim DsProd As New DataSet
     Dim currentActivityID As Integer = -1
@@ -36,6 +35,10 @@ Public Class FormSamples
     Dim tblDoc As DataTable
     Dim DsDoc As New DataSet
 
+    Dim AdapterCredentials As New MySqlDataAdapter("SELECT * FROM credentials", MySqlconnection)
+    Dim tblCredentials As DataTable
+    Dim DsCredentials As New DataSet
+
     Dim AdapterNPI As New MySqlDataAdapter("SELECT * FROM npi_openissue", MySqlconnection)
     Dim tblNPI As New DataTable
     Dim DsNPI As New DataSet
@@ -43,11 +46,6 @@ Public Class FormSamples
     Dim AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", MySqlconnection)
     Dim tblTP As DataTable
     Dim DsTP As New DataSet
-
-
-    Dim AdapterCredentials As New MySqlDataAdapter("SELECT * FROM credentials", MySqlconnection)
-    Dim tblCredentials As DataTable
-    Dim DsCredentials As New DataSet
 
 
     Dim ConnectionStringOrcad As String
@@ -356,6 +354,26 @@ Public Class FormSamples
         TextBoxProduct.Text = ""
         TextBoxProductQt.Text = ""
         TextBoxETD.Text = ""
+        ' TreeViewActivity.SelectedNode = TreeViewActivity.Nodes.Item(0)
+
+
+        'SaveFileDialog1.ShowDialog()
+        'Dim path As String = SaveFileDialog1.FileName
+        'WriteTxtFile(path, "Export " & Now, False)
+
+        'Dim XmlTree As New TreeViewToFromXml, s As String
+        'XmlTree.SetTreeView(TreeViewActivity)
+        's = XmlTree.ExportToString()
+        'TreeViewActivity.Nodes.Clear()
+        'XmlTree.Import(s)
+
+        'SaveTree(TreeViewActivity.Nodes.Item(0), path)
+        'rootNode.StateImageKey = 1
+        'rootNode = TreeViewActivity.Nodes.Item(0)
+        'TreeViewActivity.Nodes.Clear()
+        'For Each node In rootNode.Nodes
+        '    TreeViewActivity.Nodes.Add(node)
+        'Next
         TreeViewActivity.EndUpdate()
     End Sub
 
@@ -504,7 +522,7 @@ Public Class FormSamples
 
     Private Sub ButtonLink_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonLink.Click
         Dim tblProd As DataTable
-        Dim DsProd As New DataSet, canDelete = False
+        Dim DsProd As New DataSet, canDelete As Boolean = False
         Dim rowShow As DataRow()
         Dim activityid = 0
         If TextBoxProduct.Text <> "" And ComboBoxActivityID.Text <> "" And Len(TextBoxProductQt.Text) <= 6 Then
@@ -624,7 +642,7 @@ Public Class FormSamples
         Dim tblProd As DataTable
         Dim DsProd As New DataSet
         Dim rowShow As DataRow()
-        Dim activityid = 0
+        Dim activityid As Integer = 0
         If ComboBoxActivityID.Text <> "" And ComboBoxActivityStatus.Text <> "" Then
             AdapterProd.Fill(DsProd, "Product")
             tblProd = DsProd.Tables("Product")
@@ -676,7 +694,7 @@ Public Class FormSamples
 
         Dim DsProd As New DataSet
         Dim strActiv As String
-        Dim activityid = 0
+        Dim activityid As Integer = 0
         Dim cmd As New MySqlCommand()
         Dim sql As String
         If TextBoxProduct.Text <> "" And productActivity(currentProductCode) = 0 Then
@@ -716,7 +734,7 @@ Public Class FormSamples
         Dim tblProd As DataTable
         Dim DsProd As New DataSet
         Dim rowShow As DataRow()
-        Dim activityid = 0
+        Dim activityid As Integer = 0
         AdapterProd.Fill(DsProd, "Product")
         tblProd = DsProd.Tables("Product")
         rowShow = tblProd.Select("bitronpn like '*' ")
@@ -733,7 +751,7 @@ Public Class FormSamples
         Dim tblProd As DataTable
         Dim DsProd As New DataSet
         Dim rowShow As DataRow()
-        Dim activityid = 0
+        Dim activityid As Integer = 0
         AdapterProd.Fill(DsProd, "Product")
         tblProd = DsProd.Tables("Product")
         rowShow = tblProd.Select("idactivity = " & idactivity)
@@ -745,7 +763,7 @@ Public Class FormSamples
         Dim tblProd As DataTable
         Dim DsProd As New DataSet
         Dim rowShow As DataRow()
-        Dim activityid = 0
+        Dim activityid As Integer = 0
         AdapterProd.Fill(DsProd, "Product")
         tblProd = DsProd.Tables("Product")
         rowShow = tblProd.Select("bitronpn = " & productpn)
@@ -790,38 +808,6 @@ Public Class FormSamples
 
 
     End Sub
-    ' Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonFolder.Click
-    '    If ComboBoxActivityID.Text <> "" And Mid(ComboBoxActivityID.Text, 1, 1) <> "0" Then
-    '       Try
-    '          If Directory.Exists(ParameterTable("PathMorpheus") & ParameterTable("PathNPI") & ParameterTable("PathActivityDoc") & ComboBoxActivityID.Text) Then
-
-    '            Else
-    '               MkDir(ParameterTable("PathMorpheus") & ParameterTable("PathNPI") & ParameterTable("PathActivityDoc") & ComboBoxActivityID.Text)
-    '          End If
-
-
-    '            If Directory.Exists(ParameterTable("PathMorpheus") & ParameterTable("PathNPI") & ParameterTable("PathActivityDoc") & ComboBoxActivityID.Text) Then
-
-    '           Else
-    '              MkDir(ParameterTable("PathMorpheus") & ParameterTable("PathNPI") & ParameterTable("PathActivityDoc") & ComboBoxActivityID.Text)
-    '         End If
-
-
-    '            If File.Exists(ParameterTable("PathMorpheus") & ParameterTable("PathNPI") & ParameterTable("PathActivityDoc") & ComboBoxActivityID.Text & "\" & ParameterTable("plant") & "R_PRO_ASR_" & ComboBoxActivityID.Text & "_0.xlsx") Then
-
-    '           Else
-    '             File.Copy(ParameterTable("PathMorpheus") & ParameterTable("PathNPI") & ParameterTable("PathActivityDoc") & ParameterTable("PathFileASR") & ParameterTable("FileASR"), ParameterTable("PathMorpheus") & ParameterTable("PathNPI") & ParameterTable("PathActivityDoc") & ComboBoxActivityID.Text & "\" & ParameterTable("plant") & "R_PRO_ASR_" & ComboBoxActivityID.Text & "_0.xlsx")
-    '          End If
-
-    '        Process.Start("explorer.exe", ParameterTable("PathMorpheus") & ParameterTable("PathNPI") & ParameterTable("PathActivityDoc") & ComboBoxActivityID.Text)
-
-    '      Catch ex As Exception
-    '           MsgBox("Directory search creation error!" & ex.ToString)
-    '      End Try
-
-    '    End If
-
-    '    End Sub
 
     Function ActivityStatus(ByVal id As Integer) As String
         Dim tblProd As DataTable
@@ -956,7 +942,7 @@ Public Class FormSamples
         Dim tblProd As DataTable
         Dim DsProd As New DataSet, rootNode As New TreeNode
         Dim rowShow As DataRow()
-        Dim activityid = 0
+        Dim activityid As Integer = 0
         If currentActivityID > 0 Then
 
             AdapterProd.Fill(DsProd, "Product")
@@ -1042,7 +1028,7 @@ Public Class FormSamples
 
     Sub SaveTreeTask(ByVal S As String)
 
-        Dim activityid = 0
+        Dim activityid As Integer = 0
         If currentActivityID > 0 Then
             Dim cmd As New MySqlCommand()
             Dim sql As String
@@ -1401,9 +1387,10 @@ Public Class FormSamples
         Dim DsProd As New DataSet
         Dim rowShow As DataRow()
         Dim rowShowSigip As DataRow()
-        Dim BomName = "", verN = 0
+        Dim BomName As String = "", verN As Integer = 0
+        Dim rowShowOffer As DataRow()
         Dim sql As String
-        Dim i = 0
+        Dim i As Integer = 0
         Dim commandMySql As New MySqlCommand
         Dim adapterMySql As New MySqlDataAdapter
         ButtonUpdateMagBox.Text = "Wait........."
@@ -1674,7 +1661,7 @@ Public Class FormSamples
 
         Dim sql As String
         Dim strQt As String
-        Dim strBomList = ""
+        Dim strBomList As String = ""
         Dim commandMySql As New MySqlCommand
         Dim adapterMySql As New MySqlDataAdapter
         Dim tblMySql As New DataTable
@@ -2302,7 +2289,7 @@ Public Class FormSamples
         'Dim AdapterNPICob As New MySqlDataAdapter("SELECT * FROM npi_openissue WHERE BS = " & Trim(Cob_FilterBS.Text), MySqlconnection)
         'Dim AdapterNPICob As New MySqlDataAdapter("SELECT * FROM npi_openissue WHERE Owner = 'BIC'", MySqlconnection)
 
-        Dim Sql = "SELECT * FROM npi_openissue WHERE ID > 0 "
+        Dim Sql As String = "SELECT * FROM npi_openissue WHERE ID > 0 "
         If (Cob_FilterOwner.Text <> "") Then
             Sql += "And Owner='" & Cob_FilterOwner.Text & "'"
         End If
@@ -2528,7 +2515,7 @@ Public Class FormSamples
     'End Sub
     Function downloadFileWinPath(ByVal fileName As String) As String
         Dim strPathFtp As String
-        Dim objFtp = New ftp()
+        Dim objFtp As ftp = New ftp()
         objFtp.UserName = strFtpServerUser
         objFtp.Password = strFtpServerPsw
         objFtp.Host = strFtpServerAdd
@@ -2568,29 +2555,6 @@ Public Class FormSamples
         Cob_FilterBitronPN.Sorted = True
 
     End Sub
-
-    'Private Sub CobFilterBitronPNFill()
-    '    Dim rowResults As DataRow(), Area As String = ""
-
-    '    Cob_FilterBitronPN.Items.Clear()
-    '    Cob_FilterBitronPN.Items.Add("")
-
-    '    AdapterNPI.Fill(DsNPI, "NPI")
-    '    tblNPI = DsNPI.Tables("NPI")
-
-    '    rowResults = tblNPI.Select("Area like '*'", "Bitron_PN")
-    '    For Each row In rowResults
-    '        If Area <> row("Bitron_PN").ToString Then
-    '            Cob_FilterBitronPN.Items.Add(UCase(row("Bitron_PN").ToString))
-    '            If Cob_FilterBitronPN.Items.Contains(UCase(row("Bitron_PN").ToString)) = False Then Cob_FilterBitronPN.Items.Add(UCase(row("Bitron_PN").ToString))
-    '        End If
-
-    '        Area = row("Bitron_PN").ToString
-    '    Next
-    '    Cob_FilterBitronPN.Sorted = True
-
-    'End Sub
-
     Private Sub CobFilterBSFill()
 
         Dim rowResults As DataRow()

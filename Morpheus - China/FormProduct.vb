@@ -39,7 +39,17 @@ Public Class FormProduct
     ' EVENT
 
  
-    Private Sub FormProduct_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub FormProduct_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
+        FormStart.Show()
+        tblProd.Dispose()
+        DsProd.Dispose()
+        AdapterProd.Dispose()
+        tblCus.Dispose()
+        DsCus.Dispose()
+        AdapterCus.Dispose()
+    End Sub
+
+    Private Sub FormProduct_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
 
         Me.Focus()
         AdapterProd.Fill(DsProd, "product")
@@ -57,8 +67,8 @@ Public Class FormProduct
         fillEcrComboMch()
         FillCustomerCombo()
         ComboBoxStatus.Items.Add("")
+	ComboBoxStatus.Items.Add("OBSOLETE")
         ComboBoxStatus.Items.Add("SOP_SAMPLE")
-        ComboBoxStatus.Items.Add("OBSOLETE")
         ComboBoxStatus.Items.Add("R&D_APPROVED")
         ComboBoxStatus.Items.Add("LOGISTIC_APPROVED")
         ComboBoxStatus.Items.Add("CUSTOMER_APPROVED")
@@ -95,8 +105,6 @@ Public Class FormProduct
             TextBoxDAI.Enabled = False
         End If
 
-
-
         Dim h As New ColumnHeader
         Dim h2 As New ColumnHeader
         h.Text = "ElementCode"
@@ -106,7 +114,8 @@ Public Class FormProduct
         ListViewMch.Columns.Add(h)
         ListViewMch.Columns.Add(h2)
     End Sub
-    Private Sub ButtonAddProduct_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonAddProduct.Click
+
+    Private Sub ButtonAddProduct_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAddProduct.Click
 
         Dim cmd As New MySqlCommand()
         Dim sql As String
@@ -117,14 +126,13 @@ Public Class FormProduct
             mch = mch & StrDup(40 - Len(ListViewMch.Items(i).SubItems(1).Text()), " ") & ListViewMch.Items(i).SubItems(1).Text
         Next
 
-
         If controlRight("W") = 3 Then
             If ComboBoxCustomer.Text <> "" And TextBoxProduct.Text <> "" And TextBoxDescription.Text <> "" Then
                 Try
-                    sql = "INSERT INTO `" & DBName & "`.`product` (`BitronPN` ,`Name` ,`Customer` ,`Status` ,`DocFlag` ,`pcbCode`,`PiastraCode`,`StatusUpdateDate`,`MchElement`) VALUES ('" & _
-                    Trim(TextBoxProduct.Text) & "', '" & Trim(UCase(TextBoxDescription.Text)) & "', '" & Trim(ComboBoxCustomer.Text) & "', '" & _
-                    "" & "', '" & strControl() & "', '" & Trim(TextBoxPcb.Text) & "', '" & _
-                    Trim(TextBoxPiastra.Text) & "', 'INSERT[" & date_to_string(Today) & "]','" & _
+                    sql = "INSERT INTO `" & DBName & "`.`product` (`BitronPN` ,`Name` ,`Customer` ,`Status` ,`DocFlag` ,`pcbCode`,`PiastraCode`,`StatusUpdateDate`,`MchElement`) VALUES ('" &
+                    Trim(TextBoxProduct.Text) & "', '" & Trim(UCase(TextBoxDescription.Text)) & "', '" & Trim(ComboBoxCustomer.Text) & "', '" &
+                    "" & "', '" & strControl() & "', '" & Trim(TextBoxPcb.Text) & "', '" &
+                    Trim(TextBoxPiastra.Text) & "', 'INSERT[" & date_to_string(Today) & "]','" &
                     mch & "'" & ");"
 
                     cmd = New MySqlCommand(sql, MySqlconnection)
@@ -143,9 +151,9 @@ Public Class FormProduct
             ComunicationLog("0043") ' no enough right
         End If
 
-
     End Sub
-    Private Sub ButtonUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonUpdate.Click
+
+    Private Sub ButtonUpdate_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonUpdate.Click
 
         Dim cmd As New MySqlCommand()
         Dim sql As String
@@ -159,12 +167,12 @@ Public Class FormProduct
         If controlRight("W") >= 2 Then
             If TextBoxProduct.Text <> "" And TextBoxDescription.Text <> "" And (TextBoxDAI.Text = "" Or TextBoxDAI.Text = "NO_DAI" Or (Regex.IsMatch(TextBoxDAI.Text, "^[KCR][0-9ID]+")) And Len(TextBoxDAI.Text) = 8) Then
                 Try
-                    sql = "UPDATE `" & DBName & "`.`product` SET `Name` = '" & Trim(UCase(TextBoxDescription.Text)) & _
-                    "',`Customer` = '" & Trim(ComboBoxCustomer.Text) & _
-                    "',`PiastraCode` = '" & Trim(TextBoxPiastra.Text) & _
-                    "',`LS_rmb` = '" & TextBoxLS.Text & _
-                    "',`dai` = '" & UCase(Trim(TextBoxDAI.Text)) & _
-                    "',`mchElement` = '" & (mch) & _
+                    sql = "UPDATE `" & DBName & "`.`product` SET `Name` = '" & Trim(UCase(TextBoxDescription.Text)) &
+                    "',`Customer` = '" & Trim(ComboBoxCustomer.Text) &
+                    "',`PiastraCode` = '" & Trim(TextBoxPiastra.Text) &
+                    "',`LS_rmb` = '" & TextBoxLS.Text &
+                    "',`dai` = '" & UCase(Trim(TextBoxDAI.Text)) &
+                    "',`mchElement` = '" & (mch) &
                     "',`DocFlag` = '" & Trim(strControl()) & "' WHERE `product`.`BitronPN` = '" & Trim(TextBoxProduct.Text) & "' ;"
                     cmd = New MySqlCommand(sql, MySqlconnection)
                     cmd.ExecuteNonQuery()
@@ -179,7 +187,7 @@ Public Class FormProduct
                 End Try
 
             Else
-                ComunicationLog("5049") ' please fill all field before update
+                ComunicationLog("5049") ' please fill all fields before update
             End If
         Else
             ComunicationLog("0043") ' no enough right
@@ -199,13 +207,10 @@ Public Class FormProduct
             ListView1.SelectedItems.Item(0).SubItems(10).Text = strControl()
             ListView1.SelectedItems.Item(0).SubItems(6).Text = TextBoxDAI.Text
         Else
-            MsgBox("Need select the same bitron PN!")
+            MsgBox("Need to select the same Bitron PN!")
         End If
 
-
-
     End Sub
-
 
     Private Sub ListView1_ColumnClick1(ByVal sender As Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs) Handles ListView1.ColumnClick
 
@@ -213,12 +218,7 @@ Public Class FormProduct
         ' Call the sort method to manually sort.
         ListView1.Sort()
 
-
     End Sub
-
-
-
-
 
     Private Sub ListView1_ItemSelectionChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.ListViewItemSelectionChangedEventArgs) Handles ListView1.ItemSelectionChanged
         Dim mech As String
@@ -259,11 +259,12 @@ Public Class FormProduct
             reset()
         End If
     End Sub
-    Private Sub ButtonDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonDelete.Click
+
+    Private Sub ButtonDelete_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDelete.Click
         Dim cmd As New MySqlCommand()
         Dim sql As String
         If controlRight("W") = 3 Then
-            If TextBoxProduct.Text <> "" And MsgBox("Want you delete this product?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+            If TextBoxProduct.Text <> "" And MsgBox("Do you want to delete this product?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
                 Try
                     sql = "DELETE FROM `" & DBName & "`.`product` WHERE `product`.`BitronPN` = '" & TextBoxProduct.Text & "'"
                     cmd = New MySqlCommand(sql, MySqlconnection)
@@ -282,18 +283,21 @@ Public Class FormProduct
         End If
         FillListView()
     End Sub
-    Private Sub ButtonQuery_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ButtonQuery.Click
+
+    Private Sub ButtonQuery_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonQuery.Click
 
         FillListView()
 
     End Sub
-    Private Sub ButtonReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonReset.Click
+
+    Private Sub ButtonReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonReset.Click
         reset()
     End Sub
-    Private Sub ButtonCustomerAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonCustomerAdd.Click
+
+    Private Sub ButtonCustomerAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonCustomerAdd.Click
         Dim cmd As New MySqlCommand()
         Dim sql As String
-        sql = InputBox("Please Write the new customer name", "Application - Data input")
+        sql = InputBox("Please write the new customer name", "New Customer - Data input")
         If controlRight("W") = 3 Then
             If sql <> "" Then
                 Try
@@ -313,11 +317,12 @@ Public Class FormProduct
         End If
         FillCustomerCombo()
     End Sub
-    Private Sub ButtonDeleteCustomer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonDeleteCustomer.Click
+
+    Private Sub ButtonDeleteCustomer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDeleteCustomer.Click
         Dim cmd As New MySqlCommand()
         Dim sql As String
         If controlRight("W") = 3 Then
-            If ComboBoxCustomer.Text <> "" And MsgBox("Want you delete this Customer?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+            If ComboBoxCustomer.Text <> "" And MsgBox("Do you want to delete this Customer?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
                 Try
                     sql = "DELETE FROM `" & DBName & "`.`customer` WHERE `customer`.`name` = '" & ComboBoxCustomer.Text & "'"
                     cmd = New MySqlCommand(sql, MySqlconnection)
@@ -334,7 +339,8 @@ Public Class FormProduct
         End If
         FillCustomerCombo()
     End Sub
-    Private Sub ButtonAddMch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonAddMch.Click
+
+    Private Sub ButtonAddMch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAddMch.Click
         Dim pos As Integer, exist As Boolean
         If ComboBoxMch.Text <> "" Then
             If ListViewMch.Items.Count > 0 Then
@@ -354,10 +360,11 @@ Public Class FormProduct
                 ListViewMch.Items.Add(ii)
             End If
         Else
-            ComunicationLog("0050") 'Please select Element
+            ComunicationLog("0050") 'Please select an element
         End If
     End Sub
-    Private Sub ButtonRemoveMch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonRemoveMch.Click
+
+    Private Sub ButtonRemoveMch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRemoveMch.Click
 
         If ListViewMch.Items.Count > 0 Then
             For i = 0 To ListViewMch.Items.Count - 1
@@ -376,16 +383,16 @@ Public Class FormProduct
 
     ' FUNCTION
     Function strControl() As String
-        strControl = "A" & IIf(CheckBoxCa.Checked, "1", "0") & _
-        "B" & IIf(CheckBoxCb.Checked, "1", "0") & _
-        "C" & IIf(CheckBoxCc.Checked, "1", "0") & _
-        "D" & IIf(CheckBoxCd.Checked, "1", "0") & _
-        "E" & IIf(CheckBoxCe.Checked, "1", "0") & _
-        "F" & IIf(CheckBoxCf.Checked, "1", "0") & _
-        "G" & IIf(CheckBoxCg.Checked, "1", "0") & _
-        "H" & IIf(CheckBoxCh.Checked, "1", "0") & _
-        "I" & IIf(CheckBoxci.Checked, "1", "0") & _
-        "L" & IIf(CheckBoxcl.Checked, "1", "0") & _
+        strControl = "A" & IIf(CheckBoxCa.Checked, "1", "0") &
+        "B" & IIf(CheckBoxCb.Checked, "1", "0") &
+        "C" & IIf(CheckBoxCc.Checked, "1", "0") &
+        "D" & IIf(CheckBoxCd.Checked, "1", "0") &
+        "E" & IIf(CheckBoxCe.Checked, "1", "0") &
+        "F" & IIf(CheckBoxCf.Checked, "1", "0") &
+        "G" & IIf(CheckBoxCg.Checked, "1", "0") &
+        "H" & IIf(CheckBoxCh.Checked, "1", "0") &
+        "I" & IIf(CheckBoxci.Checked, "1", "0") &
+        "L" & IIf(CheckBoxcl.Checked, "1", "0") &
         "M" & IIf(CheckBoxcm.Checked, "1", "0")
     End Function
     Function Boopresence(ByVal strFlag As String, ByVal strControl As String) As Boolean
@@ -403,6 +410,7 @@ Public Class FormProduct
         Next
         If ComboBoxMch.Items.Count > 0 Then ComboBoxMch.Text = ComboBoxMch.Items(ComboBoxMch.Items.Count - 1)
     End Sub
+
     Sub ComunicationLog(ByVal ComCode As String)
 
         Dim rsResult As DataRow()
@@ -444,6 +452,7 @@ Public Class FormProduct
         CheckBoxcm.Checked = False
 
     End Sub
+
     Sub FillCustomerCombo()
         Dim rowResults As DataRow()
 
@@ -459,6 +468,7 @@ Public Class FormProduct
         Next
         ComboBoxCustomer.Sorted = True
     End Sub
+
     Sub FillListView()
 
 
@@ -470,15 +480,13 @@ Public Class FormProduct
 
         tblProd = DsProd.Tables("product")
 
-
-
-        rowShow = tblProd.Select("Status like '*" & IIf(Trim(ComboBoxStatus.Text) <> "", Trim(ComboBoxStatus.Text), "*") & _
-        "*' and bitronpn like '*" & IIf(TextBoxProduct.Text <> "", TextBoxProduct.Text, "*") & _
-        "*' and customer like '*" & IIf(ComboBoxCustomer.Text <> "", ComboBoxCustomer.Text, "*") & _
-        "*' and pcbCode like '*" & IIf(TextBoxPcb.Text <> "", TextBoxPcb.Text, "*") & _
-        "*' and dai like '*" & IIf(TextBoxDAI.Text <> "", TextBoxDAI.Text, "*") & _
-        "*' and PiastraCode like '*" & IIf(TextBoxPiastra.Text <> "", TextBoxPiastra.Text, "*") & _
-        "*' and " & IIf(ComboBoxStatus.Text = "OBSOLETE", "Status like 'OBSOLETE", "not Status like 'OBSOLETE") & _
+        rowShow = tblProd.Select("Status like '*" & IIf(Trim(ComboBoxStatus.Text) <> "", Trim(ComboBoxStatus.Text), "*") &
+        "*' and bitronpn like '*" & IIf(TextBoxProduct.Text <> "", TextBoxProduct.Text, "*") &
+        "*' and customer like '*" & IIf(ComboBoxCustomer.Text <> "", ComboBoxCustomer.Text, "*") &
+        "*' and pcbCode like '*" & IIf(TextBoxPcb.Text <> "", TextBoxPcb.Text, "*") &
+        "*' and dai like '*" & IIf(TextBoxDAI.Text <> "", TextBoxDAI.Text, "*") &
+        "*' and PiastraCode like '*" & IIf(TextBoxPiastra.Text <> "", TextBoxPiastra.Text, "*") &
+        "*' and " & IIf(ComboBoxStatus.Text = "OBSOLETE", "Status like 'OBSOLETE", "not Status like 'OBSOLETE") &
         "*' and name like '*" & IIf(Trim(TextBoxDescription.Text) <> "", TextBoxDescription.Text, "*") & "*'", "Customer")
 
         ListView1.Clear()
@@ -590,12 +598,11 @@ Public Class FormProduct
         ListView1.Refresh()
     End Sub
 
-    Private Sub ButtonGroup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonGroup.Click
+    Private Sub ButtonGroup_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonGroup.Click
         DsProd.Clear()
         tblProd.Clear()
         AdapterProd.Fill(DsProd, "product")
         tblProd = DsProd.Tables("product")
-
 
         Dim i As Integer, result As DataRow()
         GroupList = ""
@@ -604,7 +611,6 @@ Public Class FormProduct
             result = tblProd.Select("BitronPN = '" & TextBoxProduct.Text & "'")
             If result.Length > 0 Then
                 GroupList = result(0).Item("groupList").ToString
-
 
                 result = tbltype.Select("id > 0")
                 FormGroup.ComboBoxGroup.Items.Clear()
@@ -623,7 +629,7 @@ Public Class FormProduct
 
     End Sub
 
-    Private Sub ButtonOpenIssue_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonOpenIssue.Click
+    Private Sub ButtonOpenIssue_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonOpenIssue.Click
 
         DsProd.Clear()
         tblProd.Clear()
@@ -631,7 +637,7 @@ Public Class FormProduct
         tblProd = DsProd.Tables("product")
         User3 = user()
 
-        Dim i As Integer, result As DataRow()
+        Dim result As DataRow()
         OpenIssue = ""
         If TextBoxProduct.Text <> "" Then
 
@@ -664,7 +670,7 @@ Public Class FormProduct
     End Sub
 
 
-    Private Sub ButtonStatusUP_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonStatusUP.Click
+    Private Sub ButtonStatusUP_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonStatusUP.Click
         Dim currentStatus As String
         Dim result As DataRow()
 
@@ -688,7 +694,7 @@ Public Class FormProduct
 
                         If User3 = "L" Then
                             If (ComboBoxStatus.Text = "R&D_APPROVED" Or ComboBoxStatus.Text = "LOGISTIC_APPROVED") _
-                                And (currentStatus = "R&D_APPROVED" Or currentStatus = "LOGISTIC_APPROVED") Then
+                            And (currentStatus = "R&D_APPROVED" Or currentStatus = "LOGISTIC_APPROVED") Then
                                 StatusUpdate(result(0).Item("StatusUpdateDate").ToString)
                             Else
                                 MsgBox("You can update only the product in status ""R&D_APPROVED""; ""LOGISTIC_APPROVED"" ")
@@ -697,7 +703,7 @@ Public Class FormProduct
 
                         If User3 = "C" Then
                             If (ComboBoxStatus.Text = "CUSTOMER_APPROVED" Or ComboBoxStatus.Text = "LOGISTIC_APPROVED") _
-                                And (currentStatus = "CUSTOMER_APPROVED" Or currentStatus = "LOGISTIC_APPROVED") Then
+                            And (currentStatus = "CUSTOMER_APPROVED" Or currentStatus = "LOGISTIC_APPROVED") Then
                                 StatusUpdate(result(0).Item("StatusUpdateDate").ToString)
                             Else
                                 MsgBox("You can update only the product in status ""CUSTOMER_APPROVED""; ""LOGISTIC_APPROVED"" ")
@@ -765,23 +771,23 @@ Public Class FormProduct
                                 And (currentStatus = "FINANCIAL_APPROVED" Or currentStatus = "MPA_APPROVED" Or currentStatus = "MPA_STOPPED") Then
                                 StatusUpdate(result(0).Item("StatusUpdateDate").ToString)
                             Else
-                                MsgBox("You can update only the product in status ""FINANTIAL_APPROVED"" or ""MPA_APPROVED"" ""MPA_STOP"" ")
+                                MsgBox("You can update only the product in status ""FINANCIAL_APPROVED"" or ""MPA_APPROVED"" ""MPA_STOP"" ")
                             End If
                         End If
 
                     ElseIf User3 = "N" And (result(0).Item("status").ToString = "MPA_APPROVED" Or result(0).Item("status").ToString = "MPA_STOPPED") And result(0).Item("mail").ToString = "SENT" And (ComboBoxStatus.Text = "MPA_APPROVED" Or ComboBoxStatus.Text = "MPA_STOPPED") Then
                         StatusUpdate(result(0).Item("StatusUpdateDate").ToString)
                     Else
-                        MsgBox("Product already with MPA SENT, only the Quality Dept.can change in MPA_STOPPED")
+                        MsgBox("Product already with MPA SENT, only the Quality Dept. can change status in MPA_STOPPED")
                     End If
                 Else
-                    MsgBox("Product not find Please update the table")
+                    MsgBox("Product not found, please update the table")
                 End If
             Else
-                MsgBox("Please Select a Product before use this function")
+                MsgBox("Please select a product before using this function!")
             End If
         Else
-            MsgBox("Need L2 ( edit allowed ) level for use This function")
+            MsgBox("Need W3 level to update status of a product!")
         End If
 
     End Sub
@@ -813,9 +819,7 @@ Public Class FormProduct
         ListBoxLog.Items.Add(ListView1.SelectedItems.Item(0).SubItems(3).Text & "  -  Status Updated!")
     End Sub
 
-
-
-    Private Sub ButtonOpenIssuePrint_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonOpenIssuePrint.Click
+    Private Sub ButtonOpenIssuePrint_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonOpenIssuePrint.Click
 
         DsProd.Clear()
         tblProd.Clear()
@@ -855,7 +859,7 @@ Public Class FormProduct
 
     End Sub
 
-    Private Sub ButtonSIGIP_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonSIGIP.Click
+    Private Sub ButtonSIGIP_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSIGIP.Click
         If controlRight("R") = 3 Then
 
             If InStr(ParameterTable("LAST_SIGIP_BOM_UPDATE"), "DONE", CompareMethod.Text) > 0 Then
@@ -1152,27 +1156,25 @@ Public Class FormProduct
                     amm = Replace(excelSheet.Cells(xlsRow, 13).Text, ",", ".")
                     spe = Replace(excelSheet.Cells(xlsRow, 14).Text, ",", ".")
 
-
-
-                    sql = "(" & index & "," & _
-                    "'" & bom & "'," & _
-                    "'" & Replace(des, "'", "") & "'," & _
-                    "'" & nr & "'," & _
-                    "'" & (qt) & "'," & _
-                    "'" & (price) & "'," & _
-                    "'" & currency & "'," & _
-                    "'" & liv & "'," & _
-                    "'" & acq_fab & "'," & _
-                    "'" & Replace(ReplaceChar(bitron_pn), "-", "") & "'," & _
-                    "'" & ReplaceChar(despn) & "'," & _
-                    "'" & mdi & "'," & _
-                    "'" & mdo & "'," & _
-                    "'" & amm & "'," & _
-                    "'" & spe & "'," & _
-                    "'" & mdi_t & "'," & _
-                    "'" & mdo_t & "'," & _
-                    "'" & amm_t & "'," & _
-                    "'" & spe_t & "'" & _
+                    sql = "(" & index & "," &
+                    "'" & bom & "'," &
+                    "'" & Replace(des, "'", "") & "'," &
+                    "'" & nr & "'," &
+                    "'" & (qt) & "'," &
+                    "'" & (price) & "'," &
+                    "'" & currency & "'," &
+                    "'" & liv & "'," &
+                    "'" & acq_fab & "'," &
+                    "'" & Replace(ReplaceChar(bitron_pn), "-", "") & "'," &
+                    "'" & ReplaceChar(despn) & "'," &
+                    "'" & mdi & "'," &
+                    "'" & mdo & "'," &
+                    "'" & amm & "'," &
+                    "'" & spe & "'," &
+                    "'" & mdi_t & "'," &
+                    "'" & mdo_t & "'," &
+                    "'" & amm_t & "'," &
+                    "'" & spe_t & "'" &
                      ")," & sql
 
                     If excelApp.Cells(xlsRow + 1, 1).text = "" Or Int(xlsRow / 100) = xlsRow / 100 Then
@@ -1214,9 +1216,6 @@ Public Class FormProduct
         Next
 
     End Function
-
-
-
     Sub UpdateBomCost()
 
         Dim cmd As New MySqlCommand(), sql As String
@@ -1234,7 +1233,7 @@ Public Class FormProduct
         results = tblProd.Select("status like '*' AND not status ='OBSOLETE'")
 
         For Each res In results
-            ListBoxLog.Items.Add("Update bom cost: " & res("bitronpn").ToString)
+            ListBoxLog.Items.Add("Update BOM cost: " & res("bitronpn").ToString)
             Application.DoEvents()
             ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
             ListBoxLog.ScrollAlwaysVisible = True
@@ -1404,7 +1403,7 @@ Public Class FormProduct
         tblDoc = DsDoc.Tables("doc")
 
         updated = True
-        ListBoxLog.Items.Add("Open orcad Homologation card......wait..")
+        ListBoxLog.Items.Add("Open Orcad Homologation Card......Wait...")
         Try
             Dim AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where not valido = 'no_valido'", SqlconnectionOrcad)
             DsDocComp.Clear()
@@ -1425,7 +1424,7 @@ Public Class FormProduct
             tblDocComp = DsDocComp.Tables("orcadw.T_orcadcis")
 
         End Try
-        ListBoxLog.Items.Add("Open orcad Homologation card......Open!")
+        ListBoxLog.Items.Add("Open Orcad Homologation Card......Open!")
         Try
             sql = "UPDATE `" & DBName & "`.`sigip` SET `doc` = 'FAB' WHERE not (`sigip`.`ACQ_FAB` = 'ACQ') ;"
             cmd = New MySqlCommand(sql, MySqlconnection)
@@ -1523,17 +1522,17 @@ Public Class FormProduct
                                     MySqlconnection.Open()
                                 End If
 
-                                cmd = New MySqlCommand(sql, MySqlconnection)
-                                cmd.ExecuteNonQuery()
-                                sql = ""
-                                changed = True
-                                Exit For
-                            Catch ex As Exception
-                                ComunicationLog("5050") ' Mysql update query error 
-                                allOK = False
-                            End Try
-                        End If
+                            cmd = New MySqlCommand(sql, MySqlconnection)
+                            cmd.ExecuteNonQuery()
+                            sql = ""
+                            changed = True
+                            Exit For
+                        Catch ex As Exception
+                            ComunicationLog("5050") ' Mysql update query error 
+                            allOK = False
+                        End Try
                     End If
+                End If
             Next row
 
         End While
@@ -1546,11 +1545,11 @@ Public Class FormProduct
             allOK = False
         End Try
         If allOK Then ParameterTableWrite("LAST_BOM_UPDATE", Today)
-        ListBoxLog.Items.Add("HC updating, Finish!")
+        ListBoxLog.Items.Add("HC updating...Finish!")
         ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
     End Sub
 
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonExport.Click
+    Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonExport.Click
         ExportListview2Excel(ListView1)
     End Sub
 
@@ -1603,7 +1602,7 @@ Public Class FormProduct
     End Sub
 
 
-    Private Sub TextBoxLS_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBoxLS.TextChanged
+    Private Sub TextBoxLS_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxLS.TextChanged
         If IsNumeric(TextBoxLS.Text) Then
         Else
             TextBoxLS.Text = ""
@@ -1624,20 +1623,4 @@ Public Class FormProduct
 
     End Function
 
-    Private Sub TextBoxDAI_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBoxDAI.TextChanged
-
-    End Sub
-
-    Private Sub ComboBoxStatus_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBoxStatus.SelectedIndexChanged
-
-    End Sub
-    Private Sub FormProduct_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-        FormStart.Show()
-        tblProd.Dispose()
-        DsProd.Dispose()
-        AdapterProd.Dispose()
-        tblCus.Dispose()
-        DsCus.Dispose()
-        AdapterCus.Dispose()
-    End Sub
 End Class

@@ -43,7 +43,7 @@ Public Class FormGroup
         End If
     End Sub
 
-    Private Sub FormGroup_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub FormGroup_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
         AdapterProd.Fill(DsProd, "product")
         tblProd = DsProd.Tables("product")
@@ -56,7 +56,7 @@ Public Class FormGroup
 
     End Sub
 
-    Private Sub ComboBoxGroup_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBoxGroup.TextChanged
+    Private Sub ComboBoxGroup_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxGroup.TextChanged
 
         Dim i As Integer, resultdoc As DataRow()
         Try
@@ -76,7 +76,7 @@ Public Class FormGroup
 
     End Sub
 
-    Private Sub ButtonAddMch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonAdd.Click
+    Private Sub ButtonAddMch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAdd.Click
         Dim sql As String, cmd As MySqlCommand
         If ComboBoxName.Text <> "" And ComboBoxGroup.Text <> "" Then
             GroupList = Replace(GroupList, Mid(ComboBoxGroup.Text, 1, 11) & "[" & ComboBoxName.Text & "];", "")
@@ -94,7 +94,7 @@ Public Class FormGroup
 
     End Sub
 
-    Private Sub ButtonRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonRemove.Click
+    Private Sub ButtonRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRemove.Click
 
         Dim sql As String, cmd As MySqlCommand, oldGroupList As String, header As String, filename As String
         oldGroupList = GroupList

@@ -95,10 +95,9 @@ Public Class FormOffer
     End Sub
 
 
-    Private Sub formOffer_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub formOffer_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         updatigComponent = True
         CheckBoxBestPrice.Enabled = True
-
         Me.Focus()
         EnableBrandControl()
         If controlRight("R") >= 2 Then
@@ -173,8 +172,6 @@ Public Class FormOffer
             CheckBoxEstimation.Enabled = True
             CheckBoxOrderByNumber.Enabled = True
             CheckBoxOrderByDate.Enabled = True
-
-
             TextBoxBrandPrice.Enabled = True
             ComboBoxBrandCurrency.Enabled = True
             ComboBoxBrandSupplier.Enabled = True
@@ -186,12 +183,8 @@ Public Class FormOffer
             'ComboBoxBrandCurrencySZ.Enabled = True
             'ComboBoxBrandSupplierSZ.Enabled = True
             'DateTimePickerBrandSZ.Enabled = True
-
             RadioButtonQD.Enabled = True
             RadioButtonSZ.Enabled = True
-
-
-
         Else
 
         End If
@@ -663,7 +656,7 @@ Public Class FormOffer
 
 
 
-    Private Sub TreeViewBomList_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewBomList.AfterSelect
+    Private Sub TreeViewBomList_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewBomList.AfterSelect
 
         If currentId() > 0 Then
             selectedNode = TreeViewBomList.SelectedNode
@@ -765,7 +758,7 @@ Public Class FormOffer
     End Sub
 
     'save the date in the form
-    Private Sub ButtonBomSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBomSave.Click
+    Private Sub ButtonBomSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBomSave.Click
         If Not (ComboBoxBomResult.Text = "ON_GOING" And ComboBoxBomStatus.Text = "CLOSED") Then
             If checkValue() Then
                 If currentId() > 0 Then
@@ -849,7 +842,7 @@ Public Class FormOffer
     End Function
 
     ' value changed function
-    Sub ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
+    Sub ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles _
              DateTimePickerBom.TextChanged, _
              ComboBoxBomCurrency.TextChanged, _
              TextBoxNameV1.TextChanged, _
@@ -890,7 +883,7 @@ Public Class FormOffer
         End If
     End Sub
 
-    Private Sub TimerBomRecord_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TimerBomRecord.Tick
+    Private Sub TimerBomRecord_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerBomRecord.Tick
         If Val(TextBoxBomTime.Text) > 1 Then
             TextBoxBomTime.Text = Val(TextBoxBomTime.Text) - 1
         Else
@@ -1002,7 +995,7 @@ Public Class FormOffer
     '    ButtonBomSave.BackColor = Color.Green
     'End Sub
 
-    Private Sub TreeViewBomList_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles TreeViewBomList.GotFocus
+    Private Sub TreeViewBomList_GotFocus(ByVal sender As Object, ByVal e As EventArgs) Handles TreeViewBomList.GotFocus
         Try
             TreeViewBomList.SelectedNode.ForeColor = Color.Black
         Catch ex As Exception
@@ -1052,7 +1045,7 @@ Public Class FormOffer
     End Sub
 
 
-    Private Sub ButtonLoadBom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonLoadBom.Click
+    Private Sub ButtonLoadBom_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonLoadBom.Click
 
         Dim replaceBom As Boolean = False
 
@@ -1286,7 +1279,7 @@ Public Class FormOffer
 
     End Function
 
-    Private Sub ButtonNewBom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonNewBom.Click
+    Private Sub ButtonNewBom_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonNewBom.Click
         Dim cmd As New MySqlCommand()
         Dim sql As String, BOMNAME As String
         BOMNAME = InputBox("Insert the Bom Name Example" & vbCrLf & "Basic Digit")
@@ -1515,11 +1508,11 @@ Public Class FormOffer
         If rowShow.Length > 0 Then volumes = Val(rowShow(0).Item(position).ToString)
     End Function
 
-    Private Sub TabControl_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TabControl.SelectedIndexChanged
+    Private Sub TabControl_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TabControl.SelectedIndexChanged
 
         If TabControl.SelectedTab.Text = "COMPONENT" Then
             If currentId() > 0 Then
-                LabelBomName.Text = TextBoxBomID.Text.Trim & " - " & TextBoxBomName.Text
+                LabelBomName.Text = TextBoxBomName.Text
                 firstTime = True
                 updateComponentList()
                 For i = 0 To TabControl.TabPages.Item(1).Controls.Count - 1
@@ -1647,7 +1640,7 @@ Public Class FormOffer
 
     End Function
 
-    Private Sub ButtonNewComponent_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonComponentAdd.Click
+    Private Sub ButtonNewComponent_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonComponentAdd.Click
         Dim cmd As New MySqlCommand()
         Dim sql As String
         Dim descr As String
@@ -1671,7 +1664,7 @@ Public Class FormOffer
 
     End Sub
 
-    Private Sub ButtonComponentDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonComponentDelete.Click
+    Private Sub ButtonComponentDelete_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonComponentDelete.Click
 
         Dim cmd As New MySqlCommand()
         Dim sql As String
@@ -1697,7 +1690,7 @@ Public Class FormOffer
         End If
     End Sub
 
-    Private Sub ButtonBrandDel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBrandDel.Click
+    Private Sub ButtonBrandDel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBrandDel.Click
         If ComboBoxComponentBrand.Text <> "" Then
             Dim id As Long = Mid(TreeViewComponent.SelectedNode.Text, 1, InStr(TreeViewComponent.SelectedNode.Text, "-") - 2)
             If vbYes = MsgBox("Do you want delete this component?", MsgBoxStyle.YesNo) Then
@@ -1715,7 +1708,7 @@ Public Class FormOffer
     End Sub
 
 
-    Private Sub ButtonBrandAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBrandAdd.Click
+    Private Sub ButtonBrandAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBrandAdd.Click
         Dim brand As String
 
         brand = UCase(ReplaceChar(InputBox("Please insert Brand example: ST[1n4148]")))
@@ -1731,7 +1724,7 @@ Public Class FormOffer
         End If
     End Sub
 
-    Private Sub ButtonAltAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonAltAdd.Click
+    Private Sub ButtonAltAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAltAdd.Click
         Dim brand As String
         brand = InputBox("Please insert Brand example: ST[1n4148]")
         If InStr(brand, "GENERAL", CompareMethod.Text) <= 0 Then
@@ -1753,7 +1746,7 @@ Public Class FormOffer
         End If
     End Sub
 
-    Private Sub ButtonAlTDel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonAlTDel.Click
+    Private Sub ButtonAlTDel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAlTDel.Click
         If ComboBoxComponentALTBrand.Text <> "" Then
             Dim id As Long = Mid(TreeViewComponent.SelectedNode.Text, 1, InStr(TreeViewComponent.SelectedNode.Text, "-") - 2)
             If vbYes = MsgBox("Do you want delete this Brand?", MsgBoxStyle.YesNo) Then
@@ -1781,7 +1774,7 @@ Public Class FormOffer
 
 
     ' value changed function
-    Sub ValueChangedComponent(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
+    Sub ValueChangedComponent(ByVal sender As Object, ByVal e As EventArgs) Handles _
         TextBoxCompenentGenNote.TextChanged, _
         TextBoxComponentBitronPN.TextChanged, _
         TextBoxComponentCustomer.TextChanged, _
@@ -1860,7 +1853,7 @@ Public Class FormOffer
         End If
     End Sub
 
-    Private Sub ComboBoxComponentStatus_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBoxComponentStatus.SelectedIndexChanged
+    Private Sub ComboBoxComponentStatus_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxComponentStatus.SelectedIndexChanged
 
         TextBoxComponentStatus.Text = ComboBoxComponentStatus.Text
         If Not IsNothing(TreeViewComponent.SelectedNode) Then
@@ -1879,16 +1872,16 @@ Public Class FormOffer
 
     End Sub
 
-    Private Sub CheckBoxNoPrice_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBoxNoPrice.CheckedChanged
+    Private Sub CheckBoxNoPrice_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBoxNoPrice.CheckedChanged
         updateComponentList()
     End Sub
 
-    Private Sub CheckEstimed_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckEstimed.CheckedChanged
+    Private Sub CheckEstimed_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckEstimed.CheckedChanged
         updateComponentList()
     End Sub
 
 
-    Private Sub ButtonBomRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBomRemove.Click
+    Private Sub ButtonBomRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBomRemove.Click
 
         Dim cmd As New MySqlCommand()
         Dim sql As String
@@ -1920,7 +1913,7 @@ Public Class FormOffer
 
 
 
-    Private Sub ButtonSaveComp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonSaveComp.Click
+    Private Sub ButtonSaveComp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSaveComp.Click
 
         If Not IsNothing(TreeViewComponent.SelectedNode) Then
 
@@ -2159,7 +2152,7 @@ Public Class FormOffer
         Next
     End Function
 
-    Private Sub ButtonComponentOpenDs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonComponentOpenDs.Click
+    Private Sub ButtonComponentOpenDs_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonComponentOpenDs.Click
         Try
             Process.Start(ParameterTable("DataShaetOfferFolder") & TextBoxComponentDS.Text)
         Catch ex As Exception
@@ -2169,7 +2162,7 @@ Public Class FormOffer
 
     End Sub
 
-    Private Sub ButtonComponetAddDs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonComponetAddDs.Click
+    Private Sub ButtonComponetAddDs_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonComponetAddDs.Click
         OpenFileDialog1.Filter = "All File (*.*)|*.*"
         OpenFileDialog1.ShowDialog()
         If Not IsNothing(TreeViewComponent.SelectedNode) And TextBoxComponentDescription.Text <> "" Then
@@ -2227,7 +2220,6 @@ Public Class FormOffer
 
             Next
 
-
             ' Search ALT Brand corrispondence
             rowShow = tblBrand.Select("Brand = '" & ReplaceCharBrandOC(ComboBoxComponentALTBrand.Text) & "'")
             For Each row In rowShow
@@ -2283,35 +2275,23 @@ Public Class FormOffer
         rowShow = tblCustomerPrice.Select("customer = '" & ComboBoxCustomer.Text & "' and PartNumber = '" & Replace((TextBoxComponentBitronPN.Text), "E", "") & "'", "date")
         For Each row In rowShow
             ComboBoxComponentProposalCustomer.Items.Add(row("Price") & " - " & row("currency") & "  Date " & row("date"))
-            'If row("Price_sz") <> "" Then
-            '    ComboBoxComponentProposalCustomer.Items.Add(row("Price_sz") & " - " & row("Currency_sz") & "  Date " & row("date_sz"))
-            'End If
             ComboBoxComponentProposalCustomer.Text = ComboBoxComponentProposalCustomer.Items(0).ToString
         Next
         rowShow = tblCustomerPrice.Select("customer = '" & ComboBoxCustomer.Text & "' and PartNumber = '" & collectCombo(ComboBoxComponentBrand) & "'", "date")
         For Each row In rowShow
             ComboBoxComponentProposalCustomer.Items.Add(row("Price") & " - " & row("currency") & "  Date " & row("date"))
-            'If row("Price_sz") <> "" Then
-            '    ComboBoxComponentProposalCustomer.Items.Add(row("Price_sz") & " - " & row("Currency_sz") & "  Date " & row("date_sz"))
-            'End If
             ComboBoxComponentProposalCustomer.Text = ComboBoxComponentProposalCustomer.Items(0).ToString
         Next
 
         rowShow = tblCustomerPrice.Select("customer = '" & ComboBoxCustomer.Text & "' and PartNumber = '" & (TextBoxComponentCustomer.Text) & "'", "date")
         For Each row In rowShow
             ComboBoxComponentProposalCustomer.Items.Add(row("Price") & " - " & row("currency") & "  Date " & row("date"))
-            'If row("Price_sz") <> "" Then
-            '    ComboBoxComponentProposalCustomer.Items.Add(row("Price_sz") & " - " & row("Currency_sz") & "  Date " & row("date_sz"))
-            'End If
             ComboBoxComponentProposalCustomer.Text = ComboBoxComponentProposalCustomer.Items(0).ToString
         Next
 
         rowShow = tblCustomerPrice.Select("customer = '" & ComboBoxCustomer.Text & "' and PartNumber = '" & collectCombo(ComboBoxComponentALTBrand) & "'", "date")
         For Each row In rowShow
             ComboBoxComponentProposalCustomer.Items.Add(row("Price") & " - " & row("currency") & "  Date " & row("date"))
-            'If row("Price_sz") <> "" Then
-            '    ComboBoxComponentProposalCustomer.Items.Add(row("Price_sz") & " - " & row("Currency_sz") & "  Date " & row("date_sz"))
-            'End If
             ComboBoxComponentProposalCustomer.Text = ComboBoxComponentProposalCustomer.Items(0).ToString
         Next
 
@@ -2376,7 +2356,7 @@ Public Class FormOffer
 
     End Function
 
-    Private Sub ButtonComponentPrice_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonComponentPriceTFT.Click
+    Private Sub ButtonComponentPrice_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonComponentPriceTFT.Click
         If ComboBoxComponentProposalBrand.Text <> "" Then
             ComboBoxComponentPrice.Text = Mid(ComboBoxComponentProposalBrand.Text, InStr(ComboBoxComponentProposalBrand.Text, "-") + 2, 3)
             TextBoxComponentPrice.Text = Mid(ComboBoxComponentProposalBrand.Text, 1, InStr(ComboBoxComponentProposalBrand.Text, "-") - 2)
@@ -2384,7 +2364,7 @@ Public Class FormOffer
     End Sub
 
 
-    Private Sub ButtonComponentALT_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonComponentAltTFT.Click
+    Private Sub ButtonComponentALT_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonComponentAltTFT.Click
         If ComboBoxComponentProposalALT.Text <> "" Then
             ComboBoxComponentPriceAlt.Text = Mid(ComboBoxComponentProposalALT.Text, InStr(ComboBoxComponentProposalALT.Text, "-") + 2, 3)
             TextBoxComponentPriceAlt.Text = Mid(ComboBoxComponentProposalALT.Text, 1, InStr(ComboBoxComponentProposalALT.Text, "-") - 2)
@@ -2392,14 +2372,14 @@ Public Class FormOffer
     End Sub
 
 
-    Private Sub ButtonComponentBitronPnTRF_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonComponentBitronPnTRF.Click
+    Private Sub ButtonComponentBitronPnTRF_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonComponentBitronPnTRF.Click
         If ComboBoxComponentProposalPFP.Text <> "" Then
             ComboBoxComponentEstimation.Text = Mid(ComboBoxComponentProposalPFP.Text, InStr(ComboBoxComponentProposalPFP.Text, "-") + 2, 3)
             TextBoxComponentEstimation.Text = Mid(ComboBoxComponentProposalPFP.Text, 1, InStr(ComboBoxComponentProposalPFP.Text, "-") - 2)
         End If
     End Sub
 
-    Private Sub ButtonComponentCustomerTRF_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonComponentCustomerTRF.Click
+    Private Sub ButtonComponentCustomerTRF_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonComponentCustomerTRF.Click
         If ComboBoxComponentProposalCustomer.Text <> "" Then
             ComboBoxComponentCustomerCurrency.Text = Mid(ComboBoxComponentProposalCustomer.Text, InStr(ComboBoxComponentProposalCustomer.Text, "-") + 2, 3)
             TextBoxComponentCustomerPrice.Text = Mid(ComboBoxComponentProposalCustomer.Text, 1, InStr(ComboBoxComponentProposalCustomer.Text, "-") - 2)
@@ -2593,7 +2573,7 @@ Public Class FormOffer
         Next
     End Function
 
-    Private Sub CheckBoxNoCustomerPrice_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBoxNoCustomerPrice.CheckedChanged
+    Private Sub CheckBoxNoCustomerPrice_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBoxNoCustomerPrice.CheckedChanged
         updateComponentList()
     End Sub
 
@@ -2611,7 +2591,7 @@ Public Class FormOffer
 
     End Function
 
-    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
+    Private Sub Button3_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button3.Click
         FormInfoOffer.Show()
     End Sub
 
@@ -2701,7 +2681,7 @@ Public Class FormOffer
     End Function
 
 
-    Private Sub CheckBoxOpen_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBoxOpen.CheckedChanged
+    Private Sub CheckBoxOpen_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBoxOpen.CheckedChanged
         If updatigComponent = False Then UpdateTreeBomOffer()
     End Sub
 
@@ -2740,15 +2720,15 @@ Public Class FormOffer
         ComboBoxComponentALTBrand.Items.Clear()
     End Sub
 
-    Private Sub CheckBoxOrderByDate_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBoxOrderByDate.CheckedChanged
+    Private Sub CheckBoxOrderByDate_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBoxOrderByDate.CheckedChanged
         UpdateTreeBomOffer()
     End Sub
 
-    Private Sub CheckBoxBrandBomOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBoxBrandBomOnly.CheckedChanged
+    Private Sub CheckBoxBrandBomOnly_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBoxBrandBomOnly.CheckedChanged
         updateBrandList()
     End Sub
 
-    Private Sub TreeViewBrand_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewBrand.AfterSelect
+    Private Sub TreeViewBrand_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewBrand.AfterSelect
 
         updatigBrand = True
         Dim rowShow As DataRow()
@@ -2769,33 +2749,25 @@ Public Class FormOffer
         If rowShow.Length = 1 Then
             TextBoxBrandBuyer.Text = rowShow(0).Item("buyer").ToString
             TextBoxBrandBuyerSZ.Text = rowShow(0).Item("buyer_sz").ToString
-
             If (rowShow(0).Item("Date").ToString) <> "" Then
                 DateTimePickerBrand.Value = string_to_date(rowShow(0).Item("Date").ToString)
             Else
                 DateTimePickerBrand.Text = ""
             End If
-
             If (rowShow(0).Item("Date_sz").ToString) <> "" Then
                 DateTimePickerBrandSZ.Value = string_to_date(rowShow(0).Item("Date_sz").ToString)
             Else
                 DateTimePickerBrandSZ.Text = ""
             End If
-
-
             TextBoxBrandOC.Text = rowShow(0).Item("Brand").ToString
             TextBoxBrandPrice.Text = rowShow(0).Item("Price").ToString
             TextBoxBrandPriceSZ.Text = rowShow(0).Item("Price_sz").ToString
-
             ComboBoxBrandSupplier.Text = UCase(rowShow(0).Item("Supplier").ToString)
             ComboBoxBrandSupplierSZ.Text = UCase(rowShow(0).Item("Supplier_sz").ToString)
-
             ComboBoxBrandCurrency.Text = rowShow(0).Item("currency").ToString
             ComboBoxBrandCurrencySZ.Text = rowShow(0).Item("currency_sz").ToString
-
             TextBoxBrandLink.Text = rowShow(0).Item("OfferLink").ToString
             TextBoxBrandQuantity.Text = IIf(rowShow(0).Item("qt").ToString <> "", CodQt(DecQt(rowShow(0).Item("qt").ToString)), "")
-
         Else
             MsgBox("Inconsistance for id Brand")
         End If
@@ -2806,7 +2778,7 @@ Public Class FormOffer
 
 
 
-    Private Sub ButtonBrandAddOffer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBrandAddOffer.Click
+    Private Sub ButtonBrandAddOffer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBrandAddOffer.Click
         OpenFileDialog1.InitialDirectory = ParameterTable("SupplierOffer")
         OpenFileDialog1.Filter = "All File (*.*)|*.*"
         OpenFileDialog1.ShowDialog()
@@ -2829,45 +2801,45 @@ Public Class FormOffer
 
 
 
-    Private Sub ButtonBrandUpdate_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBrandUpdate.Click
+    Private Sub ButtonBrandUpdate_Click_1(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBrandUpdate.Click
 
         If Not IsNothing(TreeViewBrand.SelectedNode) Then
             If RadioButtonQD.Checked = True Then
-                If IsNumeric(Replace(Replace(TextBoxBrandQuantity.Text, "M", ""), "K", "")) And CheckBrandString(TextBoxBrandOC.Text, TextBoxBrandOC.Text) _
-                   And ((TextBoxBrandPrice.Text <> "" And ComboBoxBrandCurrency.Text <> "") Or (ComboBoxBrandCurrency.Text = "" And TextBoxBrandPrice.Text = "")) Then
-                    Dim id As Long = Mid(TreeViewBrand.SelectedNode.Text, 1, InStr(TreeViewBrand.SelectedNode.Text, "-") - 2)
+            If IsNumeric(Replace(Replace(TextBoxBrandQuantity.Text, "M", ""), "K", "")) And CheckBrandString(TextBoxBrandOC.Text, TextBoxBrandOC.Text) _
+               And ((TextBoxBrandPrice.Text <> "" And ComboBoxBrandCurrency.Text <> "") Or (ComboBoxBrandCurrency.Text = "" And TextBoxBrandPrice.Text = "")) Then
+                Dim id As Long = Mid(TreeViewBrand.SelectedNode.Text, 1, InStr(TreeViewBrand.SelectedNode.Text, "-") - 2)
 
-                    If DeltaSessionTime("Brand", id) <= 30 And session("Brand", id, False) = "RESET" Then
+                If DeltaSessionTime("Brand", id) <= 30 And session("Brand", id, False) = "RESET" Then
 
-                        TextBoxBrandSession.Text = ""
-                        Dim cmd As New MySqlCommand()
-                        Dim sql As String
-                        Try
-                            sql = "UPDATE `" & DBName & "`.`brand` SET " & _
-                            "`buyer` = '" & Replace(IIf(TextBoxBrandBuyer.Text <> "", CreAccount.strUserName, ""), "'", "") & _
-                            "',`Date` = '" & date_to_string(DateTimePickerBrand.Value) & _
-                            "',`Brand` = '" & ReplaceCharBrandOC(TextBoxBrandOC.Text) & _
-                            "',`Price` = '" & IIf(TextBoxBrandPrice.Text <> "", Replace(Math.Round(Val(TextBoxBrandPrice.Text), 5), ",", "."), "") & _
-                            "',`Supplier` = '" & Replace(UCase(ComboBoxBrandSupplier.Text), "'", "") & _
-                            "',`currency` = '" & ComboBoxBrandCurrency.Text & _
-                            "',`OfferLink` = '" & Replace(TextBoxBrandLink.Text, "\", "\\") & _
-                            "',`qt` = '" & IIf(TextBoxBrandQuantity.Text <> "", DecQt(TextBoxBrandQuantity.Text), "") & _
-                            "' WHERE `brand`.`id` = " & id & " ;"
+                    TextBoxBrandSession.Text = ""
+                    Dim cmd As New MySqlCommand()
+                    Dim sql As String
+                    Try
+                        sql = "UPDATE `" & DBName & "`.`brand` SET " & _
+                        "`buyer` = '" & Replace(IIf(TextBoxBrandBuyer.Text <> "", CreAccount.strUserName, ""), "'", "") & _
+                        "',`Date` = '" & date_to_string(DateTimePickerBrand.Value) & _
+                        "',`Brand` = '" & ReplaceCharBrandOC(TextBoxBrandOC.Text) & _
+                        "',`Price` = '" & IIf(TextBoxBrandPrice.Text <> "", Replace(Math.Round(Val(TextBoxBrandPrice.Text), 5), ",", "."), "") & _
+                        "',`Supplier` = '" & Replace(UCase(ComboBoxBrandSupplier.Text), "'", "") & _
+                        "',`currency` = '" & ComboBoxBrandCurrency.Text & _
+                        "',`OfferLink` = '" & Replace(TextBoxBrandLink.Text, "\", "\\") & _
+                        "',`qt` = '" & IIf(TextBoxBrandQuantity.Text <> "", DecQt(TextBoxBrandQuantity.Text), "") & _
+                        "' WHERE `brand`.`id` = " & id & " ;"
 
-                            cmd = New MySqlCommand(sql, MySqlconnection)
-                            cmd.ExecuteNonQuery()
-                        Catch ex As Exception
-                            MsgBox("Mysql update query error!" & ex.Message)
-                        End Try
+                        cmd = New MySqlCommand(sql, MySqlconnection)
+                        cmd.ExecuteNonQuery()
+                    Catch ex As Exception
+                        MsgBox("Mysql update query error!" & ex.Message)
+                    End Try
 
-                        ButtonBrandUpdate.BackColor = Color.Green
-                        BrandSession = False
-                        TimerBrand.Stop()
+                    ButtonBrandUpdate.BackColor = Color.Green
+                    BrandSession = False
+                    TimerBrand.Stop()
 
-                    Else
-                        MsgBox("Section USED " & session("Brand", id, False))
-                    End If
                 Else
+                    MsgBox("Section USED " & session("Brand", id, False))
+                End If
+            Else
 
                     MsgBox("Please fill in Price Qt and the related currency!")
                 End If
@@ -2916,20 +2888,20 @@ Public Class FormOffer
     End Sub
 
 
-    Private Sub TextBoxBrandOC_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBoxBrandOC.TextChanged
+    Private Sub TextBoxBrandOC_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxBrandOC.TextChanged
         TextBoxBrandOC.Text = ReplaceCharBrandOC(TextBoxBrandOC.Text)
     End Sub
 
-    Private Sub TextBoxBrandSupplier_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub TextBoxBrandSupplier_TextChanged(ByVal sender As Object, ByVal e As EventArgs)
         ComboBoxBrandSupplier.Text = UCase(ReplaceCharBrandOC(ComboBoxBrandSupplier.Text))
     End Sub
 
 
-    Private Sub TextBoxBrandSupplier_SZ_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub TextBoxBrandSupplier_SZ_TextChanged(ByVal sender As Object, ByVal e As EventArgs)
         ComboBoxBrandSupplierSZ.Text = UCase(ReplaceCharBrandOC(ComboBoxBrandSupplierSZ.Text))
     End Sub
 
-    Private Sub ButtonBrandRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBrandRemove.Click
+    Private Sub ButtonBrandRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBrandRemove.Click
         Dim cmd As New MySqlCommand()
         Dim sql As String
         If Not IsNothing(TreeViewBrand.SelectedNode) Then
@@ -2957,11 +2929,11 @@ Public Class FormOffer
 
     End Sub
 
-    Private Sub TextBoxBrandQuantity_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles TextBoxBrandQuantity.LostFocus
+    Private Sub TextBoxBrandQuantity_LostFocus(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxBrandQuantity.LostFocus
         TextBoxBrandQuantity.Text = CodQt(DecQt(TextBoxBrandQuantity.Text))
     End Sub
 
-    Private Sub ValueChangedBrand(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
+    Private Sub ValueChangedBrand(ByVal sender As Object, ByVal e As EventArgs) Handles _
     TextBoxBrandPrice.TextChanged, _
     TextBoxBrandOC.TextChanged, _
     TextBoxBrandBuyer.TextChanged, _
@@ -2992,7 +2964,7 @@ Public Class FormOffer
     End Sub
 
 
-    Private Sub ButtonBrandNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBrandNew.Click
+    Private Sub ButtonBrandNew_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBrandNew.Click
         Dim cmd As New MySqlCommand()
         Dim sql As String
         Dim descr As String
@@ -3014,41 +2986,41 @@ Public Class FormOffer
     End Sub
 
 
-    Private Sub TextBoxNameV1_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBoxNameV1.TextChanged
+    Private Sub TextBoxNameV1_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxNameV1.TextChanged
         TextBoxNameV1.Text = ReplaceChar(TextBoxNameV1.Text)
     End Sub
 
-    Private Sub TextBoxNameV2_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBoxNameV2.TextChanged
+    Private Sub TextBoxNameV2_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxNameV2.TextChanged
         TextBoxNameV2.Text = ReplaceChar(TextBoxNameV2.Text)
     End Sub
 
-    Private Sub TextBoxNameV3_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBoxNameV3.TextChanged
+    Private Sub TextBoxNameV3_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxNameV3.TextChanged
         TextBoxNameV3.Text = ReplaceChar(TextBoxNameV3.Text)
     End Sub
 
-    Private Sub TextBoxNameV4_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBoxNameV4.TextChanged
+    Private Sub TextBoxNameV4_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxNameV4.TextChanged
         TextBoxNameV4.Text = ReplaceChar(TextBoxNameV4.Text)
     End Sub
 
-    Private Sub TextBoxNameV5_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBoxNameV5.TextChanged
+    Private Sub TextBoxNameV5_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxNameV5.TextChanged
         TextBoxNameV5.Text = ReplaceChar(TextBoxNameV5.Text)
     End Sub
 
-    Private Sub TextBoxNameV6_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBoxNameV6.TextChanged
+    Private Sub TextBoxNameV6_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxNameV6.TextChanged
         TextBoxNameV6.Text = ReplaceChar(TextBoxNameV6.Text)
     End Sub
 
-    Private Sub TextBoxNote_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBoxNote.TextChanged
+    Private Sub TextBoxNote_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxNote.TextChanged
         TextBoxNote.Text = Replace(TextBoxNote.Text, "'", "")
         TextBoxNote.Select(TextBoxNote.Text.Length, 0)
     End Sub
 
-    Private Sub TextBoxComponentDescription_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBoxComponentDescription.TextChanged
+    Private Sub TextBoxComponentDescription_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxComponentDescription.TextChanged
         TextBoxComponentDescription.Text = Replace(TextBoxComponentDescription.Text, "'", "")
     End Sub
 
 
-    Private Sub ButtonBrandOfferOpen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBrandOfferOpen.Click
+    Private Sub ButtonBrandOfferOpen_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBrandOfferOpen.Click
         Try
             Process.Start(ParameterTable("SupplierOffer") & TextBoxBrandLink.Text)
         Catch ex As Exception
@@ -3057,7 +3029,7 @@ Public Class FormOffer
     End Sub
 
 
-    Private Sub TextBoxBrandQuantity_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBoxBrandQuantity.TextChanged
+    Private Sub TextBoxBrandQuantity_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxBrandQuantity.TextChanged
         If IsNumeric(Replace(Replace(TextBoxBrandQuantity.Text, "M", ""), "K", "")) Then
 
         Else
@@ -3116,7 +3088,7 @@ Public Class FormOffer
 
 
 
-    Private Sub Proposal_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles _
+    Private Sub Proposal_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles _
         ComboBoxComponentBrand.SelectedIndexChanged, _
         ComboBoxComponentALTBrand.SelectedIndexChanged
 
@@ -3125,7 +3097,7 @@ Public Class FormOffer
         UpdateLiking()
     End Sub
 
-    Private Sub Proposal_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles _
+    Private Sub Proposal_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles _
         TextBoxComponentBitronPN.TextChanged
 
         Application.DoEvents()
@@ -3165,13 +3137,13 @@ Public Class FormOffer
 
 
 
-    Private Sub ButtonComponentRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonComponentRefresh.Click
+    Private Sub ButtonComponentRefresh_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonComponentRefresh.Click
         updateComponentList()
     End Sub
 
 
 
-    Private Sub ButtonExportXML_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonExportXML.Click
+    Private Sub ButtonExportXML_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonExportXML.Click
 
         SaveFileDialog1.FileName = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\" & TextBoxBomName.Text & ".xls"
         Dim tblOff As DataTable
@@ -3194,7 +3166,7 @@ Public Class FormOffer
     End Sub
 
 
-    Private Sub TextBoxComponentBitronPN_textchanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBoxComponentBitronPN.TextChanged
+    Private Sub TextBoxComponentBitronPN_textchanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxComponentBitronPN.TextChanged
         sender.Text = UCase(sender.Text)
         sender.SelectionStart = Len(sender.Text)
     End Sub
@@ -3202,7 +3174,7 @@ Public Class FormOffer
 
 
 
-    Private Sub TextBoxComponentPrice_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
+    Private Sub TextBoxComponentPrice_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles _
            TextBoxComponentPrice.TextChanged, _
            TextBoxComponentCustomerPrice.TextChanged, _
            TextBoxComponentEstimation.TextChanged, _
@@ -3226,7 +3198,7 @@ Public Class FormOffer
         End If
     End Sub
 
-    Private Sub TimerComponents_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles TimerComponents.Tick
+    Private Sub TimerComponents_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerComponents.Tick
         Dim id As Long = Mid(TreeViewComponent.SelectedNode.Text, 1, InStr(TreeViewComponent.SelectedNode.Text, "-") - 2)
         If Val(TextBoxComponentSession.Text) > 1 Then
             TextBoxComponentSession.Text = Val(TextBoxComponentSession.Text) - 1
@@ -3239,7 +3211,7 @@ Public Class FormOffer
         End If
     End Sub
 
-    Private Sub TimerBrand_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles TimerBrand.Tick
+    Private Sub TimerBrand_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerBrand.Tick
         Dim id As Long = Mid(TreeViewBrand.SelectedNode.Text, 1, InStr(TreeViewBrand.SelectedNode.Text, "-") - 2)
         If Val(TextBoxBrandSession.Text) > 1 Then
             TextBoxBrandSession.Text = Val(TextBoxBrandSession.Text) - 1
@@ -3252,7 +3224,7 @@ Public Class FormOffer
         End If
     End Sub
 
-    Private Sub ComboBoxComponentALTBrand_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles _
+    Private Sub ComboBoxComponentALTBrand_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles _
     ComboBoxComponentALTBrand.KeyDown, _
     ComboBoxComponentBrand.KeyDown
         If Not sender.FindStringExact(sender.Text) < 0 Then
@@ -3273,7 +3245,7 @@ Public Class FormOffer
 
 
     ' calculate the best proposal for price
-    Private Sub ButtonBomBest_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBomBest.Click
+    Private Sub ButtonBomBest_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBomBest.Click
 
 
         If TextBoxBomName.Text <> "" Then
@@ -3431,7 +3403,7 @@ Public Class FormOffer
         If targetCurrency = "JPY" Then ConvertPriceCurency = jpy(Price, Currency)
     End Function
 
-    Private Sub ButtonBomSaveCurrency_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBomSaveCurrency.Click
+    Private Sub ButtonBomSaveCurrency_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBomSaveCurrency.Click
         If IsNumeric(TextBoxBomUSD_CNY.Text) Then ParameterTableWrite("USD_CNY", Math.Round(Val(Replace(TextBoxBomUSD_CNY.Text, ",", ".")), 5))
         If IsNumeric(TextBoxBomEUR_USD.Text) Then ParameterTableWrite("EUR_USD", Math.Round(Val(Replace(TextBoxBomEUR_USD.Text, ",", ".")), 5))
         If IsNumeric(TextBoxBomEUR_JPY.Text) Then ParameterTableWrite("EUR_JPY", Math.Round(Val(Replace(TextBoxBomEUR_JPY.Text, ",", ".")), 5))
@@ -3475,11 +3447,11 @@ Public Class FormOffer
     End Function
 
 
-    Private Sub ButtonBrandRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBrandRefresh.Click
+    Private Sub ButtonBrandRefresh_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBrandRefresh.Click
         updateBrandList()
     End Sub
 
-    Private Sub ButtonBrandDelOffer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBrandDelOffer.Click
+    Private Sub ButtonBrandDelOffer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBrandDelOffer.Click
         TextBoxBrandLink.Text = ""
     End Sub
 
@@ -3627,11 +3599,11 @@ Public Class FormOffer
         End If
     End Function
 
-    Private Sub ButtonComponentDelLink_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonComponentDelLink.Click
+    Private Sub ButtonComponentDelLink_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonComponentDelLink.Click
         TextBoxComponentDS.Text = ""
     End Sub
 
-    Private Sub ButtonMakeOffer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonMakeOffer.Click
+    Private Sub ButtonMakeOffer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonMakeOffer.Click
         ButtonBomBest_Click(Me, e)
         Try
             If TextBoxBomName.Text <> "" Then
@@ -3754,11 +3726,11 @@ Public Class FormOffer
 
     End Sub
 
-    Private Sub ButtonBomDelOffer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBomDelOffer.Click
+    Private Sub ButtonBomDelOffer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBomDelOffer.Click
         TextBoxBomOfferLink.Text = ""
     End Sub
 
-    Private Sub ButtonBomAddOffer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBomAddOffer.Click
+    Private Sub ButtonBomAddOffer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBomAddOffer.Click
         OpenFileDialog1.Filter = "All File (*.*)|*.*"
 
         If OpenFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK And OpenFileDialog1.CheckFileExists And InStr(OpenFileDialog1.FileName, "'", CompareMethod.Text) <= 0 And Not IsNothing(TreeViewBomList.SelectedNode) Then
@@ -3780,7 +3752,7 @@ Public Class FormOffer
 
     End Sub
 
-    Private Sub ButtonBomOfferOpen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBomOfferOpen.Click
+    Private Sub ButtonBomOfferOpen_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBomOfferOpen.Click
         Try
             Process.Start(ParameterTable("PathOfferToCustomer") & TextBoxBomOfferLink.Text)
         Catch ex As Exception
@@ -3788,7 +3760,7 @@ Public Class FormOffer
         End Try
     End Sub
 
-    Private Sub ButtonUpdatePfp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonUpdatePfp.Click
+    Private Sub ButtonUpdatePfp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonUpdatePfp.Click
         ButtonUpdatePfp.Text = "Please wait......"
         ButtonUpdatePfp.Enabled = False
         Update_Pfp()
@@ -3862,30 +3834,32 @@ Public Class FormOffer
                 average = "NO"
                 supcode = ""
                 For Each row In rowShow
-                    If Val(row("pfpan")) <> 0 Then
-                        If currency = "" Then currency = row("peval")
-                        If datePfp = "" Then datePfp = row("pedin")
-                        value = value + Val(row("pfpan")) * usd(ConvPrice(Val(row("pepre")), row("pelot")), row("peval"))
-                        ass = Val(row("pfpan")) + ass
-                        If ass > 0 And ass < 100 Then average = "YES"
-                        supplier = supplier & IIf(supplier <> "", " ; ", "") & strip(row("FORSC"))
-                        supcode = supcode & IIf(supcode <> "", ";", "") & strip(row("pefor"))
-                        If ass >= 100 Then Exit For
-                    End If
-                Next
-
-                If ass = 0 Then
-                    For Each row In rowShow
-                        If Val(row("pfpaf")) <> 0 Then
+                        If Val(row("pfpan")) <> 0 Then
                             If currency = "" Then currency = row("peval")
                             If datePfp = "" Then datePfp = row("pedin")
-                            value = value + Val(row("pfpaf")) * usd(ConvPrice(Val(row("pepre")), row("pelot")), row("peval"))
-                            ass = Val(row("pfpaf")) + ass
+                            value = value + Val(row("pfpan")) * usd(ConvPrice(Val(row("pepre")), row("pelot")), row("peval"))
+                            ass = Val(row("pfpan")) + ass
                             If ass > 0 And ass < 100 Then average = "YES"
                             supplier = supplier & IIf(supplier <> "", " ; ", "") & strip(row("FORSC"))
                             supcode = supcode & IIf(supcode <> "", ";", "") & strip(row("pefor"))
                             If ass >= 100 Then Exit For
                         End If
+
+                Next
+
+                If ass = 0 Then
+                    For Each row In rowShow
+                            If Val(row("pfpaf")) <> 0 Then
+                                If currency = "" Then currency = row("peval")
+                                If datePfp = "" Then datePfp = row("pedin")
+                                value = value + Val(row("pfpaf")) * usd(ConvPrice(Val(row("pepre")), row("pelot")), row("peval"))
+                                ass = Val(row("pfpaf")) + ass
+                                If ass > 0 And ass < 100 Then average = "YES"
+                                supplier = supplier & IIf(supplier <> "", " ; ", "") & strip(row("FORSC"))
+                                supcode = supcode & IIf(supcode <> "", ";", "") & strip(row("pefor"))
+                                If ass >= 100 Then Exit For
+                            End If
+
                     Next
                 End If
                 value = value / 100
@@ -4140,7 +4114,7 @@ Public Class FormOffer
 
     End Function
 
-    Private Sub ButtonBitronPnLiking_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBitronPnLiking.Click
+    Private Sub ButtonBitronPnLiking_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBitronPnLiking.Click
         If controlRight("U") >= 2 Then
             If TextBoxComponentBitronPN.Text <> "" Then WriteBrandLiking(TextBoxComponentBitronPN.Text, NextColor(ButtonBitronPnLiking.BackColor))
             BooLinkingChanges = True
@@ -4148,7 +4122,7 @@ Public Class FormOffer
         End If
     End Sub
 
-    Private Sub ButtonBrandAltLiking_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBrandAltLiking.Click
+    Private Sub ButtonBrandAltLiking_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBrandAltLiking.Click
         If controlRight("U") >= 2 Then
             If ComboBoxComponentALTBrand.Text <> "" Then WriteBrandLiking(Mid(ComboBoxComponentALTBrand.Text, 1, InStr(ComboBoxComponentALTBrand.Text, "[") - 1), NextColor(ButtonBrandAltLiking.BackColor))
             BooLinkingChanges = True
@@ -4156,7 +4130,7 @@ Public Class FormOffer
         End If
     End Sub
 
-    Private Sub ButtonBrandLight_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBrandLiking.Click
+    Private Sub ButtonBrandLight_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBrandLiking.Click
         If controlRight("U") >= 2 Then
             If ComboBoxComponentBrand.Text <> "" Then WriteBrandLiking(Mid(ComboBoxComponentBrand.Text, 1, InStr(ComboBoxComponentBrand.Text, "[") - 1), NextColor(ButtonBrandLiking.BackColor))
             BooLinkingChanges = True
@@ -4165,7 +4139,7 @@ Public Class FormOffer
     End Sub
 
 
-    Private Sub ButtonBomSigipCompare_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBomSigipCompare.Click
+    Private Sub ButtonBomSigipCompare_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBomSigipCompare.Click
 
         ' primo tentativo pare non ok, da debaggare
         SigipOfferDifference()
@@ -4274,8 +4248,7 @@ Public Class FormOffer
         tblOff.Dispose()
     End Function
 
-
-    Private Sub ButtonBomImportSigipBom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBomImportSigipBom.Click
+    Private Sub ButtonBomImportSigipBom_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBomImportSigipBom.Click
         Dim cmd As New MySqlCommand()
         Dim sql As String
         Dim rowShowOffer As DataRow()
@@ -4385,12 +4358,10 @@ Public Class FormOffer
             TotQtSigip = Val(TotQtSigip) + Val(rowShowOffer(i - 1).Item("qt").ToString)
         Next
 
-
-
     End Function
 
 
-    Private Sub ButtonComponentImportOrcad_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonComponentImportOrcad.Click
+    Private Sub ButtonComponentImportOrcad_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonComponentImportOrcad.Click
         ComboBoxComponentBrand.Items.Clear()
         ComboBoxComponentBrand.Text = ""
         For i = 0 To ComboBoxComponentOrcadSupplier.Items.Count - 1
@@ -4404,16 +4375,14 @@ Public Class FormOffer
         End Try
     End Sub
 
-
-
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs)
         NoInfoBomBest = True
         ButtonBomBest_Click(Me, e)
         updateComponentList()
         NoInfoBomBest = False
     End Sub
 
-    Private Sub TabPageComponent_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TabPageComponent.Click
+    Private Sub TabPageComponent_Click(ByVal sender As Object, ByVal e As EventArgs) Handles TabPageComponent.Click
 
     End Sub
 
@@ -4421,7 +4390,7 @@ Public Class FormOffer
         If e.KeyValue = 13 Then updateComponentList()
     End Sub
 
-    Private Sub CheckBoxNO_ALTP_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBoxNO_ALTP.CheckedChanged
+    Private Sub CheckBoxNO_ALTP_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBoxNO_ALTP.CheckedChanged
         updateComponentList()
     End Sub
 
@@ -4429,7 +4398,7 @@ Public Class FormOffer
         If e.KeyCode = 112 Then ButtonComponentCustomerTRF_Click(Me, e)
     End Sub
 
-    Private Sub ButtonOpenOfferBrand_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonOpenOfferBrand.Click
+    Private Sub ButtonOpenOfferBrand_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonOpenOfferBrand.Click
 
         Dim rowShow As DataRow()
 
@@ -4461,10 +4430,9 @@ Public Class FormOffer
 
         End Try
 
-
     End Sub
 
-    Private Sub ButtonOpenOfferBrandAlt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonOpenOfferBrandAlt.Click
+    Private Sub ButtonOpenOfferBrandAlt_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonOpenOfferBrandAlt.Click
         Dim rowShow As DataRow()
 
         Try
@@ -4494,11 +4462,7 @@ Public Class FormOffer
     End Sub
 
 
-
-
-
-    Private Sub ButtonPredict_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonPredict.Click
-
+    Private Sub ButtonPredict_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonPredict.Click
 
         Dim cmd As New MySqlCommand()
         Dim sql As String
@@ -4512,8 +4476,6 @@ Public Class FormOffer
         Dim AdapterOffMY As New MySqlDataAdapter("SELECT * FROM offer", MySqlconnection)
         AdapterOffMY.Fill(DsOff, "Offer")
         tblOff = DsOff.Tables("Offer")
-
-
 
         If vbYes = MsgBox("Do you want fill all class based on description?", vbYesNo) Then
 
@@ -4552,18 +4514,15 @@ Public Class FormOffer
     End Sub
 
 
-
-
-
-    Private Sub CheckBoxOrderByNumber_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBoxOrderByNumber.CheckedChanged
+    Private Sub CheckBoxOrderByNumber_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBoxOrderByNumber.CheckedChanged
         UpdateTreeBomOffer()
     End Sub
 
-    Private Sub TabPageOffer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TabPageOffer.Click
+    Private Sub TabPageOffer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles TabPageOffer.Click
 
     End Sub
 
-    Private Sub ButtonEstimation_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonEstimation.Click
+    Private Sub ButtonEstimation_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonEstimation.Click
         If InStr(TextBoxComponentBitronPN.Text, "Price_Est_", CompareMethod.Text) > 0 Then
             TextBoxComponentBitronPN.Text = Replace(TextBoxComponentBitronPN.Text, "Price_Est_", "")
         Else
@@ -4572,13 +4531,13 @@ Public Class FormOffer
 
     End Sub
 
-    Private Sub CheckBoxEstimation_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBoxEstimation.CheckedChanged
+    Private Sub CheckBoxEstimation_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBoxEstimation.CheckedChanged
         UpdateTreeBomOffer()
     End Sub
 
 
 
-    Private Sub ButtonComponentsImportImportORCAD_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonComponentsImportORCAD.Click
+    Private Sub ButtonComponentsImportImportORCAD_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonComponentsImportORCAD.Click
         ComboBoxComponentALTBrand.Items.Clear()
         ComboBoxComponentALTBrand.Text = ""
         For i = 0 To ComboBoxComponentOrcadSupplier.Items.Count - 1
@@ -4593,7 +4552,7 @@ Public Class FormOffer
     End Sub
 
 
-    Private Sub ButtonComponentImportBrand_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonComponentImportBrand.Click
+    Private Sub ButtonComponentImportBrand_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonComponentImportBrand.Click
         ComboBoxComponentALTBrand.Items.Clear()
         ComboBoxComponentALTBrand.Text = ""
         For i = 0 To ComboBoxComponentBrand.Items.Count - 1
@@ -4607,11 +4566,16 @@ Public Class FormOffer
         End Try
     End Sub
 
-    Private Sub CheckBoxResult_On_Going_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBoxResult_On_Going.CheckedChanged
+    Private Sub CheckBoxResult_On_Going_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBoxResult_On_Going.CheckedChanged
         If updatigComponent = False Then UpdateTreeBomOffer()
     End Sub
 
-    Private Sub ComboBoxCustomerFilter_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBoxCustomerFilter.SelectedIndexChanged
+    Private Sub ComboBoxCustomerFilter_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxCustomerFilter.SelectedIndexChanged
+        UpdateTreeBomOffer()
+        ProgressBarBom.Value = 0
+    End Sub
+
+    Private Sub ComboBoxBomStatusFilter_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxBomStatusFilter.SelectedIndexChanged
         UpdateTreeBomOffer()
         ProgressBarBom.Value = 0
     End Sub
@@ -4619,17 +4583,7 @@ Public Class FormOffer
 
 
 
-    Private Sub ComboBoxBomStatusFilter_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBoxBomStatusFilter.SelectedIndexChanged
-        UpdateTreeBomOffer()
-        ProgressBarBom.Value = 0
-    End Sub
-
-    Private Sub ComboBoxBomCurrency_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBoxBomCurrency.SelectedIndexChanged
-
-    End Sub
-
-
-    Private Sub RadioButtonQD_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RadioButtonQD.CheckedChanged
+    Private Sub RadioButtonQD_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles RadioButtonQD.CheckedChanged
         If RadioButtonQD.Checked = True Then
             TextBoxBrandPrice.Enabled = True
             ComboBoxBrandCurrency.Enabled = True
@@ -4646,7 +4600,7 @@ Public Class FormOffer
 
     End Sub
 
-    Private Sub RadioButtonSZ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RadioButtonSZ.CheckedChanged
+    Private Sub RadioButtonSZ_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles RadioButtonSZ.CheckedChanged
         If RadioButtonSZ.Checked = True Then
             TextBoxBrandPrice.Enabled = False
             ComboBoxBrandCurrency.Enabled = False
@@ -4664,7 +4618,7 @@ Public Class FormOffer
     End Sub
 
 
-    Private Sub Buttonexport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Buttonexport.Click
+    Private Sub Buttonexport_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Buttonexport.Click
 
 
         SaveFileDialog1.FileName = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\" & "Brand" & ".xls"
@@ -4687,23 +4641,4 @@ Public Class FormOffer
 
     End Sub
 
-    Private Sub ComboBoxComponentPriceAlt_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBoxComponentPriceAlt.SelectedIndexChanged
-
-    End Sub
-
-    Private Sub Label25_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label25.Click
-
-    End Sub
-
-    Private Sub ComboBoxComponentProposalALT_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBoxComponentProposalALT.SelectedIndexChanged
-
-    End Sub
-
-    Private Sub Label21_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label21.Click
-
-    End Sub
-
-    Private Sub GroupBox3_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupBox3.Enter
-
-    End Sub
 End Class

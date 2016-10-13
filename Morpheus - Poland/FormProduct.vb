@@ -6,7 +6,6 @@ Imports System.Data.SqlClient
 Imports System.Text.RegularExpressions
 
 Public Class FormProduct
-
     Dim index As Long = 1
     Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", MySqlconnection)
     Dim tblProd As DataTable
@@ -39,9 +38,8 @@ Public Class FormProduct
     Dim SqlconnectionOrcad As New SqlConnection
     ' EVENT
 
-
-
-    Private Sub FormProduct_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+ 
+    Private Sub FormProduct_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
         FormStart.Show()
         tblProd.Dispose()
         DsProd.Dispose()
@@ -51,10 +49,7 @@ Public Class FormProduct
         AdapterCus.Dispose()
     End Sub
 
-    Private Sub FormProduct_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
-
-
+    Private Sub FormProduct_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US")
 
         Me.Focus()
@@ -73,7 +68,7 @@ Public Class FormProduct
         fillEcrComboMch()
         FillCustomerCombo()
         ComboBoxStatus.Items.Add("")
-        ComboBoxStatus.Items.Add("OBSOLETE")
+	ComboBoxStatus.Items.Add("OBSOLETE")
         ComboBoxStatus.Items.Add("SOP_SAMPLE")
         ComboBoxStatus.Items.Add("R&D_APPROVED")
         ComboBoxStatus.Items.Add("LOGISTIC_APPROVED")
@@ -124,7 +119,7 @@ Public Class FormProduct
         ListViewMch.Columns.Add(h2)
     End Sub
 
-    Private Sub ButtonAddProduct_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonAddProduct.Click
+    Private Sub ButtonAddProduct_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAddProduct.Click
 
         Dim cmd As New MySqlCommand()
         Dim sql As String
@@ -162,7 +157,7 @@ Public Class FormProduct
 
     End Sub
 
-    Private Sub ButtonUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonUpdate.Click
+    Private Sub ButtonUpdate_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonUpdate.Click
 
         Dim cmd As New MySqlCommand()
         Dim sql As String
@@ -269,7 +264,7 @@ Public Class FormProduct
         End If
     End Sub
 
-    Private Sub ButtonDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonDelete.Click
+    Private Sub ButtonDelete_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDelete.Click
         Dim cmd As New MySqlCommand()
         Dim sql As String
         If controlRight("W") = 3 Then
@@ -293,17 +288,17 @@ Public Class FormProduct
         FillListView()
     End Sub
 
-    Private Sub ButtonQuery_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ButtonQuery.Click
+    Private Sub ButtonQuery_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonQuery.Click
 
         FillListView()
 
     End Sub
 
-    Private Sub ButtonReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonReset.Click
+    Private Sub ButtonReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonReset.Click
         reset()
     End Sub
 
-    Private Sub ButtonCustomerAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonCustomerAdd.Click
+    Private Sub ButtonCustomerAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonCustomerAdd.Click
         Dim cmd As New MySqlCommand()
         Dim sql As String
         sql = InputBox("Please write the new customer name", "New Customer - Data input")
@@ -327,7 +322,7 @@ Public Class FormProduct
         FillCustomerCombo()
     End Sub
 
-    Private Sub ButtonDeleteCustomer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonDeleteCustomer.Click
+    Private Sub ButtonDeleteCustomer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDeleteCustomer.Click
         Dim cmd As New MySqlCommand()
         Dim sql As String
         If controlRight("W") = 3 Then
@@ -349,7 +344,7 @@ Public Class FormProduct
         FillCustomerCombo()
     End Sub
 
-    Private Sub ButtonAddMch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonAddMch.Click
+    Private Sub ButtonAddMch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAddMch.Click
         Dim pos As Integer, exist As Boolean
         If ComboBoxMch.Text <> "" Then
             If ListViewMch.Items.Count > 0 Then
@@ -373,7 +368,7 @@ Public Class FormProduct
         End If
     End Sub
 
-    Private Sub ButtonRemoveMch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonRemoveMch.Click
+    Private Sub ButtonRemoveMch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRemoveMch.Click
 
         If ListViewMch.Items.Count > 0 Then
             For i = 0 To ListViewMch.Items.Count - 1
@@ -432,18 +427,12 @@ Public Class FormProduct
         End If
 
         ListBoxLog.Items.Add(ComCode & " -> " & rsResult(0).Item("en").ToString)
-
         If Val(ComCode) >= 5000 Then
-
             ListBoxLog.BackColor = Color.LightGreen
-
         ElseIf Val(ComCode) < 5000 Then
-
             ListBoxLog.BackColor = Color.OrangeRed
-
         End If
     End Sub
-
     Sub reset()
         ComboBoxStatus.Text = ""
         ComboBoxCustomer.Text = ""
@@ -615,7 +604,7 @@ Public Class FormProduct
         ListView1.Refresh()
     End Sub
 
-    Private Sub ButtonGroup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonGroup.Click
+    Private Sub ButtonGroup_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonGroup.Click
         DsProd.Clear()
         tblProd.Clear()
         AdapterProd.Fill(DsProd, "product")
@@ -646,7 +635,7 @@ Public Class FormProduct
 
     End Sub
 
-    Private Sub ButtonOpenIssue_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonOpenIssue.Click
+    Private Sub ButtonOpenIssue_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonOpenIssue.Click
 
         DsProd.Clear()
         tblProd.Clear()
@@ -686,7 +675,7 @@ Public Class FormProduct
 
     End Sub
 
-    Private Sub ButtonStatusUP_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonStatusUP.Click
+    Private Sub ButtonStatusUP_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonStatusUP.Click
         Dim currentStatus As String
         Dim result As DataRow()
 
@@ -835,7 +824,7 @@ Public Class FormProduct
         ListBoxLog.Items.Add(ListView1.SelectedItems.Item(0).SubItems(3).Text & "  -  Status Updated!")
     End Sub
 
-    Private Sub ButtonOpenIssuePrint_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonOpenIssuePrint.Click
+    Private Sub ButtonOpenIssuePrint_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonOpenIssuePrint.Click
 
         DsProd.Clear()
         tblProd.Clear()
@@ -875,7 +864,7 @@ Public Class FormProduct
 
     End Sub
 
-    Private Sub ButtonSIGIP_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonSIGIP.Click
+    Private Sub ButtonSIGIP_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSIGIP.Click
         If controlRight("R") >= 2 And controlRight("J") >= 2 Then
 
             If InStr(ParameterTable("LAST_SIGIP_BOM_UPDATE"), "DONE", CompareMethod.Text) > 0 Then
@@ -1613,8 +1602,6 @@ Public Class FormProduct
 
         Dim changed As Boolean = True
 
-
-
         While changed
             changed = False
             AdapterDoc.SelectCommand = New MySqlCommand("SELECT * FROM sigip;", MySqlconnection)
@@ -1685,7 +1672,7 @@ Public Class FormProduct
         ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
     End Sub
 
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonExport.Click
+    Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonExport.Click
         ExportListview2Excel(ListView1)
     End Sub
 
@@ -1738,7 +1725,7 @@ Public Class FormProduct
     End Sub
 
 
-    Private Sub TextBoxLS_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBoxLS.TextChanged
+    Private Sub TextBoxLS_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxLS.TextChanged
         If IsNumeric(TextBoxLS.Text) Then
         Else
             TextBoxLS.Text = ""

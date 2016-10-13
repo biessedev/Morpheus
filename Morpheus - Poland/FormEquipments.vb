@@ -24,7 +24,7 @@ Public Class FormEquipments
 
 
 
-    Private Sub FormEquipments_Load(ByVal sender As System.Object, ByVal e As EventArgs) Handles MyBase.Load
+    Private Sub FormEquipments_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         UpdatigTree = True
         ComboBoxActivityId.Items.Add("")
         ComboBoxActivityId.Items.Add("GBES - Grugliasco Build Equipment Service")
@@ -443,7 +443,7 @@ Public Class FormEquipments
 
     End Function
 
-    Private Sub ButtonAdd_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonAdd.Click
+    Private Sub ButtonAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAdd.Click
 
         Dim rootNode As TreeNode, rootNodeChild As TreeNode
         Dim cmd As New MySqlCommand()
@@ -480,7 +480,7 @@ Public Class FormEquipments
 
     End Sub
 
-    Private Sub TreeViewEQ_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewEQ.AfterSelect
+    Private Sub TreeViewEQ_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewEQ.AfterSelect
         Dim tblEQ As DataTable
         Dim DsEQ As New DataSet
         Dim rowShow As DataRow(), id As Integer = 0
@@ -607,7 +607,7 @@ Public Class FormEquipments
         Next
     End Function
 
-    Private Sub ButtonBomSave_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonSave.Click
+    Private Sub ButtonBomSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSave.Click
         Dim id As Integer, idSelected As Integer
         id = CurrentID()
         If id > 0 Then
@@ -745,7 +745,7 @@ Public Class FormEquipments
 
     End Function
 
-    Private Sub Controls_TextChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles _
+    Private Sub Controls_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles _
     ComboBoxEnd.TextChanged, ComboBoxHWDoc.TextChanged, ComboBoxHWDebug.TextChanged, ComboBoxHWBuilding.TextChanged,
     ComboBoxStart.TextChanged, ComboBoxSWDebug.TextChanged, ComboBoxCustomer.TextChanged, TextBoxToolId.TextChanged, ComboBoxmpa.TextChanged,
     ComboBoxSop.TextChanged, RichTextBoxNote.TextChanged, TextBoxToolName.TextChanged, TextBoxWorkHours.TextChanged
@@ -801,7 +801,7 @@ Public Class FormEquipments
         UpdatigTree = tmpUpdate
     End Sub
 
-    Private Sub TimerRecord_Tick(ByVal sender As System.Object, ByVal e As EventArgs) Handles TimerRecord.Tick
+    Private Sub TimerRecord_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerRecord.Tick
         Dim id As Integer
         id = CurrentID()
         If id = 0 Then
@@ -822,7 +822,7 @@ Public Class FormEquipments
         End If
     End Sub
 
-    Private Sub ButtonRemove_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonRemove.Click
+    Private Sub ButtonRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRemove.Click
         Dim cmd As New MySqlCommand()
         Dim sql As String, id As Integer
 
@@ -953,7 +953,7 @@ Public Class FormEquipments
 
     End Function
 
-    Private Sub ButtonAddActivity_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonAddActivity.Click
+    Private Sub ButtonAddActivity_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAddActivity.Click
         Dim nameActivity As String, i As Integer
         nameActivity = InputBox("Insert name activity in the format:  acronim - description" & vbCrLf & vbCrLf & "Example ""GBES - Grugliasco Build Equipment Service""")
         Try
@@ -970,7 +970,7 @@ Public Class FormEquipments
 
     End Sub
 
-    Private Sub ButtonLoadTools_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonLoadTools.Click
+    Private Sub ButtonLoadTools_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonLoadTools.Click
         Dim tblProd As DataTable
         Dim DsProd As New DataSet
         AdapterProd.Fill(DsProd, "Product")
@@ -1050,7 +1050,7 @@ Public Class FormEquipments
         End If
     End Sub
 
-    Private Sub ButtonCollapsExpand_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonCollapsExpand.Click
+    Private Sub ButtonCollapsExpand_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonCollapsExpand.Click
         If ButtonCollapsExpand.Text = "C" Then
             ButtonCollapsExpand.Text = "E"
             TreeViewEQ.CollapseAll()
@@ -1060,7 +1060,7 @@ Public Class FormEquipments
         End If
     End Sub
 
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
         UpdateTreeEQList(True)
     End Sub
 
@@ -1106,7 +1106,7 @@ Public Class FormEquipments
 
     End Function
 
-    Private Sub ComboBoxEnd_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles ComboBoxEnd.SelectedIndexChanged
+    Private Sub ComboBoxEnd_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxEnd.SelectedIndexChanged
         If ComboBoxEnd.Text = "DONE" And UpdatigTree = False Then
             ComboBoxHWBuilding.Text = "DONE"
             ComboBoxHWDebug.Text = "DONE"

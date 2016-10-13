@@ -23,8 +23,7 @@ Public Class FormTime
     Dim NodeSelect As Integer
     Dim CurrentNodeIndex As Integer
     Dim yelloDelay As Integer = 5
-
-    Private Sub FormTime_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub FormTime_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         AdapterTP.Fill(DsTP, "TimeProject")
         tblTP = DsTP.Tables("TimeProject")
 
@@ -405,7 +404,7 @@ Public Class FormTime
 
     End Function
 
-    Private Sub DateTimePickerFinish_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DateTimePickerFinish.CloseUp
+    Private Sub DateTimePickerFinish_ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles DateTimePickerFinish.CloseUp
         If CheckBoxFixedEnd.Checked = False Then
 
             TextBoxFinish.Text = date_to_string(DateTimePickerFinish.Text)
@@ -415,7 +414,7 @@ Public Class FormTime
 
     End Sub
 
-    Private Sub DateTimePickerStart_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DateTimePickerStart.CloseUp
+    Private Sub DateTimePickerStart_ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles DateTimePickerStart.CloseUp
         If CheckBoxFixedStart.Checked = False Then
             TextBoxStart.Text = date_to_string(DateTimePickerStart.Text)
         Else
@@ -424,7 +423,7 @@ Public Class FormTime
 
     End Sub
 
-    Private Sub ButtonDelProject_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonDelProject.Click
+    Private Sub ButtonDelProject_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDelProject.Click
         Dim cmd As New MySqlCommand()
         Dim sql As String
         If controlRight("J") >= 2 And (controlRight(Mid(ComboBoxArea.Text, 1, 1)) > 2 Or ComboBoxArea.Text = "") Then
@@ -453,7 +452,7 @@ Public Class FormTime
         UpdateTreeTPList(True)
     End Sub
 
-    Private Sub Controls_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
+    Private Sub Controls_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles _
                 ComboBoxArea.TextChanged, ComboBoxCustomer.TextChanged, ComboBoxQuality.TextChanged, ComboBoxResponsible.TextChanged,
                 ComboBoxStatus.TextChanged, TextBoxFinish.TextChanged, TextBoxStart.TextChanged, TextBoxNote.TextChanged, ComboBoxCompleated.TextChanged,
                 CheckBoxFixedEnd.CheckedChanged, CheckBoxFixedStart.CheckedChanged
@@ -478,7 +477,7 @@ Public Class FormTime
         End If
     End Sub
 
-    Private Sub ButtonSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonSave.Click
+    Private Sub ButtonSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSave.Click
 
         Dim cmd As New MySqlCommand(), nodeparent As String = ""
         Dim sql As String, datevalid As Boolean
@@ -539,7 +538,7 @@ Public Class FormTime
 
     End Sub
 
-    Private Sub TreeViewTP_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewTP.AfterSelect
+    Private Sub TreeViewTP_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewTP.AfterSelect
 
         Dim UpdatigTreePrev As Boolean = UpdatigTree
 
@@ -819,7 +818,7 @@ Public Class FormTime
             Dstp_static.Clear()
             tbltp_static.Clear()
             AdapterTP.Fill(Dstp_static, "TimeProject")
-            tblTP = Dstp_static.Tables("TimeProject")
+            tbltp = Dstp_static.Tables("TimeProject")
         End If
 
         quality = 0
@@ -1112,7 +1111,7 @@ Public Class FormTime
             Dstp_static.Clear()
             tbltp_static.Clear()
             AdapterTP.Fill(Dstp_static, "TimeProject")
-            tblTP = Dstp_static.Tables("TimeProject")
+            tbltp = Dstp_static.Tables("TimeProject")
         End If
 
         rowShow = tbltp_static.Select("Project = '" & id & "'")
@@ -1204,7 +1203,7 @@ Public Class FormTime
 
     End Function
 
-    Private Sub ButtonAddTemplate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonDuplicate.Click
+    Private Sub ButtonAddTemplate_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDuplicate.Click
         Dim cmd As New MySqlCommand()
         Dim sql As String, newName As String
         DsTP.Clear()
@@ -1242,7 +1241,7 @@ Public Class FormTime
         myNodeSelect(False, True)
     End Sub
 
-    Private Sub ButtonAddProject_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonAddProject.Click
+    Private Sub ButtonAddProject_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAddProject.Click
 
         Dim cmd As New MySqlCommand()
         Dim sql As String, needAdd As Boolean
@@ -1281,14 +1280,14 @@ Public Class FormTime
         End If
     End Sub
 
-    Private Sub ButtonRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonRefresh.Click
+    Private Sub ButtonRefresh_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRefresh.Click
         myNodeSelect(True, True)
         UpdateTreeTPList(True)
         myNodeSelect(False, True)
         TreeViewTP.Focus()
     End Sub
 
-    Private Sub ButtonExportGantt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonExportGantt.Click
+    Private Sub ButtonExportGantt_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonExportGantt.Click
         Dim Project As String, i As Integer
         Dim PresenceTmp As Integer
         Dim rowShow As DataRow(), rowExcel As Integer, sql As String
@@ -1460,7 +1459,7 @@ Public Class FormTime
 
     End Function
 
-    Private Sub ButtonHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonHelp.Click
+    Private Sub ButtonHelp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonHelp.Click
         FormHelpHime.Show()
         FormHelpHime.Focus()
         FormHelpHime.Text = "Quality problem severity" & " <>  Welcome : " & CreAccount.strUserName
@@ -1483,11 +1482,11 @@ Public Class FormTime
         Next
     End Sub
 
-    Private Sub ComboBoxQuality_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBoxQuality.TextChanged
+    Private Sub ComboBoxQuality_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxQuality.TextChanged
         If Not IsNumeric(ComboBoxQuality.Text) Or Val(ComboBoxQuality.Text) > 100 Then ComboBoxQuality.Text = ""
     End Sub
 
-    Private Sub ComboBoxCompleated_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBoxCompleated.TextChanged
+    Private Sub ComboBoxCompleated_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxCompleated.TextChanged
         If Not IsNumeric(ComboBoxQuality.Text) Or Val(ComboBoxQuality.Text) > 100 Then ComboBoxQuality.Text = ""
     End Sub
 

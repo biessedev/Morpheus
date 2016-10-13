@@ -16,13 +16,11 @@ Public Class FormTimeShow
     Dim tbltp_static As DataTable
     Dim Dstp_static As New DataSet
 
-
-
-    Private Sub FormShow_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+    Private Sub FormShow_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
         FormStart.Show()
     End Sub
 
-    Private Sub FormTimeShow_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub FormTimeShow_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
         TreeViewProjectList.HideSelection = False
         AdapterTP.Fill(DsTP, "TimeProject")
@@ -63,7 +61,6 @@ Public Class FormTimeShow
             For Each row In rowShow
                 If Val(row("quality").ToString) < quality Then quality = Val(row("quality").ToString)
             Next
-
         Else
             quality = 100
         End If
@@ -96,7 +93,7 @@ Public Class FormTimeShow
 
     End Function
 
-    Private Sub TimerShow_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TimerShow.Tick
+    Private Sub TimerShow_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerShow.Tick
 
         DsTP.Clear()
         tblTP.Clear()
@@ -321,7 +318,7 @@ Public Class FormTimeShow
     Sub UpdateTreeTaskList(ByVal refresh As Boolean)
         Dim rootNode As TreeNode, Project As String, projectStatusStr As String
 
-        Dim rowShow As DataRow(), i As Integer, sql As String
+        Dim rowShow As DataRow(), sql As String
         ' TreeViewTaskList.Font = New Font("Courier New", 14, FontStyle.Bold)
         TreeViewTaskList.Nodes.Clear()
 
@@ -367,14 +364,13 @@ Public Class FormTimeShow
             refresh = False
         Next
 
-
     End Sub
 
     Sub UpdateTreeProjectList(ByVal refresh As Boolean)
 
         Dim rootNode As TreeNode, Project As String, projectStatusStr As String
 
-        Dim rowShow As DataRow(), i As Integer, sql As String
+        Dim rowShow As DataRow(), sql As String
         ' TreeViewProjectList.Font = New Font("Courier New", 14, FontStyle.Bold)
         TreeViewProjectList.Nodes.Clear()
 
@@ -582,7 +578,7 @@ Public Class FormTimeShow
 
     End Function
 
-    Private Sub ButtonShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonShow.Click
+    Private Sub ButtonShow_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonShow.Click
         If ButtonShow.Text = "Show" Then
             ButtonShow.Text = "Stop"
             TimerShow.Enabled = True
@@ -664,7 +660,7 @@ Public Class FormTimeShow
 
     End Function
 
-    Private Sub ButtonClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonClose.Click
+    Private Sub ButtonClose_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonClose.Click
         Me.Dispose()
     End Sub
 
@@ -674,15 +670,8 @@ Public Class FormTimeShow
 
     End Sub
 
-    Private Sub TimerProjectList_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TimerProjectList.Tick
+    Private Sub TimerProjectList_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerProjectList.Tick
         UpdateTreeProjectList(True)
     End Sub
 
-    Private Sub PictureBoxF_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PictureBoxF.Click
-
-    End Sub
-
-    Private Sub PictureBoxC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PictureBoxC.Click
-
-    End Sub
 End Class

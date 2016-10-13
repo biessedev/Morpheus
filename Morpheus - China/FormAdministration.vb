@@ -6,7 +6,6 @@ Imports System.Net.Mail
 Imports System.Net
 Imports System.IO
 
-
 Public Class FormAdministration
     Dim closeform As Boolean
     Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
@@ -22,14 +21,11 @@ Public Class FormAdministration
     Dim userDep3 As String
     Dim cmd As New MySqlCommand()
 
-
-
-
-    Private Sub FormAdministration_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+    Private Sub FormAdministration_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
         FormStart.Show()
     End Sub
 
-    Private Sub FormAdministration_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub FormAdministration_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         AdapterEcr.SelectCommand = New MySqlCommand("SELECT * FROM ecr;", MySqlconnection)
         AdapterEcr.Fill(DsEcr, "ecr")
         tblEcr = DsEcr.Tables("ecr")
@@ -57,13 +53,11 @@ Public Class FormAdministration
         dep.Add("B")
 
     End Sub
-    Private Sub TimerECR_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles TimerECR.Tick
+    Private Sub TimerECR_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerECR.Tick
 
         FormStart.Hide()
         ParameterTableWrite("SYSTEM_SHEDULE", "RUN")
         Dim dt As New DateTime
-
-
 
         'ECR
         If Now.DayOfWeek <> DayOfWeek.Saturday And Now.DayOfWeek <> DayOfWeek.Sunday Then
@@ -167,7 +161,7 @@ Public Class FormAdministration
                     cmd = New MySqlCommand(sql, MySqlconnection)
                     cmd.ExecuteNonQuery()
                 Else
-                    MsgBox("TCR mail send error!")
+                    MsgBox("Error sending email for TCR!")
                 End If
 
             Catch ex As Exception
@@ -249,11 +243,11 @@ Public Class FormAdministration
                     End If
 
                 Catch ex As Exception
-                ComunicationLog("5050") ' Mysql update query error 
-            End Try
+                    ComunicationLog("5050") ' Mysql update query error 
+                End Try
 
-            oi = Replace(row("openissue").ToString, "];", "]" & vbCrLf)
-            If oi = "" Then oi = "No Open Issue at this moment"
+                oi = Replace(row("openissue").ToString, "];", "]" & vbCrLf)
+                If oi = "" Then oi = "No Open Issue at this moment"
             End If
 
 
@@ -292,11 +286,10 @@ Public Class FormAdministration
         'If dep = "F" Then prevStatus = "PRODUCTION_APPROVED"
         If dep = "F" Then prevStatus = "PROCESS_ENG_APPROVED"
         If dep = "N" Then prevStatus = "FINANCIAL_APPROVED"
-
     End Function
 
 
-    Private Sub ButtonCompare_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonCompare.Click
+    Private Sub ButtonCompare_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonCompare.Click
         Dim RowSearch As DataRow()
         Dim objFtp As ftp = New ftp(), i As Long, sql As String
         Dim strPathFtp As String, strListDir As String
@@ -352,7 +345,7 @@ Public Class FormAdministration
                     If CheckBoxDeleteRecord.Checked = True Then
                         Try
 
-                            If MsgBox("Want you delete the record: " & row("header").ToString & "_" & row("filename").ToString & _
+                            If MsgBox("Do you want to delete the record: " & row("header").ToString & "_" & row("filename").ToString &
                             "_" & row("rev").ToString & "." & row("extension").ToString, MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
                                 sql = "DELETE FROM `" & DBName & "`.`doc` WHERE `doc`.`id` = " & row("id").ToString
                                 cmd = New MySqlCommand(sql, MySqlconnection)
@@ -366,7 +359,7 @@ Public Class FormAdministration
                     End If
 
                 Else
-                ' tutto ok
+                    ' tutto ok
                 End If
 
                 ButtonCompare.Text = Format(100 * (i / RowSearch.Length), "#.#")
@@ -383,7 +376,8 @@ Public Class FormAdministration
         ButtonCompare.Text = "Compare File DB"
         TimerECR.Start()
     End Sub
-    Private Sub ButtonClose_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ButtonClose.Click
+
+    Private Sub ButtonClose_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonClose.Click
 
         If controlRight("Z") >= 3 And InputBox("Please insert psw for this account : ", "Password Request") = CreAccount.strPassword Then
             FormStart.Show()
@@ -397,8 +391,6 @@ Public Class FormAdministration
     Private Sub ButtonDelDup_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDelDup.Click
         DelDuplicate()
     End Sub
-
-
 
     Sub UpdateEcrTable()
 
@@ -432,12 +424,13 @@ Public Class FormAdministration
                     ComunicationLog("5050") ' Mysql update query error, check if bitron p/n is already in db
                 End Try
 
-            Else  ' need add
+            Else  ' no need add
 
             End If
         Next
 
     End Sub
+
     Sub ecrDocSign()
         Dim RowSearchEcr As DataRow(), sql As String, refresh As Boolean = True
         RowSearchEcr = tblEcr.Select("docInvalid = 'NO'", "number")
@@ -469,7 +462,7 @@ Public Class FormAdministration
                         cmd = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
                     Else
-                        MsgBox("ECR Sign mail sent error!")
+                        MsgBox("Error sending email ECR signature!")
                     End If
 
                 Catch ex As Exception
@@ -516,12 +509,9 @@ Public Class FormAdministration
                         MsgBox("mail sent error ECR confirm!")
                     End If
 
-
                     sql = "UPDATE `" & DBName & "`.`ECR` SET `confirm` = 'SENT_CONFIRMED' WHERE `ECR`.`id` = " & row("id").ToString & " ;"
                     cmd = New MySqlCommand(sql, MySqlconnection)
                     cmd.ExecuteNonQuery()
-
-
 
                 Catch ex As Exception
                     ComunicationLog("0052") 'db operation error
@@ -529,7 +519,6 @@ Public Class FormAdministration
             End If
             refresh = False
         Next
-
 
     End Sub
 
@@ -544,8 +533,6 @@ Public Class FormAdministration
             tblDoc = DsDoc.Tables("doc")
         End If
 
-
-
         Res = tblDoc.Select("id = " & docId)
         If Res.Length > 0 Then
             readDocSign = Res(0).Item("sign").ToString
@@ -557,7 +544,7 @@ Public Class FormAdministration
 
     Sub EcrMailScheduler()
 
-        Dim RowSearchEcr As DataRow(), sql As String, us As String, dt As Date, refresh As Boolean = True
+        Dim RowSearchEcr As DataRow(), us As String, dt As Date, refresh As Boolean = True
         RowSearchEcr = tblEcr.Select("")
         For Each row In RowSearchEcr
 
@@ -791,7 +778,7 @@ Public Class FormAdministration
                 msg.Attachments.Add(Allegato)
                 msg.Body = bodyText
             Else
-                msg.Body = "ATTENTION FILE NOT SEND BY MAIL FOR EXCESSIVE DIMENSION. PLEASE DOWNLOAD FROM SERVER!!!" & vbCrLf & vbCrLf & bodyText
+                msg.Body = "ATTENTION FILE NOT SENT BY MAIL FOR EXCESSIVE DIMENSION. PLEASE DOWNLOAD FROM SERVER!!!" & vbCrLf & vbCrLf & bodyText
             End If
         Else
             msg.Body = bodyText
@@ -799,15 +786,13 @@ Public Class FormAdministration
 
         msg.Subject = SubText
 
+        If freq = False Then
+            freqcc = ""
+            freqTo = ""
+        End If
 
-
-            If freq = False Then
-                freqcc = ""
-                freqTo = ""
-            End If
-
-            Try
-                If DayOfWeek.Sunday <> dt.DayOfWeek And DayOfWeek.Sunday <> dt.DayOfWeek Then
+        Try
+            If DayOfWeek.Sunday <> dt.DayOfWeek And DayOfWeek.Sunday <> dt.DayOfWeek Then
                 If ((InStr(freqTo, "[" & Necr & "]", CompareMethod.Text) <= 0) And Necr <> "DAILY") Or ((dt.Hour = 9) And (dt.Minute() >= 30 And dt.Minute() <= 59)) Or ((dt.Hour = 10) And (dt.Minute() >= 0 And dt.Minute() <= 30)) Then
                     client.Send(msg)
                     MailSent = True
@@ -824,12 +809,12 @@ Public Class FormAdministration
                         WriteField("freq", row("freq").ToString & "[" & Necr & "]", row("id").ToString)
                     Next
                 End If
-                End If
+            End If
 
-            Catch ex As Exception
-                ListBoxLog.Items.Add("Mail not sent...!!!")
-            End Try
-            Application.DoEvents()
+        Catch ex As Exception
+            ListBoxLog.Items.Add("Mail not sent...!!!")
+        End Try
+        Application.DoEvents()
     End Function
 
 
@@ -854,9 +839,9 @@ Public Class FormAdministration
                 ExploreFile(strDir & Mid(strRec, 56, Len(strRec) - 56) & "/")
             Else 'file
 
-                RowSearch = tblDoc.Select("header='" & Mid(Mid(strRec, 56), 1, 11) & _
-                "' and FileName='" & Mid(Mid(strRec, 56), 13, InStrRev(Mid(strRec, 56), "_", -1) - 13) & _
-                "' and rev=" & Mid(Mid(strRec, 56), InStrRev(Mid(strRec, 56), "_", -1) + 1, InStrRev(Mid(strRec, 56), ".", -1) - InStrRev(Mid(strRec, 56), "_", -1) - 1) & _
+                RowSearch = tblDoc.Select("header='" & Mid(Mid(strRec, 56), 1, 11) &
+                "' and FileName='" & Mid(Mid(strRec, 56), 13, InStrRev(Mid(strRec, 56), "_", -1) - 13) &
+                "' and rev=" & Mid(Mid(strRec, 56), InStrRev(Mid(strRec, 56), "_", -1) + 1, InStrRev(Mid(strRec, 56), ".", -1) - InStrRev(Mid(strRec, 56), "_", -1) - 1) &
                 " and Extension='" & Mid(Mid(strRec, 56), InStrRev(Mid(strRec, 56), ".", -1) + 1, Len(Mid(Mid(strRec, 56), InStrRev(Mid(strRec, 56), ".", -1) + 1)) - 1) & "' ")
 
                 If RowSearch.Length = 1 Then
@@ -866,7 +851,7 @@ Public Class FormAdministration
                 Else  ' record not find
                     If CheckBoxDeleteFile.Checked = True Then
 
-                        If MsgBox("Want you delete the file: " & Mid(strRec, 56, Len(strRec) - 56), MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+                        If MsgBox("Do you want to delete the file: " & Mid(strRec, 56, Len(strRec) - 56), MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
                             strRes = objFtp.DeleteFile(strDir, Mid(strRec, 56, Len(strRec) - 56))
                             If strRes = "5000" Then
                                 ComunicationLog("5073")
@@ -874,9 +859,7 @@ Public Class FormAdministration
                                 ComunicationLog("0056")
                             End If
                         End If
-
-
-                End If
+                    End If
                 End If
             End If
             posI = posL + 1
@@ -964,8 +947,8 @@ Public Class FormAdministration
                 For Each rows In returnsel
                     If First = 0 Then
                         Try
-                            If MsgBox("Want you delete " & rows("header").ToString & " - " & rows("FileName").ToString & "_" & rows("rev").ToString & "." & rows("Extension").ToString & "  records?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                                sql = "UPDATE `" & DBName & "`.`doc` SET `control` = 'CANCEL'" & _
+                            If MsgBox("Do you want to delete " & rows("header").ToString & " - " & rows("FileName").ToString & "_" & rows("rev").ToString & "." & rows("Extension").ToString & "  records?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+                                sql = "UPDATE `" & DBName & "`.`doc` SET `control` = 'CANCEL'" &
                                 " WHERE `doc`.`id` = " & rows("id").ToString & " ;"
                                 WriteCheckTable("Delete Duplicate : " & rows("header").ToString & " - " & rows("FileName").ToString)
                                 cmd = New MySqlCommand(sql, MySqlconnection)
@@ -984,7 +967,7 @@ Public Class FormAdministration
         Next
         returnsel = tblDoc.Select("control='CANCEL'")
         If returnsel.Length > 0 Then
-            If MsgBox("Want you delete " & returnsel.Length & "  records?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+            If MsgBox("Do you want to delete " & returnsel.Length & "  records?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
                 sql = "DELETE FROM `" & DBName & "`.`doc` WHERE `doc`.`control` = 'CANCEL'"
                 cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
@@ -997,7 +980,7 @@ Public Class FormAdministration
     Private Sub Form1_Closing(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
 
         e.Cancel = True
-        If Closeform = True Then e.Cancel = False 'keeps form from closing
+        If closeform = True Then e.Cancel = False 'keeps form from closing
 
     End Sub
 
@@ -1021,8 +1004,12 @@ Public Class FormAdministration
         End If
 
         ListBoxLog.Items.Add(ComCode & " -> " & rsResult(0).Item("en").ToString)
+
         If Val(ComCode) >= 5000 Then
-            ListBoxLog.BackColor = Color.LightGreen
+            If ListBoxLog.BackColor = Color.OrangeRed Then
+            Else
+                ListBoxLog.BackColor = Color.LightGreen
+            End If
         ElseIf Val(ComCode) < 5000 Then
             ListBoxLog.BackColor = Color.OrangeRed
         End If
@@ -1030,7 +1017,7 @@ Public Class FormAdministration
     End Sub
 
 
-    Private Sub ButtonSchedule_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonSchedule.Click
+    Private Sub ButtonSchedule_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSchedule.Click
 
         TimerECR.Enabled = False
         TimerECR_Tick(Me, e)
@@ -1039,7 +1026,7 @@ Public Class FormAdministration
 
 
 
-    Private Sub NotifyIcon1_MouseDoubleClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles NotifyIcon1.MouseDoubleClick
+    Private Sub NotifyIcon1_MouseDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles NotifyIcon1.MouseDoubleClick
 
         Try
 
@@ -1061,23 +1048,18 @@ Public Class FormAdministration
 
 
 
-    Private Sub Form1_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
+    Private Sub Form1_Resize(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Resize
 
         Try
 
             If Me.WindowState = FormWindowState.Minimized Then
-
                 Me.WindowState = FormWindowState.Minimized
-
                 NotifyIcon1.Visible = True
-
                 Me.Hide()
             End If
 
         Catch ex As Exception
-
             MsgBox(ex.Message)
-
         End Try
 
     End Sub
@@ -1114,7 +1096,7 @@ Public Class FormAdministration
                         cmd = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
                     Else
-                        MsgBox("ECR Approve mail sent error!")
+                        MsgBox("Error sending email ECR approval!")
                     End If
 
                 Catch ex As Exception
@@ -1130,7 +1112,7 @@ Public Class FormAdministration
 
     Sub Ecr_Count()
 
-        Dim RowSearchEcr As DataRow(), sql As String, refresh As Boolean = True
+        Dim RowSearchEcr As DataRow(), refresh As Boolean = True
         RowSearchEcr = tblEcr.Select("sign = ''", "number")
         For Each row In RowSearchEcr
 
@@ -1504,8 +1486,4 @@ Public Class FormAdministration
 
         End If
     End Sub
-
-
-
-
 End Class

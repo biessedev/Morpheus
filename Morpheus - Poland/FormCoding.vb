@@ -203,19 +203,19 @@ Public Class FormCoding
         Console.ReadKey()
     End Sub
 
-    Private Sub FormCoding_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub FormCoding_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
         TextBoxPsw.Text = CreAccount.strPassword
         TextBoxName.Text = CreAccount.strUserName
 
     End Sub
 
-    Private Sub DateTimePickerQ_CloseUp(ByVal sender As Object, ByVal e As System.EventArgs) Handles DateTimePickerQ.CloseUp
+    Private Sub DateTimePickerQ_CloseUp(ByVal sender As Object, ByVal e As EventArgs) Handles DateTimePickerQ.CloseUp
         ButtonDate.Text = date_to_string(DateTimePickerQ.Value)
     End Sub
 
 
-    Private Sub ButtonEncrypt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonEncrypt.Click
+    Private Sub ButtonEncrypt_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonEncrypt.Click
         If ButtonDate.Text <> "" And TextBoxName.Text <> "" And TextBoxPsw.Text <> "" And TextBoxInfo.Text <> "" Then
             TextBoxencrypted.Text = ToHex(RijndaelEncrypt(TextBoxPsw.Text, UCase(TextBoxName.Text) & "." & ButtonDate.Text & "." & UCase(TextBoxInfo.Text)))
         Else
@@ -224,11 +224,11 @@ Public Class FormCoding
 
     End Sub
 
-    Private Sub ButtonDecrypt_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonDecrypt.Click
+    Private Sub ButtonDecrypt_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDecrypt.Click
         TextBoxdecrypted.Text = RijndaelDecrypt(TextBoxPsw.Text, ToBin(TextBoxencrypted.Text))
     End Sub
 
-    Private Sub ButtonValid_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonValid.Click
+    Private Sub ButtonValid_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonValid.Click
 
         If ButtonValid.Text = "CHECK VALIDITY" Then
             Dim PSW As String = ""
@@ -262,23 +262,23 @@ Public Class FormCoding
 
     End Sub
 
-    Private Sub TextBoxencrypted_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBoxencrypted.TextChanged
+    Private Sub TextBoxencrypted_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxencrypted.TextChanged
         ButtonValid.Text = "CHECK VALIDITY"
         ButtonValid.BackColor = Color.Gray
     End Sub
 
-    Private Sub TextBoxName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBoxName.TextChanged
+    Private Sub TextBoxName_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxName.TextChanged
         ButtonValid.Text = "CHECK VALIDITY"
         ButtonValid.BackColor = Color.Gray
     End Sub
 
-    Private Sub TextBoxInfo_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBoxInfo.TextChanged
+    Private Sub TextBoxInfo_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxInfo.TextChanged
         ButtonValid.Text = "CHECK VALIDITY"
         ButtonValid.BackColor = Color.Gray
     End Sub
 
 
-    Private Sub ButtonDate_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ButtonDate.TextChanged
+    Private Sub ButtonDate_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDate.TextChanged
         ButtonValid.Text = "CHECK VALIDITY"
         ButtonValid.BackColor = Color.Gray
     End Sub

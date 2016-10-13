@@ -18,12 +18,12 @@ Public Class FormLoadDoc
     Dim intLastRev As Integer
     Dim EcrControl As Boolean
 
-    Private Sub FormLoadDoc_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+    Private Sub FormLoadDoc_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
         FormStart.Show()
 
     End Sub
 
-    Private Sub FormLoadDoc_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub FormLoadDoc_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Try
             FormStart.Hide()
 
@@ -39,7 +39,7 @@ Public Class FormLoadDoc
 
     End Sub
 
-    Private Sub ButtonBrouse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBrouse.Click
+    Private Sub ButtonBrowse_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBrowse.Click
 
         If (OpenFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK) Then
             ComunicationLog("5000")  ' Sistem ready
@@ -114,7 +114,7 @@ Public Class FormLoadDoc
     End Function
 
 
-    Private Sub ButtonLoad_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonLoad.Click
+    Private Sub ButtonLoad_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonLoad.Click
         Dim strLoaded As String, tmp As String
         strRevCheck = RevisionExtract(intLastRev)
         If controlRight(Mid(CreFile.Header, 3, 1)) >= 2 Then
@@ -295,16 +295,16 @@ Public Class FormLoadDoc
 
         Dim returnValue As DataRow()
         Try
-            SignExtract = ("5069") ' sign extract ok
+            SignExtract = ("5069") ' Sign extract ok
             returnValue = tblDoc.Select("header='" & CreFile.Header & "' and FileName='" & CreFile.FileName & _
             "' and Extension='" & CreFile.Extension & "' and rev = " & CreFile.Rev, "rev DESC")
             If returnValue.Length >= 1 Then
                 sign = returnValue(0).Item("sign")
             ElseIf returnValue.Length = 0 Then ' no file in DB
-                sign = "" ' file not find
+                sign = "" ' file not found
             End If
         Catch ex As Exception
-            SignExtract = ("0041") ' "Error in revision extract
+            SignExtract = ("0041") ' "Generic exception
         End Try
 
     End Function
@@ -371,7 +371,7 @@ Public Class FormLoadDoc
     ' Check the rule on fileName 
     ' The rule are based on the header
     Function NameFileExstensionHeaderRuleCheck() As String
-        Dim BooAux As Boolean = False, pos As Integer
+        Dim BooAux As Boolean = False
 
         Try
             Select Case CreFile.Header
@@ -452,8 +452,8 @@ Public Class FormLoadDoc
 
     End Sub
 
-    ' fill the combo of revision note. in future can use for magage the ecr
-    '
+    ' Fill the combo of revision note
+
     Sub FillComboRevNote()
         Dim row As DataRow
         AdapterRevNote = New MySqlDataAdapter("SELECT * FROM RevNote", MySqlconnection)
@@ -466,11 +466,11 @@ Public Class FormLoadDoc
         ComboBoxRevNote.Sorted = True
     End Sub
 
-    ' check the control type of file
-    ' if type not find give -1
+    ' Check the control type of file
+    ' If type not find give -1
     Function controlType(ByVal header As String) As Integer
         Dim intpos As Integer
-        controlType = -1 ' type enot find
+        controlType = -1 ' type not find
         Dim row As DataRow()
         row = tblType.Select("header = '" & CreFile.Header & "'")
         If row.Length > 0 Then
@@ -483,7 +483,6 @@ Public Class FormLoadDoc
         End If
     End Function
 
-
     Function FileExtensionAllowed(ByVal header As String) As String
         FileExtensionAllowed = "" 'extension not find
         Dim row As DataRow()
@@ -493,9 +492,7 @@ Public Class FormLoadDoc
         End If
     End Function
 
-
-
-    Sub REplaceNameFileC2()
+    Sub ReplaceNameFileC2()
 
         Dim objFtp As ftp = New ftp()
         Dim strRes As String

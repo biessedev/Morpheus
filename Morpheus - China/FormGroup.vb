@@ -39,8 +39,7 @@ Public Class FormGroup
         End If
     End Sub
 
-
-    Private Sub FormGroup_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub FormGroup_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
         AdapterProd.Fill(DsProd, "product")
         tblProd = DsProd.Tables("product")
@@ -48,9 +47,7 @@ Public Class FormGroup
         ComboBoxGroup.Text = StrComboBoxGroup
     End Sub
 
-
-
-    Private Sub ComboBoxGroup_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBoxGroup.TextChanged
+    Private Sub ComboBoxGroup_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxGroup.TextChanged
 
         Dim i As Integer, result As DataRow(), k As Integer, n As Integer
         Try
@@ -74,11 +71,9 @@ Public Class FormGroup
 
         End Try
 
-
     End Sub
 
-
-    Private Sub ButtonAddMch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonAdd.Click
+    Private Sub ButtonAddMch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAdd.Click
         Dim sql As String, cmd As MySqlCommand
         If ComboBoxName.Text <> "" And ComboBoxGroup.Text <> "" Then
             GroupList = Replace(GroupList, Mid(ComboBoxGroup.Text, 1, 11) & "[" & ComboBoxName.Text & "];", "")
@@ -97,10 +92,7 @@ Public Class FormGroup
 
     End Sub
 
-
-
-
-    Private Sub ButtonRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonRemove.Click
+    Private Sub ButtonRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRemove.Click
 
         Dim sql As String, cmd As MySqlCommand, oldGroupList As String
         oldGroupList = GroupList
@@ -115,13 +107,14 @@ Public Class FormGroup
             Catch ex As Exception
             End Try
         End If
+
         fillList()
         If Len(oldGroupList) = Len(GroupList) Then
             MsgBox("Group Not find " & Mid(ComboBoxGroup.Text, 1, 11) & "[" & ComboBoxName.Text & "]")
         Else
             MsgBox("Group Deleted " & Mid(ComboBoxGroup.Text, 1, 11) & "[" & ComboBoxName.Text & "]")
         End If
-    End Sub
 
+    End Sub
 
 End Class

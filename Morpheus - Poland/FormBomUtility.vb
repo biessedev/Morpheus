@@ -2,11 +2,16 @@
 Option Explicit On
 Option Compare Text
 
+Imports System.IO
 Imports System.Data.SqlClient
 Imports System
 Imports Microsoft.VisualBasic
+Imports System.Runtime.InteropServices
+Imports System.Globalization
 Imports System.Data
 Imports MySql.Data.MySqlClient
+Imports System.Data.OleDb
+Imports System.Text.RegularExpressions
 
 Public Class FormBomUtility
     Dim DsDocComp As New DataSet
@@ -39,7 +44,7 @@ Public Class FormBomUtility
             End If
         Next
     End Sub
-    Private Sub ButtonOpen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonOpen.Click
+    Private Sub ButtonOpen_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonOpen.Click
         Dim pathExcel As String = ""
         System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US")
 
@@ -76,7 +81,7 @@ Public Class FormBomUtility
     End Sub
 
 
-    Private Sub ButtonCompact_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonCompact.Click
+    Private Sub ButtonCompact_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonCompact.Click
 
 
 
@@ -323,7 +328,7 @@ Public Class FormBomUtility
 
     End Function
 
-    Private Sub ButtonMissingPf_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonMissingPf.Click
+    Private Sub ButtonMissingPf_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonMissingPf.Click
         Dim sql As String
         Dim i As Integer = 0
         Dim commandMySql As New MySqlCommand
@@ -394,7 +399,7 @@ Public Class FormBomUtility
 
 
 
-    Private Sub ButtonCompactElux_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonCompactElux.Click
+    Private Sub ButtonCompactElux_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonCompactElux.Click
         Dim pathExcel As String = "", reference As String = ""
         System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US")
         Dim avl(10000, 100) As String, name(100) As String
@@ -604,7 +609,7 @@ Public Class FormBomUtility
 
     End Function
 
-    Private Sub FormBomUtility_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub FormBomUtility_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
 
     End Sub
 End Class

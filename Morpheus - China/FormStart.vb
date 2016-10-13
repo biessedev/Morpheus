@@ -1,47 +1,47 @@
 ﻿Public Class FormStart
 
-    Private Sub ButtonLoadDoc_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonLoadDoc.Click
+    Private Sub ButtonLoadDoc_Click_1(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonLoadDoc.Click
         FormLoadDoc.Show()
         FormLoadDoc.Focus()
         FormLoadDoc.Text = FormLoadDoc.Text & " <>  Welcome : " & CreAccount.strUserName
     End Sub
 
-    Private Sub ButtonDocManagement_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonDocManagement.Click
+    Private Sub ButtonDocManagement_Click_1(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDocManagement.Click
         FormDownload.Show()
         FormDownload.Focus()
         FormDownload.Text = FormDownload.Text & " <>  Welcome : " & CreAccount.strUserName
     End Sub
 
-    Private Sub ButtonTypeEdit_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonTypeEdit.Click
+    Private Sub ButtonTypeEdit_Click_1(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonTypeEdit.Click
         FormTypeAdmin.Show()
         FormTypeAdmin.Focus()
         FormTypeAdmin.Text = FormTypeAdmin.Text & " <>  Welcome : " & CreAccount.strUserName
     End Sub
 
-    Private Sub ButtonProduct_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonProduct.Click
+    Private Sub ButtonProduct_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonProduct.Click
         FormProduct.Show()
         FormProduct.Focus()
         FormProduct.Text = FormProduct.Text & " <>  Welcome : " & CreAccount.strUserName
     End Sub
 
-    Private Sub ButtonECR_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonECR.Click
+    Private Sub ButtonECR_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonECR.Click
         FormECR.Show()
         FormECR.Focus()
         FormECR.Text = FormECR.Text & " <>  Welcome : " & CreAccount.strUserName
     End Sub
 
-    Private Sub ButtonAbout_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonAbout.Click
+    Private Sub ButtonAbout_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAbout.Click
         FormAbaut.Show()
         FormAbaut.Focus()
 
     End Sub
 
-    Private Sub FormStart_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+    Private Sub FormStart_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
         Application.Exit()
         Me.Close()
     End Sub
 
-    Private Sub FormStart_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub FormStart_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         FormCredentials.Hide()
         Application.DoEvents()
         If controlRight("A") >= 3 Or controlRight("E") >= 3 Or controlRight("N") >= 3 Or controlRight("L") >= 3 Or controlRight("P") >= 3 Or controlRight("Q") >= 3 Or controlRight("R") >= 3 Or controlRight("U") >= 3 Then ButtonECR.Enabled = True
@@ -60,7 +60,7 @@
 
     End Sub
 
-    Private Sub ButtonSystem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonSystem.Click
+    Private Sub ButtonSystem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSystem.Click
 
         If controlRight("Z") = 3 Then
             FormAdministration.Show()
@@ -70,38 +70,38 @@
         FormAdministration.Text = FormAdministration.Text & " <>  Welcome : " & CreAccount.strUserName
     End Sub
 
-    Private Sub ButtonActivity_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ButtonNpi.Click
+    Private Sub ButtonActivity_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonNpi.Click
         FormSamples.Show()
         FormSamples.Focus()
         FormSamples.Text = FormSamples.Text & " <>  Welcome : " & CreAccount.strUserName
     End Sub
 
-    Private Sub ButtonQuote_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonQuote.Click
+    Private Sub ButtonQuote_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonQuote.Click
         FormOffer.Show()
         FormOffer.Focus()
         FormOffer.Text = FormOffer.Text & " <>  Welcome : " & CreAccount.strUserName
     End Sub
-    Private Sub ButtonCommit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonCommit.Click
+    Private Sub ButtonCommit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonCommit.Click
         FormCommit.Show()
         FormCommit.Focus()
         FormCommit.Text = FormCommit.Text & " <>  Welcome : " & CreAccount.strUserName
     End Sub
 
-    Private Sub ButtonEq_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonEq.Click
+    Private Sub ButtonEq_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonEq.Click
         FormEquipments.Show()
         FormEquipments.Focus()
         FormEquipments.Text = FormEquipments.Text & " <>  Welcome : " & CreAccount.strUserName
     End Sub
 
 
-    Private Sub ButtonMould_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonMould.Click
+    Private Sub ButtonMould_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonMould.Click
         FormMould.Show()
         FormMould.Focus()
         FormMould.Text = FormMould.Text & " <>  Welcome : " & CreAccount.strUserName
     End Sub
 
 
-    Private Sub ButtonProjectShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonProjectShow.Click
+    Private Sub ButtonProjectShow_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonProjectShow.Click
         If controlRight("J") >= 3 Then
             FormTimeShow.Show()
             FormTimeShow.Focus()
@@ -109,20 +109,19 @@
         End If
     End Sub
 
-    Private Sub ButtonTiming_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonTiming.Click
+    Private Sub ButtonTiming_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonTiming.Click
         FormTime.Show()
         FormTime.Focus()
         FormTime.Text = "Project Time and Quality management" & " <>  Welcome : " & CreAccount.strUserName
     End Sub
 
-    Private Sub ButtonBom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBom.Click
+    Private Sub ButtonBom_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBom.Click
         FormBomUtility.Show()
         FormBomUtility.Focus()
         FormBomUtility.Text = "Bom Tools " & " <>  Welcome : " & CreAccount.strUserName
     End Sub
 
-
-    Private Sub ButtonCrypted_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonCrypted.Click
+    Private Sub ButtonCrypted_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonCrypted.Click
         FormCoding.Show()
         FormCoding.Focus()
         FormCoding.Text = "Signature Crypt " & " <>  Welcome : " & CreAccount.strUserName

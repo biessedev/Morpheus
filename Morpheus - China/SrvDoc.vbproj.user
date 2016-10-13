@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <PublishUrlHistory>\\10.150.10.10\filesrv\rnd\utility_sw\morpheus\|\\10.150.10.10\filesrv\rnd\utility_sw\morpheus\New folder 0415\|\\10.150.12.115\rnd\UTILITY SW\SRVDOC\|Q:\|D:\</PublishUrlHistory>
+    <PublishUrlHistory>C:\Users\BSSoper\Desktop\|\\10.150.10.10\filesrv\rnd\utility_sw\morpheus\|\\10.150.10.10\filesrv\rnd\utility_sw\morpheus\New folder 0415\|\\10.150.12.115\rnd\UTILITY SW\SRVDOC\|Q:\</PublishUrlHistory>
     <InstallUrlHistory>\\10.150.10.10\filesrv\rnd\utility_sw\morpheus\|\\10.150.12.115\rnd\UTILITY SW\SRVDOC\|\\127.0.0.1\o\|\\10.170.10.85\rnd\UTILITY SW\SrvDoc\</InstallUrlHistory>
     <SupportUrlHistory>
     </SupportUrlHistory>

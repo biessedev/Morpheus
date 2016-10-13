@@ -21,11 +21,11 @@ Public Class FormAdministration
     Dim userDep3 As String
     Dim cmd As New MySqlCommand()
 
-    Private Sub FormAdministration_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+    Private Sub FormAdministration_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
         FormStart.Show()
     End Sub
 
-    Private Sub FormAdministration_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub FormAdministration_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         AdapterEcr.SelectCommand = New MySqlCommand("SELECT * FROM ecr;", MySqlconnection)
         AdapterEcr.Fill(DsEcr, "ecr")
         tblEcr = DsEcr.Tables("ecr")
@@ -53,7 +53,7 @@ Public Class FormAdministration
         dep.Add("B")
 
     End Sub
-    Private Sub TimerECR_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles TimerECR.Tick
+    Private Sub TimerECR_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerECR.Tick
 
         FormStart.Hide()
         ParameterTableWrite("SYSTEM_SCHEDULE", "RUN")
@@ -279,7 +279,7 @@ Public Class FormAdministration
     End Function
 
 
-    Private Sub ButtonCompare_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonCompare.Click
+    Private Sub ButtonCompare_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonCompare.Click
         Dim RowSearch As DataRow()
         Dim objFtp As ftp = New ftp(), i As Long, sql As String
         Dim strPathFtp As String, strListDir As String
@@ -367,7 +367,7 @@ Public Class FormAdministration
         TimerECR.Start()
     End Sub
 
-    Private Sub ButtonClose_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ButtonClose.Click
+    Private Sub ButtonClose_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonClose.Click
 
         If controlRight("Z") >= 3 And InputBox("Please insert psw for this account : ", "Password Request") = CreAccount.strPassword Then
             FormStart.Show()
@@ -378,7 +378,7 @@ Public Class FormAdministration
         End If
     End Sub
 
-    Private Sub ButtonDelDup_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ButtonDelDup.Click
+    Private Sub ButtonDelDup_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDelDup.Click
         DelDuplicate()
     End Sub
 
@@ -682,7 +682,7 @@ Public Class FormAdministration
                 End If
 
                 If InStr(row("Asign").ToString & row("Rsign").ToString & row("Lsign").ToString & row("Usign").ToString & row("Bsign").ToString & row("Esign").ToString & row("Nsign").ToString & row("Psign").ToString & row("Qsign").ToString, "CHECKED", CompareMethod.Text) <= 0 And
-                    DateDiff(DateInterval.Day, Now, dt) < 2 Then
+            DateDiff(DateInterval.Day, Now, dt) < 2 Then
 
                     us = "A"
                     If row(us & "sign").ToString = "APPROVED" Then
@@ -777,7 +777,6 @@ Public Class FormAdministration
 
         Try
             If DayOfWeek.Saturday <> dt.DayOfWeek And DayOfWeek.Sunday <> dt.DayOfWeek Then
-                'If (InStr(freqTo, "[" & Necr & "]", CompareMethod.Text) <= 0) And Necr <> "DAILY" Or ((dt.Hour = 9) And (dt.Minute() >= 0 And dt.Minute() < 59)) Then
                 If (InStr(freqTo, "[" & Necr & "]", CompareMethod.Text) <= 0) And Necr <> "DAILY" Or (dt.Hour > 8 And dt.Hour < 20) Then
                     client.Send(msg)
                     MailSent = True
@@ -1002,7 +1001,7 @@ Public Class FormAdministration
     End Sub
 
 
-    Private Sub ButtonSchedule_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonSchedule.Click
+    Private Sub ButtonSchedule_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSchedule.Click
 
         TimerECR.Enabled = False
         TimerECR_Tick(Me, e)
@@ -1011,7 +1010,7 @@ Public Class FormAdministration
 
 
 
-    Private Sub NotifyIcon1_MouseDoubleClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles NotifyIcon1.MouseDoubleClick
+    Private Sub NotifyIcon1_MouseDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles NotifyIcon1.MouseDoubleClick
 
         Try
 
@@ -1033,7 +1032,7 @@ Public Class FormAdministration
 
 
 
-    Private Sub Form1_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
+    Private Sub Form1_Resize(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Resize
 
         Try
 

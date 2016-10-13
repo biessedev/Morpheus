@@ -126,8 +126,4 @@
         FormCoding.Focus()
         FormCoding.Text = "Signature Crypt " & " <>  Welcome : " & CreAccount.strUserName
     End Sub
-
-    Private Sub ButtonRunning_Click(sender As Object, e As EventArgs) Handles ButtonRunning.Click
-
-    End Sub
 End Class

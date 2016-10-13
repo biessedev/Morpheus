@@ -17,7 +17,6 @@ Public Class FormNPIDocMamagement
     Dim tblNPI As New DataTable
     Dim DsNPI As New DataSet
 
-
     Private Sub FormNPIDocMamagement_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
 
         FormSamples.Show()
@@ -25,23 +24,19 @@ Public Class FormNPIDocMamagement
 
     End Sub
 
-    Private Sub FormNPIDocMamagement_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub FormNPIDocMamagement_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         'tblDocNPI.Clear()
         'DsDocNPI.Clear()
         AdapterDocNPI.Fill(DsDocNPI, "TableNPIDoc")
         tblDocNPI = DsDocNPI.Tables("TableNPIDoc")
-
         AdapterDocType.Fill(DsDocType, "DocType")
         tblDocType = DsDocType.Tables("DocType")
-
         Call Btn_TypeDocFill()
 
     End Sub
 
     Private Sub Btn_TypeDocFill()
-
         Dim returnValue As DataRow()
-
         Cob_TypeDoc.Items.Clear()
         Cob_TypeDoc.Text = ""
 
@@ -49,14 +44,12 @@ Public Class FormNPIDocMamagement
         For Each row In returnValue
             Cob_TypeDoc.Items.Add(row("header").ToString)
         Next
-
     End Sub
 
-    Private Sub Cob_TypeDoc_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Cob_TypeDoc.TextChanged
+    Private Sub Cob_TypeDoc_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles Cob_TypeDoc.TextChanged
 
         Dim i As Integer, resultdoc As DataRow()
         Try
-
             Cob_NameDoc.Items.Clear()
 
             resultdoc = tblDocNPI.Select("header = '" & Cob_TypeDoc.Text & "'")
@@ -66,14 +59,11 @@ Public Class FormNPIDocMamagement
             Next
 
             Cob_NameDoc.Text = ""
-
         Catch ex As Exception
-
         End Try
-
     End Sub
 
-    Private Sub Cob_NameDoc_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Cob_NameDoc.TextChanged
+    Private Sub Cob_NameDoc_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles Cob_NameDoc.TextChanged
 
         Dim DR As DataRow()
         Dim i As Integer
@@ -92,7 +82,6 @@ Public Class FormNPIDocMamagement
             .Columns.Add("Version", 100)
             .Columns.Add("Extension", 100)
             .Columns.Add("Editor", 200)
-
         End With
 
         For i = 0 To DR.Length - 1
@@ -106,22 +95,18 @@ Public Class FormNPIDocMamagement
 
     End Sub
 
-    Private Sub Btn_Add_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Btn_Add.Click
+    Private Sub Btn_Add_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Add.Click
         Dim Sql As String
         Dim cmd As New MySqlCommand()
 
         Me.Hide()
 
         If controlRight(Mid(Cob_TypeDoc.Text, 3, 1)) >= 2 Then
-
             FormSamples.Txt_FilePath.Text = Cob_TypeDoc.Text & "_" & Cob_NameDoc.Text
-
             Sql = "UPDATE npi_openissue  SET FilePath ='" & FormSamples.Txt_FilePath.Text & "' WHERE ID = '" & FormSamples.Txt_Index.Text & "'"
-
             cmd = New MySqlCommand(Sql, MySqlconnection)
             cmd.ExecuteNonQuery()
             '  Call FormSamples.issuefunction(0)
-
             MsgBox("Successfully uploaded file")
         Else
             MsgBox("No enough right to load a file")
@@ -129,7 +114,5 @@ Public Class FormNPIDocMamagement
 
         FormSamples.Show()
         FormSamples.Focus()
-
     End Sub
-
 End Class

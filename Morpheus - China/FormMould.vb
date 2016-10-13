@@ -28,7 +28,7 @@ Public Class FormMould
 
 
 
-    Private Sub FormMould_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub FormMould_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         AdapterDoc.Fill(DsDoc, "doc")
         tblDoc = DsDoc.Tables("doc")
 
@@ -95,21 +95,6 @@ Public Class FormMould
 
     Function IFPStatus(ByVal ifpDocId As Integer, ByVal refresh As Boolean) As String
 
-
-
-
-
-
-
-
-
     End Function
 
-
-
-
-
-    Private Sub TableLayoutPanel1_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles TableLayoutPanel1.Paint
-
-    End Sub
 End Class

@@ -191,7 +191,6 @@ Public Class ftp
     End Function
 
     Public Function CreateDir(ByVal Path As String) As String
-
         _FtpRequest = CType(WebRequest.Create("ftp://" + _Host + Path), FtpWebRequest)
         _FtpRequest.Method = WebRequestMethods.Ftp.MakeDirectory
         _FtpRequest.Credentials = New NetworkCredential(_UserName, _Password)

@@ -21,11 +21,9 @@ Public Class FormBomUtility
     Dim DsPfp As New DataSet
 
     Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
-
     Dim AdapterMissingPfUpdate As New MySqlDataAdapter("SELECT * FROM missingpfupdate", MySqlconnection)
     Dim tblMissingPfUpdate As DataTable
     Dim DsMissingPfUpdate As DataSet
-
     Dim tblDoc As DataTable
     Dim DsDoc As New DataSet
     Dim ConnectionStringOrcad As String
@@ -50,7 +48,7 @@ Public Class FormBomUtility
             End If
         Next
     End Sub
-    Private Sub ButtonOpen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonOpen.Click
+    Private Sub ButtonOpen_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonOpen.Click
         Dim pathExcel As String = ""
         System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US")
 
@@ -87,7 +85,7 @@ Public Class FormBomUtility
     End Sub
 
 
-    Private Sub ButtonCompact_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonCompact.Click
+    Private Sub ButtonCompact_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonCompact.Click
 
 
 
@@ -334,7 +332,7 @@ Public Class FormBomUtility
 
     End Function
 
-    Private Sub ButtonMissingPf_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonMissingPf.Click
+    Private Sub ButtonMissingPf_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonMissingPf.Click
         Dim sql As String
         Dim i As Integer = 0
         Dim commandMySql As New MySqlCommand
@@ -344,17 +342,14 @@ Public Class FormBomUtility
         'Dim OrcadDBPwd = ParameterTable("OrcadDBPwd")
 
             Try
-            'OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
             OpenConnectionSqlOrcad("10.10.10.36", "Orcad1", "orcadw", "orcadw")
             Catch ex As Exception
-                CloseConnectionSqlOrcad()
-            'OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
+                CloseConnectionSqlOrcad()            
             OpenConnectionSqlOrcad("10.10.10.36", "Orcad1", "orcadw", "orcadw")
             End Try
 
             ButtonMissingPf.Text = "load orcad data"
-        Application.DoEvents()
-
+            Application.DoEvents()
             Dim AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where ( valido = 'valido') or (valido = 'in_attesa_convalida') ", SqlconnectionOrcad)
             Try
                 tblDocComp.Clear()
@@ -364,10 +359,7 @@ Public Class FormBomUtility
             End Try
 
             AdapterDocComp.Fill(DsDocComp, "orcadw.T_orcadcis")
-        tblDocComp = DsDocComp.Tables("orcadw.T_orcadcis")
-
-
-
+            tblDocComp = DsDocComp.Tables("orcadw.T_orcadcis")
 
             AdapterDoc.SelectCommand = New MySqlCommand("SELECT * FROM DOC;", MySqlconnection)
             Try
@@ -411,6 +403,7 @@ Public Class FormBomUtility
                 MsgBox("Error in DB update/Insert material request")
             End Try
         Next
+
 
             ButtonMissingPf.Text = "Missing Pf update Doc"
 
@@ -461,12 +454,7 @@ Public Class FormBomUtility
 
     End Sub
 
-    Private Sub ButtonCompactElux_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonCompactElux.Click
-
-
-
-
-
+    Private Sub ButtonCompactElux_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonCompactElux.Click
         Dim pathExcel As String = "", reference As String = ""
         System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US")
         Dim avl(10000, 100) As String, name(100) As String
@@ -632,16 +620,11 @@ Public Class FormBomUtility
             Catch ex As Exception
                 MsgBox(ex.Message)
             End Try
-
             Me.Focus()
             Me.Show()
             KillLastExcel()
 
         End If
-
-
-
-
     End Sub
 
 
@@ -681,12 +664,12 @@ Public Class FormBomUtility
 
     End Function
 
-    Private Sub FormBomUtility_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub FormBomUtility_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Dim CurrentCI As System.Globalization.CultureInfo = System.Threading.Thread.CurrentThread.CurrentCulture
         System.Threading.Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo("en-US")
     End Sub
 
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Btn_missingpf_dateup.Click
+    Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_missingpf_dateup.Click
         Dim Sql As String
         Dim commandMySql As New MySqlCommand
 

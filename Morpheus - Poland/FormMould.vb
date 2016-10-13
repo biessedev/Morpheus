@@ -28,7 +28,7 @@ Public Class FormMould
 
 
 
-    Private Sub FormMould_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub FormMould_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         AdapterDoc.Fill(DsDoc, "doc")
         tblDoc = DsDoc.Tables("doc")
 
@@ -59,7 +59,7 @@ Public Class FormMould
 
         Dim rootNode As TreeNode
 
-        Dim rowShow As DataRow(), sql As String, filename As String, IFPStatusStr As String, refresh As Boolean = True
+        Dim rowShow As DataRow(), i As Integer, sql As String, filename As String, IFPStatusStr As String, refresh As Boolean = True
         TreeViewIfp.Font = New Font("Courier New", 12, FontStyle.Bold)
         TreeViewIfp.Nodes.Clear()
         TreeViewIfp.BackColor = Color.White

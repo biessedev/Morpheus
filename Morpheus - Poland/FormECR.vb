@@ -5,7 +5,6 @@ Option Compare Text
 Imports MySql.Data.MySqlClient
 Imports System.Globalization
 
-
 Public Class FormECR
     Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
     Dim AdapterDocType As New MySqlDataAdapter("SELECT * FROM Doctype", MySqlconnection)
@@ -13,7 +12,7 @@ Public Class FormECR
     Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM product", MySqlconnection)
     Dim tblDoc As DataTable, tblDocType As DataTable, tblEcr As DataTable, tblProd As DataTable
     Dim DsDoc As New DataSet, DsDocType As New DataSet, DsEcr As New DataSet, DsProd As New DataSet
-    Dim userDep3 As String
+    Dim userDep3 As String, stepNote As String
     Dim cmd As New MySqlCommand
     Dim CultureInfo_ja_JP As New System.Globalization.CultureInfo("ja-JP", False)
     Dim needSave As Boolean = False
@@ -71,7 +70,6 @@ Public Class FormECR
     End Sub
 
     ' Fill the ECR combo with all ECR yet open
-
     Sub fillEcrComboTable()
         Dim rowshow As DataRow()
         ComboBoxEcr.Items.Clear()
@@ -422,7 +420,6 @@ Public Class FormECR
         End If
 
         ListBoxLog.Items.Add(ComCode & " -> " & rsResult(0).Item("en").ToString)
-
         If Val(ComCode) >= 5000 Then
             ListBoxLog.BackColor = Color.LightGreen
         ElseIf Val(ComCode) < 5000 Then
@@ -590,7 +587,7 @@ Public Class FormECR
                 TextBoxStepCost.ReadOnly = False
                 ButtonCalc.Enabled = True
             Else
-                RichTextBoxStep.ReadOnly = True
+            	RichTextBoxStep.ReadOnly = True
                 TextBoxStepCost.ReadOnly = True
 
             End If
@@ -679,7 +676,7 @@ Public Class FormECR
                     ListViewProd.Items.Add(ii)
                     invalidationProd(Mid(ComboBoxProd.Text, 1, pos - 2), Mid(ComboBoxEcr.Text, 1, InStr(1, ComboBoxEcr.Text, "-", CompareMethod.Text) - 2))
 
-                    Dim prod = ""
+                    Dim prod As String = ""
                     For i = 0 To ListViewProd.Items.Count - 1
                         prod = prod & StrDup(20 - Len(Mid(ListViewProd.Items(i).SubItems(0).Text(), 1, 20)), " ") & Mid(ListViewProd.Items(i).SubItems(0).Text, 1, 40)
                         prod = prod & StrDup(40 - Len(Mid(ListViewProd.Items(i).SubItems(1).Text(), 1, 40)), " ") & Mid(ListViewProd.Items(i).SubItems(1).Text, 1, 40)
@@ -706,7 +703,7 @@ Public Class FormECR
                 For i = ListViewProd.CheckedItems.Count - 1 To 0 Step -1
                     ListViewProd.CheckedItems(i).Remove()
                 Next
-                Dim prod = ""
+                Dim prod As String = ""
                 For i = 0 To ListViewProd.Items.Count - 1
                     prod = prod & StrDup(20 - Len(Mid(ListViewProd.Items(i).SubItems(0).Text(), 1, 20)), " ") & Mid(ListViewProd.Items(i).SubItems(0).Text, 1, 40)
                     prod = prod & StrDup(40 - Len(Mid(ListViewProd.Items(i).SubItems(1).Text(), 1, 40)), " ") & Mid(ListViewProd.Items(i).SubItems(1).Text, 1, 40)
@@ -849,7 +846,7 @@ Public Class FormECR
 
     Function downloadFileWinPath(ByVal fileName As String) As String
         Dim strPathFtp As String
-        Dim objFtp = New ftp()
+        Dim objFtp As ftp = New ftp()
         objFtp.UserName = strFtpServerUser
         objFtp.Password = strFtpServerPsw
         objFtp.Host = strFtpServerAdd
@@ -858,11 +855,8 @@ Public Class FormECR
         Dim cmd As New MySqlCommand()
         If fileName <> "" Then
             Try
-                'strPathFtp = ("65R/65R_PRO_ECR/")
                 strPathFtp = (ParameterTable("plant") & "R/" & ParameterTable("plant") & "R_PRO_ECR/")
-                'ComunicationLog(objFtp.DownloadFile(strPathFtp, System.IO.Path.GetTempPath, "65R_PRO_ECR_" & fileName)) ' download successfull
                 ComunicationLog(objFtp.DownloadFile(strPathFtp, System.IO.Path.GetTempPath, ParameterTable("plant") & "R_PRO_ECR_" & fileName)) ' download successfull
-                'downloadFileWinPath = System.IO.Path.GetTempPath & "65R_PRO_ECR_" & fileName
                 downloadFileWinPath = System.IO.Path.GetTempPath & ParameterTable("plant") & "R_PRO_ECR_" & fileName
             Catch ex As Exception
                 ComunicationLog("0049") ' Error in ecr Download
@@ -895,17 +889,17 @@ Public Class FormECR
     'End Sub
 
     'Private Sub DateTimePickerR_CloseUp(ByVal sender As Object, ByVal e As System.EventArgs) Handles DateTimePickerR.CloseUp
-    '   ButtonRL.Text = DateTimePickerR.Text
-    '  WriteField("dateR", DateTimePickerR.Text)
-    '   UpdateDate()
-    ' End Sub
+    '    ButtonRL.Text = DateTimePickerR.Text
+    '    WriteField("dateR", DateTimePickerR.Text)
+    '    UpdateDate()
+    'End Sub
     'Private Sub ButtonRL_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ButtonRL.Click
-    '     If ButtonRL.Text = "" Then
+    '    If ButtonRL.Text = "" Then
     '        ButtonRL.Text = ""
     '        WriteField("dateR", "")
-    '       UpdateDate()
-    '   End If
-    ' End Sub
+    '        UpdateDate()
+    '    End If
+    'End Sub
     'Private Sub DateTimePickeru_CloseUp(ByVal sender As Object, ByVal e As System.EventArgs) Handles DateTimePickerU.CloseUp
     '    ButtonUL.Text = DateTimePickerU.Text
     '    WriteField("dateu", DateTimePickerU.Text)
@@ -1090,70 +1084,4 @@ Public Class FormECR
 
     End Sub
 
-    Private Sub ButtonQL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonQL.Click, ButtonBL.Click
-
-    End Sub
-    Private Sub Label15_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Label15.Click, Label17.Click
-
-    End Sub
-
-    Private Sub UpdateDate(ByVal sender As Object, ByVal e As EventArgs) Handles DateTimePickerU.ValueChanged, DateTimePickerR.ValueChanged, DateTimePickerQ.ValueChanged, DateTimePickerp.ValueChanged, DateTimePickerL.ValueChanged, DateTimePickerE.ValueChanged, DateTimePickerB.ValueChanged
-
-    End Sub
-
-    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
-
-    End Sub
-
-    Private Sub ComboBoxEcr_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxEcr.SelectedIndexChanged
-
-    End Sub
-
-    Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
-
-    End Sub
-
-    Private Sub Label10_Click(sender As Object, e As EventArgs) Handles Label10.Click
-
-    End Sub
-
-    Private Sub ButtonRL_Click(sender As Object, e As EventArgs) Handles ButtonRL.Click
-
-    End Sub
-
-    Private Sub ButtonNL_Click(sender As Object, e As EventArgs) Handles ButtonNL.Click
-
-    End Sub
-
-    Private Sub ButtonUL_Click(sender As Object, e As EventArgs) Handles ButtonUL.Click
-
-    End Sub
-
-    Private Sub ButtonLL_Click(sender As Object, e As EventArgs) Handles ButtonLL.Click
-
-    End Sub
-
-    Private Sub ButtonPL_Click(sender As Object, e As EventArgs) Handles ButtonPL.Click
-
-    End Sub
-
-    Private Sub ButtonEL_Click(sender As Object, e As EventArgs) Handles ButtonEL.Click
-
-    End Sub
-
-    Private Sub Label11_Click(sender As Object, e As EventArgs) Handles Label11.Click
-
-    End Sub
-
-    Private Sub Label8_Click(sender As Object, e As EventArgs) Handles Label8.Click
-
-    End Sub
-
-    Private Sub ListBoxLog_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBoxLog.SelectedIndexChanged
-
-    End Sub
-
-    Private Sub ComboBoxProd_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxProd.SelectedIndexChanged
-
-    End Sub
 End Class

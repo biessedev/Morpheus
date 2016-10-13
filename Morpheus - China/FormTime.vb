@@ -23,7 +23,7 @@ Public Class FormTime
     Dim NodeSelect As Integer
     Dim CurrentNodeIndex As Integer
     Dim yelloDelay As Integer = 5
-    Private Sub FormTime_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub FormTime_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         AdapterTP.Fill(DsTP, "TimeProject")
         tblTP = DsTP.Tables("TimeProject")
 
@@ -85,7 +85,7 @@ Public Class FormTime
 
         Dim rootNode As TreeNode, Project As String, projectStatusStr As String
         Dim rootChildren1 As TreeNode
-        Dim rowShow As DataRow(), i As Integer, sql As String
+        Dim rowShow As DataRow(), sql As String
         TreeViewTP.Font = New Font("Courier New", 12, FontStyle.Bold)
         TreeViewTP.Nodes.Clear()
         TreeViewTP.BackColor = Color.White
@@ -96,12 +96,12 @@ Public Class FormTime
             AdapterTP.Fill(DsTP, "TimeProject")
             tblTP = DsTP.Tables("TimeProject")
         End If
-        sql = IIf(ComboBoxAreaFilter.Text = "", "area like '*' and ", "area = '" & ComboBoxAreaFilter.Text & "' and ") & _
-                               IIf(ComboBoxStatusFilter.Text = "", "status like '*'  and ", "status = '" & ComboBoxStatusFilter.Text & "'  and ") & _
-                               IIf(ComboBoxCustomerFilter.Text = "", "customer like '*'  and ", "customer = '" & ComboBoxCustomerFilter.Text & "'  and ") & _
-                               IIf(ComboBoxCompleatedFilter.Text = "", "compleated like '*'  and ", "compleated = '" & ComboBoxCompleatedFilter.Text & "'  and ") & _
-                               IIf(CheckBoxTemplate.Checked = False, "not project like '*template*'  and ", "") & _
-                               IIf(ComboBoxtaskFilter.Text = "", "", " taskleader = '" & ComboBoxtaskFilter.Text & "'  and ") & _
+        sql = IIf(ComboBoxAreaFilter.Text = "", "area like '*' and ", "area = '" & ComboBoxAreaFilter.Text & "' and ") &
+                               IIf(ComboBoxStatusFilter.Text = "", "status like '*'  and ", "status = '" & ComboBoxStatusFilter.Text & "'  and ") &
+                               IIf(ComboBoxCustomerFilter.Text = "", "customer like '*'  and ", "customer = '" & ComboBoxCustomerFilter.Text & "'  and ") &
+                               IIf(ComboBoxCompleatedFilter.Text = "", "compleated like '*'  and ", "compleated = '" & ComboBoxCompleatedFilter.Text & "'  and ") &
+                               IIf(CheckBoxTemplate.Checked = False, "not project like '*template*'  and ", "") &
+                               IIf(ComboBoxtaskFilter.Text = "", "", " taskleader = '" & ComboBoxtaskFilter.Text & "'  and ") &
                                IIf(ComboBoxResponsibleFilter.Text = "", "ProjectLeader like '*'  ", "projectleader = '" & ComboBoxResponsibleFilter.Text & "'  ")
         rowShow = tblTP.Select(sql, "project, id")
 
@@ -118,14 +118,14 @@ Public Class FormTime
                 TreeViewTP.EndUpdate()
                 TreeViewTP.ResumeLayout()
                 Project = row("project").ToString
-                projectStatusStr = projectStatus(row("project").ToString, refresh)
+                projectStatusStr = ProjectStatus(row("project").ToString, refresh)
                 If projectStatusStr = "ONTIME" Then rootNode.ForeColor = Color.Green
                 If projectStatusStr = "DELAY" Then rootNode.ForeColor = Color.Red
                 If projectStatusStr = "CLOSED" Then rootNode.ForeColor = Color.Gray
                 If projectStatusStr = "STANDBY" Then rootNode.ForeColor = Color.Blue
                 If projectStatusStr = "CRITIC" Then rootNode.ForeColor = Color.Orange
 
-                If row("projectleader").ToString = "" Or _
+                If row("projectleader").ToString = "" Or
                     row("area").ToString = "" Then
 
                     rootNode.ForeColor = Color.DarkMagenta
@@ -337,7 +337,7 @@ Public Class FormTime
 
 
 
-                End If
+            End If
 
             ProjectLeader = row("projectleader").ToString
         Next
@@ -404,7 +404,7 @@ Public Class FormTime
 
     End Function
 
-    Private Sub DateTimePickerFinish_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DateTimePickerFinish.CloseUp
+    Private Sub DateTimePickerFinish_ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles DateTimePickerFinish.CloseUp
         If CheckBoxFixedEnd.Checked = False Then
 
             TextBoxFinish.Text = date_to_string(DateTimePickerFinish.Text)
@@ -414,7 +414,7 @@ Public Class FormTime
 
     End Sub
 
-    Private Sub DateTimePickerStart_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DateTimePickerStart.CloseUp
+    Private Sub DateTimePickerStart_ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles DateTimePickerStart.CloseUp
         If CheckBoxFixedStart.Checked = False Then
             TextBoxStart.Text = date_to_string(DateTimePickerStart.Text)
         Else
@@ -423,7 +423,7 @@ Public Class FormTime
 
     End Sub
 
-    Private Sub ButtonDelProject_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonDelProject.Click
+    Private Sub ButtonDelProject_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDelProject.Click
         Dim cmd As New MySqlCommand()
         Dim sql As String
         If controlRight("J") >= 2 And (controlRight(Mid(ComboBoxArea.Text, 1, 1)) > 2 Or ComboBoxArea.Text = "") Then
@@ -452,9 +452,9 @@ Public Class FormTime
         UpdateTreeTPList(True)
     End Sub
 
-    Private Sub Controls_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
-                ComboBoxArea.TextChanged, ComboBoxCustomer.TextChanged, ComboBoxQuality.TextChanged, ComboBoxResponsible.TextChanged, _
-                ComboBoxStatus.TextChanged, TextBoxFinish.TextChanged, TextBoxStart.TextChanged, TextBoxNote.TextChanged, ComboBoxCompleated.TextChanged, _
+    Private Sub Controls_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles _
+                ComboBoxArea.TextChanged, ComboBoxCustomer.TextChanged, ComboBoxQuality.TextChanged, ComboBoxResponsible.TextChanged,
+                ComboBoxStatus.TextChanged, TextBoxFinish.TextChanged, TextBoxStart.TextChanged, TextBoxNote.TextChanged, ComboBoxCompleated.TextChanged,
                 CheckBoxFixedEnd.CheckedChanged, CheckBoxFixedStart.CheckedChanged
 
         If UpdatigTree = False Then
@@ -477,12 +477,12 @@ Public Class FormTime
         End If
     End Sub
 
-    Private Sub ButtonSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonSave.Click
+    Private Sub ButtonSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSave.Click
 
         Dim cmd As New MySqlCommand(), nodeparent As String = ""
         Dim sql As String, datevalid As Boolean
-        If OpenSession = True And Not IsNothing(TreeViewTP.SelectedNode) And (Trim(UCase(ReplaceChar(ComboBoxArea.Text))) = "" Or _
-           (user() = Mid(Trim(UCase(ReplaceChar(ComboBoxArea.Text))), 1, 1) And _
+        If OpenSession = True And Not IsNothing(TreeViewTP.SelectedNode) And (Trim(UCase(ReplaceChar(ComboBoxArea.Text))) = "" Or
+           (user() = Mid(Trim(UCase(ReplaceChar(ComboBoxArea.Text))), 1, 1) And
            Mid(Trim(UCase(ReplaceChar(ComboBoxArea.Text))), 2, 1) = "-" And Len(Trim(UCase(ReplaceChar(ComboBoxArea.Text)))) >= 4)) Then
             myNodeSelect(True)
             If Len(TextBoxFinish.Text) = 10 And Len(TextBoxStart.Text) = 10 Then
@@ -499,19 +499,19 @@ Public Class FormTime
                     Catch ex As Exception
                         nodeparent = " `TimeProject`.`project` like '*'"
                     End Try
-                    sql = "UPDATE `" & DBName & "`.`TimeProject` SET " & _
-                            IIf(TreeViewTP.SelectedNode.Level = 0, "`area` = '" & Replace(Trim(UCase(ReplaceChar(ComboBoxArea.Text))), " ", "") & "',", "") & _
-                            IIf(TreeViewTP.SelectedNode.Level = 0, "`customer` = '" & Trim(UCase(ReplaceChar(ComboBoxCustomer.Text))), "") & _
-                            IIf(TreeViewTP.SelectedNode.Level = 0, "',`ProjectLeader` = '" & Trim(UCase(ReplaceChar(ComboBoxResponsible.Text))), "") & _
-                            IIf(TreeViewTP.SelectedNode.Level = 1, "`taskLeader` = '" & Trim(UCase(ReplaceChar(ComboBoxResponsible.Text))), "") & _
-                            IIf(TreeViewTP.SelectedNode.Level = 1, "',`quality` = '" & ComboBoxQuality.Text, "") & _
-                            IIf(TreeViewTP.SelectedNode.Level = 1, "',`Compleated` = '" & ComboBoxCompleated.Text, "") & _
-                            IIf(TreeViewTP.SelectedNode.Level = 1, "',`start` = '" & TextBoxStart.Text, "") & _
-                            IIf(TreeViewTP.SelectedNode.Level = 1, "',`end` = '" & TextBoxFinish.Text, "") & _
-                            IIf(TreeViewTP.SelectedNode.Level = 1, "',`FixedEnd` = '" & IIf(CheckBoxFixedEnd.Checked, "YES", ""), "") & _
-                            IIf(TreeViewTP.SelectedNode.Level = 1, "',`FixedStart` = '" & IIf(CheckBoxFixedStart.Checked, "YES", ""), "") & _
-                            IIf(TreeViewTP.SelectedNode.Level = 1, "',`note` = '" & Trim(TextBoxNote.Text), "") & _
-                            IIf(TreeViewTP.SelectedNode.Level = 1, "',`status` = '" & UCase(ComboBoxStatus.Text) & "'", "' ") & _
+                    sql = "UPDATE `" & DBName & "`.`TimeProject` SET " &
+                            IIf(TreeViewTP.SelectedNode.Level = 0, "`area` = '" & Replace(Trim(UCase(ReplaceChar(ComboBoxArea.Text))), " ", "") & "',", "") &
+                            IIf(TreeViewTP.SelectedNode.Level = 0, "`customer` = '" & Trim(UCase(ReplaceChar(ComboBoxCustomer.Text))), "") &
+                            IIf(TreeViewTP.SelectedNode.Level = 0, "',`ProjectLeader` = '" & Trim(UCase(ReplaceChar(ComboBoxResponsible.Text))), "") &
+                            IIf(TreeViewTP.SelectedNode.Level = 1, "`taskLeader` = '" & Trim(UCase(ReplaceChar(ComboBoxResponsible.Text))), "") &
+                            IIf(TreeViewTP.SelectedNode.Level = 1, "',`quality` = '" & ComboBoxQuality.Text, "") &
+                            IIf(TreeViewTP.SelectedNode.Level = 1, "',`Compleated` = '" & ComboBoxCompleated.Text, "") &
+                            IIf(TreeViewTP.SelectedNode.Level = 1, "',`start` = '" & TextBoxStart.Text, "") &
+                            IIf(TreeViewTP.SelectedNode.Level = 1, "',`end` = '" & TextBoxFinish.Text, "") &
+                            IIf(TreeViewTP.SelectedNode.Level = 1, "',`FixedEnd` = '" & IIf(CheckBoxFixedEnd.Checked, "YES", ""), "") &
+                            IIf(TreeViewTP.SelectedNode.Level = 1, "',`FixedStart` = '" & IIf(CheckBoxFixedStart.Checked, "YES", ""), "") &
+                            IIf(TreeViewTP.SelectedNode.Level = 1, "',`note` = '" & Trim(TextBoxNote.Text), "") &
+                            IIf(TreeViewTP.SelectedNode.Level = 1, "',`status` = '" & UCase(ComboBoxStatus.Text) & "'", "' ") &
                             " WHERE " & IIf(TreeViewTP.SelectedNode.Level = 1, "`TimeProject`.`taskname` = '" & TreeViewTP.SelectedNode.Text & "' and " & nodeparent, "`TimeProject`.`project` = '" & TreeViewTP.SelectedNode.Text & "'")
                     cmd = New MySqlCommand(sql, MySqlconnection)
                     cmd.ExecuteNonQuery()
@@ -538,7 +538,7 @@ Public Class FormTime
 
     End Sub
 
-    Private Sub TreeViewTP_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewTP.AfterSelect
+    Private Sub TreeViewTP_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewTP.AfterSelect
 
         Dim UpdatigTreePrev As Boolean = UpdatigTree
 
@@ -604,7 +604,7 @@ Public Class FormTime
             CheckBoxFixedStart.Visible = False
 
             If controlRight("J") >= 3 And controlRight(Mid(ComboBoxArea.Text, 1, 1)) > 2 Or ComboBoxArea.Text = "" Then
-            ComboBoxCustomer.Enabled = True
+                ComboBoxCustomer.Enabled = True
                 ComboBoxArea.Enabled = True
                 ButtonSave.Enabled = True
             Else
@@ -1203,7 +1203,7 @@ Public Class FormTime
 
     End Function
 
-    Private Sub ButtonAddTemplate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonDuplicate.Click
+    Private Sub ButtonAddTemplate_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDuplicate.Click
         Dim cmd As New MySqlCommand()
         Dim sql As String, newName As String
         DsTP.Clear()
@@ -1241,7 +1241,7 @@ Public Class FormTime
         myNodeSelect(False, True)
     End Sub
 
-    Private Sub ButtonAddProject_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonAddProject.Click
+    Private Sub ButtonAddProject_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAddProject.Click
 
         Dim cmd As New MySqlCommand()
         Dim sql As String, needAdd As Boolean
@@ -1280,14 +1280,14 @@ Public Class FormTime
         End If
     End Sub
 
-    Private Sub ButtonRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonRefresh.Click
+    Private Sub ButtonRefresh_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRefresh.Click
         myNodeSelect(True, True)
         UpdateTreeTPList(True)
         myNodeSelect(False, True)
         TreeViewTP.Focus()
     End Sub
 
-    Private Sub ButtonExportGantt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonExportGantt.Click
+    Private Sub ButtonExportGantt_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonExportGantt.Click
         Dim Project As String, i As Integer
         Dim PresenceTmp As Integer
         Dim rowShow As DataRow(), rowExcel As Integer, sql As String
@@ -1298,12 +1298,12 @@ Public Class FormTime
         AdapterTP.Fill(DsTP, "TimeProject")
         tblTP = DsTP.Tables("TimeProject")
 
-        sql = IIf(ComboBoxAreaFilter.Text = "", "area like '*' and ", "area = '" & ComboBoxAreaFilter.Text & "' and ") & _
-                               IIf(ComboBoxStatusFilter.Text = "", "status like '*'  and ", "status = '" & ComboBoxCustomerFilter.Text & "'  and ") & _
-                               IIf(ComboBoxCustomerFilter.Text = "", "customer like '*'  and ", "customer = '" & ComboBoxCustomerFilter.Text & "'  and ") & _
-                               IIf(ComboBoxCompleatedFilter.Text = "", "compleated like '*'  and ", "compleated = '" & ComboBoxCompleatedFilter.Text & "'  and ") & _
-                               IIf(CheckBoxTemplate.Checked = False, "not project like '*template*'  and ", "") & _
-                               IIf(ComboBoxtaskFilter.Text = "", "", " taskleader = '" & ComboBoxtaskFilter.Text & "'  and ") & _
+        sql = IIf(ComboBoxAreaFilter.Text = "", "area like '*' and ", "area = '" & ComboBoxAreaFilter.Text & "' and ") &
+                               IIf(ComboBoxStatusFilter.Text = "", "status like '*'  and ", "status = '" & ComboBoxCustomerFilter.Text & "'  and ") &
+                               IIf(ComboBoxCustomerFilter.Text = "", "customer like '*'  and ", "customer = '" & ComboBoxCustomerFilter.Text & "'  and ") &
+                               IIf(ComboBoxCompleatedFilter.Text = "", "compleated like '*'  and ", "compleated = '" & ComboBoxCompleatedFilter.Text & "'  and ") &
+                               IIf(CheckBoxTemplate.Checked = False, "not project like '*template*'  and ", "") &
+                               IIf(ComboBoxtaskFilter.Text = "", "", " taskleader = '" & ComboBoxtaskFilter.Text & "'  and ") &
                                IIf(ComboBoxResponsibleFilter.Text = "", "ProjectLeader like '*'  ", "projectleader = '" & ComboBoxResponsibleFilter.Text & "'  ")
         rowShow = tblTP.Select(sql, "project, id")
 
@@ -1349,7 +1349,6 @@ Public Class FormTime
                             excelApp.Cells(rowExcel, i).interior.color = ColorTranslator.ToOle(Color.Red)
                             excelApp.Cells(rowExcel, i) = PresenceTmp
                         End If
-
 
                         If excelApp.Cells(rowExcel, 3).text = "CRITIC" Then
                             excelApp.Cells(rowExcel, i).interior.color = ColorTranslator.ToOle(Color.Orange)
@@ -1460,7 +1459,7 @@ Public Class FormTime
 
     End Function
 
-    Private Sub ButtonHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonHelp.Click
+    Private Sub ButtonHelp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonHelp.Click
         FormHelpHime.Show()
         FormHelpHime.Focus()
         FormHelpHime.Text = "Quality problem severity" & " <>  Welcome : " & CreAccount.strUserName
@@ -1483,13 +1482,12 @@ Public Class FormTime
         Next
     End Sub
 
-    Private Sub ComboBoxQuality_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBoxQuality.TextChanged
+    Private Sub ComboBoxQuality_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxQuality.TextChanged
         If Not IsNumeric(ComboBoxQuality.Text) Or Val(ComboBoxQuality.Text) > 100 Then ComboBoxQuality.Text = ""
     End Sub
 
-    Private Sub ComboBoxCompleated_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBoxCompleated.TextChanged
+    Private Sub ComboBoxCompleated_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxCompleated.TextChanged
         If Not IsNumeric(ComboBoxQuality.Text) Or Val(ComboBoxQuality.Text) > 100 Then ComboBoxQuality.Text = ""
     End Sub
-
 
 End Class

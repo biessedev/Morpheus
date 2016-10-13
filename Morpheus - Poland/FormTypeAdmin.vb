@@ -25,11 +25,11 @@ Public Class FormTypeAdmin
         AdapterDoc.Fill(DsDoc, "doc")
         tblDoc = DsDoc.Tables("doc")
         FillComboFirstType()
-        TextBoxPropriety.Text = "S?R?P?Y?C?"
+	TextBoxPropriety.Text = "S?R?P?Y?C?"
     End Sub
 
     Private Sub ComboBoxFirstType_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxFirstType.TextChanged
-        Dim strOld = ""
+        Dim strOld As String = ""
         Dim returnValue As DataRow()
 
         ComboBoxSecondType.Items.Clear()
@@ -50,11 +50,9 @@ Public Class FormTypeAdmin
     End Sub
 
     Private Sub ComboBoxSecondType_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxSecondType.TextChanged
-        Dim strOld = ""
         Dim returnValue As DataRow()
-
         ComboBoxThirdType.Items.Clear()
-
+        Dim strOld As String = ""
         returnValue = tblDocType.Select("FirstType='" & ComboBoxFirstType.Text & "' and SecondType='" & ComboBoxSecondType.Text & "'", "SecondType DESC")
         For Each row In returnValue
             If StrComp(Mid(strOld, 1, 3), Mid(row("ThirdType").ToString, 1, 3)) <> 0 Then
@@ -114,7 +112,7 @@ Public Class FormTypeAdmin
                         myrow.Item("SecondType") = Trim(cap7(ComboBoxSecondType.Text))
                         myrow.Item("ThirdType") = Trim(cap7(ComboBoxThirdType.Text))
                         myrow.Item("header") = UCase(Trim(HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text)))
-                        myrow.Item("Control") = TextBoxPropriety.Text
+			myrow.Item("Control") = TextBoxPropriety.Text
                         myrow.Item("extension") = TextBoxExtension.Text
 
                         tblDocType.Rows.Add(myrow)
@@ -172,8 +170,8 @@ Public Class FormTypeAdmin
 
     Sub FillComboFirstType()
         ComboBoxFirstType.Items.Clear()
-        Dim strOld = ""
-        Dim strNew = ""
+        Dim strOld As String = ""
+        Dim strNew As String = ""
         Dim result As DataRow()
         Dim row As DataRow
         result = tblDocType.Select("FirstType like '*'", "firstType")
@@ -263,7 +261,6 @@ Public Class FormTypeAdmin
         AdapterType.Fill(DsType, "doctype")
         tblDocType = DsType.Tables("doctype")
         Dim returnValue As DataRow()
-
         returnValue = tblDocType.Select("header='" & HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text) & "'")
         If returnValue.Length <= 1 Then
             returnValue = tblDocType.Select("FirstType='" & ComboBoxFirstType.Text & "' and SecondType='" & ComboBoxSecondType.Text & "' and ThirdType='" & ComboBoxThirdType.Text & "'", "SecondType DESC")
@@ -324,25 +321,5 @@ Public Class FormTypeAdmin
                 "Please fill in the file extension whith possible extensions of document:" & vbCrLf &
                 "Example:pdf;docx;doc;xls;xlsx;zip;" & vbCrLf &
                 "Each file extension is followed by ';' and no SPACE are allowed between them. " & vbCrLf)
-    End Sub
-
-    Private Sub ComboBoxFirstType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxFirstType.SelectedIndexChanged
-
-    End Sub
-
-    Private Sub TextBoxPropriety_TextChanged(sender As Object, e As EventArgs) Handles TextBoxPropriety.TextChanged
-
-    End Sub
-
-    Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
-
-    End Sub
-
-    Private Sub ComboBoxThirdType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxThirdType.SelectedIndexChanged
-
-    End Sub
-
-    Private Sub ListBoxLog_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBoxLog.SelectedIndexChanged
-
     End Sub
 End Class

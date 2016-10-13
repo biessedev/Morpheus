@@ -8,13 +8,13 @@ Imports System.Threading
 Public Class FormCredentials
 
 
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
 
         If TextBoxPassword.Text <> "" And TextBoxUserName.Text <> "" Then
-            'OpenConnectionMySql(TextBoxhost.Text, TextBoxDatabase.Text, "BEC_W", "arpacanta")
             OpenConnectionMySql(TextBoxhost.Text, TextBoxDatabase.Text, "root", "bitron")
 
             If MySqlconnection.State = ConnectionState.Open Then
+
                 strFtpServerUser = ParameterTable("MorpheusFtpUser")
                 strFtpServerPsw = ParameterTable("MorpheusFtpPsw")
 
@@ -30,9 +30,7 @@ Public Class FormCredentials
                     CreAccount.strDatabase = TextBoxDatabase.Text
                     CreAccount.strSign = tblCredentials.Rows(0)("sign")
                     CreAccount.intId = tblCredentials.Rows(0)("id")
-
                     tblCredentials.Dispose()
-
                     Adapter.Dispose()
                     ds.Dispose()
                     Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM ErrorTable", MySqlconnection)
@@ -43,9 +41,6 @@ Public Class FormCredentials
                     FormStart.Focus()
                     DBName = UCase(TextBoxDatabase.Text)
                     strFtpServerAdd = ParameterTable("PathDocument") & DBName & "/"
-
-
-
                 Else
                     MsgBox("Database account error, check password and username")
                 End If
@@ -60,22 +55,19 @@ Public Class FormCredentials
         Application.Exit()
     End Sub
 
-    Private Sub FormCredentials_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub FormCredentials_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
 
 
         TextBoxUserName.Text = ""
         TextBoxhost.Text = "10.140.13.164"
-        'TextBoxhost.Text = "localhost"
         TextBoxPassword.Text = ""
 
 
         '#If DEBUG Then
-        '       TextBoxUserName.Text = "atomasie"
-
+        'TextBoxUserName.Text = "atomasie"
+        'TextBoxhost.Text = "10.150.12.114"
         'TextBoxPassword.Text = "arpacanta"
         '#End If
-
-
 
     End Sub
 
@@ -88,18 +80,14 @@ Public Class FormCredentials
     End Sub
 
 
-    Private Sub TextBoxUserName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBoxUserName.TextChanged
+    Private Sub TextBoxUserName_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxUserName.TextChanged
         If TextBoxUserName.Text = "demo" Then
             TextBoxDatabase.Text = "demo"
         End If
     End Sub
 
 
-    Private Sub TableLayoutPanel1_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles TableLayoutPanel1.Paint
-
-    End Sub
-
-    Private Sub TextBoxhost_TextChanged(sender As Object, e As EventArgs) Handles TextBoxhost.TextChanged
+    Private Sub TableLayoutPanel1_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles TableLayoutPanel1.Paint
 
     End Sub
 End Class

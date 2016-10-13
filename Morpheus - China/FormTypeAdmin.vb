@@ -11,28 +11,30 @@ Public Class FormTypeAdmin
     Dim DsDoc As New DataSet
     Dim builder As MySqlCommandBuilder = New MySqlCommandBuilder(AdapterType)
 
-    Private Sub FormDownload_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+    Private Sub FormDownload_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
         FormStart.Show()
         tblDocType.Dispose()
         DsType.Dispose()
         AdapterType.Dispose()
     End Sub
 
-    Private Sub FormTypeAdmin_load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub FormTypeAdmin_load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         FormStart.Hide()
         Dim ds As New DataSet
         AdapterType.Fill(DsType, "doctype")
         tblDocType = DsType.Tables("doctype")
-        Adapterdoc.Fill(DsDoc, "doc")
+        AdapterDoc.Fill(DsDoc, "doc")
         tblDoc = DsDoc.Tables("doc")
         FillComboFirstType()
-        TextBoxRropriety.Text = "S?R1P?Y?C?"
+	TextBoxPropriety.Text = "S?R1P?Y?C?"
     End Sub
 
-    Private Sub ComboBoxFirstType_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBoxFirstType.TextChanged
+    Private Sub ComboBoxFirstType_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxFirstType.TextChanged
         Dim strOld As String = ""
-        ComboBoxSecondType.Items.Clear()
         Dim returnValue As DataRow()
+
+        ComboBoxSecondType.Items.Clear()
+
         returnValue = tblDocType.Select("FirstType='" & ComboBoxFirstType.Text & "'", "SecondType DESC")
         For Each row In returnValue
             If StrComp(Mid(strOld, 1, 3), Mid(row("SecondType").ToString, 1, 3)) <> 0 Then
@@ -46,7 +48,7 @@ Public Class FormTypeAdmin
 
     End Sub
 
-    Private Sub ComboBoxSecondType_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBoxSecondType.TextChanged
+    Private Sub ComboBoxSecondType_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxSecondType.TextChanged
         Dim returnValue As DataRow()
         ComboBoxThirdType.Items.Clear()
         Dim strOld As String = ""
@@ -62,7 +64,7 @@ Public Class FormTypeAdmin
     End Sub
     ' function for create new type
     ' only a user with T and at list edito can create type
-    Private Sub ButtonTypeAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonTypeAdd.Click
+    Private Sub ButtonTypeAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonTypeAdd.Click
 
         DisableControl()
         ComboBoxFirstType.Text = Trim(ComboBoxFirstType.Text)
@@ -71,23 +73,23 @@ Public Class FormTypeAdmin
         Dim returnValue As DataRow()
         Dim AllOk As Boolean = False
         Dim myrow As DataRow
-        If CeckFildType(ComboBoxFirstType.Text) And ComboBoxFirstType.Text <> "" Then
-            If CeckFildType(ComboBoxSecondType.Text) And CeckFildType(ComboBoxThirdType.Text) Then
+        If CheckFieldType(ComboBoxFirstType.Text) And ComboBoxFirstType.Text <> "" Then
+            If CheckFieldType(ComboBoxSecondType.Text) And CheckFieldType(ComboBoxThirdType.Text) Then
                 If Len(ComboBoxThirdType.Text) > 1 Then
                     If Len(ComboBoxSecondType.Text) > 1 Then
-                        If Regex.IsMatch(TextBoxRropriety.Text, "^S[01]R[01]P[01]Y[0-9A-Z]C[012]$") Then
+                        If Regex.IsMatch(TextBoxPropriety.Text, "^S[01]R[01]P[01]Y[0-9A-Z]C[012]$") Then
                             AllOk = True
                         End If
-
                     End If
                 End If
             End If
         End If
+
         If AllOk Then
             If controlRight("T") >= 3 And controlRight(Mid(ComboBoxFirstType.Text, 3, 1)) >= 2 Then
                 returnValue = tblDocType.Select("header='" & HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text) & "'")
                 If returnValue.Length = 1 Then
-                    ComunicationLog("0039") '("This Tipe it is already present in the Database. No record Added!")
+                    ComunicationLog("0039") '("This type is already present in the database. No record added!")
                 ElseIf returnValue.Length > 1 Then
                     ComunicationLog("0040") '("Error of data, more fild present in the Database for this type. No record Added!")
                 Else
@@ -99,17 +101,17 @@ Public Class FormTypeAdmin
                         myrow.Item("SecondType") = Trim(cap7(ComboBoxSecondType.Text))
                         myrow.Item("ThirdType") = Trim(cap7(ComboBoxThirdType.Text))
                         myrow.Item("header") = UCase(Trim(HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text)))
-                        myrow.Item("Control") = TextBoxRropriety.Text
+			myrow.Item("Control") = TextBoxPropriety.Text
                         myrow.Item("extension") = TextBoxExtension.Text
 
                         tblDocType.Rows.Add(myrow)
                         builder.GetUpdateCommand()
                         AdapterType.Update(tblDocType)
-                        ComunicationLog("5041") '("Record insert in Database", True)
+                        ComunicationLog("5041") '("Record inserted in database")
                         resetCont()
                         FillComboFirstType()
                     Else
-                        ComunicationLog("0009") '("File extension error")
+                        ComunicationLog("0009") '("Extension is missing!")
                     End If
 
                 End If
@@ -117,17 +119,17 @@ Public Class FormTypeAdmin
                 ComunicationLog("0043") 'no enough right
             End If
         Else
-            ComunicationLog("0038") '("Parsed Fail check Fild Type Sintax") 
+            ComunicationLog("0038") 'Sintax error 
         End If
         EnableControl()
 
     End Sub
 
-    Private Sub ButtonRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonRefresh.Click
+    Private Sub ButtonRefresh_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRefresh.Click
         UpdatePropriety()
     End Sub
 
-    Private Sub ButtonDelete_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonDelete.Click
+    Private Sub ButtonDelete_Click_1(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDelete.Click
         Dim returnValue As DataRow(), cmd As MySqlCommand, sql As String
         If controlRight("T") > 2 Then
             If vbYes = MsgBox(StrSettingRead("0035"), MsgBoxStyle.YesNo) Then
@@ -153,7 +155,7 @@ Public Class FormTypeAdmin
     End Sub
 
     ' Fill the first type combo box
-    '
+
     Sub FillComboFirstType()
         ComboBoxFirstType.Items.Clear()
         Dim strOld As String = ""
@@ -171,10 +173,11 @@ Public Class FormTypeAdmin
         ComboBoxFirstType.Sorted = True
         ComboBoxSecondType.Text = ""
         ComboBoxThirdType.Text = ""
+
     End Sub
 
-    ' calculation of the tre header
-    '
+    ' calculation of the three header
+
     Function HeaderCalc(ByVal cf As String, ByVal cs As String, ByVal ct As String) As String
         HeaderCalc = Mid(cf, 1, 3)
         If cs <> "-" Then
@@ -189,23 +192,20 @@ Public Class FormTypeAdmin
         End If
     End Function
 
-    '
-    '
-    Function CeckFildType(ByVal s As String) As Boolean
+    Function CheckFieldType(ByVal s As String) As Boolean
 
         Dim BooNoNumeric As Boolean
         Dim BooTratSpace As Boolean
         Dim Boofilled As Boolean
-
         If s <> "" Then Boofilled = True
         BooNoNumeric = True ' NoNumeric(s) ' can use also numeric
         BooTratSpace = TratPositionSpace(s)
-        CeckFildType = BooTratSpace And BooTratSpace And Boofilled
+        CheckFieldType = BooTratSpace And BooTratSpace And Boofilled
 
     End Function
 
     ' check if all letters isnt numeric
-    '
+
     Function NoNumeric(ByVal s As String) As Boolean
         Dim i As Integer
         NoNumeric = True
@@ -215,7 +215,7 @@ Public Class FormTypeAdmin
     End Function
 
     ' Check header position space
-    '
+
     Function TratPositionSpace(ByVal s As String) As Boolean
         TratPositionSpace = False
         If Len(s) > 1 Then
@@ -226,7 +226,7 @@ Public Class FormTypeAdmin
     End Function
 
     'Enable all control
-    '
+
     Sub EnableControl()
         Dim ct As Control
         For Each ct In Me.Controls
@@ -235,7 +235,7 @@ Public Class FormTypeAdmin
     End Sub
 
     'Disable all control
-    '
+
     Sub DisableControl()
         Dim ct As Control
         For Each ct In Me.Controls
@@ -243,8 +243,8 @@ Public Class FormTypeAdmin
         Next
     End Sub
 
-    ' Find the control propriety linked a this header
-    '
+    ' Find the control properties and extension linked with a specific document type
+
     Sub UpdatePropriety()
         tblDocType.Clear()
         DsType.Clear()
@@ -257,20 +257,20 @@ Public Class FormTypeAdmin
             If returnValue.Length <= 1 Then
                 For Each row In returnValue
 
-                    TextBoxRropriety.Text = row("control").ToString
+                    TextBoxPropriety.Text = row("control").ToString
                     ComunicationLog("5030") ' PubbEvent("Find in Database")
                 Next
                 If returnValue.Length = 0 Then ComunicationLog("5033") ' PubbEvent("No find in Database")
             Else
-                ComunicationLog("0031") ' PubbEvent("There is more type with same header!")
+                ComunicationLog("0031") ' There are more records for the same type in the database. Please contact the administrator!
             End If
         Else
-            ComunicationLog("0032") ' PubbEvent("There is more type with same description!")
+            ComunicationLog("0032") ' There are more types of document with same header!
         End If
     End Sub
 
     ' comunication function
-    '
+
     Sub ComunicationLog(ByVal ComCode As String)
         Dim rsResult As DataRow()
         rsResult = tblError.Select("code='" & ComCode & "'")
@@ -284,7 +284,6 @@ Public Class FormTypeAdmin
         End If
     End Sub
 
- 
     Sub resetCont()
         ComboBoxFirstType.Text = ""
         ComboBoxSecondType.Text = ""
@@ -293,7 +292,7 @@ Public Class FormTypeAdmin
     End Sub
 
 
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
         MsgBox("Please fill the document propriety: " & vbCrLf & _
         "S{X} X=0 NO SIGN REQUEST, X=1 SIGN REQUEST, " & vbCrLf & _
         "R{X} X=0 NO REVISION REQUEST, X=1 REVISION REQUEST, " & vbCrLf & _

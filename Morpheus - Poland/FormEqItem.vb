@@ -1,6 +1,10 @@
 ﻿Option Explicit On
 Option Compare Text
 Imports MySql.Data.MySqlClient
+Imports System.IO
+Imports System.Data.SqlClient
+Imports System.Data.OleDb
+Imports System.Text.RegularExpressions
 Imports Microsoft.VisualBasic
 
 Public Class FormEqItem
@@ -14,7 +18,7 @@ Public Class FormEqItem
     Dim DsEQAsset As New DataSet
     Dim UpdatingAuto As Boolean
 
-    Private Sub FormEqItem_Load(ByVal sender As System.Object, ByVal e As EventArgs) Handles MyBase.Load
+    Private Sub FormEqItem_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         UpdatingAuto = True
         GroupBoxItem.Enabled = False
         TreeViewEQAsset.HideSelection = False
@@ -224,7 +228,7 @@ Public Class FormEqItem
     End Function
 
 
-    Private Sub ButtonRemove_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonRemove.Click
+    Private Sub ButtonRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRemove.Click
 
         Dim cmd As New MySqlCommand()
         Dim sql As String
@@ -254,7 +258,7 @@ Public Class FormEqItem
 
     End Sub
 
-    Private Sub ButtonAdd_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonAdd.Click
+    Private Sub ButtonAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAdd.Click
 
         Dim rootNode As TreeNode, rootNodeChild As TreeNode
         Dim cmd As New MySqlCommand()
@@ -404,7 +408,7 @@ Public Class FormEqItem
         ComboBoxOpenDate.Text = date_to_string(DateTimePickerOD.Text)
     End Sub
 
-    Private Sub ComboBoxEstimatedClosed_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles ComboBoxEstimatedClosed.TextChanged, ButtonClosedDate.TextChanged
+    Private Sub ComboBoxEstimatedClosed_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxEstimatedClosed.TextChanged, ButtonClosedDate.TextChanged
         If (ComboBoxEstimatedClosed.Text <> "") Then
             TextBoxDelay.Text = DateDiff("d", string_to_date(ComboBoxEstimatedClosed.Text), string_to_date(IIf(ButtonClosedDate.Text = "OPEN", date_to_string(Today), ButtonClosedDate.Text)))
             If Val(TextBoxDelay.Text) > 0 Then TextBoxDelay.BackColor = Color.Tomato
@@ -415,7 +419,7 @@ Public Class FormEqItem
         End If
     End Sub
 
-    Private Sub ButtonClosedDate_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonClosedDate.Click
+    Private Sub ButtonClosedDate_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonClosedDate.Click
         If ButtonClosedDate.Text = "OPEN" Then
             If vbYes = MsgBox("Do you want close today this Item?", vbYesNo) Then
                 ButtonClosedDate.Text = date_to_string(Today)
@@ -435,7 +439,7 @@ Public Class FormEqItem
     End Sub
 
 
-    Private Sub TreeViewEQAsset_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewEQAsset.AfterSelect
+    Private Sub TreeViewEQAsset_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewEQAsset.AfterSelect
         If ButtonSave.BackColor = Color.Red Then
             If MsgBox("Session open, do you want SAVE?", vbYesNo) = vbYes Then
                 ButtonSave_Click(Me, e)
@@ -457,11 +461,7 @@ Public Class FormEqItem
 
         If CurrentAssetId() > 0 Then
             GroupBoxItem.Enabled = True
-
-
-
             rowShow = tblEQAsset.Select("id = " & CurrentAssetId() & "")
-
 
             If rowShow.Length > 0 Then
 
@@ -499,9 +499,6 @@ Public Class FormEqItem
             TextBoxDS.Text = ""
         End If
 
-
-
-
         If UpdatingAuto And IsNumeric(TextBoxCost.Text) Then
             Dim MyInt As Integer = Val(TextBoxCost.Text)
             Dim MyCulture As New Globalization.CultureInfo("zh-CN")
@@ -518,8 +515,7 @@ Public Class FormEqItem
     End Sub
 
 
-
-    Private Sub ButtonSave_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonSave.Click
+    Private Sub ButtonSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSave.Click
 
         Application.DoEvents()
         ButtonSave.Enabled = False
@@ -547,10 +543,8 @@ Public Class FormEqItem
                     ",`name` = '" & Trim(Mid(TreeViewEQAsset.SelectedNode.Text, InStr(TreeViewEQAsset.SelectedNode.Text, "-") + 1)) & _
                     "' WHERE `eqasset`.`id` = " & CurrentAssetId() & " ;"
 
-
                     cmd = New MySqlCommand(sql, MySqlconnection)
                     cmd.ExecuteNonQuery()
-
 
                 Catch ex As Exception
                     MsgBox(ex.Message)
@@ -563,7 +557,6 @@ Public Class FormEqItem
                 Catch ex As Exception
 
                 End Try
-
 
                 AdapterEQAsset.Fill(DsEQAsset, "EQAsset")
                 tblEQAsset = DsEQAsset.Tables("EQAsset")
@@ -602,7 +595,7 @@ Public Class FormEqItem
         End If
     End Function
 
-    Private Sub ButtonAssetImport_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonAssetImport.Click
+    Private Sub ButtonAssetImport_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAssetImport.Click
         TextBoxAssetID.Text = toolAsset(CurrentToolId())
     End Sub
 
@@ -624,7 +617,6 @@ Public Class FormEqItem
     End Function
 
 
-
     Sub loadComboResponsible()
         Dim rowResults As DataRow()
         Try
@@ -639,7 +631,6 @@ Public Class FormEqItem
         Catch ex As Exception
 
         End Try
-
 
     End Sub
 
@@ -665,7 +656,7 @@ Public Class FormEqItem
 
 
     Private Sub TreeViewEQAsset_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles TreeViewEQAsset.DoubleClick
-        Dim name = ""
+        Dim name As String = ""
         If CurrentAssetId() > 0 Then
             name = Trim(UCase(Replace(InputBox("Change the bame the item name: ", ), "'", "")))
             If name <> "" Then
@@ -690,7 +681,6 @@ Public Class FormEqItem
             ButtonSave.BackColor = Color.Red
         End If
     End Sub
-
 
 
     Private Sub TextBoxTotalCost_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxTotalCost.TextChanged
@@ -722,7 +712,6 @@ Public Class FormEqItem
 
         End Try
 
-
         AdapterEQAsset.Fill(DsEQAsset, "EQAsset")
         tblEQAsset = DsEQAsset.Tables("EQAsset")
 
@@ -751,11 +740,11 @@ Public Class FormEqItem
 
     End Sub
 
-    Private Sub ButtonComponentDelLink_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonComponentDelLink.Click
+    Private Sub ButtonComponentDelLink_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonComponentDelLink.Click
         TextBoxDS.Text = ""
     End Sub
 
-    Private Sub ButtonComponentOpenDs_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonComponentOpenDs.Click
+    Private Sub ButtonComponentOpenDs_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonComponentOpenDs.Click
         Try
             Process.Start(TextBoxDS.Text)
         Catch ex As Exception
@@ -763,7 +752,7 @@ Public Class FormEqItem
         End Try
     End Sub
 
-    Private Sub ButtonComponetAddDs_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles ButtonComponetAddDs.Click
+    Private Sub ButtonComponetAddDs_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonComponetAddDs.Click
         OpenFileDialog1.Filter = "All File (*.*)|*.*"
         OpenFileDialog1.ShowDialog()
         If CurrentAssetId() > 0 Then
@@ -788,12 +777,11 @@ Public Class FormEqItem
     End Sub
 
 
-
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
         FillTreeViewEQAsset()
     End Sub
 
-    Private Sub GroupBoxItem_Enter(ByVal sender As System.Object, ByVal e As EventArgs) Handles GroupBoxItem.Enter
+    Private Sub GroupBoxItem_Enter(ByVal sender As Object, ByVal e As EventArgs) Handles GroupBoxItem.Enter
 
     End Sub
 End Class

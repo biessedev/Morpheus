@@ -11,14 +11,12 @@ Public Class FormNPIDocMamagement
 
     Private Sub FormNPIDocMamagement_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
 
-
         FormSamples.Show()
         FormSamples.Focus()
 
     End Sub
 
-
-    Private Sub FormNPIDocMamagement_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub FormNPIDocMamagement_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         'tblDocNPI.Clear()
         'DsDocNPI.Clear()
         AdapterDocNPI.Fill(DsDocNPI, "TableNPIDoc")
@@ -28,7 +26,6 @@ Public Class FormNPIDocMamagement
     End Sub
 
     Private Sub Btn_TypeDocFill()
-
         Cob_TypeDoc.Items.Clear()
         Cob_TypeDoc.Items.Add("pdf")
         Cob_TypeDoc.Items.Add("doc OR docx")
@@ -40,8 +37,7 @@ Public Class FormNPIDocMamagement
 
 
 
-    Private Sub Cob_TypeDoc_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Cob_TypeDoc.TextChanged
-
+    Private Sub Cob_TypeDoc_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles Cob_TypeDoc.TextChanged
 
         Dim i As Integer, result As DataRow()
         Try
@@ -76,38 +72,25 @@ Public Class FormNPIDocMamagement
                     For i = 0 To result.Length - 1
 
                         Cob_NameDoc.Items.Add(result(i).Item("FileName").ToString & "_" & result(i).Item("rev").ToString & "." & result(i).Item("Extension").ToString)
-
                     Next
                 Case "xls OR xlsx"
                     result = tblDocNPI.Select("Extension = 'xls' or Extension = 'xlsx'")
                     Cob_NameDoc.Items.Clear()
-
                     For i = 0 To result.Length - 1
-
                         Cob_NameDoc.Items.Add(result(i).Item("FileName").ToString & "_" & result(i).Item("rev").ToString & "." & result(i).Item("Extension").ToString)
-
                     Next
                 Case "ppt OR pptx"
                     result = tblDocNPI.Select("Extension = 'ppt' or Extension = 'pptx'")
                     Cob_NameDoc.Items.Clear()
-
                     For i = 0 To result.Length - 1
-
                         Cob_NameDoc.Items.Add(result(i).Item("FileName").ToString & "_" & result(i).Item("rev").ToString & "." & result(i).Item("Extension").ToString)
-
                     Next
-
             End Select
-
         Catch ex As Exception
-
         End Try
-
-
     End Sub
 
-
-    Private Sub Cob_NameDoc_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Cob_NameDoc.TextChanged
+    Private Sub Cob_NameDoc_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles Cob_NameDoc.TextChanged
 
         Dim DR As DataRow()
         Dim i As Integer
@@ -126,7 +109,6 @@ Public Class FormNPIDocMamagement
             .Columns.Add("Version", 100)
             .Columns.Add("Extension", 100)
             .Columns.Add("Editor", 200)
-
         End With
 
         For i = 0 To DR.Length - 1
@@ -138,24 +120,20 @@ Public Class FormNPIDocMamagement
             ListViewNPI.Items(0).SubItems.Add(DR(i).Item("Editor").ToString)
         Next
 
-
     End Sub
 
-    Private Sub Btn_Add_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Btn_Add.Click
+    Private Sub Btn_Add_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Add.Click
         Dim Sql As String
         Dim cmd As New MySqlCommand()
 
         Me.Hide()
 
         FormSamples.Txt_FilePath.Text = Cob_NameDoc.Text
-
         Sql = "UPDATE npi_openissue  SET FilePath ='" & FormSamples.Txt_FilePath.Text & "' WHERE ID = '" & FormSamples.Txt_Index.Text & "'"
-
         cmd = New MySqlCommand(Sql, MySqlconnection)
         cmd.ExecuteNonQuery()
         Call FormSamples.issuefunction(0)
         MsgBox("File upload successed")
-
         FormSamples.Show()
         FormSamples.Focus()
 
@@ -163,7 +141,7 @@ Public Class FormNPIDocMamagement
 
     End Sub
 
-    Private Sub Btn_Cancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Btn_Cancel.Click
+    Private Sub Btn_Cancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Cancel.Click
         Me.Hide()
         FormSamples.Show()
         FormSamples.Focus()

@@ -1,6 +1,8 @@
 ﻿Option Explicit On
 Option Compare Text
 Imports MySql.Data.MySqlClient
+Imports System.Globalization
+
 
 Public Class FormOpenIssue
 
@@ -126,7 +128,7 @@ Public Class FormOpenIssue
             MsgBox("Select an Open Issue!")
         End If
 
-            fillList()
+        fillList()
 
         If Len(oldOpenIssue) <> Len(OpenIssue) Then
             MsgBox("Deleted Issue : " & dept & "[" & opi & "]")
@@ -137,17 +139,4 @@ Public Class FormOpenIssue
     Private Sub ComboBoxGroup_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxGroup.SelectedIndexChanged
 
     End Sub
-
-    Private Sub ComboBoxName_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxName.SelectedIndexChanged
-
-    End Sub
-
-    Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
-
-    End Sub
-
-    Private Sub ListViewGRU_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListViewGRU.SelectedIndexChanged
-
-    End Sub
-
 End Class

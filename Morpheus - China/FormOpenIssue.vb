@@ -45,17 +45,14 @@ Public Class FormOpenIssue
         End If
     End Sub
 
-
-    Private Sub FormGroup_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub FormGroup_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         FormGroup.ComboBoxGroup.Sorted = True
         AdapterProd.Fill(DsProd, "product")
         tblProd = DsProd.Tables("product")
         fillList()
     End Sub
 
-
-
-    Private Sub ComboBoxGroup_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBoxGroup.TextChanged
+    Private Sub ComboBoxGroup_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxGroup.TextChanged
 
         Dim i As Integer, result As DataRow(), k As Integer, n As Integer, j As Integer
         tblProd.Clear()
@@ -88,8 +85,7 @@ Public Class FormOpenIssue
 
     End Sub
   
-    Private Sub ButtonAddMch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonAdd.Click
-
+    Private Sub ButtonAddMch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAdd.Click
 
         Dim sql As String, cmd As MySqlCommand
         If ComboBoxName.Text <> "" And ComboBoxGroup.Text <> "" Then
@@ -107,12 +103,9 @@ Public Class FormOpenIssue
         ComboBoxGroup_TextChanged(Me, e)
     End Sub
 
+    Private Sub ButtonRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRemove.Click
 
-
-
-    Private Sub ButtonRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonRemove.Click
-
-        Dim sql As String, cmd As MySqlCommand, oldOpenIssue As String
+        Dim sql As String, cmd As MySqlCommand, oldOpenIssue As String, dept As String, opi As String
         oldOpenIssue = OpenIssue
         If ComboBoxName.Text <> "" Then
 
@@ -123,6 +116,7 @@ Public Class FormOpenIssue
                 cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
             Catch ex As Exception
+                MsgBox("Deletion failed!")
             End Try
         End If
         fillList()
@@ -134,8 +128,7 @@ Public Class FormOpenIssue
         ComboBoxGroup_TextChanged(Me, e)
     End Sub
 
-
-    Private Sub ComboBoxGroup_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBoxGroup.SelectedIndexChanged
+    Private Sub ComboBoxGroup_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxGroup.SelectedIndexChanged
 
     End Sub
 End Class

@@ -51,8 +51,6 @@ D:\Morpheus\Morpheus - China\bin\Debug\MORPHEUS.exe
 D:\Morpheus\Morpheus - China\bin\Debug\MORPHEUS.pdb
 D:\Morpheus\Morpheus - China\bin\Debug\MORPHEUS.xml
 D:\Morpheus\Morpheus - China\bin\Debug\mysql.data.dll
-D:\Morpheus\Morpheus - China\bin\Debug\Microsoft.VisualBasic.PowerPacks.Vs.xml
-D:\Morpheus\Morpheus - China\obj\Debug\SrvDoc.vbprojResolveAssemblyReference.cache
 D:\Morpheus\Morpheus - China\obj\Debug\MORPHEUS.FormBomUtility.resources
 D:\Morpheus\Morpheus - China\obj\Debug\MORPHEUS.FormCoding.resources
 D:\Morpheus\Morpheus - China\obj\Debug\MORPHEUS.FormCommit.resources
@@ -83,3 +81,4 @@ D:\Morpheus\Morpheus - China\obj\Debug\SrvDoc.vbproj.GenerateResource.Cache
 D:\Morpheus\Morpheus - China\obj\Debug\MORPHEUS.TrustInfo.xml
 D:\Morpheus\Morpheus - China\obj\Debug\MORPHEUS.exe.manifest
 D:\Morpheus\Morpheus - China\obj\Debug\MORPHEUS.application
+D:\Morpheus\Morpheus - China\obj\Debug\SrvDoc.vbprojResolveAssemblyReference.cache

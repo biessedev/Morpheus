@@ -19,7 +19,7 @@ Public Class FormCommit
     Dim DsCommit As New DataSet
 
 
-    Private Sub Commit_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Commit_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Dim d As Date
         AdapterCommitList.Fill(DsCommitList, "Commit_List")
         tblCommitList = DsCommitList.Tables("Commit_List")
@@ -29,7 +29,6 @@ Public Class FormCommit
 
         FillcomboCommit()
         UpdateTreecommit()
-
 
         DateTimePicker1.Value = Today
         DateTimePickerEnd.Text = ""
@@ -52,11 +51,8 @@ Public Class FormCommit
         TextBoxClosed.Text = ""
     End Sub
 
-  
 
-  
-
-    Private Sub DateTimePicker1_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles DateTimePicker1.Validated
+    Private Sub DateTimePicker1_Validated(ByVal sender As Object, ByVal e As EventArgs) Handles DateTimePicker1.Validated
         ' aggiorna lista
         UpdateTreecommit()
         Dim d As Date
@@ -67,8 +63,7 @@ Public Class FormCommit
     End Sub
 
 
-
-    Private Sub ButtonNewBom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonNewBom.Click
+    Private Sub ButtonNewBom_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonNewBom.Click
         Dim sql As String
         Dim cmd As New MySqlCommand()
         If TextBoxOpen.Text <> "" Then
@@ -105,7 +100,7 @@ Public Class FormCommit
         TextBoxMontly.Text = MonthHour(string_to_date(DateTimePicker1.Text))
     End Sub
 
-    Private Sub ButtonBomRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonBomRemove.Click
+    Private Sub ButtonBomRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBomRemove.Click
         Dim cmd As New MySqlCommand()
         Dim sql As String
         If Not IsNothing(TreeViewBomList.SelectedNode) Then
@@ -119,11 +114,9 @@ Public Class FormCommit
                     Catch ex As Exception
                         MsgBox("Mysql delete error ")
                     End Try
-
                 Else
                     MsgBox("please fill all field before update")
                 End If
-
             Else
                 MsgBox("no enough right")
             End If
@@ -135,8 +128,7 @@ Public Class FormCommit
         TextBoxNote.Text = ""
     End Sub
 
-    Private Sub TreeViewBomList_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewBomList.AfterSelect
-
+    Private Sub TreeViewBomList_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewBomList.AfterSelect
         Dim id As Integer
         id = Val(Trim(Mid(TreeViewBomList.SelectedNode.Text, 1, InStr(TreeViewBomList.SelectedNode.Text, "-") - 1)))
         Dim rowShow As DataRow()
@@ -148,11 +140,10 @@ Public Class FormCommit
         If rowShow.Length > 0 Then
             TextBoxNote.Text = rowShow(0).Item("note").ToString()
         End If
-
         If CheckBoxMonthView.Checked = True Then DateTimePicker1.Text = Mid(TreeViewBomList.SelectedNode.Text, 1, 10)
     End Sub
 
-    Private Sub ComboBoxCommit_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBoxCommit.SelectedIndexChanged
+    Private Sub ComboBoxCommit_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxCommit.SelectedIndexChanged
         Dim rowResults As DataRow()
         DsCommitList.Clear()
         tblCommitList.Clear()
@@ -172,22 +163,19 @@ Public Class FormCommit
             TextBoxOpen.Text = "2000/01/01"
             TextBoxClosed.Text = ""
         End If
-
     End Sub
 
-    Private Sub CheckBoxUser_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBoxUser.CheckedChanged
+    Private Sub CheckBoxUser_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBoxUser.CheckedChanged
         Try
             DateTimePicker1.Text = date_to_string(Today)
             TextBoxMontly.Text = MonthHour(string_to_date(DateTimePicker1.Text))
             CheckBoxMonthView.Checked = False
             UpdateTreecommit()
         Catch ex As Exception
-
         End Try
-
     End Sub
 
-    Private Sub DateTimePickerEnd_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DateTimePickerEnd.ValueChanged
+    Private Sub DateTimePickerEnd_ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles DateTimePickerEnd.ValueChanged
         Dim sql As String
         Dim cmd As New MySqlCommand()
         TextBoxClosed.Text = DateTimePickerEnd.Text
@@ -198,11 +186,9 @@ Public Class FormCommit
         Catch ex As Exception
             MsgBox("sql Error !!")
         End Try
-
     End Sub
 
-    Private Sub DateTimePickerStart_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DateTimePickerStart.ValueChanged
-
+    Private Sub DateTimePickerStart_ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles DateTimePickerStart.ValueChanged
         'Dim sql As String
         'Dim cmd As New MySqlCommand()
         TextBoxOpen.Text = DateTimePickerStart.Text
@@ -216,7 +202,7 @@ Public Class FormCommit
     End Sub
 
     ' show the montth viewer.
-    Private Sub CheckBoxMonthView_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBoxMonthView.CheckedChanged, CheckBoxCommit.TextChanged, TextBoxWindows.TextChanged
+    Private Sub CheckBoxMonthView_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBoxMonthView.CheckedChanged, CheckBoxCommit.TextChanged, TextBoxWindows.TextChanged
         Dim d As Date
         If DateTimePicker1.Text <> "" Then
             d = string_to_date(DateTimePicker1.Text)
@@ -245,7 +231,6 @@ Public Class FormCommit
                     End If
                     TreeViewBomList.Nodes.Add(rootNode)
                 Next
-
             Else
                 ButtonBomRemove.Enabled = True
                 ButtonNewBom.Enabled = True
@@ -254,19 +239,17 @@ Public Class FormCommit
         End If
     End Sub
 
-    Private Sub CheckBoxCommit_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBoxCommit.CheckedChanged
+    Private Sub CheckBoxCommit_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBoxCommit.CheckedChanged
         Try
             DateTimePicker1.Text = date_to_string(Today)
             TextBoxMontly.Text = MonthHour(string_to_date(DateTimePicker1.Text))
             CheckBoxMonthView.Checked = False
             UpdateTreecommit()
         Catch ex As Exception
-
         End Try
-
     End Sub
 
-    Private Sub ButtonRemoveCommit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonRemoveCommit.Click
+    Private Sub ButtonRemoveCommit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRemoveCommit.Click
 
         Dim cmd As New MySqlCommand()
         Dim sql As String
@@ -292,7 +275,7 @@ Public Class FormCommit
         FillcomboCommit()
     End Sub
 
-    Private Sub ButtonNewCommit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonNewCommit.Click
+    Private Sub ButtonNewCommit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonNewCommit.Click
         Dim sql As String
         Dim cmd As New MySqlCommand()
 
@@ -328,8 +311,6 @@ Public Class FormCommit
         For Each row In rowShow
             dayHour = dayHour + Val(row("hour"))
         Next
-
-
     End Function
 
     ' return the commit name if for all day. if more commit in the same day return mixed
@@ -353,10 +334,8 @@ Public Class FormCommit
             Else
                 dayCommit = "MIXED"
             End If
-
         Next
         TextBoxDay.Text = total
-
     End Function
 
     ' is true if there is job with this commit
@@ -373,7 +352,6 @@ Public Class FormCommit
         Else
             CommitmentJob = False
         End If
-
     End Function
 
     ' total hour in one month based on selection
@@ -389,11 +367,8 @@ Public Class FormCommit
         MonthHour = 0
         For Each row In rowShow
             MonthHour = MonthHour + Val(row("hour"))
-
         Next
-
     End Function
-
 
 
     ' update the table bom offer from the data table offfer
@@ -432,7 +407,6 @@ Public Class FormCommit
         If Not exist Then ComboBoxUser.Items.Add(CreAccount.strUserName)
         ComboBoxUser.Sorted = True
         ComboBoxUser.Text = CreAccount.strUserName
-
     End Sub
 
     ' update the tree viewer
@@ -458,7 +432,7 @@ Public Class FormCommit
         End If
     End Sub
 
-    Private Sub ComboBoxUser_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBoxUser.TextChanged
+    Private Sub ComboBoxUser_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxUser.TextChanged
         If CreAccount.strUserName = ComboBoxUser.Text Or controlRight("R") >= 3 Then
             ButtonNewBom.Enabled = True
             ButtonBomRemove.Enabled = True
@@ -466,7 +440,7 @@ Public Class FormCommit
     End Sub
 
 
-    Private Sub ButtonReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonReset.Click
+    Private Sub ButtonReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonReset.Click
         TextBoxClosed.Text = ""
         Dim sql As String
         Dim cmd As New MySqlCommand()
@@ -495,14 +469,13 @@ Public Class FormCommit
     End Function
 
 
-    Private Sub ComboBoxCommit_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBoxCommit.TextChanged
+    Private Sub ComboBoxCommit_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxCommit.TextChanged
         Try
             DateTimePicker1.Text = date_to_string(Today)
             TextBoxMontly.Text = MonthHour(string_to_date(DateTimePicker1.Text))
             CheckBoxMonthView.Checked = False
             UpdateTreecommit()
         Catch ex As Exception
-
         End Try
     End Sub
 End Class

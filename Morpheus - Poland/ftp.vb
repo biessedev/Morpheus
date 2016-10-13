@@ -1,6 +1,9 @@
 Imports System
+Imports System.Collections.Generic
+Imports System.Text
 Imports System.Net
 imports System.IO
+imports System.Collections
 
 Public Class ftp
 
@@ -124,10 +127,10 @@ Public Class ftp
 
             _FtpResponse = CType(_FtpRequest.GetResponse(), FtpWebResponse)
 
-            Dim liststring = ""
+            Dim liststring As String = ""
 
             Try
-                Dim sr = New StreamReader(_FtpResponse.GetResponseStream(), System.Text.Encoding.ASCII)
+                Dim sr As StreamReader = New StreamReader(_FtpResponse.GetResponseStream(), System.Text.Encoding.ASCII)
                 liststring = sr.ReadToEnd()
                 sr.Close()
                 _FtpResponse.Close()
@@ -151,7 +154,7 @@ Public Class ftp
 
         Dim _fileName As String = LocalPath + "\" + Name
         _fileName = Replace(_fileName, "\\", "\")
-        Dim _File = New FileInfo(_fileName)
+        Dim _File As FileInfo = New FileInfo(_fileName)
         Dim _FileStream As FileStream
 
         Try
@@ -189,7 +192,7 @@ Public Class ftp
 
     End Function
 
-    Public Function CreateDir(ByVal Path As String) As String        
+    Public Function CreateDir(ByVal Path As String) As String
         _FtpRequest = CType(WebRequest.Create("ftp://" + _Host + Path), FtpWebRequest)
         _FtpRequest.Method = WebRequestMethods.Ftp.MakeDirectory
         _FtpRequest.UsePassive = True
@@ -212,7 +215,7 @@ Public Class ftp
 
     Public Function UploadFile(ByVal Path As String, ByVal LocalPath As String, ByVal Name As String) As String
         Dim _fileName As String = LocalPath + "\" + Name
-        Dim _File = New FileInfo(_fileName)
+        Dim _File As FileInfo = New FileInfo(_fileName)
 
         _FtpRequest = CType(WebRequest.Create("ftp://" + _Host + Path + Name), FtpWebRequest)
         _FtpRequest.KeepAlive = False
@@ -261,7 +264,7 @@ Public Class ftp
     Public Sub ResumeDownloadFile(ByVal Path As String, ByVal LocalPath As String, ByVal Name As String)
         Dim _fileName As String = LocalPath + "\" + Name
 
-        Dim _File = New FileInfo(_fileName)
+        Dim _File As FileInfo = New FileInfo(_fileName)
         Dim _FileStream As FileStream
 
         _FtpRequest = CType(WebRequest.Create("ftp://" + _Host + Path + Name), FtpWebRequest)
