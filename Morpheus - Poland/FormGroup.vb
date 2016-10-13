@@ -125,4 +125,7 @@ Public Class FormGroup
 
     End Sub
 
+    Private Sub ListViewGRU_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListViewGRU.SelectedIndexChanged
+
+    End Sub
 End Class

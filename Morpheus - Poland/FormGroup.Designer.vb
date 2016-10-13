@@ -31,37 +31,37 @@ Partial Class FormGroup
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.ListViewGRU = New System.Windows.Forms.ListView()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.SuspendLayout()
+        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.SuspendLayout
         '
         'ButtonRemove
         '
         Me.ButtonRemove.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.ButtonRemove.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonRemove.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonRemove.Location = New System.Drawing.Point(24, 297)
         Me.ButtonRemove.Name = "ButtonRemove"
         Me.ButtonRemove.Size = New System.Drawing.Size(92, 22)
         Me.ButtonRemove.TabIndex = 222
         Me.ButtonRemove.Text = "Remove"
-        Me.ButtonRemove.UseVisualStyleBackColor = True
+        Me.ButtonRemove.UseVisualStyleBackColor = true
         '
         'ButtonAdd
         '
         Me.ButtonAdd.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.ButtonAdd.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonAdd.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonAdd.Location = New System.Drawing.Point(632, 297)
         Me.ButtonAdd.Name = "ButtonAdd"
         Me.ButtonAdd.Size = New System.Drawing.Size(82, 22)
         Me.ButtonAdd.TabIndex = 221
         Me.ButtonAdd.Text = "Add"
-        Me.ButtonAdd.UseVisualStyleBackColor = True
+        Me.ButtonAdd.UseVisualStyleBackColor = true
         '
         'ComboBoxGroup
         '
         Me.ComboBoxGroup.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ComboBoxGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBoxGroup.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ComboBoxGroup.FormattingEnabled = True
+        Me.ComboBoxGroup.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ComboBoxGroup.FormattingEnabled = true
         Me.ComboBoxGroup.Location = New System.Drawing.Point(24, 29)
         Me.ComboBoxGroup.Name = "ComboBoxGroup"
         Me.ComboBoxGroup.Size = New System.Drawing.Size(690, 21)
@@ -70,9 +70,9 @@ Partial Class FormGroup
         'Label10
         '
         Me.Label10.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Label10.AutoSize = True
+        Me.Label10.AutoSize = true
         Me.Label10.BackColor = System.Drawing.Color.Transparent
-        Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label10.Location = New System.Drawing.Point(21, 13)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(54, 13)
@@ -83,8 +83,8 @@ Partial Class FormGroup
         '
         Me.ComboBoxName.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ComboBoxName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBoxName.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ComboBoxName.FormattingEnabled = True
+        Me.ComboBoxName.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ComboBoxName.FormattingEnabled = true
         Me.ComboBoxName.Location = New System.Drawing.Point(24, 81)
         Me.ComboBoxName.Name = "ComboBoxName"
         Me.ComboBoxName.Size = New System.Drawing.Size(690, 21)
@@ -93,9 +93,9 @@ Partial Class FormGroup
         'Label1
         '
         Me.Label1.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Label1.AutoSize = True
+        Me.Label1.AutoSize = true
         Me.Label1.BackColor = System.Drawing.Color.Transparent
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label1.Location = New System.Drawing.Point(21, 65)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(54, 13)
@@ -111,27 +111,27 @@ Partial Class FormGroup
         Me.PictureBox1.Size = New System.Drawing.Size(101, 32)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox1.TabIndex = 232
-        Me.PictureBox1.TabStop = False
+        Me.PictureBox1.TabStop = false
         '
         'ListViewGRU
         '
         Me.ListViewGRU.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.ListViewGRU.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ListViewGRU.FullRowSelect = True
-        Me.ListViewGRU.GridLines = True
+        Me.ListViewGRU.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ListViewGRU.FullRowSelect = true
+        Me.ListViewGRU.GridLines = true
         ListViewItem1.StateImageIndex = 0
         Me.ListViewGRU.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.ListViewGRU.Location = New System.Drawing.Point(24, 126)
-        Me.ListViewGRU.MultiSelect = False
+        Me.ListViewGRU.MultiSelect = false
         Me.ListViewGRU.Name = "ListViewGRU"
         Me.ListViewGRU.Size = New System.Drawing.Size(690, 165)
         Me.ListViewGRU.TabIndex = 225
-        Me.ListViewGRU.UseCompatibleStateImageBehavior = False
+        Me.ListViewGRU.UseCompatibleStateImageBehavior = false
         Me.ListViewGRU.View = System.Windows.Forms.View.Details
         '
         'FormGroup
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(855, 331)
         Me.Controls.Add(Me.PictureBox1)
@@ -144,11 +144,11 @@ Partial Class FormGroup
         Me.Controls.Add(Me.Label10)
         Me.Name = "FormGroup"
         Me.Text = "Product Documentation Management"
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.ResumeLayout(False)
-        Me.PerformLayout()
+        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).EndInit
+        Me.ResumeLayout(false)
+        Me.PerformLayout
 
-    End Sub
+End Sub
     Friend WithEvents ButtonRemove As System.Windows.Forms.Button
     Friend WithEvents ButtonAdd As System.Windows.Forms.Button
     Friend WithEvents ComboBoxGroup As System.Windows.Forms.ComboBox

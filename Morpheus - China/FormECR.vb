@@ -12,7 +12,7 @@ Public Class FormECR
     Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM product", MySqlconnection)
     Dim tblDoc As DataTable, tblDocType As DataTable, tblEcr As DataTable, tblProd As DataTable
     Dim DsDoc As New DataSet, DsDocType As New DataSet, DsEcr As New DataSet, DsProd As New DataSet
-    Dim userDep3 As String, stepNote As String
+    Dim userDep3 As String
     Dim cmd As New MySqlCommand
     Dim CultureInfo_ja_JP As New System.Globalization.CultureInfo("ja-JP", False)
     Dim needSave As Boolean = False
@@ -168,7 +168,6 @@ Public Class FormECR
             If userDep3 = "B" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Bnote")
 
 
-            stepNote = RichTextBoxStep.Text
             If userDep3 = "E" Then TextBoxStepCost.Text = Result(0).Item("ECost")
             If userDep3 = "L" Then TextBoxStepCost.Text = Result(0).Item("LCost")
             If userDep3 = "P" Then TextBoxStepCost.Text = Result(0).Item("PCost")
@@ -520,7 +519,6 @@ Public Class FormECR
                         End If
                         If SomeNoChecked() = False Then
                             If datepresence Then
-
                                 If but <> "P" Then
                                     Me.Controls("Button" & but).Text = "APPROVED"
                                     WriteField(but & "sign", Me.Controls("Button" & but).Text)
@@ -627,7 +625,6 @@ Public Class FormECR
         tblEcr = DsEcr.Tables("ecr")
 
         RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & readField(but & "note", EcrN)
-        stepNote = RichTextBoxStep.Text
         TextBoxStepCost.Text = readField(but & "cost", EcrN)
         UpdateDate()
         ButtonRL.Text = readField("dater", EcrN)

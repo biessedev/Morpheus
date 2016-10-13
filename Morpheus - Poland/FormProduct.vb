@@ -1308,45 +1308,7 @@ Public Class FormProduct
                 MsgBox("Sigip update error! " & ex.Message)
             End Try
 
-            ' *** OLD CODE (with issues during import Sigip BOM process) *** '
-            'sql = "(" & index & "," & _
-            '"'" & bom & "'," & _
-            '"'" & Replace(des, "'", "") & "'," & _
-            '"'" & nr & "'," & _
-            '"'" & (qt) & "'," & _
-            '"'" & (price) & "'," & _
-            '"'" & currency & "'," & _
-            '"'" & liv & "'," & _
-            '"'" & acq_fab & "'," & _
-            '"'" & Replace(ReplaceChar(bitron_pn), "-", "") & "'," & _
-            '"'" & ReplaceChar(despn) & "'," & _
-            '"'" & mdi & "'," & _
-            '"'" & mdo & "'," & _
-            '"'" & amm & "'," & _
-            '"'" & spe & "'," & _
-            '"'" & mdi_t & "'," & _
-            '"'" & mdo_t & "'," & _
-            '"'" & amm_t & "'," & _
-            '"'" & spe_t & "'" & _
-            ' ")," & sql
 
-            'If excelApp.Cells(xlsRow + 1, 1).text = "" Or Int(xlsRow / 100) = xlsRow / 100 Then
-            '    Try
-            '        sql = Mid(sql, 1, Len(sql) - 1)
-            '        sql = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`) VALUES " & sql & ";"
-            '        cmd = New MySqlCommand(sql, MySqlconnection)
-            '        cmd.ExecuteNonQuery()
-            '        sql = ""
-            '    Catch ex As Exception
-            '        MsgBox("Sigip update error! " & ex.Message)
-            '    End Try
-
-            'End If
-
-            '    End If
-            '    xlsRow = xlsRow + 1
-            '    index = index + 1
-            'End While
 
             excelWorkbook.Close(True)
             excelApp.Quit()
@@ -1565,7 +1527,7 @@ Public Class FormProduct
         Catch ex As Exception
             ListBoxLog.Items.Add("Connection lost, need waiting 20 sec...")
             CloseConnectionSqlOrcad()
-            'OpenConnectionMySqlOrcad("10.10.10.15", "orcad1", "orcadw", "orcadw")
+
             OpenConnectionMySqlOrcad(OrcadDBAdr, OrcadDBName, OrcadDBUser, OrcadDBPwd)
             ListBoxLog.Items.Add("Connection estabilished...Done!")
             DsDocComp.Clear()
@@ -1643,7 +1605,8 @@ Public Class FormProduct
 
                     End If
                     sql = sql & "UPDATE `" & DBName & "`.`sigip` SET `OrcadSupplier` = '" & GetOrcadSupplier(row("bitron_pn").ToString) & "' , `doc` = '" & doc & "' WHERE `sigip`.`bitron_pn` = '" & row("bitron_pn").ToString & "' ; "
-                    If Len(sql) > 1000 Then
+
+        If Len(sql) > 1000 Then
                         Try
                             cmd = New MySqlCommand(sql, MySqlconnection)
                             cmd.ExecuteNonQuery()

@@ -78,10 +78,12 @@ Public Class FormProduct
         ComboBoxStatus.Items.Add("ENGINEERING_APPROVED")
         ComboBoxStatus.Items.Add("PROCESS_ENG_APPROVED")
         ComboBoxStatus.Items.Add("FINANCIAL_APPROVED")
-        If controlRight("R") >= 2 Then ButtonSIGIP.Visible = True
-        If controlRight("F") >= 2 Then ButtonSIGIP.Visible = True
         ComboBoxStatus.Items.Add("MPA_APPROVED")
         ComboBoxStatus.Items.Add("MPA_STOPPED")
+
+        If controlRight("R") >= 2 Then ButtonSIGIP.Visible = True
+        If controlRight("F") >= 2 Then ButtonSIGIP.Visible = True
+
         updateECRMark()
         FillListView()
 
@@ -1072,12 +1074,12 @@ Public Class FormProduct
 
                     Try
                         sql = Mid(sql, 1, Len(sql) - 1)
-                        sql = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn`  ,`pn_supp1`,`ass1`,`des_supp1`,`pn_supp2`,`ass2`,`des_supp2` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`) VALUES " & sql & ";"
-                        cmd = New MySqlCommand(sql, MySqlconnection)
-                        cmd.ExecuteNonQuery()
-                        sql = ""
-                    Catch ex As Exception
-                        MsgBox("Sigip update error! " & ex.Message)
+    sql = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn`  ,`pn_supp1`,`ass1`,`des_supp1`,`pn_supp2`,`ass2`,`des_supp2` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`) VALUES " & sql & ";"
+    cmd = New MySqlCommand(sql, MySqlconnection)
+    cmd.ExecuteNonQuery()
+    sql = ""
+    Catch ex As Exception
+    MsgBox("Sigip update error! " & ex.Message)
                     End Try
 
                     index = index + 1
@@ -1089,11 +1091,11 @@ Public Class FormProduct
                 sLine = sReader.ReadLine
 
             End While
-            '   Application.DoEvents()
+    '   Application.DoEvents()
         Else
 
-            MsgBox("Missmatch beetween Filename and pnBom inside the file: " & sfilename)
-        End If
+    MsgBox("Missmatch beetween Filename and pnBom inside the file: " & sfilename)
+    End If
         sReader.Close()
 
 
@@ -1124,7 +1126,6 @@ Public Class FormProduct
             excelSheet = excelWorkbook.Worksheets("Foglio 1")
             excelSheet.Activate()
 
-
             bom = excelSheet.Cells(1, 2).Text
             sql = ""
             des = excelSheet.Cells(1, 3).Text
@@ -1132,15 +1133,14 @@ Public Class FormProduct
             mdo_t = Replace(excelSheet.Cells(1, 10).Text, ",", ".")
             amm_t = Replace(excelSheet.Cells(1, 12).Text, ",", ".")
             spe_t = Replace(excelSheet.Cells(1, 13).Text, ",", ".")
-
             If bom = Mid(sfilename, Len(sfilename) - 3 - Len(bom), Len(bom)) Then
-                ListBoxLog.Items.Add("Process BOM: " & bom)
-                Application.DoEvents()
-                ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
-                ListBoxLog.ScrollAlwaysVisible = True
+            ListBoxLog.Items.Add("Process BOM: " & bom)
+            Application.DoEvents()
+            ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
+            ListBoxLog.ScrollAlwaysVisible = True
 
-                xlsRow = 3
-                While excelSheet.Cells(xlsRow, 1).text <> ""
+            xlsRow = 3
+            While excelSheet.Cells(xlsRow, 1).text <> ""
 
 
                     nr = excelSheet.Cells(xlsRow, 5).Text
@@ -1178,15 +1178,15 @@ Public Class FormProduct
                      ")," & sql
 
                     If excelApp.Cells(xlsRow + 1, 1).text = "" Or Int(xlsRow / 100) = xlsRow / 100 Then
-                        Try
-                            sql = Mid(sql, 1, Len(sql) - 1)
-                            sql = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`) VALUES " & sql & ";"
-                            cmd = New MySqlCommand(sql, MySqlconnection)
-                            cmd.ExecuteNonQuery()
-                            sql = ""
-                        Catch ex As Exception
-                            MsgBox("Sigip update error! " & ex.Message)
-                        End Try
+            Try
+                sql = Mid(sql, 1, Len(sql) - 1)
+                sql = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`) VALUES " & sql & ";"
+                cmd = New MySqlCommand(sql, MySqlconnection)
+                cmd.ExecuteNonQuery()
+                sql = ""
+            Catch ex As Exception
+                MsgBox("Sigip update error! " & ex.Message)
+            End Try
 
                     End If
                     xlsRow = xlsRow + 1
@@ -1411,12 +1411,11 @@ Public Class FormProduct
             AdapterDocComp.Fill(DsDocComp, "orcadw.T_orcadcis")
             tblDocComp = DsDocComp.Tables("orcadw.T_orcadcis")
         Catch ex As Exception
-            ListBoxLog.Items.Add("Connection lost, need waithing 20 second...")
+            ListBoxLog.Items.Add("Connection lost, need waiting 20 sec...")
             CloseConnectionSqlOrcad()
-            'OpenConnectionMySqlOrcad("10.10.10.15", "orcad1", "orcadw", "orcadw")
+
             OpenConnectionMySqlOrcad("10.10.10.36", "orcad1", "orcadw", "orcadw")
-            'OpenConnectionMySqlOrcad(OrcadDBAdr, OrcadDBName, OrcadDBUser, OrcadDBPwd)
-            ListBoxLog.Items.Add("Connection enstabilish...Done!")
+            ListBoxLog.Items.Add("Connection estabilished...Done!")
             DsDocComp.Clear()
             tblDocComp.Clear()
             Dim AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where not valido = 'no_valido'", SqlconnectionOrcad)
@@ -1472,10 +1471,10 @@ Public Class FormProduct
 
                     RowSearchDoc = tblDoc.Select("filename like '" & row("bitron_pn").ToString & " - *' or filename like '" & row("bitron_pn").ToString & "'", "rev DESC")
                     If RowSearchDoc.Length > 0 And Mid(row("bitron_pn").ToString, 1, 2) <> "15" Then
-                        'If RowSearchDoc.Length > 0 And Mid(row("bitron_pn").ToString, 1, 2) <> "15" And InStr(RowSearchDoc(0)("header").ToString, "EMH") <> 0 Then
+                       
                         If InStr(RowSearchDoc(0)("header").ToString, "EMH") <> 0 Then
 
-                            doc = "SRV_DOC - " & RowSearchDoc(0)("header").ToString & "_" & RowSearchDoc(0)("filename").ToString & "_" & RowSearchDoc(0)("rev").ToString & "." & RowSearchDoc(0)("extension").ToString
+                        doc = "SRV_DOC - " & RowSearchDoc(0)("header").ToString & "_" & RowSearchDoc(0)("filename").ToString & "_" & RowSearchDoc(0)("rev").ToString & "." & RowSearchDoc(0)("extension").ToString
 
                         Else
                             RowHC = tblDocComp.Select("codice_bitron = '" & row("bitron_pn").ToString & "'", "valido")
@@ -1514,10 +1513,10 @@ Public Class FormProduct
                         End If
 
                     End If
-                        sql = sql & "UPDATE `" & DBName & "`.`sigip` SET `OrcadSupplier` = '" & GetOrcadSupplier(row("bitron_pn").ToString) & "' , `doc` = '" & doc & "' WHERE `sigip`.`bitron_pn` = '" & row("bitron_pn").ToString & "' ; "
-                        'If Len(sql) > 1000 Then
-                        If Len(sql) > 200 Then
-                            Try
+                    sql = sql & "UPDATE `" & DBName & "`.`sigip` SET `OrcadSupplier` = '" & GetOrcadSupplier(row("bitron_pn").ToString) & "' , `doc` = '" & doc & "' WHERE `sigip`.`bitron_pn` = '" & row("bitron_pn").ToString & "' ; "
+
+        If Len(sql) > 200 Then
+                        Try
                                 If MySqlconnection.State = ConnectionState.Closed Then
                                     MySqlconnection.Open()
                                 End If
