@@ -61,16 +61,6 @@ Public Class FormCredentials
         TextBoxhost.Text = "10.150.12.114"
         TextBoxPassword.Text = ""
 
-        Dim PC_Name As String
-        PC_Name = System.Net.Dns.GetHostName.ToString.Trim
-
-        If (PC_Name = "SA-1D6EB759B716") Then
-            TextBoxUserName.Text = "atomasie"
-            TextBoxPassword.Text = "arpacanta"
-        Else
-            TextBoxUserName.Text = ""
-            TextBoxPassword.Text = ""
-        End If
 
         '#If DEBUG Then
         'TextBoxUserName.Text = "atomasie"

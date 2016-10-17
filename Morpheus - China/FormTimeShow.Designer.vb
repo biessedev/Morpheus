@@ -23,10 +23,10 @@ Partial Class FormTimeShow
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("NPI  -  Indesit Ariston LCD")
-        Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("INDUS  -  Process Tools for Indesit Artica")
-        Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("NPI  -  Indesit Ariston LCD")
-        Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("INDUS  -  Process Tools for Indesit Artica")
+        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("NPI  -  Indesit Ariston LCD")
+        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("INDUS  -  Process Tools for Indesit Artica")
+        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("NPI  -  Indesit Ariston LCD")
+        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("INDUS  -  Process Tools for Indesit Artica")
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormTimeShow))
         Me.LabelResponsibleFilter = New System.Windows.Forms.Label()
         Me.ComboBoxResponsibleFilter = New System.Windows.Forms.ComboBox()
@@ -66,103 +66,103 @@ Partial Class FormTimeShow
         Me.LabelStatusFilter = New System.Windows.Forms.Label()
         Me.TimerProjectList = New System.Windows.Forms.Timer(Me.components)
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        CType(Me.PictureBoxT, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBoxB, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBoxC, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBoxF, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.SuspendLayout()
+        CType(Me.PictureBoxT,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.PictureBoxB,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.PictureBoxC,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.PictureBoxF,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.SuspendLayout
         '
         'LabelResponsibleFilter
         '
-        Me.LabelResponsibleFilter.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.LabelResponsibleFilter.AutoSize = True
+        Me.LabelResponsibleFilter.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.LabelResponsibleFilter.AutoSize = true
         Me.LabelResponsibleFilter.BackColor = System.Drawing.Color.Transparent
         Me.LabelResponsibleFilter.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!)
         Me.LabelResponsibleFilter.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.LabelResponsibleFilter.Location = New System.Drawing.Point(61, 753)
         Me.LabelResponsibleFilter.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LabelResponsibleFilter.Name = "LabelResponsibleFilter"
-        Me.LabelResponsibleFilter.Size = New System.Drawing.Size(101, 20)
+        Me.LabelResponsibleFilter.Size = New System.Drawing.Size(85, 16)
         Me.LabelResponsibleFilter.TabIndex = 612
         Me.LabelResponsibleFilter.Text = "Responsible"
         '
         'ComboBoxResponsibleFilter
         '
-        Me.ComboBoxResponsibleFilter.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ComboBoxResponsibleFilter.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.ComboBoxResponsibleFilter.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!)
-        Me.ComboBoxResponsibleFilter.FormattingEnabled = True
+        Me.ComboBoxResponsibleFilter.FormattingEnabled = true
         Me.ComboBoxResponsibleFilter.Location = New System.Drawing.Point(65, 777)
         Me.ComboBoxResponsibleFilter.Margin = New System.Windows.Forms.Padding(4)
         Me.ComboBoxResponsibleFilter.Name = "ComboBoxResponsibleFilter"
-        Me.ComboBoxResponsibleFilter.Size = New System.Drawing.Size(209, 28)
+        Me.ComboBoxResponsibleFilter.Size = New System.Drawing.Size(209, 24)
         Me.ComboBoxResponsibleFilter.TabIndex = 611
         '
         'LabelAreaFilter
         '
-        Me.LabelAreaFilter.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.LabelAreaFilter.AutoSize = True
+        Me.LabelAreaFilter.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.LabelAreaFilter.AutoSize = true
         Me.LabelAreaFilter.BackColor = System.Drawing.Color.Transparent
         Me.LabelAreaFilter.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!)
         Me.LabelAreaFilter.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.LabelAreaFilter.Location = New System.Drawing.Point(61, 676)
         Me.LabelAreaFilter.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LabelAreaFilter.Name = "LabelAreaFilter"
-        Me.LabelAreaFilter.Size = New System.Drawing.Size(44, 20)
+        Me.LabelAreaFilter.Size = New System.Drawing.Size(37, 16)
         Me.LabelAreaFilter.TabIndex = 610
         Me.LabelAreaFilter.Text = "Area"
         '
         'ComboBoxAreaFilter
         '
-        Me.ComboBoxAreaFilter.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ComboBoxAreaFilter.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.ComboBoxAreaFilter.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!)
-        Me.ComboBoxAreaFilter.FormattingEnabled = True
+        Me.ComboBoxAreaFilter.FormattingEnabled = true
         Me.ComboBoxAreaFilter.Location = New System.Drawing.Point(65, 700)
         Me.ComboBoxAreaFilter.Margin = New System.Windows.Forms.Padding(4)
         Me.ComboBoxAreaFilter.Name = "ComboBoxAreaFilter"
-        Me.ComboBoxAreaFilter.Size = New System.Drawing.Size(209, 28)
+        Me.ComboBoxAreaFilter.Size = New System.Drawing.Size(209, 24)
         Me.ComboBoxAreaFilter.TabIndex = 609
         '
         'LabelCustomerFilter
         '
-        Me.LabelCustomerFilter.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.LabelCustomerFilter.AutoSize = True
+        Me.LabelCustomerFilter.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.LabelCustomerFilter.AutoSize = true
         Me.LabelCustomerFilter.BackColor = System.Drawing.Color.Transparent
         Me.LabelCustomerFilter.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!)
         Me.LabelCustomerFilter.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.LabelCustomerFilter.Location = New System.Drawing.Point(61, 825)
         Me.LabelCustomerFilter.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LabelCustomerFilter.Name = "LabelCustomerFilter"
-        Me.LabelCustomerFilter.Size = New System.Drawing.Size(82, 20)
+        Me.LabelCustomerFilter.Size = New System.Drawing.Size(65, 16)
         Me.LabelCustomerFilter.TabIndex = 608
         Me.LabelCustomerFilter.Text = "Customer"
         '
         'ComboBoxCustomerFilter
         '
-        Me.ComboBoxCustomerFilter.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ComboBoxCustomerFilter.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.ComboBoxCustomerFilter.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!)
-        Me.ComboBoxCustomerFilter.FormattingEnabled = True
+        Me.ComboBoxCustomerFilter.FormattingEnabled = true
         Me.ComboBoxCustomerFilter.Location = New System.Drawing.Point(65, 849)
         Me.ComboBoxCustomerFilter.Margin = New System.Windows.Forms.Padding(4)
         Me.ComboBoxCustomerFilter.Name = "ComboBoxCustomerFilter"
-        Me.ComboBoxCustomerFilter.Size = New System.Drawing.Size(231, 28)
+        Me.ComboBoxCustomerFilter.Size = New System.Drawing.Size(231, 24)
         Me.ComboBoxCustomerFilter.TabIndex = 607
         '
         'ButtonShow
         '
-        Me.ButtonShow.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ButtonShow.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.ButtonShow.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!)
         Me.ButtonShow.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.ButtonShow.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -173,99 +173,99 @@ Partial Class FormTimeShow
         Me.ButtonShow.TabIndex = 615
         Me.ButtonShow.Text = "Show"
         Me.ButtonShow.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonShow.UseVisualStyleBackColor = True
+        Me.ButtonShow.UseVisualStyleBackColor = true
         '
         'LabelProject
         '
         Me.LabelProject.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.LabelProject.AutoSize = True
+        Me.LabelProject.AutoSize = true
         Me.LabelProject.BackColor = System.Drawing.Color.Transparent
-        Me.LabelProject.Font = New System.Drawing.Font("Tahoma", 22.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelProject.Font = New System.Drawing.Font("Tahoma", 22.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.LabelProject.ForeColor = System.Drawing.Color.Navy
         Me.LabelProject.Location = New System.Drawing.Point(30, 41)
         Me.LabelProject.Name = "LabelProject"
-        Me.LabelProject.Size = New System.Drawing.Size(522, 46)
+        Me.LabelProject.Size = New System.Drawing.Size(415, 36)
         Me.LabelProject.TabIndex = 619
         Me.LabelProject.Text = "NPI  -  Indesit Ariston LCD"
         '
         'LabelStart
         '
-        Me.LabelStart.AutoSize = True
+        Me.LabelStart.AutoSize = true
         Me.LabelStart.BackColor = System.Drawing.Color.Transparent
-        Me.LabelStart.Font = New System.Drawing.Font("Calibri", 16.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelStart.Font = New System.Drawing.Font("Calibri", 16.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.LabelStart.ForeColor = System.Drawing.Color.Navy
         Me.LabelStart.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.LabelStart.Location = New System.Drawing.Point(33, 212)
         Me.LabelStart.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LabelStart.Name = "LabelStart"
-        Me.LabelStart.Size = New System.Drawing.Size(141, 35)
+        Me.LabelStart.Size = New System.Drawing.Size(112, 27)
         Me.LabelStart.TabIndex = 622
         Me.LabelStart.Text = "2014.15.03"
         '
         'LabelEnd
         '
-        Me.LabelEnd.AutoSize = True
+        Me.LabelEnd.AutoSize = true
         Me.LabelEnd.BackColor = System.Drawing.Color.Transparent
-        Me.LabelEnd.Font = New System.Drawing.Font("Calibri", 16.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelEnd.Font = New System.Drawing.Font("Calibri", 16.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.LabelEnd.ForeColor = System.Drawing.Color.Navy
         Me.LabelEnd.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.LabelEnd.Location = New System.Drawing.Point(970, 212)
         Me.LabelEnd.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LabelEnd.Name = "LabelEnd"
-        Me.LabelEnd.Size = New System.Drawing.Size(141, 35)
+        Me.LabelEnd.Size = New System.Drawing.Size(112, 27)
         Me.LabelEnd.TabIndex = 623
         Me.LabelEnd.Text = "2014.15.03"
         '
         'LabelDelayAdvance
         '
-        Me.LabelDelayAdvance.AutoSize = True
+        Me.LabelDelayAdvance.AutoSize = true
         Me.LabelDelayAdvance.BackColor = System.Drawing.Color.Transparent
-        Me.LabelDelayAdvance.Font = New System.Drawing.Font("Calibri", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelDelayAdvance.Font = New System.Drawing.Font("Calibri", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.LabelDelayAdvance.ForeColor = System.Drawing.Color.Navy
         Me.LabelDelayAdvance.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.LabelDelayAdvance.Location = New System.Drawing.Point(37, 355)
         Me.LabelDelayAdvance.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LabelDelayAdvance.Name = "LabelDelayAdvance"
-        Me.LabelDelayAdvance.Size = New System.Drawing.Size(163, 29)
+        Me.LabelDelayAdvance.Size = New System.Drawing.Size(130, 23)
         Me.LabelDelayAdvance.TabIndex = 625
         Me.LabelDelayAdvance.Text = "Delay:  20 Days"
         '
         'LabelProjectLeader
         '
-        Me.LabelProjectLeader.AutoSize = True
+        Me.LabelProjectLeader.AutoSize = true
         Me.LabelProjectLeader.BackColor = System.Drawing.Color.Transparent
-        Me.LabelProjectLeader.Font = New System.Drawing.Font("Calibri", 19.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelProjectLeader.Font = New System.Drawing.Font("Calibri", 19.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.LabelProjectLeader.ForeColor = System.Drawing.Color.Navy
         Me.LabelProjectLeader.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.LabelProjectLeader.Location = New System.Drawing.Point(233, 292)
         Me.LabelProjectLeader.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LabelProjectLeader.Name = "LabelProjectLeader"
-        Me.LabelProjectLeader.Size = New System.Drawing.Size(91, 40)
+        Me.LabelProjectLeader.Size = New System.Drawing.Size(74, 33)
         Me.LabelProjectLeader.TabIndex = 626
         Me.LabelProjectLeader.Text = "Linda"
         '
         'Label6
         '
         Me.Label6.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Label6.AutoSize = True
+        Me.Label6.AutoSize = true
         Me.Label6.BackColor = System.Drawing.Color.Transparent
-        Me.Label6.Font = New System.Drawing.Font("Tahoma", 24.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.Font = New System.Drawing.Font("Tahoma", 24!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label6.ForeColor = System.Drawing.Color.Navy
         Me.Label6.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.Label6.Location = New System.Drawing.Point(1307, 41)
         Me.Label6.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(186, 48)
+        Me.Label6.Size = New System.Drawing.Size(149, 39)
         Me.Label6.TabIndex = 631
         Me.Label6.Text = "Projects"
         '
         'TreeViewProjectList
         '
-        Me.TreeViewProjectList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TreeViewProjectList.BackColor = System.Drawing.Color.FromArgb(CType(CType(235, Byte), Integer), CType(CType(235, Byte), Integer), CType(CType(235, Byte), Integer))
-        Me.TreeViewProjectList.Font = New System.Drawing.Font("Consolas", 13.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TreeViewProjectList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.TreeViewProjectList.BackColor = System.Drawing.Color.FromArgb(CType(CType(235,Byte),Integer), CType(CType(235,Byte),Integer), CType(CType(235,Byte),Integer))
+        Me.TreeViewProjectList.Font = New System.Drawing.Font("Consolas", 13.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.TreeViewProjectList.ForeColor = System.Drawing.Color.Red
         Me.TreeViewProjectList.Indent = 30
         Me.TreeViewProjectList.ItemHeight = 34
@@ -273,11 +273,11 @@ Partial Class FormTimeShow
         Me.TreeViewProjectList.Location = New System.Drawing.Point(1315, 116)
         Me.TreeViewProjectList.Margin = New System.Windows.Forms.Padding(4, 8, 4, 4)
         Me.TreeViewProjectList.Name = "TreeViewProjectList"
-        TreeNode9.Name = "Node0"
-        TreeNode9.Text = "NPI  -  Indesit Ariston LCD"
-        TreeNode10.Name = "Node1"
-        TreeNode10.Text = "INDUS  -  Process Tools for Indesit Artica"
-        Me.TreeViewProjectList.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode9, TreeNode10})
+        TreeNode1.Name = "Node0"
+        TreeNode1.Text = "NPI  -  Indesit Ariston LCD"
+        TreeNode2.Name = "Node1"
+        TreeNode2.Text = "INDUS  -  Process Tools for Indesit Artica"
+        Me.TreeViewProjectList.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2})
         Me.TreeViewProjectList.Size = New System.Drawing.Size(576, 919)
         Me.TreeViewProjectList.TabIndex = 633
         '
@@ -287,9 +287,9 @@ Partial Class FormTimeShow
         Me.ShapeContainer1.Margin = New System.Windows.Forms.Padding(0)
         Me.ShapeContainer1.Name = "ShapeContainer1"
         Me.ShapeContainer1.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.LineShape5, Me.LineShape4, Me.LineShape3, Me.LineShape2, Me.LineShape1, Me.ProgressBarQuality, Me.RectangleShape2, Me.ProgressBarProject, Me.RectangleShape3})
-        Me.ShapeContainer1.Size = New System.Drawing.Size(1914, 1057)
+        Me.ShapeContainer1.Size = New System.Drawing.Size(1908, 1045)
         Me.ShapeContainer1.TabIndex = 634
-        Me.ShapeContainer1.TabStop = False
+        Me.ShapeContainer1.TabStop = false
         '
         'LineShape5
         '
@@ -392,29 +392,29 @@ Partial Class FormTimeShow
         '
         'Label8
         '
-        Me.Label8.AutoSize = True
+        Me.Label8.AutoSize = true
         Me.Label8.BackColor = System.Drawing.Color.Transparent
-        Me.Label8.Font = New System.Drawing.Font("Calibri", 13.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.Font = New System.Drawing.Font("Calibri", 13.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label8.ForeColor = System.Drawing.Color.Black
         Me.Label8.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.Label8.Location = New System.Drawing.Point(738, 279)
         Me.Label8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(141, 29)
+        Me.Label8.Size = New System.Drawing.Size(108, 23)
         Me.Label8.TabIndex = 637
         Me.Label8.Text = "Quality Level"
         '
         'LabelProjectTotalTime
         '
-        Me.LabelProjectTotalTime.AutoSize = True
+        Me.LabelProjectTotalTime.AutoSize = true
         Me.LabelProjectTotalTime.BackColor = System.Drawing.Color.Transparent
-        Me.LabelProjectTotalTime.Font = New System.Drawing.Font("Calibri", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelProjectTotalTime.Font = New System.Drawing.Font("Calibri", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.LabelProjectTotalTime.ForeColor = System.Drawing.Color.Navy
         Me.LabelProjectTotalTime.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.LabelProjectTotalTime.Location = New System.Drawing.Point(37, 409)
         Me.LabelProjectTotalTime.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LabelProjectTotalTime.Name = "LabelProjectTotalTime"
-        Me.LabelProjectTotalTime.Size = New System.Drawing.Size(299, 29)
+        Me.LabelProjectTotalTime.Size = New System.Drawing.Size(237, 23)
         Me.LabelProjectTotalTime.TabIndex = 638
         Me.LabelProjectTotalTime.Text = "Total Project Time:  300 Days"
         '
@@ -424,67 +424,67 @@ Partial Class FormTimeShow
         '
         'ComboBoxStatusFilter
         '
-        Me.ComboBoxStatusFilter.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ComboBoxStatusFilter.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.ComboBoxStatusFilter.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!)
-        Me.ComboBoxStatusFilter.FormattingEnabled = True
+        Me.ComboBoxStatusFilter.FormattingEnabled = true
         Me.ComboBoxStatusFilter.Location = New System.Drawing.Point(65, 925)
         Me.ComboBoxStatusFilter.Margin = New System.Windows.Forms.Padding(4)
         Me.ComboBoxStatusFilter.Name = "ComboBoxStatusFilter"
-        Me.ComboBoxStatusFilter.Size = New System.Drawing.Size(109, 28)
+        Me.ComboBoxStatusFilter.Size = New System.Drawing.Size(109, 24)
         Me.ComboBoxStatusFilter.TabIndex = 641
         '
         'TreeViewTaskList
         '
-        Me.TreeViewTaskList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TreeViewTaskList.BackColor = System.Drawing.Color.FromArgb(CType(CType(235, Byte), Integer), CType(CType(235, Byte), Integer), CType(CType(235, Byte), Integer))
-        Me.TreeViewTaskList.Font = New System.Drawing.Font("Consolas", 13.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TreeViewTaskList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.TreeViewTaskList.BackColor = System.Drawing.Color.FromArgb(CType(CType(235,Byte),Integer), CType(CType(235,Byte),Integer), CType(CType(235,Byte),Integer))
+        Me.TreeViewTaskList.Font = New System.Drawing.Font("Consolas", 13.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.TreeViewTaskList.ForeColor = System.Drawing.Color.Green
         Me.TreeViewTaskList.Indent = 10
         Me.TreeViewTaskList.ItemHeight = 32
         Me.TreeViewTaskList.Location = New System.Drawing.Point(38, 450)
         Me.TreeViewTaskList.Margin = New System.Windows.Forms.Padding(4, 8, 4, 4)
         Me.TreeViewTaskList.Name = "TreeViewTaskList"
-        TreeNode11.Name = "Node0"
-        TreeNode11.Text = "NPI  -  Indesit Ariston LCD"
-        TreeNode12.Name = "Node1"
-        TreeNode12.Text = "INDUS  -  Process Tools for Indesit Artica"
-        Me.TreeViewTaskList.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode11, TreeNode12})
+        TreeNode3.Name = "Node0"
+        TreeNode3.Text = "NPI  -  Indesit Ariston LCD"
+        TreeNode4.Name = "Node1"
+        TreeNode4.Text = "INDUS  -  Process Tools for Indesit Artica"
+        Me.TreeViewTaskList.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode4})
         Me.TreeViewTaskList.Size = New System.Drawing.Size(700, 585)
         Me.TreeViewTaskList.TabIndex = 643
         '
         'PictureBoxT
         '
-        Me.PictureBoxT.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PictureBoxT.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.PictureBoxT.ErrorImage = Nothing
         Me.PictureBoxT.Location = New System.Drawing.Point(761, 747)
         Me.PictureBoxT.Name = "PictureBoxT"
         Me.PictureBoxT.Size = New System.Drawing.Size(510, 288)
         Me.PictureBoxT.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.PictureBoxT.TabIndex = 644
-        Me.PictureBoxT.TabStop = False
+        Me.PictureBoxT.TabStop = false
         '
         'PictureBoxB
         '
-        Me.PictureBoxB.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PictureBoxB.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.PictureBoxB.ErrorImage = Nothing
         Me.PictureBoxB.Location = New System.Drawing.Point(759, 433)
         Me.PictureBoxB.Name = "PictureBoxB"
         Me.PictureBoxB.Size = New System.Drawing.Size(510, 287)
         Me.PictureBoxB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.PictureBoxB.TabIndex = 645
-        Me.PictureBoxB.TabStop = False
+        Me.PictureBoxB.TabStop = false
         '
         'ButtonClose
         '
-        Me.ButtonClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ButtonClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.ButtonClose.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!)
         Me.ButtonClose.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.ButtonClose.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -495,13 +495,13 @@ Partial Class FormTimeShow
         Me.ButtonClose.TabIndex = 647
         Me.ButtonClose.Text = "Close"
         Me.ButtonClose.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonClose.UseVisualStyleBackColor = True
+        Me.ButtonClose.UseVisualStyleBackColor = true
         '
         'PictureBoxC
         '
-        Me.PictureBoxC.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PictureBoxC.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.PictureBoxC.BackColor = System.Drawing.Color.Transparent
         Me.PictureBoxC.ErrorImage = Nothing
         Me.PictureBoxC.Location = New System.Drawing.Point(761, 433)
@@ -509,13 +509,13 @@ Partial Class FormTimeShow
         Me.PictureBoxC.Size = New System.Drawing.Size(508, 602)
         Me.PictureBoxC.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.PictureBoxC.TabIndex = 648
-        Me.PictureBoxC.TabStop = False
+        Me.PictureBoxC.TabStop = false
         '
         'PictureBoxF
         '
-        Me.PictureBoxF.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PictureBoxF.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.PictureBoxF.BackColor = System.Drawing.Color.Beige
         Me.PictureBoxF.ErrorImage = Nothing
         Me.PictureBoxF.Location = New System.Drawing.Point(39, 116)
@@ -523,35 +523,35 @@ Partial Class FormTimeShow
         Me.PictureBoxF.Size = New System.Drawing.Size(1231, 919)
         Me.PictureBoxF.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.PictureBoxF.TabIndex = 649
-        Me.PictureBoxF.TabStop = False
+        Me.PictureBoxF.TabStop = false
         '
         'Label1
         '
-        Me.Label1.AutoSize = True
+        Me.Label1.AutoSize = true
         Me.Label1.BackColor = System.Drawing.Color.Transparent
-        Me.Label1.Font = New System.Drawing.Font("Calibri", 16.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Calibri", 16.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label1.ForeColor = System.Drawing.Color.Navy
         Me.Label1.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.Label1.Location = New System.Drawing.Point(36, 297)
         Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(191, 35)
+        Me.Label1.Size = New System.Drawing.Size(151, 27)
         Me.Label1.TabIndex = 650
         Me.Label1.Text = "Project Leader:"
         '
         'LabelStatusFilter
         '
-        Me.LabelStatusFilter.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.LabelStatusFilter.AutoSize = True
+        Me.LabelStatusFilter.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.LabelStatusFilter.AutoSize = true
         Me.LabelStatusFilter.BackColor = System.Drawing.Color.Transparent
         Me.LabelStatusFilter.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!)
         Me.LabelStatusFilter.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.LabelStatusFilter.Location = New System.Drawing.Point(61, 901)
         Me.LabelStatusFilter.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LabelStatusFilter.Name = "LabelStatusFilter"
-        Me.LabelStatusFilter.Size = New System.Drawing.Size(57, 20)
+        Me.LabelStatusFilter.Size = New System.Drawing.Size(45, 16)
         Me.LabelStatusFilter.TabIndex = 651
         Me.LabelStatusFilter.Text = "Status"
         '
@@ -562,20 +562,20 @@ Partial Class FormTimeShow
         'PictureBox1
         '
         Me.PictureBox1.ErrorImage = Nothing
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"),System.Drawing.Image)
         Me.PictureBox1.Location = New System.Drawing.Point(1632, 26)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(259, 72)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.PictureBox1.TabIndex = 652
-        Me.PictureBox1.TabStop = False
+        Me.PictureBox1.TabStop = false
         '
         'FormTimeShow
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
-        Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(170, Byte), Integer))
+        Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(220,Byte),Integer), CType(CType(220,Byte),Integer), CType(CType(170,Byte),Integer))
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ClientSize = New System.Drawing.Size(1914, 1057)
+        Me.ClientSize = New System.Drawing.Size(1908, 1045)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.ButtonShow)
         Me.Controls.Add(Me.LabelStatusFilter)
@@ -604,22 +604,22 @@ Partial Class FormTimeShow
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.ShapeContainer1)
         Me.Cursor = System.Windows.Forms.Cursors.Default
-        Me.Font = New System.Drawing.Font("Segoe UI", 16.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Font = New System.Drawing.Font("Segoe UI", 16.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.Icon = CType(resources.GetObject("$this.Icon"),System.Drawing.Icon)
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "FormTimeShow"
         Me.Text = "Morpheus  --  Project Timing Monitor"
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
-        CType(Me.PictureBoxT, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBoxB, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBoxC, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBoxF, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.ResumeLayout(False)
-        Me.PerformLayout()
+        CType(Me.PictureBoxT,System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.PictureBoxB,System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.PictureBoxC,System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.PictureBoxF,System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).EndInit
+        Me.ResumeLayout(false)
+        Me.PerformLayout
 
-    End Sub
+End Sub
     Friend WithEvents LabelResponsibleFilter As System.Windows.Forms.Label
     Protected WithEvents ComboBoxResponsibleFilter As System.Windows.Forms.ComboBox
     Friend WithEvents LabelAreaFilter As System.Windows.Forms.Label
@@ -634,7 +634,6 @@ Partial Class FormTimeShow
     Friend WithEvents LabelProjectLeader As System.Windows.Forms.Label
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents TreeViewProjectList As System.Windows.Forms.TreeView
-    Friend WithEvents ShapeContainer1 As Microsoft.VisualBasic.PowerPacks.ShapeContainer
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents LabelProjectTotalTime As System.Windows.Forms.Label
     Friend WithEvents TimerShow As System.Windows.Forms.Timer
@@ -642,20 +641,21 @@ Partial Class FormTimeShow
     Friend WithEvents TreeViewTaskList As System.Windows.Forms.TreeView
     Friend WithEvents PictureBoxT As System.Windows.Forms.PictureBox
     Friend WithEvents PictureBoxB As System.Windows.Forms.PictureBox
-    Friend WithEvents ProgressBarQuality As Microsoft.VisualBasic.PowerPacks.RectangleShape
-    Friend WithEvents RectangleShape2 As Microsoft.VisualBasic.PowerPacks.RectangleShape
-    Friend WithEvents ProgressBarProject As Microsoft.VisualBasic.PowerPacks.RectangleShape
-    Friend WithEvents RectangleShape3 As Microsoft.VisualBasic.PowerPacks.RectangleShape
     Friend WithEvents ButtonClose As System.Windows.Forms.Button
     Friend WithEvents PictureBoxC As System.Windows.Forms.PictureBox
     Friend WithEvents PictureBoxF As System.Windows.Forms.PictureBox
-    Friend WithEvents LineShape5 As Microsoft.VisualBasic.PowerPacks.LineShape
-    Friend WithEvents LineShape4 As Microsoft.VisualBasic.PowerPacks.LineShape
-    Friend WithEvents LineShape3 As Microsoft.VisualBasic.PowerPacks.LineShape
-    Friend WithEvents LineShape2 As Microsoft.VisualBasic.PowerPacks.LineShape
-    Friend WithEvents LineShape1 As Microsoft.VisualBasic.PowerPacks.LineShape
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents LabelStatusFilter As System.Windows.Forms.Label
     Friend WithEvents TimerProjectList As System.Windows.Forms.Timer
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Private WithEvents ShapeContainer1 As PowerPacks.ShapeContainer
+    Private WithEvents ProgressBarQuality As PowerPacks.RectangleShape
+    Private WithEvents RectangleShape2 As PowerPacks.RectangleShape
+    Private WithEvents ProgressBarProject As PowerPacks.RectangleShape
+    Private WithEvents RectangleShape3 As PowerPacks.RectangleShape
+    Private WithEvents LineShape5 As PowerPacks.LineShape
+    Private WithEvents LineShape4 As PowerPacks.LineShape
+    Private WithEvents LineShape3 As PowerPacks.LineShape
+    Private WithEvents LineShape2 As PowerPacks.LineShape
+    Private WithEvents LineShape1 As PowerPacks.LineShape
 End Class

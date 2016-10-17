@@ -23,13 +23,13 @@ Partial Class FormOpenIssue
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("")
-        Me.ButtonRemove = New System.Windows.Forms.Button
-        Me.ButtonAdd = New System.Windows.Forms.Button
-        Me.ComboBoxGroup = New System.Windows.Forms.ComboBox
-        Me.Label10 = New System.Windows.Forms.Label
-        Me.ComboBoxName = New System.Windows.Forms.ComboBox
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.ListViewGRU = New System.Windows.Forms.ListView
+        Me.ButtonRemove = New System.Windows.Forms.Button()
+        Me.ButtonAdd = New System.Windows.Forms.Button()
+        Me.ComboBoxGroup = New System.Windows.Forms.ComboBox()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.ComboBoxName = New System.Windows.Forms.ComboBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.ListViewGRU = New System.Windows.Forms.ListView()
         Me.SuspendLayout()
         '
         'ButtonRemove

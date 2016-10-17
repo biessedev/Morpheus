@@ -42,28 +42,31 @@ Partial Class FormOffer
         Me.Label61 = New System.Windows.Forms.Label
         Me.Label62 = New System.Windows.Forms.Label
         Me.QingDao = New System.Windows.Forms.GroupBox
-        Me.ComboBoxBrandCurrency = New System.Windows.Forms.ComboBox
-        Me.TextBoxBrandPrice = New System.Windows.Forms.TextBox
-        Me.Label43 = New System.Windows.Forms.Label
+
+
+
         Me.ComboBoxBrandSupplier = New System.Windows.Forms.ComboBox
-        Me.Label42 = New System.Windows.Forms.Label
-        Me.DateTimePickerBrand = New System.Windows.Forms.DateTimePicker
-        Me.Label41 = New System.Windows.Forms.Label
-        Me.TextBoxBrandBuyer = New System.Windows.Forms.TextBox
-        Me.Label37 = New System.Windows.Forms.Label
-        Me.Label38 = New System.Windows.Forms.Label
         Me.ButtonBrandDelOffer = New System.Windows.Forms.Button
         Me.TextBoxBrandRefresh = New System.Windows.Forms.TextBox
+        Me.DateTimePickerBrand = New System.Windows.Forms.DateTimePicker
         Me.Label36 = New System.Windows.Forms.Label
         Me.TextBoxBrandOC = New System.Windows.Forms.TextBox
         Me.ButtonBrandAddOffer = New System.Windows.Forms.Button
         Me.TextBoxBrandLink = New System.Windows.Forms.TextBox
         Me.TreeViewBrand = New System.Windows.Forms.TreeView
         Me.CheckBoxBrandBomOnly = New System.Windows.Forms.CheckBox
+        Me.Label43 = New System.Windows.Forms.Label
+        Me.TextBoxBrandPrice = New System.Windows.Forms.TextBox
+        Me.TextBoxBrandBuyer = New System.Windows.Forms.TextBox
         Me.TextBoxBrandSession = New System.Windows.Forms.TextBox
         Me.TextBoxBrandQuantity = New System.Windows.Forms.TextBox
+        Me.ComboBoxBrandCurrency = New System.Windows.Forms.ComboBox
+        Me.Label42 = New System.Windows.Forms.Label
+        Me.Label41 = New System.Windows.Forms.Label
         Me.Label40 = New System.Windows.Forms.Label
         Me.Label39 = New System.Windows.Forms.Label
+        Me.Label38 = New System.Windows.Forms.Label
+        Me.Label37 = New System.Windows.Forms.Label
         Me.Label35 = New System.Windows.Forms.Label
         Me.ButtonBrandRefresh = New System.Windows.Forms.Button
         Me.ButtonBrandUpdate = New System.Windows.Forms.Button
@@ -429,59 +432,22 @@ Partial Class FormOffer
         resources.ApplyResources(Me.QingDao, "QingDao")
         Me.QingDao.Name = "QingDao"
         Me.QingDao.TabStop = False
-        '
-        'ComboBoxBrandCurrency
-        '
-        resources.ApplyResources(Me.ComboBoxBrandCurrency, "ComboBoxBrandCurrency")
-        Me.ComboBoxBrandCurrency.FormattingEnabled = True
-        Me.ComboBoxBrandCurrency.Name = "ComboBoxBrandCurrency"
-        '
-        'TextBoxBrandPrice
-        '
-        resources.ApplyResources(Me.TextBoxBrandPrice, "TextBoxBrandPrice")
-        Me.TextBoxBrandPrice.Name = "TextBoxBrandPrice"
-        '
-        'Label43
-        '
-        resources.ApplyResources(Me.Label43, "Label43")
-        Me.Label43.Name = "Label43"
+
+
+
         '
         'ComboBoxBrandSupplier
         '
         resources.ApplyResources(Me.ComboBoxBrandSupplier, "ComboBoxBrandSupplier")
         Me.ComboBoxBrandSupplier.FormattingEnabled = True
         Me.ComboBoxBrandSupplier.Name = "ComboBoxBrandSupplier"
-        '
-        'Label42
-        '
-        resources.ApplyResources(Me.Label42, "Label42")
-        Me.Label42.Name = "Label42"
-        '
-        'DateTimePickerBrand
-        '
-        resources.ApplyResources(Me.DateTimePickerBrand, "DateTimePickerBrand")
-        Me.DateTimePickerBrand.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.DateTimePickerBrand.Name = "DateTimePickerBrand"
-        '
-        'Label41
-        '
-        resources.ApplyResources(Me.Label41, "Label41")
-        Me.Label41.Name = "Label41"
+
         '
         'TextBoxBrandBuyer
         '
         resources.ApplyResources(Me.TextBoxBrandBuyer, "TextBoxBrandBuyer")
         Me.TextBoxBrandBuyer.Name = "TextBoxBrandBuyer"
-        '
-        'Label37
-        '
-        resources.ApplyResources(Me.Label37, "Label37")
-        Me.Label37.Name = "Label37"
-        '
-        'Label38
-        '
-        resources.ApplyResources(Me.Label38, "Label38")
-        Me.Label38.Name = "Label38"
+
         '
         'ButtonBrandDelOffer
         '
@@ -493,6 +459,12 @@ Partial Class FormOffer
         '
         resources.ApplyResources(Me.TextBoxBrandRefresh, "TextBoxBrandRefresh")
         Me.TextBoxBrandRefresh.Name = "TextBoxBrandRefresh"
+        '
+        'DateTimePickerBrand
+        '
+        resources.ApplyResources(Me.DateTimePickerBrand, "DateTimePickerBrand")
+        Me.DateTimePickerBrand.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.DateTimePickerBrand.Name = "DateTimePickerBrand"
         '
         'Label36
         '
@@ -527,6 +499,15 @@ Partial Class FormOffer
         Me.CheckBoxBrandBomOnly.Name = "CheckBoxBrandBomOnly"
         Me.CheckBoxBrandBomOnly.UseVisualStyleBackColor = True
         '
+        'Label43
+        '
+        resources.ApplyResources(Me.Label43, "Label43")
+        Me.Label43.Name = "Label43"
+        '
+        'TextBoxBrandPrice
+        '
+        resources.ApplyResources(Me.TextBoxBrandPrice, "TextBoxBrandPrice")
+        Me.TextBoxBrandPrice.Name = "TextBoxBrandPrice"
         'TextBoxBrandSession
         '
         resources.ApplyResources(Me.TextBoxBrandSession, "TextBoxBrandSession")
@@ -537,6 +518,22 @@ Partial Class FormOffer
         resources.ApplyResources(Me.TextBoxBrandQuantity, "TextBoxBrandQuantity")
         Me.TextBoxBrandQuantity.Name = "TextBoxBrandQuantity"
         '
+        'ComboBoxBrandCurrency
+        '
+        resources.ApplyResources(Me.ComboBoxBrandCurrency, "ComboBoxBrandCurrency")
+        Me.ComboBoxBrandCurrency.FormattingEnabled = True
+        Me.ComboBoxBrandCurrency.Name = "ComboBoxBrandCurrency"
+        '
+        'Label42
+        '
+        resources.ApplyResources(Me.Label42, "Label42")
+        Me.Label42.Name = "Label42"
+        '
+        'Label41
+        '
+        resources.ApplyResources(Me.Label41, "Label41")
+        Me.Label41.Name = "Label41"
+        '
         'Label40
         '
         resources.ApplyResources(Me.Label40, "Label40")
@@ -546,6 +543,16 @@ Partial Class FormOffer
         '
         resources.ApplyResources(Me.Label39, "Label39")
         Me.Label39.Name = "Label39"
+        '
+        'Label38
+        '
+        resources.ApplyResources(Me.Label38, "Label38")
+        Me.Label38.Name = "Label38"
+        '
+        'Label37
+        '
+        resources.ApplyResources(Me.Label37, "Label37")
+        Me.Label37.Name = "Label37"
         '
         'Label35
         '

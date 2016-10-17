@@ -154,11 +154,11 @@ Public Class FormDownload
                 If RadioButtonGeneralSearch.Checked Then
                     Try
 
-                        SQL = "(ecrNull like '*" & ComboBoxEcrNull.Text & "*') and  (ecrpending like '*" & ComboBoxEcrPending.Text & "*') and  (filename like '*" & TextBoxfileName.Text & "*') and ( header like '" & IIf(Mid(ComboBoxFirstType.Text, 1, 3) = "", "*", Mid(ComboBoxFirstType.Text, 1, 3) & "_") _
+                    SQL = "(ecrNull like '*" & ComboBoxEcrNull.Text & "*') and  (ecrpending like '*" & ComboBoxEcrPending.Text & "*') and  (filename like '*" & TextBoxfileName.Text & "*') and ( header like '" & IIf(Mid(ComboBoxFirstType.Text, 1, 3) = "", "*", Mid(ComboBoxFirstType.Text, 1, 3) & "_") _
                                       & IIf(Mid(ComboBoxSecondType.Text, 1, 3) = "", "*", Mid(ComboBoxSecondType.Text, 1, 3) & "_") & IIf(Mid(ComboBoxThirdType.Text, 1, 3) = "", "*", Mid(ComboBoxThirdType.Text, 1, 3)) & "')"
-                        RowSearch = tblDoc.Select(SQL, "id")
+                    RowSearch = tblDoc.Select(SQL, "id")
 
-                        FillListView(RowSearch)
+                    FillListView(RowSearch)
 
                     Catch ex As Exception
                         MsgBox("Error in file name! please change")
@@ -275,7 +275,7 @@ Public Class FormDownload
                                 AdapterBom = New MySqlDataAdapter("SELECT * FROM sigip where bom = '" & prodDoc & "' and ACQ_FAB like 'ACQ' ", MySqlconnection)
                                 AdapterBom.Fill(DsBom, "sigip")
                                 tblBom = DsBom.Tables("sigip")
-                            End If
+                                End If
 
                             If Not stopEvent Then
 
@@ -296,7 +296,7 @@ Public Class FormDownload
                                     J = InStr(GroupList, "]", CompareMethod.Text)
                                     While J > 0
                                         RowSearch = tblDoc.Select("(HEADER = '" & Mid(GroupList, I, 11) & "' AND filename = '" & Mid(GroupList, I + 12, J - 12 - I) _
-             & "') and ( header like '" & IIf(Mid(ComboBoxFirstType.Text, 1, 3) = "", "*", Mid(ComboBoxFirstType.Text, 1, 3) & "_") _
+                                         & "') and ( header like '" & IIf(Mid(ComboBoxFirstType.Text, 1, 3) = "", "*", Mid(ComboBoxFirstType.Text, 1, 3) & "_") _
                                         & IIf(Mid(ComboBoxSecondType.Text, 1, 3) = "", "*", Mid(ComboBoxSecondType.Text, 1, 3) & "_") _
                                         & IIf(Mid(ComboBoxThirdType.Text, 1, 3) = "", "*", Mid(ComboBoxThirdType.Text, 1, 3)) & "')")
                                         If RowSearch.Length > 0 Then

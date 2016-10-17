@@ -2,8 +2,10 @@
 
 Imports MySql.Data.MySqlClient
 Imports System.IO
+Imports System.Net
 Imports System.Data.SqlClient
 Imports System.Globalization
+Imports System.Net.Dns
 Imports System.Xml
 
 
@@ -71,6 +73,8 @@ Module PublicFunction
         Catch ae As MySqlException
             MessageBox.Show(ae.Message.ToString())
         End Try
+
+
     End Sub
 
     Sub CloseConnectionMySql()
@@ -148,7 +152,6 @@ Module PublicFunction
     End Sub
 
     Function cap7(ByVal s As String) As String
-        'cap7 = UCase(Mid(s, 1, 7)) & LCase(Mid(s, 8))
         cap7 = UCase(Mid(s, 1, 7)) & (Mid(s, 8))
     End Function
 
@@ -179,7 +182,7 @@ Module PublicFunction
 
         Dim myCultureInfo As CultureInfo = CultureInfo.CurrentCulture
         dataGG_MM_AAAA = Replace(dataGG_MM_AAAA, "-", "/")
-        Dim formato = "MM/dd/yyyy"
+        Dim formato As String = "MM/dd/yyyy"
         Return _
           Date.ParseExact(dataGG_MM_AAAA, _
              formato, myCultureInfo)
@@ -354,7 +357,6 @@ Module PublicFunction
             CurrLine = String.Empty
         Next
         'Create the file.
-
         SaveFileDialog1.FileName = "ProductList.csv"
         SaveFileDialog1.ShowDialog()
         Try
@@ -489,17 +491,15 @@ Module PublicFunction
     'Write and get the time of server.
     Function ParameterTable(ByVal param As String) As String
         Try
-            Dim Adapter As New MySqlDataAdapter("SELECT * FROM parameterset", MySqlconnection)
-            Dim tbl As DataTable
-            Dim Ds As New DataSet, resultRow As DataRow()
-
-
-            Adapter.Fill(Ds, "parameterset")
-            tbl = Ds.Tables("parameterset")
-            resultRow = tbl.Select("name = '" & param & "'")
-            If resultRow.Length > 0 Then
-                ParameterTable = resultRow(0).Item("value").ToString()
-            End If
+        Dim Adapter As New MySqlDataAdapter("SELECT * FROM parameterset", MySqlconnection)
+        Dim tbl As DataTable
+        Dim Ds As New DataSet, resultRow As DataRow()
+        Adapter.Fill(Ds, "parameterset")
+        tbl = Ds.Tables("parameterset")
+        resultRow = tbl.Select("name = '" & param & "'")
+        If resultRow.Length > 0 Then
+            ParameterTable = resultRow(0).Item("value").ToString()
+        End If
             Adapter.Dispose()
             Ds.Dispose()
         Catch ex As Exception

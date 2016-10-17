@@ -350,12 +350,10 @@ Public Class FormOffer
         'Dim OrcadDBPwd = ParameterTable("OrcadDBPwd")
 
         Try
-            'OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
             OpenConnectionSqlOrcad("10.10.10.36", "Orcad1", "orcadw", "orcadw")
 
         Catch ex As Exception
             CloseConnectionSqlOrcad()
-            'OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
             OpenConnectionSqlOrcad("10.10.10.36", "Orcad1", "orcadw", "orcadw")
         End Try
 

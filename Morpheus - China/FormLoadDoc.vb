@@ -59,7 +59,7 @@ Public Class FormLoadDoc
             If intLastRev >= 0 Then
                 TextBoxLastRevision.Text = Str(intLastRev)
             Else
-                TextBoxLastRevision.Text = "Not Find"
+                TextBoxLastRevision.Text = "Not Found"
             End If
 
             If strSintaxCheck = "5008" And controlType("E") = 1 Then
@@ -73,7 +73,7 @@ Public Class FormLoadDoc
                     ComunicationLog("5071") ' ecr progression ok
                     EcrControl = True
                 Else
-                    ComunicationLog("0043") ' db erro
+                    ComunicationLog("0043") ' db error
                     EcrControl = False
                 End If
             End If
@@ -83,37 +83,6 @@ Public Class FormLoadDoc
         End If
     End Sub
 
-    Function EnumerateCheck(ByVal typeEcrTcr As String) As Integer
-        Dim rsResult As DataRow(), pos As Integer, i As Integer, maxN As Integer = -1
-        If controlType("E") = 1 Then ' enumerate the ECR, TCR and EOR for example
-            rsResult = tblDoc.Select("header='" & typeEcrTcr & "'")
-            For i = 0 To rsResult.Length - 1
-                pos = InStr(1, rsResult(i).Item("filename").ToString, "-", CompareMethod.Text)
-                If pos > 0 Then
-                    If Val(Trim(Mid(rsResult(i).Item("filename").ToString, 1, pos - 1))) > maxN Then
-                        maxN = Val(Trim(Mid(rsResult(i).Item("filename").ToString, 1, pos - 1)))
-                    End If
-                End If
-            Next
-            pos = InStr(1, CreFile.FileName, "-", CompareMethod.Text)
-            Try
-                If Val(Trim(Mid(CreFile.FileName, 1, pos - 1))) = maxN + 1 Then
-                    EnumerateCheck = +1
-                ElseIf Val(Trim(Mid(CreFile.FileName, 1, pos - 1))) <= maxN Then
-                    EnumerateCheck = -1
-                Else
-                    EnumerateCheck = +2
-                End If
-            Catch ex As Exception
-                EnumerateCheck = +2
-            End Try
-
-        Else
-            EnumerateCheck = -2
-        End If
-    End Function
-
-
     Private Sub ButtonLoad_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonLoad.Click
         Dim strLoaded As String, tmp As String
         strRevCheck = RevisionExtract(intLastRev)
@@ -121,62 +90,61 @@ Public Class FormLoadDoc
             Dim returnValue As DataRow()
             returnValue = tblType.Select("header = '" & CreFile.Header & "'")
             If returnValue.Length > 0 Then
-                If strSintaxCheck = "5008" And strRuleCheck = "5026" And strRevCheck = "5029" Then
-                    If EcrControl Or controlType("E") = 0 Then
-                        If intLastRev = -1 Then      ' file not find in db" Then
-                            If 0 = CreFile.Rev Then
+            If strSintaxCheck = "5008" And strRuleCheck = "5026" And strRevCheck = "5029" Then
+                If EcrControl Or controlType("E") = 0 Then
+                    If intLastRev = -1 Then      ' file not found in DB
+                        If CreFile.Rev = 0 Then
+                            strLoaded = loadCreFile(False)
+                            ComunicationLog(strLoaded)
+                        Else
+                            If MsgBox("The file there is not in SrvDoc. Want you put it in a revision more of 0?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
                                 strLoaded = loadCreFile(False)
                                 ComunicationLog(strLoaded)
                             Else
-                                If MsgBox("The file there is not in SrvDoc. Want you put it in a revision more of 0?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                                    strLoaded = loadCreFile(False)
+                                ComunicationLog("0015") ' "Revision progression error!"
+                            End If
+                        End If
+                    ElseIf intLastRev >= 0 Then  ' file found in db
+                        If CreFile.Rev = intLastRev + 1 Then
+                            strLoaded = loadCreFile(False)
+                            ComunicationLog(strLoaded)
+                            Else
+                        If CreFile.Rev = intLastRev Then
+                            If MsgBox("The file is already present in SrvDoc. Want you replace it?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+                                strLoaded = SignExtract(tmp)
+                                If tmp = "" And strLoaded = "5069" Or controlType("S") = 0 Then
+                                    ReplaceNameFileC2()
+                                    strLoaded = loadCreFile(True)
                                     ComunicationLog(strLoaded)
                                 Else
-                                    ComunicationLog("0015") ' "Revision progression error!"
+                                    ComunicationLog("0044") ' File already signed
+
                                 End If
-                            End If
-                        ElseIf intLastRev >= 0 Then  ' file find in db
-                            If CreFile.Rev = intLastRev + 1 Then
-                                strLoaded = loadCreFile(False)
-                                ComunicationLog(strLoaded)
                             Else
-                                If CreFile.Rev = intLastRev Then
-                                    If MsgBox("The file is already present in SrvDoc. Want you replace it?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                                        strLoaded = SignExtract(tmp)
-                                        If tmp = "" And strLoaded = "5069" Or controlType("S") = 0 Then
-                                            REplaceNameFileC2()
-                                            strLoaded = loadCreFile(True)
-                                            ComunicationLog(strLoaded)
-                                        Else
-                                            ComunicationLog("0044") ' File already signed
-
-                                        End If
-                                    Else
-                                        ComunicationLog("0002") ' File already present in server
-                                    End If
-                                ElseIf (CreFile.Rev > intLastRev) And controlType("R") = 0 Then
-
-                                    ListBoxLog.Items.Add("Revision not request, but error in progression!")
-
-                                Else
-
-                                    ComunicationLog("0015") ' "Revision progression error!"
-
-                                End If
+                                ComunicationLog("0002") ' File already present in server
                             End If
+                        ElseIf (CreFile.Rev > intLastRev) And controlType("R") = 0 Then
+
+                            ListBoxLog.Items.Add("Revision not request, but error in progression!")
+
+                        Else
+
+                            ComunicationLog("0015") ' "Revision progression error!"
+
                         End If
                     End If
                 End If
-                Else
-                    ComunicationLog("0055") ' this type not exist
+            End If
                 End If
             Else
-                ComunicationLog("0043") ' right not enough
+                    ComunicationLog("0055") ' this type not exist
             End If
+        Else
+            ComunicationLog("0043") ' right not enough
+        End If
     End Sub
-
     ' Load the crefile in the server
-    '
+
     Function loadCreFile(ByVal ReplaceOnly As Boolean) As String
 
         Dim myrow As DataRow
@@ -197,7 +165,7 @@ Public Class FormLoadDoc
             strRes = objFtp.ListDirectory(strPathFtp, strList)
 
             If strRes <> "5000" Then
-                loadCreFile = "0003" 'Error Create directory"
+                loadCreFile = "0003" ' Directory creation error
             Else
                 If Val(CreFile.Rev) <> 0 And ComboBoxRevNote.Text = "" Then
                     loadCreFile = "5011" ' please fill the revision note or select a value
@@ -205,13 +173,16 @@ Public Class FormLoadDoc
                     strRes = objFtp.ListDirectory(strPathFtp & "/" & Mid(TextBoxDocName.Text, intPos + 1), strList)
 
                     If strRes <> "5000" Or strRes = "5000" And ReplaceOnly Then
+
                     Else
                         ListBoxLog.Items.Add("File present in the server, The system rewrite it!")
                     End If
                     strRes = objFtp.UploadFile(strPathFtp & "/", Mid(TextBoxDocName.Text, 1, intPos - 1), Mid(TextBoxDocName.Text, intPos + 1))
 
                     If strRes = "5000" Then
+
                         strRes = objFtp.ListDirectory(strPathFtp & "/" & Mid(TextBoxDocName.Text, intPos + 1), strList)
+
                         If Not ReplaceOnly Then
                             myrow = tblDoc.NewRow
                             myrow.Item("FileName") = CreFile.FileName
@@ -222,7 +193,7 @@ Public Class FormLoadDoc
                             myrow.Item("Extension") = CreFile.Extension
 
                             If Val(CreFile.Rev) = 0 Then
-                                myrow.Item("revNote") = CstrRevNoteCreation '  "File Creation"
+                                myrow.Item("revNote") = CstrRevNoteCreation '  "File creation"
                             ElseIf ComboBoxRevNote.Text <> "" Then
                                 myrow.Item("revNote") = ComboBoxRevNote.Text
                             End If
@@ -233,61 +204,20 @@ Public Class FormLoadDoc
 
                         End If
 
-                        loadCreFile = "5027" ' file loaded 
+                        loadCreFile = "5027" ' File uploaded 
+
                     Else
-                        loadCreFile = "0001" 'Error happend in the upload file"
+                        loadCreFile = "0001" ' Upload file error
                     End If
 
                 End If
-                End If
+            End If
         Else
-                loadCreFile = "0043" 'you don't have right enough for this operation
-            End If
+            loadCreFile = "0043" 'You don't have right enough for this operation
+        End If
     End Function
 
-    ' find the last revision in the Server of the current file
-    ' if not exist return ""
-    Function RevisionExtract(ByRef rev As Integer) As String
 
-        Try
-            DsDoc.Clear()
-
-        Catch ex As Exception
-
-        End Try
-        Try
-
-            tblDoc.Clear()
-        Catch ex As Exception
-
-        End Try
-
-        Try
-            AdapterDoc.Fill(DsDoc, "doc")
-            tblDoc = DsDoc.Tables("doc")
-        Catch ex As Exception
-
-        End Try
-
-        Dim returnValue As DataRow()
-        Try
-            RevisionExtract = ("5029") ' revision extract ok
-            If controlType("C") = 2 Then
-                returnValue = tblDoc.Select("header='" & CreFile.Header & "' and FileName like '" & Regex.Match(CreFile.FileName, "^\w+").ToString & " - *' and Extension='" & CreFile.Extension & "' ", "rev DESC")
-            Else
-                returnValue = tblDoc.Select("header='" & CreFile.Header & "' and FileName='" & CreFile.FileName & "' and Extension='" & CreFile.Extension & "' ", "rev DESC")
-            End If
-
-            If returnValue.Length >= 1 Then
-                rev = returnValue(0).Item("rev")
-            ElseIf returnValue.Length = 0 Then ' no file in DB
-                rev = -1 ' file not find
-            End If
-        Catch ex As Exception
-            RevisionExtract = ("0013") ' "Error in revision extract
-        End Try
-
-    End Function
 
     ' find sign
     ' if not exist return ""
@@ -329,26 +259,26 @@ Public Class FormLoadDoc
                         If (controlType("C") <> 2 Or Len(CreFile.FileName) >= 13 Or InStr(CreFile.FileName, "template", vbTextCompare) > 0) And (Len(Regex.Match(CreFile.FileName, "^[a-zA-Z0-9_]*", RegexOptions.IgnoreCase).ToString) >= 1 Or controlType("E") = 1) And Regex.IsMatch(strNomeFile, "^[0-9][0-9][a-zA-Z0-9]_([a-zA-Z0-9][a-zA-Z0-9][a-zA-Z0-9]_){2}[a-zA-Z0-9 -_]+\.\w\w\w\w*$", RegexOptions.IgnoreCase) Then
                             'If (controlType("C") <> 2 Or Len(CreFile.FileName) >= 13 Or InStr(CreFile.FileName, "template", vbTextCompare) > 0) And (Len(Regex.Match(CreFile.FileName, "^[a-zA-Z0-9_]*", RegexOptions.IgnoreCase).ToString) >= 1 Or controlType("E") = 1) Then 'And Regex.IsMatch(strNomeFile, "^[0-9][0-9][a-zA-Z0-9]_([a-zA-Z0-9][a-zA-Z0-9][a-zA-Z0-9]_){2}[a-zA-Z0-9 -_]+\.\w\w\w\w*$", RegexOptions.IgnoreCase) Then
 
-                            strRev = Regex.Match(strNomeFile, "(?<=_)\d+(?=.\w+$)").ToString
-                            If IsNumeric(strRev) And (Mid(strRev, 1, 1) <> "0" Or strRev = "0") Then
-                                CreFile.Rev = Str(strRev)
-                                CreFile.Extension = Regex.Match(strNomeFile, "(?<=.)\w+$").ToString
+                    strRev = Regex.Match(strNomeFile, "(?<=_)\d+(?=.\w+$)").ToString
+                    If IsNumeric(strRev) And (Mid(strRev, 1, 1) <> "0" Or strRev = "0") Then
+                        CreFile.Rev = Str(strRev)
+                        CreFile.Extension = Regex.Match(strNomeFile, "(?<=.)\w+$").ToString
                                 If CreFile.Extension <> "" Then
-                                    TextBoxHeader.Text = CreFile.Header
-                                    TextBoxExtension.Text = CreFile.Extension
-                                    TextBoxFileName.Text = CreFile.FileName
-                                    TextBoxRev.Text = Str(CreFile.Rev)
-                                    PathSintaxAnalysis = ("5008")  ' "Sintax OK"
-                                Else
-                                    PathSintaxAnalysis = ("0018") ' "Extension Sintax Error!"
+                        TextBoxHeader.Text = CreFile.Header
+                        TextBoxExtension.Text = CreFile.Extension
+                        TextBoxFileName.Text = CreFile.FileName
+                        TextBoxRev.Text = Str(CreFile.Rev)
+                        PathSintaxAnalysis = ("5008")  ' Sintax ok
+                    Else
+                        PathSintaxAnalysis = ("0018") ' "Extension Sintax Error!"
 
-                                End If
+                    End If
                             Else
-                                PathSintaxAnalysis = ("0019") ' "rev Sintax Error!"
+                    PathSintaxAnalysis = ("0019") ' "rev Sintax Error!"
 
-                            End If
+                        End If
                         Else
-                            PathSintaxAnalysis = ("0020") ' "NomeFile Sintax Error or too short < 8 char!"
+                        PathSintaxAnalysis = ("0020") ' "NomeFile Sintax Error or too short < 8 char!"
                         End If
                     Else
                         PathSintaxAnalysis = ("0021") ' "Header Sintax Error!"
@@ -358,16 +288,55 @@ Public Class FormLoadDoc
                 End If
 
             Else
-                PathSintaxAnalysis = ("0022") ' "Please select File!"
-
+                PathSintaxAnalysis = ("0022") ' Please select a file
             End If
 
         Catch ex As Exception
-            PathSintaxAnalysis = ("0025") ' "Sintax Error in path analisys!"
+            PathSintaxAnalysis = ("0025") ' Generic exception
         End Try
 
     End Function
 
+    ' Find the last revision in the server of the current file
+    ' If not exist return ""
+    Function RevisionExtract(ByRef rev As Integer) As String
+
+        Try
+            DsDoc.Clear()
+        Catch ex As Exception
+        End Try
+
+        Try
+            tblDoc.Clear()
+        Catch ex As Exception
+        End Try
+
+        Try
+            AdapterDoc.Fill(DsDoc, "doc")
+            tblDoc = DsDoc.Tables("doc")
+        Catch ex As Exception
+        End Try
+
+        Dim returnValue As DataRow()
+        Try
+            RevisionExtract = ("5029") ' revision extract ok
+            If controlType("C") = 2 Then
+                returnValue = tblDoc.Select("header='" & CreFile.Header & "' and FileName like '" & Regex.Match(CreFile.FileName, "^\w+").ToString & " - *' and Extension='" & CreFile.Extension & "' ", "rev DESC")
+            Else
+                returnValue = tblDoc.Select("header='" & CreFile.Header & "' and FileName='" & CreFile.FileName & "' and Extension='" & CreFile.Extension & "' ", "rev DESC")
+            End If
+
+            If returnValue.Length >= 1 Then
+                rev = returnValue(0).Item("rev")
+            ElseIf returnValue.Length = 0 Then ' no file in DB
+                rev = -1 ' file not find
+            End If
+        Catch ex As Exception
+            RevisionExtract = ("0013") ' "Error in revision extract
+        End Try
+
+    End Function
+    
     ' Check the rule on fileName 
     ' The rule are based on the header
     Function NameFileExstensionHeaderRuleCheck() As String
@@ -432,7 +401,35 @@ Public Class FormLoadDoc
             NameFileExstensionHeaderRuleCheck = "0023" ' Generic error in heder filename extenzsion check
         End Try
     End Function
+    Function EnumerateCheck(ByVal typeEcrTcr As String) As Integer
+        Dim rsResult As DataRow(), pos As Integer, i As Integer, maxN As Integer = -1
+        If controlType("E") = 1 Then ' enumerate the ECR, TCR and EOR for example
+            rsResult = tblDoc.Select("header='" & typeEcrTcr & "'")
+            For i = 0 To rsResult.Length - 1
+                pos = InStr(1, rsResult(i).Item("filename").ToString, "-", CompareMethod.Text)
+                If pos > 0 Then
+                    If Val(Trim(Mid(rsResult(i).Item("filename").ToString, 1, pos - 1))) > maxN Then
+                        maxN = Val(Trim(Mid(rsResult(i).Item("filename").ToString, 1, pos - 1)))
+                    End If
+                End If
+            Next
+            pos = InStr(1, CreFile.FileName, "-", CompareMethod.Text)
+            Try
+                If Val(Trim(Mid(CreFile.FileName, 1, pos - 1))) = maxN + 1 Then
+                    EnumerateCheck = +1
+                ElseIf Val(Trim(Mid(CreFile.FileName, 1, pos - 1))) <= maxN Then
+                    EnumerateCheck = -1
+                Else
+                    EnumerateCheck = +2
+                End If
+            Catch ex As Exception
+                EnumerateCheck = +2
+            End Try
 
+        Else
+            EnumerateCheck = -2
+        End If
+    End Function
 
     Sub ComunicationLog(ByVal ComCode As String)
 

@@ -8,6 +8,7 @@ Imports System.Globalization
 Imports System.Net.Dns
 Imports System.Xml
 
+
 Module PublicFunction
     Dim AdapterCh As New MySqlDataAdapter("SELECT * FROM mant", MySqlconnection)
     Dim dsCh As New DataSet
@@ -80,7 +81,7 @@ Module PublicFunction
     Sub OpenConnectionMySql(ByVal strHost As String, ByVal strDatabase As String, ByVal strUserName As String, ByVal strPassword As String)
 
         Try
-            ConnectionString = "host=" & strHost & ";" & "username=" & strUserName & ";" & "password=" & strPassword & ";" & "database=" & strDatabase & ";Connect Timeout=120;allow zero datetime=true;"
+            ConnectionString = "host=" & strHost & ";" & "username=" & strUserName & ";" & "password=" & strPassword & ";" & "database=" & strDatabase & ";Connect Timeout=120;allow zero datetime=true; "
             MySqlconnection = New MySqlConnection(ConnectionString)
             If MySqlconnection.State = ConnectionState.Open Then
                 MySqlconnection.Close()
@@ -168,9 +169,8 @@ Module PublicFunction
     End Sub
 
     Function cap7(ByVal s As String) As String
-        cap7 = UCase(Mid(s, 1, 7)) & LCase(Mid(s, 8))
+        cap7 = UCase(Mid(s, 1, 7)) & (Mid(s, 8))
     End Function
-
 
     Function controlRight(ByVal header As String) As Integer
         Dim intpos As Integer
@@ -197,17 +197,11 @@ Module PublicFunction
     Public Function ToDateTime(ByVal _
           dataGG_MM_AAAA As String) As DateTime
 
-
-
-        Dim myCultureInfo As New  _
-           System.Globalization.CultureInfo("en-US", _
-           True)
-
-        myCultureInfo = System.Globalization.CultureInfo.CurrentCulture
+        Dim myCultureInfo As CultureInfo = CultureInfo.CurrentCulture
         dataGG_MM_AAAA = Replace(dataGG_MM_AAAA, "-", "/")
         Dim formato As String = "MM/dd/yyyy"
         Return _
-          System.DateTime.ParseExact(dataGG_MM_AAAA, _
+          Date.ParseExact(dataGG_MM_AAAA, _
              formato, myCultureInfo)
     End Function
 
@@ -315,13 +309,12 @@ Module PublicFunction
         End If
     End Sub
 
-
     Function user() As String
         user = ""
         If controlRight("E") = 3 Then user = "E"
         If controlRight("L") = 3 Then user = "L"
         If controlRight("P") = 3 Then user = "P"
-        If controlRight("Q") = 3 Then user = "Q" ' industrial eng
+        If controlRight("Q") = 3 Then user = "Q"
         If controlRight("R") = 3 Then user = "R"
         If controlRight("U") = 3 Then user = "U"
         If controlRight("A") = 3 Then user = "A"
@@ -331,14 +324,10 @@ Module PublicFunction
         If controlRight("B") = 3 Then user = "B"
     End Function
 
-
-
-
-
     Sub WriteFile(ByVal a As String, ByVal append As Boolean)
 
         ' Create an instance of StreamWriter to write text to a file.
-        Using sw As StreamWriter = New StreamWriter(System.IO.Path.GetTempPath & "SrvQueryLog.txt", append)
+        Using sw = New StreamWriter(Path.GetTempPath & "SrvQueryLog.txt", append)
             ' Add some text to the file.
             sw.WriteLine(a)
             sw.Close()
@@ -356,7 +345,7 @@ Module PublicFunction
     Sub WriteTxtFile(ByVal file As String, ByVal text As String, ByVal append As Boolean)
 
         ' Create an instance of StreamWriter to write text to a file.
-        Using sw As StreamWriter = New StreamWriter(file, append)
+        Using sw = New StreamWriter(file, append)
             ' Add some text to the file.
             sw.WriteLine(text)
             sw.Close()
@@ -369,7 +358,7 @@ Module PublicFunction
         Dim csvFileContents As New System.Text.StringBuilder
         Dim CurrLine As String = String.Empty
         'Write out the column names as headers for the csv file.
-        For columnIndex As Int32 = 0 To lstview.Columns.Count - 1
+        For columnIndex = 0 To lstview.Columns.Count - 1
             CurrLine &= (String.Format("{0};", lstview.Columns(columnIndex).Text))
         Next
         'Remove trailing comma
@@ -388,7 +377,7 @@ Module PublicFunction
         SaveFileDialog1.FileName = "ProductList.csv"
         SaveFileDialog1.ShowDialog()
         Try
-            Dim Sys As New System.IO.StreamWriter(SaveFileDialog1.FileName)
+            Dim Sys As New StreamWriter(SaveFileDialog1.FileName)
             Sys.WriteLine(csvFileContents.ToString)
             Sys.Flush()
             Sys.Dispose()
@@ -518,6 +507,7 @@ Module PublicFunction
 
     'Write and get the time of server.
     Function ParameterTable(ByVal param As String) As String
+        Try
         Dim Adapter As New MySqlDataAdapter("SELECT * FROM parameterset", MySqlconnection)
         Dim tbl As DataTable
         Dim Ds As New DataSet, resultRow As DataRow()
@@ -527,8 +517,13 @@ Module PublicFunction
         If resultRow.Length > 0 Then
             ParameterTable = resultRow(0).Item("value").ToString()
         End If
-    End Function
+            Adapter.Dispose()
+            Ds.Dispose()
+        Catch ex As Exception
+            MsgBox("Error: " & ex.Message)
+        End Try
 
+    End Function
 
     Function ParameterTableWrite(ByVal param As String, ByVal value As String) As String
 
@@ -542,7 +537,6 @@ Module PublicFunction
         Catch ex As Exception
             MsgBox("Parametric Write error!   " & ex.Message)
         End Try
-
 
     End Function
 
@@ -768,7 +762,7 @@ Module PublicFunction
             If TXmlNode.HasChildNodes() Then
                 xml_NodeList = TXmlNode.ChildNodes
 
-                For I As Integer = 0 To xml_NodeList.Count - 1
+                For I = 0 To xml_NodeList.Count - 1
                     xml_SingleNode = TXmlNode.ChildNodes(I)
 
                     TreeViewNode.Nodes.Add(New TreeNode(XmlConvert.DecodeName(xml_SingleNode.Name).Replace(":", ":")))
@@ -801,8 +795,4 @@ Module PublicFunction
 
 #End Region
     End Class
-
-
-
-
 End Module

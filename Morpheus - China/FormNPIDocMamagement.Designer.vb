@@ -22,15 +22,15 @@ Partial Class FormNPIDocMamagement
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim ListViewItem3 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("")
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.Cob_NameDoc = New System.Windows.Forms.ComboBox
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.Btn_Cancel = New System.Windows.Forms.Button
-        Me.Btn_Add = New System.Windows.Forms.Button
-        Me.Cob_TypeDoc = New System.Windows.Forms.ComboBox
-        Me.Label10 = New System.Windows.Forms.Label
-        Me.ListViewNPI = New System.Windows.Forms.ListView
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("")
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.Cob_NameDoc = New System.Windows.Forms.ComboBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Btn_Cancel = New System.Windows.Forms.Button()
+        Me.Btn_Add = New System.Windows.Forms.Button()
+        Me.Cob_TypeDoc = New System.Windows.Forms.ComboBox()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.ListViewNPI = New System.Windows.Forms.ListView()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -66,7 +66,7 @@ Partial Class FormNPIDocMamagement
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(74, 17)
         Me.Label1.TabIndex = 237
-        Me.Label1.Text = "Name Doc"
+        Me.Label1.Text = "File Name"
         '
         'Btn_Cancel
         '
@@ -77,7 +77,7 @@ Partial Class FormNPIDocMamagement
         Me.Btn_Cancel.Name = "Btn_Cancel"
         Me.Btn_Cancel.Size = New System.Drawing.Size(123, 27)
         Me.Btn_Cancel.TabIndex = 236
-        Me.Btn_Cancel.Text = "Cancel"
+        Me.Btn_Cancel.Text = "Delete"
         Me.Btn_Cancel.UseVisualStyleBackColor = True
         '
         'Btn_Add
@@ -115,15 +115,15 @@ Partial Class FormNPIDocMamagement
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(69, 17)
         Me.Label10.TabIndex = 233
-        Me.Label10.Text = "Type Doc"
+        Me.Label10.Text = "Doc Type"
         '
         'ListViewNPI
         '
         Me.ListViewNPI.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ListViewNPI.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ListViewNPI.GridLines = True
-        ListViewItem3.StateImageIndex = 0
-        Me.ListViewNPI.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem3})
+        ListViewItem1.StateImageIndex = 0
+        Me.ListViewNPI.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.ListViewNPI.Location = New System.Drawing.Point(30, 154)
         Me.ListViewNPI.Margin = New System.Windows.Forms.Padding(4)
         Me.ListViewNPI.MultiSelect = False

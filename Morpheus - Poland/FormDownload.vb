@@ -183,6 +183,7 @@ Public Class FormDownload
         ComboBoxThirdType.Sorted = True
         ComboBoxThirdType.Text = ""
     End Sub
+
     Private Sub ButtonQuery_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonQuery.Click
         Dim Inconsistent As Boolean = False
         If Autoupdate = False Then
@@ -375,7 +376,7 @@ Public Class FormDownload
                                     J = InStr(GroupList, "]", CompareMethod.Text)
                                     While J > 0
                                         RowSearch = tblDoc.Select("(HEADER = '" & Mid(GroupList, I, 11) & "' AND filename = '" & Mid(GroupList, I + 12, J - 12 - I) _
-             & "') and ( header like '" & IIf(Mid(ComboBoxFirstType.Text, 1, 3) = "", "*", Mid(ComboBoxFirstType.Text, 1, 3) & "_") _
+                                         & "') and ( header like '" & IIf(Mid(ComboBoxFirstType.Text, 1, 3) = "", "*", Mid(ComboBoxFirstType.Text, 1, 3) & "_") _
                                         & IIf(Mid(ComboBoxSecondType.Text, 1, 3) = "", "*", Mid(ComboBoxSecondType.Text, 1, 3) & "_") _
                                         & IIf(Mid(ComboBoxThirdType.Text, 1, 3) = "", "*", Mid(ComboBoxThirdType.Text, 1, 3)) & "')")
                                         If RowSearch.Length > 0 Then

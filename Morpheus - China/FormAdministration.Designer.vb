@@ -22,24 +22,24 @@ Partial Class FormAdministration
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormAdministration))
         Me.TimerECR = New System.Windows.Forms.Timer(Me.components)
-        Me.ButtonClose = New System.Windows.Forms.Button
-        Me.ListBoxLog = New System.Windows.Forms.ListBox
-        Me.ButtonCompare = New System.Windows.Forms.Button
-        Me.CheckBoxDeleteFile = New System.Windows.Forms.CheckBox
-        Me.CheckBoxDeleteRecord = New System.Windows.Forms.CheckBox
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.ButtonDelDup = New System.Windows.Forms.Button
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.TextBoxEcr = New System.Windows.Forms.TextBox
-        Me.TextBoxService = New System.Windows.Forms.TextBox
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.ButtonSchedule = New System.Windows.Forms.Button
-        Me.RichTextBoxConv = New System.Windows.Forms.RichTextBox
+        Me.ButtonClose = New System.Windows.Forms.Button()
+        Me.ListBoxLog = New System.Windows.Forms.ListBox()
+        Me.ButtonCompare = New System.Windows.Forms.Button()
+        Me.CheckBoxDeleteFile = New System.Windows.Forms.CheckBox()
+        Me.CheckBoxDeleteRecord = New System.Windows.Forms.CheckBox()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.ButtonDelDup = New System.Windows.Forms.Button()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.TextBoxEcr = New System.Windows.Forms.TextBox()
+        Me.TextBoxService = New System.Windows.Forms.TextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.ButtonSchedule = New System.Windows.Forms.Button()
+        Me.RichTextBoxConv = New System.Windows.Forms.RichTextBox()
         Me.NotifyIcon1 = New System.Windows.Forms.NotifyIcon(Me.components)
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.GroupBox1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -129,7 +129,7 @@ Partial Class FormAdministration
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(85, 13)
         Me.Label1.TabIndex = 108
-        Me.Label1.Text = "ECR Scheduling"
+        Me.Label1.Text = "ECR \ Product Status Scheduling"
         '
         'TextBoxEcr
         '

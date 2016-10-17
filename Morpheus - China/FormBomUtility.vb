@@ -385,13 +385,13 @@ Public Class FormBomUtility
 
 
             For Each row In tblPfp.Rows
-            sql = "UPDATE `missing_pf` SET `doc`='" & OrcadDoc(row("bitron_PN").ToString) & "' WHERE `bitron_pn`='" & row("bitron_PN").ToString & "'"
-            Try
-                commandMySql = New MySqlCommand(sql, MySqlconnection)
-                commandMySql.ExecuteNonQuery()
-            Catch ex As Exception
-                MsgBox("Error in DB update/Insert material request")
-            End Try
+                sql = "UPDATE `missing_pf` SET `doc`='" & OrcadDoc(row("bitron_PN").ToString) & "' WHERE `bitron_pn`='" & row("bitron_PN").ToString & "'"
+                Try
+                    commandMySql = New MySqlCommand(sql, MySqlconnection)
+                    commandMySql.ExecuteNonQuery()
+                Catch ex As Exception
+                    MsgBox("Error in DB update/Insert material request")
+                End Try
 
             'sql = "UPDATE `missing_pf` SET `PFP_ASSIGNED_DATE`=`pfp_elaborated`.`datePfp` from `pfp_elaborated`join `missing_pf` on (`pfp_elaborated`.`bitron_pn`='" & row("bitron_PN").ToString & "')"
             sql = "UPDATE `missing_pf` SET `PFP_ASSIGNED_DATE` = ( SELECT `pfp_elaborated`.`datePfp`FROM `pfp_elaborated`WHERE `pfp_elaborated`.`Bitronpn` = '" & row("bitron_PN").ToString & "' ) WHERE `bitron_pn`='" & row("bitron_PN").ToString & "'"
@@ -402,7 +402,7 @@ Public Class FormBomUtility
             Catch ex As Exception
                 MsgBox("Error in DB update/Insert material request")
             End Try
-        Next
+            Next
 
 
             ButtonMissingPf.Text = "Missing Pf update Doc"
@@ -413,7 +413,6 @@ Public Class FormBomUtility
         Dim sql As String
         Dim commandMySql As MySqlCommand
         CollectProcess()
-        'open Parti_Fornitori_Prezzi.xls
         Dim xlsApp As New Object
         xlsApp = CreateObject("Excel.Application")
 

@@ -183,6 +183,310 @@ Partial Class FormDownload
         Me.TextBoxFilePath.Size = New System.Drawing.Size(508, 20)
         Me.TextBoxFilePath.TabIndex = 79
         '
+        'TableLayoutPanel5
+        '
+        Me.TableLayoutPanel5.ColumnCount = 1
+        Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel5.Controls.Add(Me.GroupBox1, 0, 0)
+        Me.TableLayoutPanel5.Controls.Add(Me.GroupBox3, 0, 1)
+        Me.TableLayoutPanel5.Location = New System.Drawing.Point(332, 3)
+        Me.TableLayoutPanel5.Name = "TableLayoutPanel5"
+        Me.TableLayoutPanel5.RowCount = 2
+        Me.TableLayoutPanel5.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel5.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 67.0!))
+        Me.TableLayoutPanel5.Size = New System.Drawing.Size(487, 258)
+        Me.TableLayoutPanel5.TabIndex = 238
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox1.Controls.Add(Me.LabelOrcad)
+        Me.GroupBox1.Controls.Add(Me.Label14)
+        Me.GroupBox1.Controls.Add(Me.ComboBoxStatus)
+        Me.GroupBox1.Controls.Add(Me.CheckBoxObsolete)
+        Me.GroupBox1.Controls.Add(Me.CheckGru)
+        Me.GroupBox1.Controls.Add(Me.Label13)
+        Me.GroupBox1.Controls.Add(Me.ComboBoxCustomer)
+        Me.GroupBox1.Controls.Add(Me.ComboBoxProd)
+        Me.GroupBox1.Controls.Add(Me.RadioButtonProductSearch)
+        Me.GroupBox1.Controls.Add(Me.Label9)
+        Me.GroupBox1.Controls.Add(Me.Label1LastBomUpdate)
+        Me.GroupBox1.Controls.Add(Me.ComboBoxEcrNull)
+        Me.GroupBox1.Controls.Add(Me.ComboBoxEcrPending)
+        Me.GroupBox1.Controls.Add(Me.Label1)
+        Me.GroupBox1.Controls.Add(Me.Label7)
+        Me.GroupBox1.Controls.Add(Me.ButtonEcr)
+        Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.GroupBox1.Location = New System.Drawing.Point(4, 4)
+        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
+        Me.GroupBox1.Size = New System.Drawing.Size(479, 183)
+        Me.GroupBox1.TabIndex = 88
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "         Product Document Search"
+        '
+        'LabelOrcad
+        '
+        Me.LabelOrcad.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.LabelOrcad.AutoSize = True
+        Me.LabelOrcad.BackColor = System.Drawing.Color.Transparent
+        Me.LabelOrcad.Location = New System.Drawing.Point(294, -24)
+        Me.LabelOrcad.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.LabelOrcad.Name = "LabelOrcad"
+        Me.LabelOrcad.Size = New System.Drawing.Size(92, 13)
+        Me.LabelOrcad.TabIndex = 147
+        Me.LabelOrcad.Text = "Orcad Loading ...."
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.BackColor = System.Drawing.Color.Transparent
+        Me.Label14.Location = New System.Drawing.Point(239, 42)
+        Me.Label14.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(37, 13)
+        Me.Label14.TabIndex = 145
+        Me.Label14.Text = "Status"
+        '
+        'ComboBoxStatus
+        '
+        Me.ComboBoxStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBoxStatus.Enabled = False
+        Me.ComboBoxStatus.FormattingEnabled = True
+        Me.ComboBoxStatus.Location = New System.Drawing.Point(242, 63)
+        Me.ComboBoxStatus.Margin = New System.Windows.Forms.Padding(4)
+        Me.ComboBoxStatus.Name = "ComboBoxStatus"
+        Me.ComboBoxStatus.Size = New System.Drawing.Size(230, 21)
+        Me.ComboBoxStatus.TabIndex = 144
+        '
+        'CheckBoxObsolete
+        '
+        Me.CheckBoxObsolete.AutoSize = True
+        Me.CheckBoxObsolete.Enabled = False
+        Me.CheckBoxObsolete.Location = New System.Drawing.Point(330, 151)
+        Me.CheckBoxObsolete.Margin = New System.Windows.Forms.Padding(4)
+        Me.CheckBoxObsolete.Name = "CheckBoxObsolete"
+        Me.CheckBoxObsolete.Size = New System.Drawing.Size(143, 17)
+        Me.CheckBoxObsolete.TabIndex = 143
+        Me.CheckBoxObsolete.Text = "Show Obsolete Products"
+        Me.CheckBoxObsolete.UseVisualStyleBackColor = True
+        '
+        'CheckGru
+        '
+        Me.CheckGru.AutoSize = True
+        Me.CheckGru.Checked = True
+        Me.CheckGru.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckGru.Enabled = False
+        Me.CheckGru.Location = New System.Drawing.Point(8, 148)
+        Me.CheckGru.Margin = New System.Windows.Forms.Padding(4)
+        Me.CheckGru.Name = "CheckGru"
+        Me.CheckGru.Size = New System.Drawing.Size(141, 17)
+        Me.CheckGru.TabIndex = 125
+        Me.CheckGru.Text = "Grugliasco Intranet DOC"
+        Me.CheckGru.UseVisualStyleBackColor = True
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.BackColor = System.Drawing.Color.Transparent
+        Me.Label13.Location = New System.Drawing.Point(8, 42)
+        Me.Label13.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(51, 13)
+        Me.Label13.TabIndex = 124
+        Me.Label13.Text = "Customer"
+        '
+        'ComboBoxCustomer
+        '
+        Me.ComboBoxCustomer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBoxCustomer.Enabled = False
+        Me.ComboBoxCustomer.FormattingEnabled = True
+        Me.ComboBoxCustomer.Location = New System.Drawing.Point(6, 63)
+        Me.ComboBoxCustomer.Margin = New System.Windows.Forms.Padding(4)
+        Me.ComboBoxCustomer.Name = "ComboBoxCustomer"
+        Me.ComboBoxCustomer.Size = New System.Drawing.Size(208, 21)
+        Me.ComboBoxCustomer.TabIndex = 123
+        '
+        'ComboBoxProd
+        '
+        Me.ComboBoxProd.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBoxProd.Enabled = False
+        Me.ComboBoxProd.FormattingEnabled = True
+        Me.ComboBoxProd.Location = New System.Drawing.Point(8, 116)
+        Me.ComboBoxProd.Margin = New System.Windows.Forms.Padding(4)
+        Me.ComboBoxProd.Name = "ComboBoxProd"
+        Me.ComboBoxProd.Size = New System.Drawing.Size(464, 21)
+        Me.ComboBoxProd.TabIndex = 120
+        '
+        'RadioButtonProductSearch
+        '
+        Me.RadioButtonProductSearch.AutoSize = True
+        Me.RadioButtonProductSearch.Location = New System.Drawing.Point(8, 0)
+        Me.RadioButtonProductSearch.Margin = New System.Windows.Forms.Padding(4)
+        Me.RadioButtonProductSearch.Name = "RadioButtonProductSearch"
+        Me.RadioButtonProductSearch.Size = New System.Drawing.Size(14, 13)
+        Me.RadioButtonProductSearch.TabIndex = 119
+        Me.RadioButtonProductSearch.TabStop = True
+        Me.RadioButtonProductSearch.UseVisualStyleBackColor = True
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.BackColor = System.Drawing.Color.Transparent
+        Me.Label9.Location = New System.Drawing.Point(8, 95)
+        Me.Label9.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(92, 13)
+        Me.Label9.TabIndex = 90
+        Me.Label9.Text = "Final Product P/N"
+        '
+        'Label1LastBomUpdate
+        '
+        Me.Label1LastBomUpdate.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label1LastBomUpdate.AutoSize = True
+        Me.Label1LastBomUpdate.BackColor = System.Drawing.Color.Transparent
+        Me.Label1LastBomUpdate.Location = New System.Drawing.Point(8, -16)
+        Me.Label1LastBomUpdate.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1LastBomUpdate.Name = "Label1LastBomUpdate"
+        Me.Label1LastBomUpdate.Size = New System.Drawing.Size(89, 13)
+        Me.Label1LastBomUpdate.TabIndex = 146
+        Me.Label1LastBomUpdate.Text = "Last Bom Update"
+        '
+        'ComboBoxEcrNull
+        '
+        Me.ComboBoxEcrNull.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.ComboBoxEcrNull.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBoxEcrNull.FormattingEnabled = True
+        Me.ComboBoxEcrNull.Location = New System.Drawing.Point(313, 170)
+        Me.ComboBoxEcrNull.Margin = New System.Windows.Forms.Padding(4)
+        Me.ComboBoxEcrNull.Name = "ComboBoxEcrNull"
+        Me.ComboBoxEcrNull.Size = New System.Drawing.Size(156, 21)
+        Me.ComboBoxEcrNull.TabIndex = 126
+        Me.ComboBoxEcrNull.Visible = False
+        '
+        'ComboBoxEcrPending
+        '
+        Me.ComboBoxEcrPending.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.ComboBoxEcrPending.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBoxEcrPending.FormattingEnabled = True
+        Me.ComboBoxEcrPending.Location = New System.Drawing.Point(8, 175)
+        Me.ComboBoxEcrPending.Margin = New System.Windows.Forms.Padding(4)
+        Me.ComboBoxEcrPending.Name = "ComboBoxEcrPending"
+        Me.ComboBoxEcrPending.Size = New System.Drawing.Size(156, 21)
+        Me.ComboBoxEcrPending.TabIndex = 125
+        Me.ComboBoxEcrPending.Visible = False
+        '
+        'Label1
+        '
+        Me.Label1.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.Label1.AutoSize = True
+        Me.Label1.BackColor = System.Drawing.Color.Transparent
+        Me.Label1.Location = New System.Drawing.Point(193, 152)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(62, 13)
+        Me.Label1.TabIndex = 127
+        Me.Label1.Text = "EcrPending"
+        Me.Label1.Visible = False
+        '
+        'Label7
+        '
+        Me.Label7.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.Label7.AutoSize = True
+        Me.Label7.BackColor = System.Drawing.Color.Transparent
+        Me.Label7.Location = New System.Drawing.Point(263, 152)
+        Me.Label7.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(41, 13)
+        Me.Label7.TabIndex = 128
+        Me.Label7.Text = "EcrNull"
+        Me.Label7.Visible = False
+        '
+        'ButtonEcr
+        '
+        Me.ButtonEcr.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.ButtonEcr.Location = New System.Drawing.Point(183, 170)
+        Me.ButtonEcr.Margin = New System.Windows.Forms.Padding(4)
+        Me.ButtonEcr.Name = "ButtonEcr"
+        Me.ButtonEcr.Size = New System.Drawing.Size(108, 30)
+        Me.ButtonEcr.TabIndex = 129
+        Me.ButtonEcr.Text = "Null ECR"
+        Me.ButtonEcr.UseVisualStyleBackColor = True
+        Me.ButtonEcr.Visible = False
+        '
+        'GroupBox3
+        '
+        Me.GroupBox3.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox3.Controls.Add(Me.ComboBoxRevision)
+        Me.GroupBox3.Controls.Add(Me.ComboBoxSign)
+        Me.GroupBox3.Controls.Add(Me.Label11)
+        Me.GroupBox3.Controls.Add(Me.ButtonStop)
+        Me.GroupBox3.Controls.Add(Me.Label3)
+        Me.GroupBox3.Location = New System.Drawing.Point(3, 194)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(481, 61)
+        Me.GroupBox3.TabIndex = 89
+        Me.GroupBox3.TabStop = False
+        '
+        'ComboBoxRevision
+        '
+        Me.ComboBoxRevision.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.ComboBoxRevision.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBoxRevision.FormattingEnabled = True
+        Me.ComboBoxRevision.Location = New System.Drawing.Point(12, 33)
+        Me.ComboBoxRevision.Margin = New System.Windows.Forms.Padding(4)
+        Me.ComboBoxRevision.Name = "ComboBoxRevision"
+        Me.ComboBoxRevision.Size = New System.Drawing.Size(156, 21)
+        Me.ComboBoxRevision.TabIndex = 72
+        '
+        'ComboBoxSign
+        '
+        Me.ComboBoxSign.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.ComboBoxSign.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBoxSign.FormattingEnabled = True
+        Me.ComboBoxSign.Location = New System.Drawing.Point(190, 33)
+        Me.ComboBoxSign.Margin = New System.Windows.Forms.Padding(4)
+        Me.ComboBoxSign.Name = "ComboBoxSign"
+        Me.ComboBoxSign.Size = New System.Drawing.Size(156, 21)
+        Me.ComboBoxSign.TabIndex = 122
+        '
+        'Label11
+        '
+        Me.Label11.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.Label11.AutoSize = True
+        Me.Label11.BackColor = System.Drawing.Color.Transparent
+        Me.Label11.Location = New System.Drawing.Point(187, 14)
+        Me.Label11.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(28, 13)
+        Me.Label11.TabIndex = 123
+        Me.Label11.Text = "Sign"
+        '
+        'ButtonStop
+        '
+        Me.ButtonStop.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.ButtonStop.Location = New System.Drawing.Point(366, 24)
+        Me.ButtonStop.Margin = New System.Windows.Forms.Padding(4)
+        Me.ButtonStop.Name = "ButtonStop"
+        Me.ButtonStop.Size = New System.Drawing.Size(108, 30)
+        Me.ButtonStop.TabIndex = 130
+        Me.ButtonStop.Text = "Stop"
+        Me.ButtonStop.UseVisualStyleBackColor = True
+        '
+        'Label3
+        '
+        Me.Label3.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.Label3.AutoSize = True
+        Me.Label3.BackColor = System.Drawing.Color.Transparent
+        Me.Label3.Location = New System.Drawing.Point(12, 16)
+        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(48, 13)
+        Me.Label3.TabIndex = 70
+        Me.Label3.Text = "Revision"
         'CheckComp
         '
         Me.CheckComp.Anchor = System.Windows.Forms.AnchorStyles.Bottom
@@ -712,311 +1016,7 @@ Partial Class FormDownload
         Me.Label5.Size = New System.Drawing.Size(71, 13)
         Me.Label5.TabIndex = 81
         Me.Label5.Text = "Second Type"
-        '
-        'TableLayoutPanel5
-        '
-        Me.TableLayoutPanel5.ColumnCount = 1
-        Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel5.Controls.Add(Me.GroupBox1, 0, 0)
-        Me.TableLayoutPanel5.Controls.Add(Me.GroupBox3, 0, 1)
-        Me.TableLayoutPanel5.Location = New System.Drawing.Point(332, 3)
-        Me.TableLayoutPanel5.Name = "TableLayoutPanel5"
-        Me.TableLayoutPanel5.RowCount = 2
-        Me.TableLayoutPanel5.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel5.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 67.0!))
-        Me.TableLayoutPanel5.Size = New System.Drawing.Size(487, 258)
-        Me.TableLayoutPanel5.TabIndex = 238
-        '
-        'GroupBox1
-        '
-        Me.GroupBox1.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox1.Controls.Add(Me.LabelOrcad)
-        Me.GroupBox1.Controls.Add(Me.Label14)
-        Me.GroupBox1.Controls.Add(Me.ComboBoxStatus)
-        Me.GroupBox1.Controls.Add(Me.CheckBoxObsolete)
-        Me.GroupBox1.Controls.Add(Me.CheckGru)
-        Me.GroupBox1.Controls.Add(Me.Label13)
-        Me.GroupBox1.Controls.Add(Me.ComboBoxCustomer)
-        Me.GroupBox1.Controls.Add(Me.ComboBoxProd)
-        Me.GroupBox1.Controls.Add(Me.RadioButtonProductSearch)
-        Me.GroupBox1.Controls.Add(Me.Label9)
-        Me.GroupBox1.Controls.Add(Me.Label1LastBomUpdate)
-        Me.GroupBox1.Controls.Add(Me.ComboBoxEcrNull)
-        Me.GroupBox1.Controls.Add(Me.ComboBoxEcrPending)
-        Me.GroupBox1.Controls.Add(Me.Label1)
-        Me.GroupBox1.Controls.Add(Me.Label7)
-        Me.GroupBox1.Controls.Add(Me.ButtonEcr)
-        Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GroupBox1.Location = New System.Drawing.Point(4, 4)
-        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox1.Size = New System.Drawing.Size(479, 183)
-        Me.GroupBox1.TabIndex = 88
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "         Product Document Search"
-        '
-        'LabelOrcad
-        '
-        Me.LabelOrcad.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.LabelOrcad.AutoSize = True
-        Me.LabelOrcad.BackColor = System.Drawing.Color.Transparent
-        Me.LabelOrcad.Location = New System.Drawing.Point(294, -24)
-        Me.LabelOrcad.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.LabelOrcad.Name = "LabelOrcad"
-        Me.LabelOrcad.Size = New System.Drawing.Size(92, 13)
-        Me.LabelOrcad.TabIndex = 147
-        Me.LabelOrcad.Text = "Orcad Loading ...."
-        '
-        'Label14
-        '
-        Me.Label14.AutoSize = True
-        Me.Label14.BackColor = System.Drawing.Color.Transparent
-        Me.Label14.Location = New System.Drawing.Point(239, 42)
-        Me.Label14.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(37, 13)
-        Me.Label14.TabIndex = 145
-        Me.Label14.Text = "Status"
-        '
-        'ComboBoxStatus
-        '
-        Me.ComboBoxStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBoxStatus.Enabled = False
-        Me.ComboBoxStatus.FormattingEnabled = True
-        Me.ComboBoxStatus.Location = New System.Drawing.Point(242, 63)
-        Me.ComboBoxStatus.Margin = New System.Windows.Forms.Padding(4)
-        Me.ComboBoxStatus.Name = "ComboBoxStatus"
-        Me.ComboBoxStatus.Size = New System.Drawing.Size(230, 21)
-        Me.ComboBoxStatus.TabIndex = 144
-        '
-        'CheckBoxObsolete
-        '
-        Me.CheckBoxObsolete.AutoSize = True
-        Me.CheckBoxObsolete.Enabled = False
-        Me.CheckBoxObsolete.Location = New System.Drawing.Point(330, 151)
-        Me.CheckBoxObsolete.Margin = New System.Windows.Forms.Padding(4)
-        Me.CheckBoxObsolete.Name = "CheckBoxObsolete"
-        Me.CheckBoxObsolete.Size = New System.Drawing.Size(143, 17)
-        Me.CheckBoxObsolete.TabIndex = 143
-        Me.CheckBoxObsolete.Text = "Show Obsolete Products"
-        Me.CheckBoxObsolete.UseVisualStyleBackColor = True
-        '
-        'CheckGru
-        '
-        Me.CheckGru.AutoSize = True
-        Me.CheckGru.Checked = True
-        Me.CheckGru.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckGru.Enabled = False
-        Me.CheckGru.Location = New System.Drawing.Point(8, 148)
-        Me.CheckGru.Margin = New System.Windows.Forms.Padding(4)
-        Me.CheckGru.Name = "CheckGru"
-        Me.CheckGru.Size = New System.Drawing.Size(141, 17)
-        Me.CheckGru.TabIndex = 125
-        Me.CheckGru.Text = "Grugliasco Intranet DOC"
-        Me.CheckGru.UseVisualStyleBackColor = True
-        '
-        'Label13
-        '
-        Me.Label13.AutoSize = True
-        Me.Label13.BackColor = System.Drawing.Color.Transparent
-        Me.Label13.Location = New System.Drawing.Point(8, 42)
-        Me.Label13.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(51, 13)
-        Me.Label13.TabIndex = 124
-        Me.Label13.Text = "Customer"
-        '
-        'ComboBoxCustomer
-        '
-        Me.ComboBoxCustomer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBoxCustomer.Enabled = False
-        Me.ComboBoxCustomer.FormattingEnabled = True
-        Me.ComboBoxCustomer.Location = New System.Drawing.Point(6, 63)
-        Me.ComboBoxCustomer.Margin = New System.Windows.Forms.Padding(4)
-        Me.ComboBoxCustomer.Name = "ComboBoxCustomer"
-        Me.ComboBoxCustomer.Size = New System.Drawing.Size(208, 21)
-        Me.ComboBoxCustomer.TabIndex = 123
-        '
-        'ComboBoxProd
-        '
-        Me.ComboBoxProd.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBoxProd.Enabled = False
-        Me.ComboBoxProd.FormattingEnabled = True
-        Me.ComboBoxProd.Location = New System.Drawing.Point(8, 116)
-        Me.ComboBoxProd.Margin = New System.Windows.Forms.Padding(4)
-        Me.ComboBoxProd.Name = "ComboBoxProd"
-        Me.ComboBoxProd.Size = New System.Drawing.Size(464, 21)
-        Me.ComboBoxProd.TabIndex = 120
-        '
-        'RadioButtonProductSearch
-        '
-        Me.RadioButtonProductSearch.AutoSize = True
-        Me.RadioButtonProductSearch.Location = New System.Drawing.Point(8, 0)
-        Me.RadioButtonProductSearch.Margin = New System.Windows.Forms.Padding(4)
-        Me.RadioButtonProductSearch.Name = "RadioButtonProductSearch"
-        Me.RadioButtonProductSearch.Size = New System.Drawing.Size(14, 13)
-        Me.RadioButtonProductSearch.TabIndex = 119
-        Me.RadioButtonProductSearch.TabStop = True
-        Me.RadioButtonProductSearch.UseVisualStyleBackColor = True
-        '
-        'Label9
-        '
-        Me.Label9.AutoSize = True
-        Me.Label9.BackColor = System.Drawing.Color.Transparent
-        Me.Label9.Location = New System.Drawing.Point(8, 95)
-        Me.Label9.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(92, 13)
-        Me.Label9.TabIndex = 90
-        Me.Label9.Text = "Final Product P/N"
-        '
-        'Label1LastBomUpdate
-        '
-        Me.Label1LastBomUpdate.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label1LastBomUpdate.AutoSize = True
-        Me.Label1LastBomUpdate.BackColor = System.Drawing.Color.Transparent
-        Me.Label1LastBomUpdate.Location = New System.Drawing.Point(8, -16)
-        Me.Label1LastBomUpdate.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label1LastBomUpdate.Name = "Label1LastBomUpdate"
-        Me.Label1LastBomUpdate.Size = New System.Drawing.Size(89, 13)
-        Me.Label1LastBomUpdate.TabIndex = 146
-        Me.Label1LastBomUpdate.Text = "Last Bom Update"
-        '
-        'ComboBoxEcrNull
-        '
-        Me.ComboBoxEcrNull.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.ComboBoxEcrNull.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBoxEcrNull.FormattingEnabled = True
-        Me.ComboBoxEcrNull.Location = New System.Drawing.Point(313, 170)
-        Me.ComboBoxEcrNull.Margin = New System.Windows.Forms.Padding(4)
-        Me.ComboBoxEcrNull.Name = "ComboBoxEcrNull"
-        Me.ComboBoxEcrNull.Size = New System.Drawing.Size(156, 21)
-        Me.ComboBoxEcrNull.TabIndex = 126
-        Me.ComboBoxEcrNull.Visible = False
-        '
-        'ComboBoxEcrPending
-        '
-        Me.ComboBoxEcrPending.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.ComboBoxEcrPending.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBoxEcrPending.FormattingEnabled = True
-        Me.ComboBoxEcrPending.Location = New System.Drawing.Point(8, 175)
-        Me.ComboBoxEcrPending.Margin = New System.Windows.Forms.Padding(4)
-        Me.ComboBoxEcrPending.Name = "ComboBoxEcrPending"
-        Me.ComboBoxEcrPending.Size = New System.Drawing.Size(156, 21)
-        Me.ComboBoxEcrPending.TabIndex = 125
-        Me.ComboBoxEcrPending.Visible = False
-        '
-        'Label1
-        '
-        Me.Label1.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.Label1.AutoSize = True
-        Me.Label1.BackColor = System.Drawing.Color.Transparent
-        Me.Label1.Location = New System.Drawing.Point(193, 152)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(62, 13)
-        Me.Label1.TabIndex = 127
-        Me.Label1.Text = "EcrPending"
-        Me.Label1.Visible = False
-        '
-        'Label7
-        '
-        Me.Label7.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.Label7.AutoSize = True
-        Me.Label7.BackColor = System.Drawing.Color.Transparent
-        Me.Label7.Location = New System.Drawing.Point(263, 152)
-        Me.Label7.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(41, 13)
-        Me.Label7.TabIndex = 128
-        Me.Label7.Text = "EcrNull"
-        Me.Label7.Visible = False
-        '
-        'ButtonEcr
-        '
-        Me.ButtonEcr.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.ButtonEcr.Location = New System.Drawing.Point(183, 170)
-        Me.ButtonEcr.Margin = New System.Windows.Forms.Padding(4)
-        Me.ButtonEcr.Name = "ButtonEcr"
-        Me.ButtonEcr.Size = New System.Drawing.Size(108, 30)
-        Me.ButtonEcr.TabIndex = 129
-        Me.ButtonEcr.Text = "Null ECR"
-        Me.ButtonEcr.UseVisualStyleBackColor = True
-        Me.ButtonEcr.Visible = False
-        '
-        'GroupBox3
-        '
-        Me.GroupBox3.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.GroupBox3.Controls.Add(Me.ComboBoxRevision)
-        Me.GroupBox3.Controls.Add(Me.ComboBoxSign)
-        Me.GroupBox3.Controls.Add(Me.Label11)
-        Me.GroupBox3.Controls.Add(Me.ButtonStop)
-        Me.GroupBox3.Controls.Add(Me.Label3)
-        Me.GroupBox3.Location = New System.Drawing.Point(3, 194)
-        Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(481, 61)
-        Me.GroupBox3.TabIndex = 89
-        Me.GroupBox3.TabStop = False
-        '
-        'ComboBoxRevision
-        '
-        Me.ComboBoxRevision.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.ComboBoxRevision.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBoxRevision.FormattingEnabled = True
-        Me.ComboBoxRevision.Location = New System.Drawing.Point(12, 33)
-        Me.ComboBoxRevision.Margin = New System.Windows.Forms.Padding(4)
-        Me.ComboBoxRevision.Name = "ComboBoxRevision"
-        Me.ComboBoxRevision.Size = New System.Drawing.Size(156, 21)
-        Me.ComboBoxRevision.TabIndex = 72
-        '
-        'ComboBoxSign
-        '
-        Me.ComboBoxSign.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.ComboBoxSign.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBoxSign.FormattingEnabled = True
-        Me.ComboBoxSign.Location = New System.Drawing.Point(190, 33)
-        Me.ComboBoxSign.Margin = New System.Windows.Forms.Padding(4)
-        Me.ComboBoxSign.Name = "ComboBoxSign"
-        Me.ComboBoxSign.Size = New System.Drawing.Size(156, 21)
-        Me.ComboBoxSign.TabIndex = 122
-        '
-        'Label11
-        '
-        Me.Label11.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.Label11.AutoSize = True
-        Me.Label11.BackColor = System.Drawing.Color.Transparent
-        Me.Label11.Location = New System.Drawing.Point(187, 14)
-        Me.Label11.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(28, 13)
-        Me.Label11.TabIndex = 123
-        Me.Label11.Text = "Sign"
-        '
-        'ButtonStop
-        '
-        Me.ButtonStop.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.ButtonStop.Location = New System.Drawing.Point(366, 24)
-        Me.ButtonStop.Margin = New System.Windows.Forms.Padding(4)
-        Me.ButtonStop.Name = "ButtonStop"
-        Me.ButtonStop.Size = New System.Drawing.Size(108, 30)
-        Me.ButtonStop.TabIndex = 130
-        Me.ButtonStop.Text = "Stop"
-        Me.ButtonStop.UseVisualStyleBackColor = True
-        '
-        'Label3
-        '
-        Me.Label3.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.Label3.AutoSize = True
-        Me.Label3.BackColor = System.Drawing.Color.Transparent
-        Me.Label3.Location = New System.Drawing.Point(12, 16)
-        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(48, 13)
-        Me.Label3.TabIndex = 70
-        Me.Label3.Text = "Revision"
+
         '
         'TableLayoutPanel3
         '

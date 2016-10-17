@@ -494,15 +494,15 @@ Public Class FormECR
                                 MsgBox("Please fill the data!")
                             End If
                         Else
-                            MsgBox("No possible sign if there are some dept that have tot yet APPROVED!")
-                            If MsgBox("Want you remove your Approve?", MsgBoxStyle.YesNo, "ECR Question") = MsgBoxResult.Yes Then
+                            MsgBox("It is not possible to sign if there is some dept that has not yet APPROVED!")
+                            If MsgBox("Do you want to remove your approval?", MsgBoxStyle.YesNo, "ECR Question") = MsgBoxResult.Yes Then
                                 If Not AllApproved() Then
                                     WriteField(but & "sign", "CHECKED")
                                     Me.Controls("Button" & but).Text = "CHECKED"
                                     WriteField("date" & but, date_to_string(Now))
 
                                 Else
-                                    ListBoxLog.Items.Add("Now, all APPROVED, you cant can remove your APPROVE")
+                                    ListBoxLog.Items.Add("You can't remove your APPROVE anymore!")
                                 End If
                             End If
                         End If
@@ -520,9 +520,9 @@ Public Class FormECR
                         If SomeNoChecked() = False Then
                             If datepresence Then
                                 If but <> "P" Then
-                                    Me.Controls("Button" & but).Text = "APPROVED"
-                                    WriteField(but & "sign", Me.Controls("Button" & but).Text)
-                                    WriteField("date" & but, date_to_string(Now))
+                                Me.Controls("Button" & but).Text = "APPROVED"
+                                WriteField(but & "sign", Me.Controls("Button" & but).Text)
+                                WriteField("date" & but, date_to_string(Now))
                                 Else
                                     If AllApprovedButProduct() = True Then
                                         Me.Controls("Button" & but).Text = "APPROVED"
@@ -780,6 +780,7 @@ Public Class FormECR
             SomeNoChecked = True
         End If
     End Function
+    
     Function AllApprovedButProduct() As Boolean
         AllApprovedButProduct = False
         If ButtonU.Text = "APPROVED" And _

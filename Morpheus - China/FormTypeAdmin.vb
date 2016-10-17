@@ -141,9 +141,10 @@ Public Class FormTypeAdmin
                     If returnValue.Length > 0 Then
 
                         sql = "DELETE FROM `srvdoc`.`doctype` WHERE `doctype`.`header` ='" & HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text) & "'"
-                        cmd = New MySqlCommand(Sql, MySqlconnection)
+                        cmd = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
-                        ComunicationLog("5034") 'PubbEvent("Record deleted from Database", True)
+                        ComunicationLog("5034") 'Record deleted from database
+                        resetCont()
                     Else
                         MsgBox(StrSettingRead("0037"))
                     End If
@@ -293,16 +294,16 @@ Public Class FormTypeAdmin
 
 
     Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
-        MsgBox("Please fill the document propriety: " & vbCrLf & _
-        "S{X} X=0 NO SIGN REQUEST, X=1 SIGN REQUEST, " & vbCrLf & _
-        "R{X} X=0 NO REVISION REQUEST, X=1 REVISION REQUEST, " & vbCrLf & _
-        "P{X} X=0 NO PRODUCT FILE, X=1 PRODUCT PRODUCT, " & vbCrLf & _
-        "Y{X} X=0 NO REQUEST FILE, X=1 FILE REQUEST, " & vbCrLf & _
-        "C{X} X=0 NO FREE NAMING, X=1 CODE NAMING, X=2 CODE - DESCRIPTION NAMING, " & vbCrLf & _
-        "Example: S1R1P1Y1C1" & vbCrLf & _
-        vbCrLf & _
-        "Please fill the file extension which type document you want to upload," & vbCrLf & _
-        "Example:pdf;docx;doc;xls;xlsx;zip;" & vbCrLf & _
-        "Every file extension follow a ';' and no SPACE between them. " & vbCrLf)
+                MsgBox("Please fill in the document properties: " & vbCrLf &
+                "S{X} X=0 NO SIGN REQUEST, X=1 SIGN REQUEST, " & vbCrLf &
+                "R{X} X=0 NO REVISION REQUEST, X=1 REVISION REQUEST, " & vbCrLf &
+                "P{X} X=0 NO PRODUCT FILE, X=1 PRODUCT PRODUCT, " & vbCrLf &
+                "Y{X} X=0 NO REQUEST FILE, X=1 FILE REQUEST, " & vbCrLf &
+                "C{X} X=0 NO FREE NAMING, X=1 CODE NAMING, X=2 CODE - DESCRIPTION NAMING, " & vbCrLf &
+                "Example: S1R1P1Y1C1" & vbCrLf &
+                vbCrLf &
+                "Please fill in the file extension whith possible extensions of document:" & vbCrLf &
+                "Example:pdf;docx;doc;xls;xlsx;zip;" & vbCrLf &
+                "Each file extension is followed by ';' and no SPACE are allowed between them. " & vbCrLf)
     End Sub
 End Class

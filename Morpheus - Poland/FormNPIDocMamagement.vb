@@ -102,12 +102,12 @@ Public Class FormNPIDocMamagement
         Me.Hide()
 
         If controlRight(Mid(Cob_TypeDoc.Text, 3, 1)) >= 2 Then
-            FormSamples.Txt_FilePath.Text = Cob_TypeDoc.Text & "_" & Cob_NameDoc.Text
-            Sql = "UPDATE npi_openissue  SET FilePath ='" & FormSamples.Txt_FilePath.Text & "' WHERE ID = '" & FormSamples.Txt_Index.Text & "'"
-            cmd = New MySqlCommand(Sql, MySqlconnection)
-            cmd.ExecuteNonQuery()
+        FormSamples.Txt_FilePath.Text = Cob_TypeDoc.Text & "_" & Cob_NameDoc.Text
+        Sql = "UPDATE npi_openissue  SET FilePath ='" & FormSamples.Txt_FilePath.Text & "' WHERE ID = '" & FormSamples.Txt_Index.Text & "'"
+        cmd = New MySqlCommand(Sql, MySqlconnection)
+        cmd.ExecuteNonQuery()
             '  Call FormSamples.issuefunction(0)
-            MsgBox("Successfully uploaded file")
+        MsgBox("Successfully uploaded file")
         Else
             MsgBox("No enough right to load a file")
         End If
