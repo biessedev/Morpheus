@@ -92,7 +92,7 @@ Public Class FormOpenIssue
             OpenIssue = Replace(OpenIssue, ComboBoxGroup.Text & "[" & ComboBoxName.Text & "];", "")
             OpenIssue = OpenIssue & ComboBoxGroup.Text & "[" & Now.Day & "/" & Now.Month & "/" & Now.Year & "(d/m/y) ; " & ComboBoxName.Text & "];"
             Try
-                sql = "UPDATE `srvdoc`.`product` SET `OpenIssue` = '" & UCase(OpenIssue) & _
+                sql = "UPDATE `" & DBName & "`.`product` SET `OpenIssue` = '" & UCase(OpenIssue) & _
                 "' WHERE `product`.`BitronPN` = '" & Replace(Replace(Trim(FormProduct.TextBoxProduct.Text), ";", ","), "R&D", "R & D") & "' ;"
                 cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
@@ -117,7 +117,7 @@ Public Class FormOpenIssue
 
             OpenIssue = Replace(OpenIssue, ListViewGRU.SelectedItems.Item(0).SubItems(0).Text & "[" & ListViewGRU.SelectedItems.Item(0).SubItems(1).Text & "];", "", , , CompareMethod.Text)
             Try
-                sql = "UPDATE `srvdoc`.`product` SET `OpenIssue` = '" & OpenIssue & _
+                sql = "UPDATE `" & DBName & "`.`product` SET `OpenIssue` = '" & OpenIssue & _
                 "' WHERE `product`.`BitronPN` = '" & Trim(FormProduct.TextBoxProduct.Text) & "' ;"
                 cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()

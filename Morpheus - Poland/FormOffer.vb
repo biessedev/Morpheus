@@ -3675,7 +3675,7 @@ Public Class FormOffer
         xlsWorksheet.Activate()
 
         'empty the PFP table
-        commandMySql = New MySqlCommand("TRUNCATE TABLE `srvdoc`.`pfp`", MySqlconnection)
+        commandMySql = New MySqlCommand("TRUNCATE TABLE `" & DBName & "`.`pfp`", MySqlconnection)
         commandMySql.ExecuteNonQuery()
 
         'save the .xls file in .csv format
@@ -3704,7 +3704,7 @@ Public Class FormOffer
         Dim supplier As String, average As String, supcode As String
 
         'empty the PFP table
-        commandMySql = New MySqlCommand("TRUNCATE TABLE `srvdoc`.`pfp_Elaborated`", MySqlconnection)
+        commandMySql = New MySqlCommand("TRUNCATE TABLE `" & DBName & "`.`pfp_Elaborated`", MySqlconnection)
         commandMySql.ExecuteNonQuery()
 
         LastBitronpn = ""

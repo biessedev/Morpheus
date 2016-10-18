@@ -82,11 +82,12 @@ Public Class FormGroup
             GroupList = Replace(GroupList, Mid(ComboBoxGroup.Text, 1, 11) & "[" & ComboBoxName.Text & "];", "")
             GroupList = GroupList & Mid(ComboBoxGroup.Text, 1, 11) & "[" & ComboBoxName.Text & "];"
             Try
-                sql = "UPDATE `srvdoc`.`product` SET `grouplist` = '" & UCase(GroupList) &
+                sql = "UPDATE `" & DBName & "`.`product` SET `grouplist` = '" & UCase(GroupList) &
                 "' WHERE `product`.`BitronPN` = '" & Trim(FormProduct.TextBoxProduct.Text) & "' ;"
                 cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
             Catch ex As Exception
+                MessageBox.Show(ex.Message)
             End Try
         End If
         fillList()
@@ -105,7 +106,7 @@ Public Class FormGroup
             filename = ListViewGRU.SelectedItems.Item(0).SubItems(1).Text
             GroupList = Replace(GroupList, ListViewGRU.SelectedItems.Item(0).SubItems(0).Text & "[" & ListViewGRU.SelectedItems.Item(0).SubItems(1).Text & "];", "", , , CompareMethod.Text)
             Try
-                sql = "UPDATE `srvdoc`.`product` SET `grouplist` = '" & GroupList &
+                sql = "UPDATE `" & DBName & "`.`product` SET `grouplist` = '" & GroupList &
                 "' WHERE `product`.`BitronPN` = '" & Trim(FormProduct.TextBoxProduct.Text) & "' ;"
                 cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()

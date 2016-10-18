@@ -25,7 +25,7 @@ Public Class FormTypeAdmin
         AdapterDoc.Fill(DsDoc, "doc")
         tblDoc = DsDoc.Tables("doc")
         FillComboFirstType()
-	TextBoxPropriety.Text = "S?R?P?Y?C?"
+        TextBoxPropriety.Text = "S?R?P?Y?C?"
     End Sub
 
     Private Sub ComboBoxFirstType_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxFirstType.TextChanged
@@ -112,7 +112,7 @@ Public Class FormTypeAdmin
                         myrow.Item("SecondType") = Trim(cap7(ComboBoxSecondType.Text))
                         myrow.Item("ThirdType") = Trim(cap7(ComboBoxThirdType.Text))
                         myrow.Item("header") = UCase(Trim(HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text)))
-			myrow.Item("Control") = TextBoxPropriety.Text
+                        myrow.Item("Control") = TextBoxPropriety.Text
                         myrow.Item("extension") = TextBoxExtension.Text
 
                         tblDocType.Rows.Add(myrow)
@@ -151,7 +151,7 @@ Public Class FormTypeAdmin
                     returnValue = tblDocType.Select("header='" & HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text) & "'")
                     If returnValue.Length > 0 Then
 
-                        sql = "DELETE FROM `srvdoc`.`doctype` WHERE `doctype`.`header` ='" & HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text) & "'"
+                        sql = String.Format("DELETE FROM `{0}`.`doctype` WHERE `doctype`.`header` ='{1}'", DBName, HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text))
                         cmd = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
                         ComunicationLog("5034") 'Record deleted from database

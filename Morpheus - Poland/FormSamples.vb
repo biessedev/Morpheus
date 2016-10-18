@@ -1339,7 +1339,7 @@ Public Class FormSamples
         xlsWorksheet.Activate()
         xlsWorksheet.Cells.Replace(What:=",", Replacement:="")
         'empty the PFP table
-        commandMySql = New MySqlCommand("TRUNCATE TABLE `srvdoc`.`pfp`", MySqlconnection)
+        commandMySql = New MySqlCommand("TRUNCATE TABLE `" & DBName & "`.`pfp`", MySqlconnection)
         commandMySql.ExecuteNonQuery()
 
         'save the .xls file in .csv format
@@ -1674,7 +1674,7 @@ Public Class FormSamples
         stockvalue = Str(Stock(bitronPN))
         If tblMySql.Rows.Count < 1 Then
             strBomList = des_bom & "[" & Trim(Str(IIf(qt = Int(qt), Int(qt), Math.Round(Val(qt), 5)))) & "]"
-            sql = "INSERT INTO `srvdoc`.`materialrequest` (`DeltaUsedFlag`,`ProductionUsed`,`bitronPN`,`des_pn`,`Brand`,`BrandALT`,`pfp`,`warehouse3d`,`Delta`,`RequestQt`,`BomList`,`doc`) VALUES ('" & IIf(SigipUsed(bitronPN) <> "" Or
+            sql = "INSERT INTO `" & DBName & "`.`materialrequest` (`DeltaUsedFlag`,`ProductionUsed`,`bitronPN`,`des_pn`,`Brand`,`BrandALT`,`pfp`,`warehouse3d`,`Delta`,`RequestQt`,`BomList`,`doc`) VALUES ('" & IIf(SigipUsed(bitronPN) <> "" Or
             (stockvalue - Val(strQt)) < Val(strQt) * 0.1, "YES", "NO") & "','" & SigipUsed(bitronPN) & "','" & bitronPN & "','" & des_PN & "','" & brand & "','" & brandAlt & "','" & pfp(bitronPN) & "','" & stockvalue & "','" &
              stockvalue - Val(Str(Val(qt) * Val(npieces))) & "','" & Trim(Str(Val(qt) * Val(npieces))) & "','" & strBomList & "','" & Doc & "')"
         Else
@@ -1807,7 +1807,7 @@ Public Class FormSamples
 
 
         'empty the PFP table
-        commandMySql = New MySqlCommand("TRUNCATE TABLE `srvdoc`.`order`", MySqlconnection)
+        commandMySql = New MySqlCommand("TRUNCATE TABLE `" & DBName & "`.`order`", MySqlconnection)
         commandMySql.ExecuteNonQuery()
 
         'save the .xls file in .csv format
@@ -1864,7 +1864,7 @@ Public Class FormSamples
 
 
         'empty the PFP table
-        commandMySql = New MySqlCommand("TRUNCATE TABLE `srvdoc`.`spu`", MySqlconnection)
+        commandMySql = New MySqlCommand("TRUNCATE TABLE `" & DBName & "`.`spu`", MySqlconnection)
         commandMySql.ExecuteNonQuery()
 
         'save the .xls file in .csv format
@@ -1910,7 +1910,7 @@ Public Class FormSamples
 
 
         'empty the rda table
-        commandMySql = New MySqlCommand("TRUNCATE TABLE `srvdoc`.`rda`", MySqlconnection)
+        commandMySql = New MySqlCommand("TRUNCATE TABLE `" & DBName & "`.`rda`", MySqlconnection)
         commandMySql.ExecuteNonQuery()
 
         'save the .xls file in .csv format
@@ -1942,8 +1942,7 @@ Public Class FormSamples
         Dim tblMySql As New DataTable
         Dim dsMySql As New DataSet
 
-        'adapterMySql = New MySqlDataAdapter("SELECT SUM(`sagia`) AS sum FROM `srvdoc`.`spu` WHERE (samgz='A' or samgz='D' or samgz='G' or samgz='P' ) and `bitronpn`='" & bitronpn & "'", MySqlconnection)
-        adapterMySql = New MySqlDataAdapter("SELECT SUM(`sagia`) AS sum FROM `srvdoc`.`spu` WHERE (samgz='D' or samgz='8') and `bitronpn`='" & bitronpn & "'", MySqlconnection)
+        adapterMySql = New MySqlDataAdapter("SELECT SUM(`sagia`) AS sum FROM `" & DBName & "`.`spu` WHERE (samgz='D' or samgz='8') and `bitronpn`='" & bitronpn & "'", MySqlconnection)
         adapterMySql.Fill(dsMySql, "spu")
         tblMySql = dsMySql.Tables("spu")
 
@@ -1959,8 +1958,7 @@ Public Class FormSamples
         Dim tblMySql As New DataTable
         Dim dsMySql As New DataSet
 
-        'adapterMySql = New MySqlDataAdapter("SELECT SUM(`sagia`) AS sum FROM `srvdoc`.`spu` WHERE (samgz='D' or samgz='G' ) and `bitronpn`='" & bitronpn & "'", MySqlconnection)
-        adapterMySql = New MySqlDataAdapter("SELECT SUM(`sagia`) AS sum FROM `srvdoc`.`spu` WHERE (samgz='D' or samgz='8' ) and `bitronpn`='" & bitronpn & "'", MySqlconnection)
+        adapterMySql = New MySqlDataAdapter(String.Format("SELECT SUM(`sagia`) AS sum FROM `{0}`.`spu` WHERE (samgz='D' or samgz='8' ) and `bitronpn`='{1}'", DBName, bitronpn), MySqlconnection)
         adapterMySql.Fill(dsMySql, "spu")
         tblMySql = dsMySql.Tables("spu")
 
