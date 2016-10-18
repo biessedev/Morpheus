@@ -2192,9 +2192,11 @@ Public Class FormSamples
         If Trim(Txt_BitronPN.Text) <> "" Then
             Try
 
+                DateStart = DTP_Date.Value.Date
+                DateClosed = DTP_PlanCloseDate.Value.Date
                 Sql = "INSERT INTO npi_openissue (BS,DATE,Issue_description,Bitron_PN,Area,Owner,Temp_corr_action,Final_corr_action,ETC,Status,FilePath ) VALUES ('" &
-                Txt_description.Text & "','" & DateStart & "','" & Txt_IssueDescription.Text & "','" & Txt_BitronPN.Text & "','" & Txt_Area.Text & "','" &
-                Cob_Owner.Text & "','" & Txt_TempCorrectAction.Text & "','" & Txt_FinalCorrectAction.Text & "','" & DateClosed & "','" & Cob_Status.Text & "','" & Txt_FilePath.Text & "');"
+                Txt_description.Text & "','" & DateStart.ToString("yyyy-MM-dd") & "','" & Txt_IssueDescription.Text & "','" & Txt_BitronPN.Text & "','" & Txt_Area.Text & "','" &
+                Cob_Owner.Text & "','" & Txt_TempCorrectAction.Text & "','" & Txt_FinalCorrectAction.Text & "','" & DateClosed.ToString("yyyy-MM-dd") & "','" & Cob_Status.Text & "','" & Txt_FilePath.Text & "');"
 
                 cmd = New MySqlCommand(Sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
@@ -2254,10 +2256,12 @@ Public Class FormSamples
 
         If Trim(Txt_BitronPN.Text) <> "" Then
             Try
+                DateStart = DTP_Date.Value.Date
+                DateClosed = DTP_PlanCloseDate.Value.Date
 
-                sql = "UPDATE npi_openissue SET BS = '" & Txt_description.Text & "',DATE = '" & DateStart & "',Issue_description ='" &
+                sql = "UPDATE npi_openissue SET BS = '" & Txt_description.Text & "',DATE = '" & DateStart.ToString("yyyy-MM-dd") & "',Issue_description ='" &
                 Txt_IssueDescription.Text & "',Bitron_PN = '" & Txt_BitronPN.Text & "',Area = '" & Txt_Area.Text & "',Owner = '" & Cob_Owner.Text & "',Temp_corr_action = '" &
-                Txt_TempCorrectAction.Text & "',Final_corr_action = '" & Txt_FinalCorrectAction.Text & "',ETC = '" & DateClosed & "',Status = '" &
+                Txt_TempCorrectAction.Text & "',Final_corr_action = '" & Txt_FinalCorrectAction.Text & "',ETC = '" & DateClosed.ToString("yyyy-MM-dd") & "',Status = '" &
                 Cob_Status.Text & "',FilePath ='" & Txt_FilePath.Text & "' WHERE ID = '" & Txt_Index.Text & "'"
 
                 cmd = New MySqlCommand(sql, MySqlconnection)
