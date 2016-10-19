@@ -13,6 +13,9 @@ Public Class FormGroup
     Dim tblDoc As DataTable
     Dim DsDoc As New DataSet
 
+    Dim dtSelectedColumns As DataTable
+
+
     Dim dictionaryForProd As Dictionary(Of Integer, String)
 
 
@@ -21,16 +24,16 @@ Public Class FormGroup
         ListViewGRU.Clear()
         If dictionaryForProd.Count > 0 Then
             Dim hname As New ColumnHeader
-            hname.Text = "BitronPN"
-            hname.Width = 100
+            hname.Text = "Product Bitron Code"
+            hname.Width = 110
             ListViewGRU.Columns.Add(hname)
         End If
         Dim h As New ColumnHeader
         Dim h2 As New ColumnHeader
-        h.Text = "TYPE"
-        h.Width = 150
-        h2.Text = "NAME"
-        h2.Width = 200
+        h.Text = "Doc Type"
+        h.Width = 110
+        h2.Text = "File Name"
+        h2.Width = 190
         ListViewGRU.Columns.Add(h)
         ListViewGRU.Columns.Add(h2)
         Dim productNr As String
@@ -73,27 +76,23 @@ Public Class FormGroup
 
     End Sub
 
-    'procedure for product list
-    '
     Sub FillProductList()
         Dim rowShow As DataRow()
         DsProd.Clear()
         tblProd.Clear()
         AdapterProd.Update(DsProd, "product")
         AdapterProd.Fill(DsProd, "product")
-
         tblProd = DsProd.Tables("product")
         rowShow = tblProd.Select("bitronpn like '*'", "bitronpn asc")
-
         Dim Widht(tblProd.Columns.Count - 1) As Integer
         Widht(0) = 0  ' 
         Widht(1) = 0  ' 
         Widht(2) = 0
-        Widht(3) = 140
-        Widht(4) = 170
+        Widht(3) = 110
+        Widht(4) = 450
         Widht(5) = 0
-        Widht(6) = 160
-        Widht(7) = 160
+        Widht(6) = 0
+        Widht(7) = 0
         Widht(8) = 0
         Widht(9) = 0
         Widht(10) = 0
@@ -104,15 +103,15 @@ Public Class FormGroup
         Widht(15) = 0
         Widht(16) = 0  ' ecr
         Widht(17) = 0   ' ls
-        Widht(18) = 100   ' bom value
-        Widht(19) = 100   ' bom ratio
+        Widht(18) = 0   ' bom value
+        Widht(19) = 0   ' bom ratio
         Widht(20) = 0
-        Widht(21) = 50
-        Widht(22) = 50
-        Widht(23) = 130  ' etd
-        Widht(24) = 70
+        Widht(21) = 0
+        Widht(22) = 0
+        Widht(23) = 0  ' etd
+        Widht(24) = 0
         Widht(25) = 0
-        Widht(26) = 300  ' name activity
+        Widht(26) = 0  ' name activity
         Widht(27) = 0
         Widht(28) = 0
         Widht(29) = 0
@@ -121,10 +120,15 @@ Public Class FormGroup
         ListViewForProducts.Clear()
         i = 0
         For Each c In tblProd.Columns
-
             'adding names of columns as Listview columns				
             Dim h As New ColumnHeader
-            h.Text = c.ColumnName
+            If i = 3 Then
+                h.Text = "Product Bitron Code"
+            ElseIf i = 4 Then
+                h.Text = "Description"
+            Else
+                h.Text = c.ColumnName
+            End If
             h.Width = Widht(i)
             ListViewForProducts.Columns.Add(h)
             i = i + 1
@@ -139,16 +143,12 @@ Public Class FormGroup
             Next
             Dim ii As New ListViewItem(str)
             ListViewForProducts.Items.Add(ii)
-
             ListViewForProducts.Items(ListViewForProducts.Items.Count - 1).BackColor = Color.White
-
             If ListViewForProducts.Items(ListViewForProducts.Items.Count - 1).SubItems(14).Text <> "" Then
                 ListViewForProducts.Items(ListViewForProducts.Items.Count - 1).BackColor = Color.LightCoral
             End If
-
         Next
         ListViewForProducts.Refresh()
-
     End Sub
 
     Private Sub ComboBoxGroup_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxGroup.TextChanged
@@ -162,14 +162,12 @@ Public Class FormGroup
             Next
         Catch ex As Exception
         End Try
-
     End Sub
 
     Private Sub ButtonAddMch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAdd.Click
         Dim sql As String, cmd As MySqlCommand
         If ListViewForProducts.SelectedItems.Count > 0 Then
             If ComboBoxName.Text <> "" And ComboBoxGroup.Text <> "" Then
-
                 Using trans = MySqlconnection.BeginTransaction(IsolationLevel.ReadCommitted)
                     For Each product In dictionaryForProd
                         Dim group = product.Value
@@ -203,7 +201,6 @@ Public Class FormGroup
             MsgBox("Select a product!")
         End If
         ComboBoxGroup.Text = StrComboBoxGroup
-
     End Sub
 
     Private Sub ButtonRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRemove.Click
@@ -222,7 +219,6 @@ Public Class FormGroup
                     filename = ListViewGRU.SelectedItems.Item(i).SubItems(2).Text
                     Dim valueOfGroupList = dictionaryForProd.Item(productNumber)
                     GroupList = Replace(valueOfGroupList, type & "[" & filename & "];", "", , , CompareMethod.Text)
-
                     Try
                         sql = "UPDATE `product` SET `grouplist` = '" & GroupList &
                 "' WHERE `product`.`BitronPN` = '" & productNumber & "' ;"

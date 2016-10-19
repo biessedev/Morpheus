@@ -38,7 +38,6 @@ Public Class FormProduct
     Dim SqlconnectionOrcad As New SqlConnection
     ' EVENT
 
- 
     Private Sub FormProduct_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
         FormStart.Show()
         tblProd.Dispose()
@@ -49,8 +48,20 @@ Public Class FormProduct
         AdapterCus.Dispose()
     End Sub
 
+    Private Sub PreVentFlicker()
+        With Me
+            .SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
+            .SetStyle(ControlStyles.UserPaint, True)
+            .SetStyle(ControlStyles.AllPaintingInWmPaint, True)
+            .UpdateStyles()
+        End With
+    End Sub
+
+
+
     Private Sub FormProduct_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US")
+        PreVentFlicker()
 
         Me.Focus()
         AdapterProd.Fill(DsProd, "product")
@@ -612,26 +623,22 @@ Public Class FormProduct
 
         Dim i As Integer, result As DataRow()
         GroupList = ""
-        If TextBoxProduct.Text <> "" Then
+        FormGroup.ComboBoxGroup.Items.Clear()
+            result = tbltype.Select("id > 0")
+            FormGroup.ComboBoxGroup.Items.Clear()
+            For i = 0 To result.Length - 1
+                If controlRight(Mid(result(i).Item("header").ToString, 3, 1)) >= 2 Then
+                    FormGroup.ComboBoxGroup.Items.Add(result(i).Item("header").ToString & " --> " _
+                                        & result(i).Item("firstType").ToString & " --> " _
+                                        & result(i).Item("secondType").ToString & " --> " _
+                                       & result(i).Item("thirdtype").ToString)
+                End If
+            Next
+            If FormGroup.ComboBoxGroup.Items.Count > 0 Then FormGroup.ComboBoxGroup.Text = FormGroup.ComboBoxGroup.Items(FormGroup.ComboBoxGroup.Items.Count - 1)
+            FormGroup.ComboBoxGroup.Text = FormGroup.ComboBoxGroup.Items(FormGroup.ComboBoxGroup.Items.Count - 1)
+            FormGroup.Show()
 
-            result = tblProd.Select("BitronPN = '" & TextBoxProduct.Text & "'")
-            If result.Length > 0 Then
-                GroupList = result(0).Item("groupList").ToString
 
-                result = tbltype.Select("id > 0")
-                FormGroup.ComboBoxGroup.Items.Clear()
-                For i = 0 To result.Length - 1
-                    If controlRight(Mid(result(i).Item("header").ToString, 3, 1)) >= 2 Then
-                        FormGroup.ComboBoxGroup.Items.Add(result(i).Item("header").ToString & " --> " _
-                        & result(i).Item("firstType").ToString & " --> " _
-                        & result(i).Item("secondType").ToString & " --> " _
-                        & result(i).Item("thirdtype").ToString)
-                    End If
-                Next
-                If FormGroup.ComboBoxGroup.Items.Count > 0 Then FormGroup.ComboBoxGroup.Text = FormGroup.ComboBoxGroup.Items(FormGroup.ComboBoxGroup.Items.Count - 1)
-                FormGroup.Show()
-            End If
-        End If
 
     End Sub
 
@@ -1308,7 +1315,45 @@ Public Class FormProduct
                 MsgBox("Sigip update error! " & ex.Message)
             End Try
 
+            ' *** OLD CODE (with issues during import Sigip BOM process) *** '
+            'sql = "(" & index & "," & _
+            '"'" & bom & "'," & _
+            '"'" & Replace(des, "'", "") & "'," & _
+            '"'" & nr & "'," & _
+            '"'" & (qt) & "'," & _
+            '"'" & (price) & "'," & _
+            '"'" & currency & "'," & _
+            '"'" & liv & "'," & _
+            '"'" & acq_fab & "'," & _
+            '"'" & Replace(ReplaceChar(bitron_pn), "-", "") & "'," & _
+            '"'" & ReplaceChar(despn) & "'," & _
+            '"'" & mdi & "'," & _
+            '"'" & mdo & "'," & _
+            '"'" & amm & "'," & _
+            '"'" & spe & "'," & _
+            '"'" & mdi_t & "'," & _
+            '"'" & mdo_t & "'," & _
+            '"'" & amm_t & "'," & _
+            '"'" & spe_t & "'" & _
+            ' ")," & sql
 
+            'If excelApp.Cells(xlsRow + 1, 1).text = "" Or Int(xlsRow / 100) = xlsRow / 100 Then
+            '    Try
+            '        sql = Mid(sql, 1, Len(sql) - 1)
+            '        sql = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`) VALUES " & sql & ";"
+            '        cmd = New MySqlCommand(sql, MySqlconnection)
+            '        cmd.ExecuteNonQuery()
+            '        sql = ""
+            '    Catch ex As Exception
+            '        MsgBox("Sigip update error! " & ex.Message)
+            '    End Try
+
+            'End If
+
+            '    End If
+            '    xlsRow = xlsRow + 1
+            '    index = index + 1
+            'End While
 
             excelWorkbook.Close(True)
             excelApp.Quit()
@@ -1527,7 +1572,7 @@ Public Class FormProduct
         Catch ex As Exception
             ListBoxLog.Items.Add("Connection lost, need waiting 20 sec...")
             CloseConnectionSqlOrcad()
-
+            'OpenConnectionMySqlOrcad("10.10.10.15", "orcad1", "orcadw", "orcadw")
             OpenConnectionMySqlOrcad(OrcadDBAdr, OrcadDBName, OrcadDBUser, OrcadDBPwd)
             ListBoxLog.Items.Add("Connection estabilished...Done!")
             DsDocComp.Clear()
@@ -1605,8 +1650,7 @@ Public Class FormProduct
 
                     End If
                     sql = sql & "UPDATE `" & DBName & "`.`sigip` SET `OrcadSupplier` = '" & GetOrcadSupplier(row("bitron_pn").ToString) & "' , `doc` = '" & doc & "' WHERE `sigip`.`bitron_pn` = '" & row("bitron_pn").ToString & "' ; "
-
-        If Len(sql) > 1000 Then
+                    If Len(sql) > 1000 Then
                         Try
                             cmd = New MySqlCommand(sql, MySqlconnection)
                             cmd.ExecuteNonQuery()
