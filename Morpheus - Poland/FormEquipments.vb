@@ -619,7 +619,7 @@ Public Class FormEquipments
 
                     Try
 
-                        sql = "UPDATE `" & DBName & "`.`equipments` SET " &
+                        sql = "UPDATE `" & DBName & "`.`equipments` SET " & _
                         "`start` = '" & ComboBoxStart.Text &
                         "',`IdActivity` = '" & ComboBoxActivityId.Text &
                         "',`toolname` = '" & TextBoxToolName.Text &

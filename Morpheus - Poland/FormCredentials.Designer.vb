@@ -37,11 +37,11 @@ Partial Class FormCredentials
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.Label5 = New System.Windows.Forms.Label()
-        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.TableLayoutPanel1.SuspendLayout
-        CType(Me.PictureBox2,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.TableLayoutPanel2.SuspendLayout
-        Me.SuspendLayout
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TableLayoutPanel1.SuspendLayout()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TableLayoutPanel2.SuspendLayout()
+        Me.SuspendLayout()
         '
         'PictureBox1
         '
@@ -52,27 +52,27 @@ Partial Class FormCredentials
         Me.PictureBox1.Size = New System.Drawing.Size(128, 34)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox1.TabIndex = 232
-        Me.PictureBox1.TabStop = false
+        Me.PictureBox1.TabStop = False
         '
         'TextBoxhost
         '
         Me.TextBoxhost.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.TextBoxhost.BackColor = System.Drawing.Color.LightGray
-        Me.TextBoxhost.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.TextBoxhost.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TextBoxhost.Location = New System.Drawing.Point(31, 60)
         Me.TextBoxhost.Name = "TextBoxhost"
         Me.TextBoxhost.Size = New System.Drawing.Size(231, 26)
-        Me.TextBoxhost.TabIndex = 500
+        Me.TextBoxhost.TabIndex = 235
         '
         'TextBoxDatabase
         '
         Me.TextBoxDatabase.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.TextBoxDatabase.BackColor = System.Drawing.Color.LightGray
-        Me.TextBoxDatabase.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.TextBoxDatabase.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TextBoxDatabase.Location = New System.Drawing.Point(324, 60)
         Me.TextBoxDatabase.Name = "TextBoxDatabase"
         Me.TextBoxDatabase.Size = New System.Drawing.Size(231, 26)
-        Me.TextBoxDatabase.TabIndex = 600
+        Me.TextBoxDatabase.TabIndex = 27
         Me.TextBoxDatabase.Text = "srvdoc"
         '
         'TextBoxUserName

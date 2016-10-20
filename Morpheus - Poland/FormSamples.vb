@@ -524,7 +524,7 @@ Public Class FormSamples
         Dim tblProd As DataTable
         Dim DsProd As New DataSet, canDelete As Boolean = False
         Dim rowShow As DataRow()
-        Dim activityid = 0
+        Dim activityid As Integer = 0
         If TextBoxProduct.Text <> "" And ComboBoxActivityID.Text <> "" And Len(TextBoxProductQt.Text) <= 6 Then
             AdapterProd.Fill(DsProd, "Product")
             tblProd = DsProd.Tables("Product")
@@ -1393,23 +1393,23 @@ Public Class FormSamples
         Dim i As Integer = 0
         Dim commandMySql As New MySqlCommand
         Dim adapterMySql As New MySqlDataAdapter
-        ButtonUpdateMagBox.Text = "Wait........."
+        ButtonUpdateMagBox.Text = "Wait ....."
         Application.DoEvents()
-        ButtonUpdateMagBox.Text = "Import Rda....."
+        ButtonUpdateMagBox.Text = "Import RDA ....."
         Application.DoEvents()
         Import_Rda()
         Application.DoEvents()
-        ButtonUpdateMagBox.Text = "Import Order....."
+        ButtonUpdateMagBox.Text = "Import Order ....."
         Application.DoEvents()
         Import_Order()
         Application.DoEvents()
-        ButtonUpdateMagBox.Text = "Import Warehouse stock....."
+        ButtonUpdateMagBox.Text = "Import Warehouse Stock ....."
         Application.DoEvents()
         Import_WH_Stock()
         ButtonUpdateMagBox.Text = "Import PFP ....."
         Application.DoEvents()
         Update_Pfp()
-        ButtonUpdateMagBox.Text = "Make Table ....."
+        ButtonUpdateMagBox.Text = "Update Material Request ....."
         Application.DoEvents()
 
         If IsNothing(tblSigip) Then
@@ -1424,7 +1424,7 @@ Public Class FormSamples
 
         AdapterProd.Fill(DsProd, "Product")
         tblProd = DsProd.Tables("Product")
-        rowShow = tblProd.Select(" statusactivity = 'OPEN'")
+        rowShow = tblProd.Select("statusactivity = 'OPEN'")
 
 
         Dim tblMySql As New DataTable
@@ -1435,7 +1435,7 @@ Public Class FormSamples
         adapterMySql = New MySqlDataAdapter(sql, MySqlconnection)
         adapterMySql.Fill(dsMySql, "materialrequest")
         tblMySql = dsMySql.Tables("materialrequest")
-        ButtonUpdateMagBox.Text = "Deleting data and shift"
+        ButtonUpdateMagBox.Text = "Deleting data and shift....."
         Application.DoEvents()
         For Each rowShowMy In tblMySql.Rows
 
@@ -1451,11 +1451,12 @@ Public Class FormSamples
                 commandMySql = New MySqlCommand(sql, MySqlconnection)
                 commandMySql.ExecuteNonQuery()
             Catch ex As Exception
-                MsgBox("Error in DB, reset material request")
+                MsgBox("Error in DB... please reset material request!")
             End Try
 
         Next
-        ButtonUpdateMagBox.Text = "Deleting data and shift"
+
+        ButtonUpdateMagBox.Text = "Deleting data and shift ....."
         Application.DoEvents()
         Try
             OpenConnectionSqlOrcad("10.10.10.36", "Orcad1", "orcadw", "orcadw")
@@ -1466,7 +1467,7 @@ Public Class FormSamples
             'OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
         End Try
 
-        ButtonUpdateMagBox.Text = "Load Orcad data"
+        ButtonUpdateMagBox.Text = "Load Orcad Data....."
         Application.DoEvents()
         Dim AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where ( valido = 'valido') ", SqlconnectionOrcad)
         tblDocComp.Clear()
@@ -1485,7 +1486,7 @@ Public Class FormSamples
         AdapterDoc.Fill(DsDoc, "doc")
         tblDoc = DsDoc.Tables("doc")
 
-        ButtonUpdateMagBox.Text = "Start calculation.."
+        ButtonUpdateMagBox.Text = "Start calculation ..."
         Application.DoEvents()
 
         For Each row In rowShow
@@ -1493,9 +1494,9 @@ Public Class FormSamples
             If Val(row("NPIECES").ToString) > 0 Then
                 If row("bomlocation").ToString = "SIGIP" Then
                     rowShowSigip = tblSigip.Select("bom ='" & row("bitronpn").ToString & "' and (acq_fab = 'acq' Or acq_fab = 'acv')")
-                    If rowShowSigip.Length = 0 Then MsgBox("Bom not found in SIGIP!" & row("bitronpn").ToString & BomName)
+                    If rowShowSigip.Length = 0 Then MsgBox("Bom not found in SIGIP: " & row("bitronpn").ToString & BomName)
                     For Each rowSigip In rowShowSigip
-                        ButtonUpdateMagBox.Text = "Udpate : " & Math.Round(100 * i / rowShow.Length, 0) & "%"
+                        ButtonUpdateMagBox.Text = "Udpate: " & Math.Round(100 * i / rowShow.Length, 0) & "%"
                         Application.DoEvents()
                         If Val(rowSigip("qt").ToString) * Val(row("npieces").ToString) > 0 Then AddRequest(rowSigip("bitron_pn").ToString, rowSigip("des_pn").ToString, rowSigip("qt").ToString, row("npieces").ToString, rowSigip("bom").ToString, rowSigip("bom").ToString & " - " & rowSigip("des_bom").ToString, , , rowSigip("doc").ToString)
                     Next
@@ -1531,7 +1532,7 @@ Public Class FormSamples
             commandMySql = New MySqlCommand(sql, MySqlconnection)
             commandMySql.ExecuteNonQuery()
         Catch ex As Exception
-            MsgBox("Error in DB, reset material request")
+            MsgBox("Error in DB... please reset material request!")
         End Try
 
         ' rda/order elaboration
@@ -1561,7 +1562,7 @@ Public Class FormSamples
                     commandMySql = New MySqlCommand(sql, MySqlconnection)
                     commandMySql.ExecuteNonQuery()
                 Catch ex As Exception
-                    MsgBox("Error in DB, reset material request")
+                    MsgBox("Error in DB... please reset material request!")
                 End Try
             End If
             Application.DoEvents()
@@ -1575,7 +1576,7 @@ Public Class FormSamples
                 commandMySql = New MySqlCommand(sql, MySqlconnection)
                 commandMySql.ExecuteNonQuery()
             Catch ex As Exception
-                MsgBox("Error in DB, reset material request")
+                MsgBox("Error in DB... please reset material request!")
             End Try
         Next
 
@@ -1585,6 +1586,7 @@ Public Class FormSamples
     End Sub
 
     Function order(ByVal bitronpn As String, ByVal refrash As Boolean) As Single
+        Dim sql As String
         Static AdapterOrder As New MySqlDataAdapter("SELECT * FROM `order`", MySqlconnection)
         Static tblOrder As DataTable
         Static DsOrder As New DataSet
@@ -1695,7 +1697,7 @@ Public Class FormSamples
             commandMySql = New MySqlCommand(sql, MySqlconnection)
             commandMySql.ExecuteNonQuery()
         Catch ex As Exception
-            MsgBox("Error in DB update/insert material request")
+            MsgBox("Error in DB... please reset material request!")
         End Try
 
 
@@ -2355,8 +2357,10 @@ Public Class FormSamples
                 'fileOpen = downloadFileWinPath(ParameterTable("plant") & "R_NPI_OPI_" & Txt_FilePath.Text)
                 fileOpen = downloadFileWinPath(Txt_FilePath.Text)
                 Application.DoEvents()
-                Process.Start(fileOpen)
-                Application.DoEvents()
+                If fileOpen <> "" Then
+                    Process.Start(fileOpen)
+                    Application.DoEvents()
+                End If
             Else
                 MsgBox("No enough right to check the file")
             End If
@@ -2379,23 +2383,28 @@ Public Class FormSamples
     'End Sub
 
     Private Sub Btn_UpLoadFile_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_UpLoadFile.Click
+        Dim selectrowNo As Integer
 
-        Dim selectrowNo As Integer = DGV_NPI.CurrentRow.Index
+        If DGV_NPI.Rows.Count > 0 Then
+            selectrowNo = DGV_NPI.CurrentRow.Index
 
-        'If controlRight("W") >= 2 Then
-        'BEC: If controlRight("R") >= 2 Then
+            'If controlRight("W") >= 2 Then
+            'BEC: If controlRight("R") >= 2 Then
 
-        FormNPIDocMamagement.Show()
-        FormNPIDocMamagement.Focus()
+            FormNPIDocMamagement.Show()
+            FormNPIDocMamagement.Focus()
 
-        ' Else
-        ' MsgBox("No enough right to update this table")
-        ' End If
+            ' Else
+            ' MsgBox("No enough right to update this table")
+            ' End If
 
-        'Call issuefunction(selectrowNo)
+            'Call issuefunction(selectrowNo)
+
+        Else
+            MsgBox("Create an open issue and then link a document!")
+        End If
 
     End Sub
-
 
     Sub FillCobFilterContent()
 

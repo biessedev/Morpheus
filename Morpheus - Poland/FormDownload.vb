@@ -847,7 +847,9 @@ Public Class FormDownload
                 ListView1.Clear()
             End If
             Dim c As DataColumn, i As Integer
-            Dim Widht(tblDoc.Columns.Count - 1) As Integer
+
+            Dim Widht(tblDoc.Columns.Count - 1) As Integer, j As Integer
+
             If CheckBox1.Checked Then Widht(0) = 70 Else Widht(0) = 0
             If CheckBox2.Checked Then Widht(1) = 140 Else Widht(1) = 0
             If CheckBox3.Checked Then Widht(2) = 300 Else Widht(2) = 0

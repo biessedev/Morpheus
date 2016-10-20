@@ -231,7 +231,7 @@ Public Class FormEqItem
     Private Sub ButtonRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRemove.Click
 
         Dim cmd As New MySqlCommand()
-        Dim sql As String
+        Dim sql As String, id As Integer
         If CurrentAssetId() > 0 Then
             If vbYes = MsgBox("Do you want delete this Asset?", MsgBoxStyle.YesNo) Then
                 If CompareDatabase(CurrentAssetId()) Then

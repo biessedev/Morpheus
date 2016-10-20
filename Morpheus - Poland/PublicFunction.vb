@@ -64,7 +64,7 @@ Module PublicFunction
     Sub OpenConnectionMySql(ByVal strHost As String, ByVal strDatabase As String, ByVal strUserName As String, ByVal strPassword As String)
 
         Try
-            ConnectionString = "host=" & strHost & ";" & "username=" & strUserName & ";" & "password=" & strPassword & ";" & "database=" & strDatabase & ";Connect Timeout=120;allow zero datetime=true; "
+            ConnectionString = "host=" & strHost & ";" & "username=" & strUserName & ";" & "password=" & strPassword & ";" & "database=" & strDatabase & ";Connect Timeout=120;allow zero datetime=true;charset=utf8; "
             MySqlconnection = New MySqlConnection(ConnectionString)
             If MySqlconnection.State = ConnectionState.Open Then
                 MySqlconnection.Close()
@@ -73,8 +73,6 @@ Module PublicFunction
         Catch ae As MySqlException
             MessageBox.Show(ae.Message.ToString())
         End Try
-
-
     End Sub
 
     Sub CloseConnectionMySql()
@@ -180,7 +178,13 @@ Module PublicFunction
     Public Function ToDateTime(ByVal _
           dataGG_MM_AAAA As String) As DateTime
 
-        Dim myCultureInfo As CultureInfo = CultureInfo.CurrentCulture
+
+
+        Dim myCultureInfo As New  _
+           System.Globalization.CultureInfo("en-US", _
+           True)
+
+        myCultureInfo = System.Globalization.CultureInfo.CurrentCulture
         dataGG_MM_AAAA = Replace(dataGG_MM_AAAA, "-", "/")
         Dim formato As String = "MM/dd/yyyy"
         Return _
@@ -745,7 +749,7 @@ Module PublicFunction
             If TXmlNode.HasChildNodes() Then
                 xml_NodeList = TXmlNode.ChildNodes
 
-                For I = 0 To xml_NodeList.Count - 1
+                For I As Integer = 0 To xml_NodeList.Count - 1
                     xml_SingleNode = TXmlNode.ChildNodes(I)
 
                     TreeViewNode.Nodes.Add(New TreeNode(XmlConvert.DecodeName(xml_SingleNode.Name).Replace(":", ":")))

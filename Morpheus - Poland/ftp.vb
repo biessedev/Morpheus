@@ -43,11 +43,11 @@ Public Class ftp
     ''' <summary>
     ''' FTP Host URI
     ''' </summary>
-    Public Property Host As String
+    Public Property Host() As String
         Get
             Return _Host
         End Get
-        Set
+        Set(ByVal value As String)
             _Host = value
         End Set
     End Property
@@ -55,11 +55,11 @@ Public Class ftp
     ''' <summary>
     ''' FTP User Name
     ''' </summary>
-    Public Property UserName As String
+    Public Property UserName() As String
         Get
             Return _UserName
         End Get
-        Set
+        Set(ByVal value As String)
             _UserName = value
         End Set
     End Property
@@ -67,11 +67,11 @@ Public Class ftp
     ''' <summary>
     ''' FTP Password
     ''' </summary>
-    Public Property Password As String
+    Public Property Password() As String
         Get
             Return _Password
         End Get
-        Set
+        Set(ByVal value As String)
             _Password = value
         End Set
     End Property
@@ -79,11 +79,11 @@ Public Class ftp
     ''' <summary>
     ''' Flag utilizzo SSL
     ''' </summary>
-    Public Property UseSSL As Boolean
+    Public Property UseSSL() As Boolean
         Get
             Return _UseSSL
         End Get
-        Set
+        Set(ByVal value As Boolean)
             _UseSSL = value
         End Set
     End Property

@@ -223,6 +223,7 @@ Public Class FormLoadDoc
     Function PathSintaxAnalysis() As String
 
         Dim strNomeFile As String
+        Dim Header1 As String
         Dim intPos As Integer
         Dim strRev As String
         Dim HeaderCheck As Integer, FileNameCheck As Integer, RevCheck As Integer, ExtCheck As Integer
@@ -243,7 +244,8 @@ Public Class FormLoadDoc
                     strNomeFile = Mid(TextBoxDocName.Text, intPos + 1)
 
                     CreFile.Header = UCase(Mid(strNomeFile, 1, 11))
-                    If Regex.IsMatch(CreFile.Header, "^[0-9][0-9][a-zA-Z](_[a-zA-Z0-9][a-zA-Z0-9][a-zA-Z0-9]){2}$", RegexOptions.IgnoreCase) Then 'Check su sintassi dell'header
+                    Header1 = UCase(Mid(strNomeFile, 1, 12))
+                    If Regex.IsMatch(Header1, "^[0-9][0-9][a-zA-Z]_([a-zA-Z0-9][a-zA-Z0-9][a-zA-Z0-9]_){2}$", RegexOptions.IgnoreCase) Then 'Check su sintassi dell'header
                         HeaderCheck = 1
                         returnValue = tblType.Select("header = '" & CreFile.Header & "'")
                         If returnValue.Length = 0 Then ' header not defined
@@ -481,7 +483,7 @@ Public Class FormLoadDoc
 
         ListBoxLog.Items.Add(ComCode & " -> " & rsResult(0).Item("en").ToString)
 
-        If Val(ComCode) = 5000 Then
+        If Val(ComCode) = 5000 Or Val(ComCode) = 5027 Then
             ListBoxLog.BackColor = Color.LightGreen
         ElseIf Val(ComCode) > 5000 Then
             If ListBoxLog.BackColor = Color.OrangeRed Then

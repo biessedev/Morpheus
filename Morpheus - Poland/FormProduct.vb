@@ -79,7 +79,7 @@ Public Class FormProduct
         fillEcrComboMch()
         FillCustomerCombo()
         ComboBoxStatus.Items.Add("")
-	ComboBoxStatus.Items.Add("OBSOLETE")
+        ComboBoxStatus.Items.Add("OBSOLETE")
         ComboBoxStatus.Items.Add("SOP_SAMPLE")
         ComboBoxStatus.Items.Add("R&D_APPROVED")
         ComboBoxStatus.Items.Add("LOGISTIC_APPROVED")
@@ -144,10 +144,10 @@ Public Class FormProduct
         If controlRight("W") = 3 Then
             If ComboBoxCustomer.Text <> "" And TextBoxProduct.Text <> "" And TextBoxDescription.Text <> "" Then
                 Try
-                    sql = "INSERT INTO `" & DBName & "`.`product` (`BitronPN` ,`Name` ,`Customer` ,`Status` ,`DocFlag` ,`pcbCode`,`PiastraCode`,`StatusUpdateDate`,`MchElement`) VALUES ('" &
-                    Trim(TextBoxProduct.Text) & "', '" & Trim(UCase(TextBoxDescription.Text)) & "', '" & Trim(ComboBoxCustomer.Text) & "', '" &
-                    "" & "', '" & strControl() & "', '" & Trim(TextBoxPcb.Text) & "', '" &
-                    Trim(TextBoxPiastra.Text) & "', 'INSERT[" & date_to_string(Today) & "]','" &
+                    sql = "INSERT INTO `" & DBName & "`.`product` (`BitronPN` ,`Name` ,`Customer` ,`Status` ,`DocFlag` ,`pcbCode`,`PiastraCode`,`StatusUpdateDate`,`MchElement`) VALUES ('" & _
+                    Trim(TextBoxProduct.Text) & "', '" & Trim(UCase(TextBoxDescription.Text)) & "', '" & Trim(ComboBoxCustomer.Text) & "', '" & _
+                    "" & "', '" & strControl() & "', '" & Trim(TextBoxPcb.Text) & "', '" & _
+                    Trim(TextBoxPiastra.Text) & "', 'INSERT[" & date_to_string(Today) & "]','" & _
                     mch & "'" & ");"
 
                     cmd = New MySqlCommand(sql, MySqlconnection)
@@ -182,12 +182,13 @@ Public Class FormProduct
         If controlRight("W") >= 2 Then
             If TextBoxProduct.Text <> "" And TextBoxDescription.Text <> "" And (TextBoxDAI.Text = "" Or TextBoxDAI.Text = "NO_DAI" Or (Regex.IsMatch(TextBoxDAI.Text, "^K[0-9]+")) And Len(TextBoxDAI.Text) = 8) Then
                 Try
-                    sql = "UPDATE `" & DBName & "`.`product` SET `Name` = '" & Trim(UCase(TextBoxDescription.Text)) &
-                    "',`Customer` = '" & Trim(ComboBoxCustomer.Text) &
-                    "',`PiastraCode` = '" & Trim(TextBoxPiastra.Text) &
-                    "',`LS_rmb` = '" & TextBoxLS.Text &
-                    "',`dai` = '" & UCase(Trim(TextBoxDAI.Text)) &
-                    "',`mchElement` = '" & (mch) &
+                    sql = "UPDATE `" & DBName & "`.`product` SET `Name` = '" & Trim(UCase(TextBoxDescription.Text)) & _
+                    "',`Customer` = '" & Trim(ComboBoxCustomer.Text) & _
+                    "',`PcbCode` = '" & Trim(TextBoxPcb.Text) & _
+                    "',`PiastraCode` = '" & Trim(TextBoxPiastra.Text) & _
+                    "',`LS_rmb` = '" & TextBoxLS.Text & _
+                    "',`dai` = '" & UCase(Trim(TextBoxDAI.Text)) & _
+                    "',`mchElement` = '" & (mch) & _
                     "',`DocFlag` = '" & Trim(strControl()) & "' WHERE `product`.`BitronPN` = '" & Trim(TextBoxProduct.Text) & "' ;"
                     cmd = New MySqlCommand(sql, MySqlconnection)
                     cmd.ExecuteNonQuery()
@@ -217,6 +218,7 @@ Public Class FormProduct
             ListView1.SelectedItems.Item(0).SubItems(7).Text = ComboBoxStatus.Text
             ListView1.SelectedItems.Item(0).SubItems(4).Text = TextBoxDescription.Text
             ListView1.SelectedItems.Item(0).SubItems(5).Text = ComboBoxCustomer.Text
+            ListView1.SelectedItems.Item(0).SubItems(1).Text = TextBoxPcb.Text
             ListView1.SelectedItems.Item(0).SubItems(2).Text = TextBoxPiastra.Text
             ListView1.SelectedItems.Item(0).SubItems(17).Text = TextBoxLS.Text
             ListView1.SelectedItems.Item(0).SubItems(10).Text = strControl()
@@ -444,6 +446,7 @@ Public Class FormProduct
             ListBoxLog.BackColor = Color.OrangeRed
         End If
     End Sub
+
     Sub reset()
         ComboBoxStatus.Text = ""
         ComboBoxCustomer.Text = ""
@@ -497,13 +500,13 @@ Public Class FormProduct
 
         tblProd = DsProd.Tables("product")
 
-        rowShow = tblProd.Select("Status like '*" & IIf(Trim(ComboBoxStatus.Text) <> "", Trim(ComboBoxStatus.Text), "*") &
-        "*' and bitronpn like '*" & IIf(TextBoxProduct.Text <> "", TextBoxProduct.Text, "*") &
-        "*' and customer like '*" & IIf(ComboBoxCustomer.Text <> "", ComboBoxCustomer.Text, "*") &
-        "*' and pcbCode like '*" & IIf(TextBoxPcb.Text <> "", TextBoxPcb.Text, "*") &
-        "*' and dai like '*" & IIf(TextBoxDAI.Text <> "", TextBoxDAI.Text, "*") &
-        "*' and PiastraCode like '*" & IIf(TextBoxPiastra.Text <> "", TextBoxPiastra.Text, "*") &
-        "*' and " & IIf(ComboBoxStatus.Text = "OBSOLETE", "Status like 'OBSOLETE", "not Status like 'OBSOLETE") &
+        rowShow = tblProd.Select("Status like '*" & IIf(Trim(ComboBoxStatus.Text) <> "", Trim(ComboBoxStatus.Text), "*") & _
+        "*' and bitronpn like '*" & IIf(TextBoxProduct.Text <> "", TextBoxProduct.Text, "*") & _
+        "*' and customer like '*" & IIf(ComboBoxCustomer.Text <> "", ComboBoxCustomer.Text, "*") & _
+        "*' and pcbCode like '*" & IIf(TextBoxPcb.Text <> "", TextBoxPcb.Text, "*") & _
+        "*' and dai like '*" & IIf(TextBoxDAI.Text <> "", TextBoxDAI.Text, "*") & _
+        "*' and PiastraCode like '*" & IIf(TextBoxPiastra.Text <> "", TextBoxPiastra.Text, "*") & _
+        "*' and " & IIf(ComboBoxStatus.Text = "OBSOLETE", "Status like 'OBSOLETE", "not Status like 'OBSOLETE") & _
         "*' and name like '*" & IIf(Trim(TextBoxDescription.Text) <> "", TextBoxDescription.Text, "*") & "*'", "Customer")
 
         ListView1.Clear()
@@ -623,22 +626,26 @@ Public Class FormProduct
 
         Dim i As Integer, result As DataRow()
         GroupList = ""
-        FormGroup.ComboBoxGroup.Items.Clear()
-            result = tbltype.Select("id > 0")
-            FormGroup.ComboBoxGroup.Items.Clear()
-            For i = 0 To result.Length - 1
-                If controlRight(Mid(result(i).Item("header").ToString, 3, 1)) >= 2 Then
-                    FormGroup.ComboBoxGroup.Items.Add(result(i).Item("header").ToString & " --> " _
-                                        & result(i).Item("firstType").ToString & " --> " _
-                                        & result(i).Item("secondType").ToString & " --> " _
-                                       & result(i).Item("thirdtype").ToString)
-                End If
-            Next
-            If FormGroup.ComboBoxGroup.Items.Count > 0 Then FormGroup.ComboBoxGroup.Text = FormGroup.ComboBoxGroup.Items(FormGroup.ComboBoxGroup.Items.Count - 1)
-            FormGroup.ComboBoxGroup.Text = FormGroup.ComboBoxGroup.Items(FormGroup.ComboBoxGroup.Items.Count - 1)
-            FormGroup.Show()
+        If TextBoxProduct.Text <> "" Then
 
+            result = tblProd.Select("BitronPN = '" & TextBoxProduct.Text & "'")
+            If result.Length > 0 Then
+                GroupList = result(0).Item("groupList").ToString
 
+                result = tbltype.Select("id > 0", "header")
+                FormGroup.ComboBoxGroup.Items.Clear()
+                For i = 0 To result.Length - 1
+                    If controlRight(Mid(result(i).Item("header").ToString, 3, 1)) >= 2 Then
+                        FormGroup.ComboBoxGroup.Items.Add(result(i).Item("header").ToString & " --> " _
+                        & result(i).Item("firstType").ToString & " --> " _
+                        & result(i).Item("secondType").ToString & " --> " _
+                        & result(i).Item("thirdtype").ToString)
+                    End If
+                Next
+                If FormGroup.ComboBoxGroup.Items.Count > 0 Then FormGroup.ComboBoxGroup.Text = FormGroup.ComboBoxGroup.Items(FormGroup.ComboBoxGroup.Items.Count - 1)
+                FormGroup.Show()
+            End If
+        End If
 
     End Sub
 
@@ -650,7 +657,7 @@ Public Class FormProduct
         tblProd = DsProd.Tables("product")
         User3 = user()
 
-        Dim result As DataRow()
+        Dim i As Integer, result As DataRow()
         OpenIssue = ""
         If TextBoxProduct.Text <> "" Then
 
@@ -1277,25 +1284,25 @@ Public Class FormProduct
                     amm = Replace(excelSheet.Cells(xlsRow, 14).Text, ",", ".")
                     spe = Replace(excelSheet.Cells(xlsRow, 15).Text, ",", ".")
 
-                    sql = "(" & index & "," &
-                    "'" & bom & "'," &
-                    "'" & Replace(des, "'", "") & "'," &
-                    "'" & nr & "'," &
-                    "'" & (qt) & "'," &
-                    "'" & (price) & "'," &
-                    "'" & currency & "'," &
-                    "'" & liv & "'," &
-                    "'" & acq_fab & "'," &
-                    "'" & Replace(ReplaceChar(bitron_pn), "-", "") & "'," &
-                    "'" & ReplaceChar(despn) & "'," &
-                    "'" & mdi & "'," &
-                    "'" & mdo & "'," &
-                    "'" & amm & "'," &
-                    "'" & spe & "'," &
-                    "'" & mdi_t & "'," &
-                    "'" & mdo_t & "'," &
-                    "'" & amm_t & "'," &
-                    "'" & spe_t & "'" &
+                    sql = "(" & index & "," & _
+                    "'" & bom & "'," & _
+                    "'" & Replace(des, "'", "") & "'," & _
+                    "'" & nr & "'," & _
+                    "'" & (qt) & "'," & _
+                    "'" & (price) & "'," & _
+                    "'" & currency & "'," & _
+                    "'" & liv & "'," & _
+                    "'" & acq_fab & "'," & _
+                    "'" & Replace(ReplaceChar(bitron_pn), "-", "") & "'," & _
+                    "'" & ReplaceChar(despn) & "'," & _
+                    "'" & mdi & "'," & _
+                    "'" & mdo & "'," & _
+                    "'" & amm & "'," & _
+                    "'" & spe & "'," & _
+                    "'" & mdi_t & "'," & _
+                    "'" & mdo_t & "'," & _
+                    "'" & amm_t & "'," & _
+                    "'" & spe_t & "'" & _
                      ")," & sql
 
                 End If

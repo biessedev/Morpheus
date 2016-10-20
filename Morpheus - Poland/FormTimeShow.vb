@@ -318,7 +318,7 @@ Public Class FormTimeShow
     Sub UpdateTreeTaskList(ByVal refresh As Boolean)
         Dim rootNode As TreeNode, Project As String, projectStatusStr As String
 
-        Dim rowShow As DataRow(), sql As String
+        Dim rowShow As DataRow(), i As Integer, sql As String
         ' TreeViewTaskList.Font = New Font("Courier New", 14, FontStyle.Bold)
         TreeViewTaskList.Nodes.Clear()
 
@@ -370,7 +370,7 @@ Public Class FormTimeShow
 
         Dim rootNode As TreeNode, Project As String, projectStatusStr As String
 
-        Dim rowShow As DataRow(), sql As String
+        Dim rowShow As DataRow(), i As Integer, sql As String
         ' TreeViewProjectList.Font = New Font("Courier New", 14, FontStyle.Bold)
         TreeViewProjectList.Nodes.Clear()
 

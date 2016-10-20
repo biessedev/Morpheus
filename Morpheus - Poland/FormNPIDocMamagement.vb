@@ -48,7 +48,7 @@ Public Class FormNPIDocMamagement
 
     Private Sub Cob_TypeDoc_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles Cob_TypeDoc.TextChanged
 
-        Dim i As Integer, resultdoc As DataRow()
+        Dim i As Integer, resultdoc As DataRow(), returnValue As DataRow()
         Try
             Cob_NameDoc.Items.Clear()
 
@@ -114,5 +114,27 @@ Public Class FormNPIDocMamagement
 
         FormSamples.Show()
         FormSamples.Focus()
+    End Sub
+
+    Private Sub Btn_Cancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Cancel.Click
+        Me.Hide()
+        FormSamples.Show()
+        FormSamples.Focus()
+    End Sub
+
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
+
+    End Sub
+
+    Private Sub Cob_NameDoc_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Cob_NameDoc.SelectedIndexChanged
+
+    End Sub
+
+    Private Sub Cob_TypeDoc_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Cob_TypeDoc.SelectedIndexChanged
+
+    End Sub
+
+    Private Sub ListViewNPI_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListViewNPI.SelectedIndexChanged
+
     End Sub
 End Class

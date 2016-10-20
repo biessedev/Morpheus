@@ -20,6 +20,7 @@ Public Class FormTypeAdmin
 
     Private Sub FormTypeAdmin_load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         FormStart.Hide()
+        Dim ds As New DataSet
         AdapterType.Fill(DsType, "doctype")
         tblDocType = DsType.Tables("doctype")
         AdapterDoc.Fill(DsDoc, "doc")
@@ -49,7 +50,8 @@ Public Class FormTypeAdmin
 
     End Sub
 
-    Private Sub ComboBoxSecondType_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxSecondType.TextChanged
+    Private Sub ComboBoxSecondType_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBoxSecondType.TextChanged
+        Dim strOld As String = ""
         Dim returnValue As DataRow()
         ComboBoxThirdType.Items.Clear()
         Dim strOld As String = ""
@@ -76,7 +78,7 @@ Public Class FormTypeAdmin
 
     Private Sub ButtonTypeAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonTypeAdd.Click
         Dim returnValue As DataRow()
-        Dim AllOk = False
+        Dim AllOk As Boolean = False
         Dim myrow As DataRow
 
         DisableControl()
@@ -206,9 +208,12 @@ Public Class FormTypeAdmin
 
     Function CheckFieldType(ByVal s As String) As Boolean
 
+        Dim BooNoNumeric As Boolean
         Dim BooTratSpace As Boolean
         Dim Boofilled As Boolean
+
         If s <> "" Then Boofilled = True
+        BooNoNumeric = True ' NoNumeric(s) ' can use also numeric
         BooTratSpace = TratPositionSpace(s)
         CheckFieldType = BooTratSpace And BooTratSpace And Boofilled
 
@@ -261,6 +266,7 @@ Public Class FormTypeAdmin
         AdapterType.Fill(DsType, "doctype")
         tblDocType = DsType.Tables("doctype")
         Dim returnValue As DataRow()
+
         returnValue = tblDocType.Select("header='" & HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text) & "'")
         If returnValue.Length <= 1 Then
             returnValue = tblDocType.Select("FirstType='" & ComboBoxFirstType.Text & "' and SecondType='" & ComboBoxSecondType.Text & "' and ThirdType='" & ComboBoxThirdType.Text & "'", "SecondType DESC")
@@ -305,21 +311,41 @@ Public Class FormTypeAdmin
     End Sub
 
 
-    Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
-        MsgBox("First Type: 3 letters - Description" & vbCrLf &
-                "Second Type: 3 letters - Description" & vbCrLf &
-                "Third Type: 3 letters - Description" & " (Example: LAB - Label Specification)" & vbCrLf &
-                vbCrLf &
-                "Please fill in the document properties: " & vbCrLf &
-                "S{X} X=0 Sign not requested, X=1 Sign requested, " & vbCrLf &
-                "R{X} X=0 Revision not requested, X=1 Revision requested, " & vbCrLf &
-                "P{X} X=0 No product file, X=1 Product file, " & vbCrLf &
-                "Y{X} X=0 File not required, X=1 File always required, X is a letter defining a process" & vbCrLf &
-                "C{X} X=0 Free naming (General_Description), X=1 BitronCode, X=2 BitronCode - Description " & vbCrLf &
-                "Example: S1R1P1Y1C0" & vbCrLf &
-                vbCrLf &
-                "Please fill in the file extension whith possible extensions of document:" & vbCrLf &
-                "Example:pdf;docx;doc;xls;xlsx;zip;" & vbCrLf &
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+        MsgBox("First Type: 3 letters - Description" & vbCrLf & _
+                "Second Type: 3 letters - Description" & vbCrLf & _
+                "Third Type: 3 letters - Description" & " (Example: LAB - Label Specification)" & vbCrLf & _
+                vbCrLf & _
+                "Please fill in the document properties: " & vbCrLf & _
+                "S{X} X=0 Sign not requested, X=1 Sign requested, " & vbCrLf & _
+                "R{X} X=0 Revision not requested, X=1 Revision requested, " & vbCrLf & _
+                "P{X} X=0 No product file, X=1 Product file, " & vbCrLf & _
+                "Y{X} X=0 File not required, X=1 File always required, X is a letter defining a process" & vbCrLf & _
+                "C{X} X=0 Free naming (General_Description), X=1 BitronCode, X=2 BitronCode - Description " & vbCrLf & _
+                "Example: S1R1P1Y1C0" & vbCrLf & _
+                vbCrLf & _
+                "Please fill in the file extension whith possible extensions of document:" & vbCrLf & _
+                "Example:pdf;docx;doc;xls;xlsx;zip;" & vbCrLf & _
                 "Each file extension is followed by ';' and no SPACE are allowed between them. " & vbCrLf)
+    End Sub
+
+    Private Sub ComboBoxFirstType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxFirstType.SelectedIndexChanged
+
+    End Sub
+
+    Private Sub TextBoxPropriety_TextChanged(sender As Object, e As EventArgs) Handles TextBoxPropriety.TextChanged
+
+    End Sub
+
+    Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
+
+    End Sub
+
+    Private Sub ComboBoxThirdType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxThirdType.SelectedIndexChanged
+
+    End Sub
+
+    Private Sub ListBoxLog_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBoxLog.SelectedIndexChanged
+
     End Sub
 End Class

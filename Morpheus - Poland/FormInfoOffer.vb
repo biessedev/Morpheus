@@ -1,11 +1,11 @@
 ﻿Public Class FormInfoOffer
 
     Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
-        TextBoxRes.Text = String.Format("{0}{1}.{2}]", LabelRes.Text, ComboBoxResCASE.Text, ComboBoxResTol.Text)
+        TextBoxRes.Text = LabelRes.Text & ComboBoxResCASE.Text & "." & ComboBoxResTol.Text & "]"
     End Sub
 
     Private Sub Button2_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button2.Click
-        TextBoxRes.Text = String.Format("{0}{1}.{2}.{3}.{4}]", LabelCap.Text, ComboBoxCapCase.Text, ComboBoxCapMat.Text, ComboBoxCapVal.Text, ComboBoxCapTol.Text)
+        TextBoxRes.Text = LabelCap.Text & ComboBoxCapCase.Text & "." & ComboBoxCapMat.Text & "." & ComboBoxCapVal.Text & "." & ComboBoxCapTol.Text & "]"
     End Sub
 
     Private Sub FormInfoOffer_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
@@ -17,11 +17,10 @@
     End Sub
 
     Private Sub Button4_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button4.Click
-        TextBoxRes.Text = String.Format("{0}{1}.{2}.{3}.{4}{5}.{6}]", Label4.Text, ComboBoxth.Text, ComboBoxDim.Text, ComboBoxLayer.Text, ComboBoxCopper.Text, ComboBoxPTH.Text, ComboBoxTG.Text)
+        TextBoxRes.Text = Label4.Text & ComboBoxth.Text & "." & ComboBoxDim.Text & "." & ComboBoxLayer.Text & "." & ComboBoxCopper.Text & ComboBoxPTH.Text & "." & ComboBoxTG.Text & "]"
     End Sub
 
     Private Sub ButtonGeneric_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonGeneric.Click
         TextBoxRes.Text = Label14.Text
     End Sub
-
 End Class

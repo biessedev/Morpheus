@@ -102,7 +102,7 @@ Public Class FormOffer
         EnableBrandControl()
         If controlRight("R") >= 2 Then
 
-            ComboBoxComponentStatus.Items.Add("R&D CHECKED")
+            ComboBoxComponentStatus.Items.Add("R&D CHEKED")
             ComboBoxComponentStatus.Items.Add("R&D MODIFIED")
             ComboBoxComponentStatus.Items.Add("UNCHECKED")
             TextBoxComponentBitronPN.ReadOnly = False
@@ -145,7 +145,7 @@ Public Class FormOffer
             TreeViewComponent.Enabled = True
             ComboBoxComponentStatus.Items.Add("PRICE OK")
             ComboBoxComponentStatus.Items.Add("PRICE ASKED")
-            ComboBoxComponentStatus.Items.Add("R&D CHECKED")
+            ComboBoxComponentStatus.Items.Add("R&D CHEKED")
             ComboBoxComponentPrice.Enabled = True
             ComboBoxComponentPriceAlt.Enabled = True
             ComboBoxComponentEstimation.Enabled = True
@@ -464,7 +464,7 @@ Public Class FormOffer
                 n = n + 1
             End If
         Next
-        Label13.Text = "Bom name  -  Found " & n & " Bom"
+        Label13.Text = "Bom name  -  Finded " & n & " Bom"
         TreeViewBomList.ExpandAll()
         TreeViewBomList.EndUpdate()
         EstimatedFirst = False
