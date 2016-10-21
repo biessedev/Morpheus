@@ -538,9 +538,7 @@ Public Class FormAdministration
         tblDoc = DsDoc.Tables("doc")
 
         Dim RowSearchDoc As DataRow(), sql As String
-        'RowSearchDoc = tblDoc.Select("notification = '' and sign = '' and HEADER <>'" & ParameterTable("plant") & "R_PRO_ECR'")
-        'RowSearchDoc = tblDoc.Select('HEADER <> '" & ParameterTable("plant") & "R_PRO_ECR'" and (("notification = '' and sign = '') OR ("notification = '' and sign = 'SENT' and "below the explanation of what I need")))
-        RowSearchDoc = tblDoc.Select("HEADER <>'" & ParameterTable("plant") & "R_PRO_ECR'" And (("notification = '' and sign = ''") Or ("notification = '' and sign = 'SENT'")))
+        RowSearchDoc = tblDoc.Select("notification = '' and sign = '' and HEADER <>'" & ParameterTable("plant") & "R_PRO_ECR'")
         For Each row In RowSearchDoc
             listFile = listFile & " " & vbCrLf & row("header").ToString & "_" & row("FileName").ToString & "_" & row("rev").ToString & "." & row("Extension").ToString & " " & vbCrLf
         Next
