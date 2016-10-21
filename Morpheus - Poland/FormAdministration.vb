@@ -1,6 +1,8 @@
 ﻿
 Option Explicit On
 Option Compare Text
+
+Imports System.Globalization
 Imports MySql.Data.MySqlClient
 Imports System.Net.Mail
 Imports System.Net
@@ -53,6 +55,7 @@ Public Class FormAdministration
         dep.Add("F")
         dep.Add("B")
 
+        DocMailScheduler()
     End Sub
 
     Private Sub ButtonSchedule_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSchedule.Click
@@ -533,12 +536,16 @@ Public Class FormAdministration
         Dim listFile As String = ""
         tblDoc.Clear()
         DsDoc.Clear()
+        'AdapterDoc As New MySqlDataAdapter("SELECT *, DATEDIFF(CURDATE(),STR_TO_DATE(MID(editor, INSTR(editor,'[') + 1, INSTR(editor,']') - INSTR(editor,'[') - 1), '%d/%m/%Y')) DiffInDays FROM doc ", MySqlconnection)
 
         AdapterDoc.Fill(DsDoc, "doc")
         tblDoc = DsDoc.Tables("doc")
 
-        Dim RowSearchDoc As DataRow(), sql As String
-        RowSearchDoc = tblDoc.Select("notification = '' and sign = '' and HEADER <>'" & ParameterTable("plant") & "R_PRO_ECR'")
+        Dim sql As String
+        Dim RowSearchDoc = From p In tblDoc.Rows
+                      Where (p("header") <> (ParameterTable("plant") & "R_PRO_ECR")) And ((p("notification") = "" And p("sign") = "") Or (p("notification") = "" And p("sign") = "SENT" And (DateTime.Now.Date - DateTime.ParseExact(p("editor").Substring(p("editor").IndexOf("[") + 1, p("editor").LastIndexOf("]") - p("editor").IndexOf("[") - 1), "d/M/yyyy", CultureInfo.CurrentCulture).Date).TotalDays > 2))
+                      Select p
+        'RowSearchDoc = tblDoc.Select("notification = '' and sign = '' and HEADER <>'" & ParameterTable("plant") & "R_PRO_ECR'")
         For Each row In RowSearchDoc
             listFile = listFile & " " & vbCrLf & row("header").ToString & "_" & row("FileName").ToString & "_" & row("rev").ToString & "." & row("Extension").ToString & " " & vbCrLf
         Next
@@ -897,7 +904,7 @@ Public Class FormAdministration
         End Try
     End Function
 
-      Sub ExploreFile(ByVal strDir As String)
+    Sub ExploreFile(ByVal strDir As String)
 
         Dim objFtp As ftp = New ftp()
         Dim strList As String, posI As Long, posL As Long, strRes As String, strRec As String
@@ -941,9 +948,9 @@ Public Class FormAdministration
                 FileName = FileName.Replace(header, "")
                 FileName = FileName.Substring(1, FileName.Length - 1)
 
-                RowSearch = tblDoc.Select("header='" & header & _
-                "' and FileName='" & FileName & _
-                "' and rev=" & rev & _
+                RowSearch = tblDoc.Select("header='" & header &
+                "' and FileName='" & FileName &
+                "' and rev=" & rev &
                 " and Extension='" & Extension & "' ")
 
                 If RowSearch.Length = 1 Then
