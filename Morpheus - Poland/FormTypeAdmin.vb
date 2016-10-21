@@ -54,7 +54,6 @@ Public Class FormTypeAdmin
         Dim strOld As String = ""
         Dim returnValue As DataRow()
         ComboBoxThirdType.Items.Clear()
-        Dim strOld As String = ""
         returnValue = tblDocType.Select("FirstType='" & ComboBoxFirstType.Text & "' and SecondType='" & ComboBoxSecondType.Text & "'", "SecondType DESC")
         For Each row In returnValue
             If StrComp(Mid(strOld, 1, 3), Mid(row("ThirdType").ToString, 1, 3)) <> 0 Then

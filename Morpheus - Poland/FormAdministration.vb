@@ -5,6 +5,7 @@ Imports MySql.Data.MySqlClient
 Imports System.Net.Mail
 Imports System.Net
 Imports System.IO
+Imports System.Linq
 
 Public Class FormAdministration
     Dim closeform As Boolean
@@ -166,7 +167,7 @@ Public Class FormAdministration
                 Try
                     filename = row("filename").ToString & "_" & row("rev").ToString & "." & row("extension").ToString
                     data = Mid(row("editor").ToString, Len(row("editor").ToString) - 9, 9)
-                    sql = "INSERT INTO `" & DBName & "`.`ecr` (`nnote` ,`number` ,`description` ,`date`,`Usign`,`nsign`,`Lsign`,`Asign`,`Qsign`,`Esign`,`Rsign`,`Psign`,`Bsign`,`DocInvalid`,`IdDoc`) VALUES (" & _
+                    sql = "INSERT INTO `" & DBName & "`.`ecr` (`nnote` ,`number` ,`description` ,`date`,`Usign`,`nsign`,`Lsign`,`Asign`,`Qsign`,`Esign`,`Rsign`,`Psign`,`Bsign`,`DocInvalid`,`IdDoc`) VALUES (" &
                     Replace("'{\rtf1\fbidis\ansi\ansicpg1252\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}{\f1\fswiss\fprq2\fcharset0 Calibri;}}{\colortbl ;\red23\green54\blue93;}\viewkind4\uc1\pard\ltrpar\sl360\slmult1\cf1\lang1040\f0\fs22\par\par\par\par\ul\b\i\f1 Confirmation AREA\par\lang1033\ulnone\b0\i0 Time and First serial number / Fiche:\par\par\par\parOther Annotation:\f0\par\pard\ltrpar\cf0\lang1040\fs24\par\par\par\par}', ", "\", "\\") _
                     & EcrN & ", '" & filename & "', '" & "01/01/2000" & "', 'NOT CHECKED' , 'NOT CHECKED', 'NOT CHECKED', 'System[automatic]', 'NOT CHECKED', 'NOT CHECKED', 'NOT CHECKED', 'NOT CHECKED','NOT CHECKED', 'NO',  " & row("id").ToString & " );"
                     cmd = New MySqlCommand(sql, MySqlconnection)
@@ -201,97 +202,97 @@ Public Class FormAdministration
                 End If
 
                 us = "L"
-                If row(us & "sign").ToString = "NOT CHECKED" And _
-                    row("ecrcheck").ToString = "YES" And _
+                If row(us & "sign").ToString = "NOT CHECKED" And
+                    row("ecrcheck").ToString = "YES" And
                     row("Rsign").ToString <> "NOT CHECKED" Then
                     mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the Ecr: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
                 End If
 
                 us = "U"
-                If row(us & "sign").ToString = "NOT CHECKED" And _
-                    row("ecrcheck").ToString = "YES" And _
-                    row("Rsign").ToString <> "NOT CHECKED" And _
+                If row(us & "sign").ToString = "NOT CHECKED" And
+                    row("ecrcheck").ToString = "YES" And
+                    row("Rsign").ToString <> "NOT CHECKED" And
                     row("Lsign").ToString <> "NOT CHECKED" Then
                     mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the Ecr: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
                 End If
 
                 us = "B"
-                If row(us & "sign").ToString = "NOT CHECKED" And _
-                    row("ecrcheck").ToString = "YES" And _
-                    row("Rsign").ToString <> "NOT CHECKED" And _
-                    row("Lsign").ToString <> "NOT CHECKED" And _
+                If row(us & "sign").ToString = "NOT CHECKED" And
+                    row("ecrcheck").ToString = "YES" And
+                    row("Rsign").ToString <> "NOT CHECKED" And
+                    row("Lsign").ToString <> "NOT CHECKED" And
                     row("Usign").ToString <> "NOT CHECKED" Then
                     mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the Ecr: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
                 End If
 
                 us = "E"
-                If row(us & "sign").ToString = "NOT CHECKED" And _
-                    row("ecrcheck").ToString = "YES" And _
-                    row("Rsign").ToString <> "NOT CHECKED" And _
-                    row("Lsign").ToString <> "NOT CHECKED" And _
+                If row(us & "sign").ToString = "NOT CHECKED" And
+                    row("ecrcheck").ToString = "YES" And
+                    row("Rsign").ToString <> "NOT CHECKED" And
+                    row("Lsign").ToString <> "NOT CHECKED" And
                     row("Usign").ToString <> "NOT CHECKED" Then
                     mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the Ecr: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
                 End If
 
                 us = "N"
-                If row(us & "sign").ToString = "NOT CHECKED" And _
-                    row("ecrcheck").ToString = "YES" And _
-                    row("Rsign").ToString <> "NOT CHECKED" And _
-                    row("Lsign").ToString <> "NOT CHECKED" And _
-                    row("Usign").ToString <> "NOT CHECKED" And _
-                    row("Bsign").ToString <> "NOT CHECKED" And _
+                If row(us & "sign").ToString = "NOT CHECKED" And
+                    row("ecrcheck").ToString = "YES" And
+                    row("Rsign").ToString <> "NOT CHECKED" And
+                    row("Lsign").ToString <> "NOT CHECKED" And
+                    row("Usign").ToString <> "NOT CHECKED" And
+                    row("Bsign").ToString <> "NOT CHECKED" And
                     row("Esign").ToString <> "NOT CHECKED" Then
                     mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the Ecr: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
                 End If
 
                 us = "P"
-                If row(us & "sign").ToString = "NOT CHECKED" And _
-                    row("ecrcheck").ToString = "YES" And _
-                    row("Rsign").ToString <> "NOT CHECKED" And _
-                    row("Lsign").ToString <> "NOT CHECKED" And _
-                    row("Usign").ToString <> "NOT CHECKED" And _
-                    row("Bsign").ToString <> "NOT CHECKED" And _
-                    row("Esign").ToString <> "NOT CHECKED" And _
+                If row(us & "sign").ToString = "NOT CHECKED" And
+                    row("ecrcheck").ToString = "YES" And
+                    row("Rsign").ToString <> "NOT CHECKED" And
+                    row("Lsign").ToString <> "NOT CHECKED" And
+                    row("Usign").ToString <> "NOT CHECKED" And
+                    row("Bsign").ToString <> "NOT CHECKED" And
+                    row("Esign").ToString <> "NOT CHECKED" And
                     row("Nsign").ToString <> "NOT CHECKED" Then
                     mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the Ecr: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
                 End If
 
                 us = "Q"
-                If row(us & "sign").ToString = "NOT CHECKED" And _
-                    row("ecrcheck").ToString = "YES" And _
-                    row("Rsign").ToString <> "NOT CHECKED" And _
-                    row("Lsign").ToString <> "NOT CHECKED" And _
-                    row("Usign").ToString <> "NOT CHECKED" And _
-                    row("Bsign").ToString <> "NOT CHECKED" And _
-                    row("Esign").ToString <> "NOT CHECKED" And _
+                If row(us & "sign").ToString = "NOT CHECKED" And
+                    row("ecrcheck").ToString = "YES" And
+                    row("Rsign").ToString <> "NOT CHECKED" And
+                    row("Lsign").ToString <> "NOT CHECKED" And
+                    row("Usign").ToString <> "NOT CHECKED" And
+                    row("Bsign").ToString <> "NOT CHECKED" And
+                    row("Esign").ToString <> "NOT CHECKED" And
                     row("Nsign").ToString <> "NOT CHECKED" Then
                     mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the Ecr: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
                 End If
 
                 us = "A"
-                If row(us & "sign").ToString = "NOT CHECKED" And _
-                    row("ecrcheck").ToString = "YES" And _
-                    row("Rsign").ToString <> "NOT CHECKED" And _
-                    row("Lsign").ToString <> "NOT CHECKED" And _
-                    row("Usign").ToString <> "NOT CHECKED" And _
-                    row("Bsign").ToString <> "NOT CHECKED" And _
-                    row("Esign").ToString <> "NOT CHECKED" And _
-                    row("Nsign").ToString <> "NOT CHECKED" And _
-                    row("Psign").ToString <> "NOT CHECKED" And _
+                If row(us & "sign").ToString = "NOT CHECKED" And
+                    row("ecrcheck").ToString = "YES" And
+                    row("Rsign").ToString <> "NOT CHECKED" And
+                    row("Lsign").ToString <> "NOT CHECKED" And
+                    row("Usign").ToString <> "NOT CHECKED" And
+                    row("Bsign").ToString <> "NOT CHECKED" And
+                    row("Esign").ToString <> "NOT CHECKED" And
+                    row("Nsign").ToString <> "NOT CHECKED" And
+                    row("Psign").ToString <> "NOT CHECKED" And
                     row("Qsign").ToString <> "NOT CHECKED" Then
                     mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the Ecr: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
                 End If
 
                 dt = string_to_date((row("date").ToString))
 
-                If row("Rsign").ToString <> "NOT CHECKED" And _
-                row("Lsign").ToString <> "NOT CHECKED" And _
-                row("Usign").ToString <> "NOT CHECKED" And _
-                row("Bsign").ToString <> "NOT CHECKED" And _
-                row("Esign").ToString <> "NOT CHECKED" And _
-                row("Nsign").ToString <> "NOT CHECKED" And _
-                row("Psign").ToString <> "NOT CHECKED" And _
-                row("Qsign").ToString <> "NOT CHECKED" And _
+                If row("Rsign").ToString <> "NOT CHECKED" And
+                row("Lsign").ToString <> "NOT CHECKED" And
+                row("Usign").ToString <> "NOT CHECKED" And
+                row("Bsign").ToString <> "NOT CHECKED" And
+                row("Esign").ToString <> "NOT CHECKED" And
+                row("Nsign").ToString <> "NOT CHECKED" And
+                row("Psign").ToString <> "NOT CHECKED" And
+                row("Qsign").ToString <> "NOT CHECKED" And
                 DateDiff(DateInterval.Day, Now, dt) < 2 Then
 
                     us = "A"
@@ -332,7 +333,7 @@ Public Class FormAdministration
                     End If
                 End If
 
-                If InStr(row("Rsign").ToString & row("Lsign").ToString & row("Usign").ToString & row("Bsign").ToString & row("Esign").ToString & row("Nsign").ToString & row("Psign").ToString & row("Qsign").ToString & row("Asign").ToString, "CHECKED", CompareMethod.Text) <= 0 And _
+                If InStr(row("Rsign").ToString & row("Lsign").ToString & row("Usign").ToString & row("Bsign").ToString & row("Esign").ToString & row("Nsign").ToString & row("Psign").ToString & row("Qsign").ToString & row("Asign").ToString, "CHECKED", CompareMethod.Text) <= 0 And
                     DateDiff(DateInterval.Day, Now, dt) < 2 Then
 
                     us = "A"
@@ -382,16 +383,16 @@ Public Class FormAdministration
         RowSearchEcr = tblEcr.Select("docInvalid = 'NO'", "number")
 
         For Each row In RowSearchEcr
-            If InStr(row("Rsign").ToString & row("Lsign").ToString & row("Usign").ToString & row("Bsign").ToString & row("Esign").ToString & row("Nsign").ToString & row("Psign").ToString & row("Qsign").ToString & row("Asign").ToString, "APPROVED", CompareMethod.Text) <= 0 And readDocSign(row("iddoc").ToString, refresh) <> "" And _
+            If InStr(row("Rsign").ToString & row("Lsign").ToString & row("Usign").ToString & row("Bsign").ToString & row("Esign").ToString & row("Nsign").ToString & row("Psign").ToString & row("Qsign").ToString & row("Asign").ToString, "APPROVED", CompareMethod.Text) <= 0 And readDocSign(row("iddoc").ToString, refresh) <> "" And
                 row("confirm").ToString = "CONFIRMED" Then
 
                 Dim fileOpen As String = ""
                 fileOpen = downloadFileWinPath(ParameterTable("plant") & "R_PRO_ECR_" & row("DESCRIPTION").ToString, ParameterTable("plant") & "R/" & ParameterTable("plant") & "R_PRO_ECR/")
                 Try
-                    If mailSender("Status_SignTo", "Status_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & _
-                               vbCrLf & row("description").ToString & " -- > (Result: Confirmation of ECR Introduction) " & vbCrLf & vbCrLf & _
-                               vbCrLf & "Validate Data :" & row("date").ToString & " (yyyy/mm/dd)" & vbCrLf & _
-                               vbCrLf & vbCrLf & "Quality Note: " & rtfTrans(row("nnote").ToString) & vbCrLf & _
+                    If mailSender("Status_SignTo", "Status_SignCopy", "Automatic SrvDoc Message:" & vbCrLf &
+                               vbCrLf & row("description").ToString & " -- > (Result: Confirmation of ECR Introduction) " & vbCrLf & vbCrLf &
+                               vbCrLf & "Validate Data :" & row("date").ToString & " (yyyy/mm/dd)" & vbCrLf &
+                               vbCrLf & vbCrLf & "Quality Note: " & rtfTrans(row("nnote").ToString) & vbCrLf &
                                vbCrLf & vbCrLf & vbCrLf & "For all detailed info please download ECR from server SrvDoc.", "ECR - Confirmation of Introduction:   " & " " & row("description").ToString, "C" & row("number").ToString, False, fileOpen) Then
                         sql = "UPDATE `" & DBName & "`.`ECR` SET `confirm` = 'SENT_CONFIRMED' WHERE `ECR`.`id` = " & row("id").ToString & " ;"
                         cmd = New MySqlCommand(sql, MySqlconnection)
@@ -424,18 +425,18 @@ Public Class FormAdministration
 
                     Dim fileOpen As String = ""
                     fileOpen = downloadFileWinPath(ParameterTable("plant") & "R_PRO_ECR_" & row("DESCRIPTION").ToString, ParameterTable("plant") & "R/" & ParameterTable("plant") & "R_PRO_ECR/")
-                    If mailSender("ECR_SignTo", "ECR_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & _
-                               vbCrLf & row("description").ToString & " -- > (Result: Approved) " & _
-                               vbCrLf & "Approval Data : " & row("date").ToString & "( yyyy/mm/dd )" & vbCrLf & _
-                               vbCrLf & vbCrLf & "R&D Note: " & rtfTrans(row("rnote").ToString) & vbCrLf & _
-                               vbCrLf & "Logistic Note: " & rtfTrans(row("lnote").ToString) & vbCrLf & _
-                               vbCrLf & "Purchasing Note: " & rtfTrans(row("unote").ToString) & vbCrLf & _
-                               vbCrLf & "Process Engineering Note: " & rtfTrans(row("Bnote").ToString) & vbCrLf & _
-                               vbCrLf & "Testing Engineering Note: " & rtfTrans(row("enote").ToString) & vbCrLf & _
-                               vbCrLf & "Quality Note: " & rtfTrans(row("nnote").ToString) & vbCrLf & _
-                               vbCrLf & "Production Note: " & rtfTrans(row("pnote").ToString) & vbCrLf & _
-                               vbCrLf & "Time & Methods Note: " & rtfTrans(row("qnote").ToString) & vbCrLf & _
-                               vbCrLf & "Admin Note: " & rtfTrans(row("anote").ToString) & vbCrLf & _
+                    If mailSender("ECR_SignTo", "ECR_SignCopy", "Automatic SrvDoc Message:" & vbCrLf &
+                               vbCrLf & row("description").ToString & " -- > (Result: Approved) " &
+                               vbCrLf & "Approval Data : " & row("date").ToString & "( yyyy/mm/dd )" & vbCrLf &
+                               vbCrLf & vbCrLf & "R&D Note: " & rtfTrans(row("rnote").ToString) & vbCrLf &
+                               vbCrLf & "Logistic Note: " & rtfTrans(row("lnote").ToString) & vbCrLf &
+                               vbCrLf & "Purchasing Note: " & rtfTrans(row("unote").ToString) & vbCrLf &
+                               vbCrLf & "Process Engineering Note: " & rtfTrans(row("Bnote").ToString) & vbCrLf &
+                               vbCrLf & "Testing Engineering Note: " & rtfTrans(row("enote").ToString) & vbCrLf &
+                               vbCrLf & "Quality Note: " & rtfTrans(row("nnote").ToString) & vbCrLf &
+                               vbCrLf & "Production Note: " & rtfTrans(row("pnote").ToString) & vbCrLf &
+                               vbCrLf & "Time & Methods Note: " & rtfTrans(row("qnote").ToString) & vbCrLf &
+                               vbCrLf & "Admin Note: " & rtfTrans(row("anote").ToString) & vbCrLf &
                                vbCrLf & "For all details please download ECR from server SrvDoc. ", "ECR APPROVAL Notification:   " & " " & row("description").ToString, "SS" & row("number").ToString, False, fileOpen) Then
                         sql = "UPDATE `" & DBName & "`.`ecr` SET `approve` = '" & "System" & "[" & date_to_string(Now) & "]" & "' WHERE `ecr`.`approve` ='' and `ecr`.`number` = '" & i & "' ;"
                         cmd = New MySqlCommand(sql, MySqlconnection)
@@ -464,18 +465,18 @@ Public Class FormAdministration
                 Try
                     Dim fileOpen As String = ""
                     fileOpen = downloadFileWinPath(ParameterTable("plant") & "R_PRO_ECR_" & row("DESCRIPTION").ToString, ParameterTable("plant") & "R/" & ParameterTable("plant") & "R_PRO_ECR/")
-                    If mailSender("ECR_SignTo", "ECR_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & _
-                               vbCrLf & row("description").ToString & " -- > (Result: Signed, Released & Implemented) " & _
-                               vbCrLf & "Closed Data : " & row("date").ToString & "( yyyy/mm/dd )" & vbCrLf & _
-                               vbCrLf & vbCrLf & "R&D Note: " & rtfTrans(row("rnote").ToString) & vbCrLf & _
-                               vbCrLf & "Logistic Note: " & rtfTrans(row("lnote").ToString) & vbCrLf & _
-                               vbCrLf & "Purchasing Note: " & rtfTrans(row("unote").ToString) & vbCrLf & _
-                               vbCrLf & "Process Engineering Note: " & rtfTrans(row("Bnote").ToString) & vbCrLf & _
-                               vbCrLf & "Testing Engineering Note: " & rtfTrans(row("enote").ToString) & vbCrLf & _
-                               vbCrLf & "Quality Note: " & rtfTrans(row("nnote").ToString) & vbCrLf & _
-                               vbCrLf & "Production Note: " & rtfTrans(row("pnote").ToString) & vbCrLf & _
-                               vbCrLf & "Time & Methods Note: " & rtfTrans(row("qnote").ToString) & vbCrLf & _
-                               vbCrLf & "Administration Note: " & rtfTrans(row("anote").ToString) & vbCrLf & _
+                    If mailSender("ECR_SignTo", "ECR_SignCopy", "Automatic SrvDoc Message:" & vbCrLf &
+                               vbCrLf & row("description").ToString & " -- > (Result: Signed, Released & Implemented) " &
+                               vbCrLf & "Closed Data : " & row("date").ToString & "( yyyy/mm/dd )" & vbCrLf &
+                               vbCrLf & vbCrLf & "R&D Note: " & rtfTrans(row("rnote").ToString) & vbCrLf &
+                               vbCrLf & "Logistic Note: " & rtfTrans(row("lnote").ToString) & vbCrLf &
+                               vbCrLf & "Purchasing Note: " & rtfTrans(row("unote").ToString) & vbCrLf &
+                               vbCrLf & "Process Engineering Note: " & rtfTrans(row("Bnote").ToString) & vbCrLf &
+                               vbCrLf & "Testing Engineering Note: " & rtfTrans(row("enote").ToString) & vbCrLf &
+                               vbCrLf & "Quality Note: " & rtfTrans(row("nnote").ToString) & vbCrLf &
+                               vbCrLf & "Production Note: " & rtfTrans(row("pnote").ToString) & vbCrLf &
+                               vbCrLf & "Time & Methods Note: " & rtfTrans(row("qnote").ToString) & vbCrLf &
+                               vbCrLf & "Administration Note: " & rtfTrans(row("anote").ToString) & vbCrLf &
                                vbCrLf & "For all details please download ECR from server SrvDoc. ", "ECR Sign Notification:   " & " " & row("description").ToString, "SS" & row("number").ToString, False, fileOpen) Then
                         sql = "UPDATE `" & DBName & "`.`ecr` SET `sign` = '" & "System" & "[" & date_to_string(Now) & "]" & "' WHERE `ecr`.`sign` ='' and `ecr`.`number` = '" & i & "' ;"
                         cmd = New MySqlCommand(sql, MySqlconnection)
@@ -512,8 +513,8 @@ Public Class FormAdministration
             Dim fileOpen As String = ""
             fileOpen = downloadFileWinPath(ParameterTable("plant") & "R_PRO_TCR_" & row("filename").ToString & "_" & row("rev").ToString & "." & row("extension").ToString, ParameterTable("plant") & "R/" & ParameterTable("plant") & "R_PRO_TCR/")
             Try
-                If mailSender("STATUS" & "_SignTo", "STATUS" & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & _
-                               "Please CHECK the TCR : " & " " & row("filename").ToString & " " & vbCrLf & vbCrLf & "Best Regard", "TCR Sign Notification  " & " " & _
+                If mailSender("STATUS" & "_SignTo", "STATUS" & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf &
+                               "Please CHECK the TCR : " & " " & row("filename").ToString & " " & vbCrLf & vbCrLf & "Best Regard", "TCR Sign Notification  " & " " &
                                row("filename").ToString, "T_" & oi, False, fileOpen) Then
                     sql = "UPDATE `" & DBName & "`.`doc` SET `sign` = 'System[" & date_to_string(Now) & "]' WHERE `doc`.`id` = " & row("id").ToString & " ;"
                     cmd = New MySqlCommand(sql, MySqlconnection)
@@ -537,15 +538,17 @@ Public Class FormAdministration
         tblDoc = DsDoc.Tables("doc")
 
         Dim RowSearchDoc As DataRow(), sql As String
-        RowSearchDoc = tblDoc.Select("notification = '' and sign = '' and HEADER <>'" & ParameterTable("plant") & "R_PRO_ECR'")
+        'RowSearchDoc = tblDoc.Select("notification = '' and sign = '' and HEADER <>'" & ParameterTable("plant") & "R_PRO_ECR'")
+        'RowSearchDoc = tblDoc.Select('HEADER <> '" & ParameterTable("plant") & "R_PRO_ECR'" and (("notification = '' and sign = '') OR ("notification = '' and sign = 'SENT' and "below the explanation of what I need")))
+        RowSearchDoc = tblDoc.Select("HEADER <>'" & ParameterTable("plant") & "R_PRO_ECR'" And (("notification = '' and sign = ''") Or ("notification = '' and sign = 'SENT'")))
         For Each row In RowSearchDoc
             listFile = listFile & " " & vbCrLf & row("header").ToString & "_" & row("FileName").ToString & "_" & row("rev").ToString & "." & row("Extension").ToString & " " & vbCrLf
         Next
         Try
             MailSent = False
             If listFile <> "" Then
-                mailSender("STATUS" & "_SignTo", "STATUS" & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & _
-                           vbCrLf & "Please CHECK the new document/revision in the server : " & " " & vbCrLf & vbCrLf & listFile & vbCrLf & vbCrLf & "Best Regard", "File changes notification  " & _
+                mailSender("STATUS" & "_SignTo", "STATUS" & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf &
+                           vbCrLf & "Please CHECK the new document/revision in the server : " & " " & vbCrLf & vbCrLf & listFile & vbCrLf & vbCrLf & "Best Regard", "File changes notification  " &
                            date_to_string(Now), date_to_string(Now), True)
             End If
         Catch ex As Exception
@@ -605,9 +608,9 @@ Public Class FormAdministration
                     sql = "UPDATE `" & DBName & "`.`product` SET `mail` = 'SENT' WHERE `product`.`BitronPN` = '" & row("BITRONPN").ToString & "' ;"
                     cmd = New MySqlCommand(sql, MySqlconnection)
                     cmd.ExecuteNonQuery()
-                    If mailSender("STATUS" & "_SignTo", "STATUS" & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & _
-                               "Please CHECK the Status of Product : " & " " & row("bitronpn").ToString & " " & row("name").ToString & vbCrLf & _
-                               vbCrLf & "Open Issue:" & vbCrLf & oi & vbCrLf & vbCrLf & "Best Regard", "Product Status Notification " & row("STATUS").ToString & " " & _
+                    If mailSender("STATUS" & "_SignTo", "STATUS" & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf &
+                               "Please CHECK the Status of Product : " & " " & row("bitronpn").ToString & " " & row("name").ToString & vbCrLf &
+                               vbCrLf & "Open Issue:" & vbCrLf & oi & vbCrLf & vbCrLf & "Best Regard", "Product Status Notification " & row("STATUS").ToString & " " &
                                row("bitronpn").ToString & " " & row("name").ToString, "S_" & row("bitronpn").ToString, False) Then
                         sql = "UPDATE `" & DBName & "`.`product` SET `mail` = 'SENT' WHERE `product`.`BitronPN` = '" & row("BITRONPN").ToString & "' ;"
                         cmd = New MySqlCommand(sql, MySqlconnection)
@@ -630,10 +633,10 @@ Public Class FormAdministration
                 If prevStatus(SS) = row("Status").ToString Or (row("Status").ToString = "MPA_STOPPED" And SS = "N") Then
                     Try
 
-                        mailSender("STATUS_" & SS & "_SignTo", "STATUS_" & SS & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & _
-                                   "Please Update the Status of Product : " & " " & row("bitronpn").ToString & " " & row("name").ToString & vbCrLf & _
-                                   vbCrLf & "Current Status:  " & row("Status").ToString & vbCrLf & _
-                                   vbCrLf & "Open Issue:" & vbCrLf & vbCrLf & oi & vbCrLf & vbCrLf & "Best Regard", "Product Status Update Request " & " " & _
+                        mailSender("STATUS_" & SS & "_SignTo", "STATUS_" & SS & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf &
+                                   "Please Update the Status of Product : " & " " & row("bitronpn").ToString & " " & row("name").ToString & vbCrLf &
+                                   vbCrLf & "Current Status:  " & row("Status").ToString & vbCrLf &
+                                   vbCrLf & "Open Issue:" & vbCrLf & vbCrLf & oi & vbCrLf & vbCrLf & "Best Regard", "Product Status Update Request " & " " &
                                    row("bitronpn").ToString & " " & row("name").ToString, SS & "_" & row("bitronpn").ToString)
                     Catch ex As Exception
                         ComunicationLog("5050") ' Mysql update query error 
@@ -804,7 +807,7 @@ Public Class FormAdministration
                     If CheckBoxDeleteRecord.Checked = True Then
                         Try
 
-                            If MsgBox("Do you want to delete the record: " & row("header").ToString & "_" & row("filename").ToString & _
+                            If MsgBox("Do you want to delete the record: " & row("header").ToString & "_" & row("filename").ToString &
                             "_" & row("rev").ToString & "." & row("extension").ToString, MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
                                 sql = "DELETE FROM `" & DBName & "`.`doc` WHERE `doc`.`id` = " & row("id").ToString
                                 cmd = New MySqlCommand(sql, MySqlconnection)
@@ -858,7 +861,7 @@ Public Class FormAdministration
                     If First = 0 Then
                         Try
                             If MsgBox("Do you want to delete " & rows("header").ToString & " - " & rows("FileName").ToString & "_" & rows("rev").ToString & "." & rows("Extension").ToString & "  records?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                                sql = "UPDATE `" & DBName & "`.`doc` SET `control` = 'CANCEL'" & _
+                                sql = "UPDATE `" & DBName & "`.`doc` SET `control` = 'CANCEL'" &
                                 " WHERE `doc`.`id` = " & rows("id").ToString & " ;"
                                 WriteCheckTable("Delete Duplicate : " & rows("header").ToString & " - " & rows("FileName").ToString)
                                 cmd = New MySqlCommand(sql, MySqlconnection)
@@ -896,7 +899,7 @@ Public Class FormAdministration
         End Try
     End Function
 
-    Sub ExploreFile(ByVal strDir As String)
+      Sub ExploreFile(ByVal strDir As String)
 
         Dim objFtp As ftp = New ftp()
         Dim strList As String, posI As Long, posL As Long, strRes As String, strRec As String
@@ -904,7 +907,7 @@ Public Class FormAdministration
         objFtp.UserName = strFtpServerUser
         objFtp.Password = strFtpServerPsw
         objFtp.Host = strFtpServerAdd
-
+        Dim strSlash As String = "/"
         strList = "*.*"
         strRes = objFtp.ListDirectory(strDir, strList)
         posI = 0
@@ -913,14 +916,37 @@ Public Class FormAdministration
             ' discover all directories present in the department directory
             strRec = Mid(strList, posI + 1, posL - posI)
             If Mid(strRec, 1, 1) = "d" Then ' directory
-
-                ExploreFile(strDir & Mid(strRec, 56, Len(strRec) - 56) & "/")
+                Dim folder = strRec.Split(" ").Last()
+                If strDir = "/" Then
+                    strDir = ""
+                    ExploreFile(String.Format("{0}{1}", strDir, folder))
+                ElseIf strDir.Length = 0 Then
+                    Dim path As String = strDir + "/" + folder
+                    path = path.Replace(vbCr, "").Replace(vbLf, "")
+                    ExploreFile(path)
+                ElseIf strDir.Substring(strDir.Length - 1) = "/" Then
+                    ExploreFile(String.Format("{0}{1}", strDir, folder))
+                Else
+                    Dim path As String = strDir + "/" + folder
+                    path = path.Replace(vbCr, "").Replace(vbLf, "")
+                    ExploreFile(path)
+                End If
+                'ExploreFile(strDir & Mid(strRec, 56, Len(strRec) - 56) & "/")
             Else 'file
 
-                RowSearch = tblDoc.Select("header='" & Mid(Mid(strRec, 56), 1, 11) & _
-                "' and FileName='" & Mid(Mid(strRec, 56), 13, InStrRev(Mid(strRec, 56), "_", -1) - 13) & _
-                "' and rev=" & Mid(Mid(strRec, 56), InStrRev(Mid(strRec, 56), "_", -1) + 1, InStrRev(Mid(strRec, 56), ".", -1) - InStrRev(Mid(strRec, 56), "_", -1) - 1) & _
-                " and Extension='" & Mid(Mid(strRec, 56), InStrRev(Mid(strRec, 56), ".", -1) + 1, Len(Mid(Mid(strRec, 56), InStrRev(Mid(strRec, 56), ".", -1) + 1)) - 1) & "' ")
+                Dim file As String = Mid(strRec, 49).Trim
+
+                Dim header As String = strDir.Split("/").Last
+                Dim Extension As String = file.Split(".").Last.Trim
+                Dim rev As String = file.Split("_").Last.Replace(Extension, "").Replace(".", "").Trim
+                Dim FileName As String = file.Substring(0, (file.Length - Extension.Length - rev.Length - 2))
+                FileName = FileName.Replace(header, "")
+                FileName = FileName.Substring(1, FileName.Length - 1)
+
+                RowSearch = tblDoc.Select("header='" & header & _
+                "' and FileName='" & FileName & _
+                "' and rev=" & rev & _
+                " and Extension='" & Extension & "' ")
 
                 If RowSearch.Length = 1 Then
 
@@ -929,8 +955,8 @@ Public Class FormAdministration
                 Else  ' record not find
                     If CheckBoxDeleteFile.Checked = True Then
 
-                        If MsgBox("Do you want to delete the file: " & Mid(strRec, 56, Len(strRec) - 56), MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                            strRes = objFtp.DeleteFile(strDir, Mid(strRec, 56, Len(strRec) - 56))
+                        If MsgBox("Do you want to delete the file: " & file, MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+                            strRes = objFtp.DeleteFile(strDir, ("/" & file).Replace(vbCr, "").Replace(vbLf, "").Trim)
                             If strRes = "5000" Then
                                 ComunicationLog("5073")
                             Else
@@ -954,7 +980,6 @@ Public Class FormAdministration
         objFtp.Password = strFtpServerPsw
         objFtp.Host = strFtpServerAdd
         downloadFileWinPath = ""
-
 
         Dim cmd As New MySqlCommand()
         If fileName <> "" Then
@@ -1070,7 +1095,7 @@ Public Class FormAdministration
     Private Sub Form1_Closing(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
 
         e.Cancel = True
-        If Closeform = True Then e.Cancel = False 'keeps form from closing
+        If closeform = True Then e.Cancel = False 'keeps form from closing
 
     End Sub
 
