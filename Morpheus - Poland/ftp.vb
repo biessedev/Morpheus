@@ -130,7 +130,7 @@ Public Class ftp
             Dim liststring As String = ""
 
             Try
-                Dim sr As StreamReader = New StreamReader(_FtpResponse.GetResponseStream(), System.Text.Encoding.ASCII)
+                Dim sr As StreamReader = New StreamReader(_FtpResponse.GetResponseStream(), System.Text.Encoding.UTF8)
                 liststring = sr.ReadToEnd()
                 sr.Close()
                 _FtpResponse.Close()
