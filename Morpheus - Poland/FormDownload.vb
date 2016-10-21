@@ -791,7 +791,7 @@ Public Class FormDownload
 
         Dim rsResult As DataRow(), groupResult As DataRow(), pos As Integer
 
-        Dim AdapterGroupProd As New MySqlDataAdapter("SELECT * FROM Product where groupList like '%" & header & "[" & filename & "]" & "%'", MySqlconnection)
+        Dim AdapterGroupProd As New MySqlDataAdapter("SELECT * FROM Product where groupList like '%" & header & "[" & filename & "]" & "%' COLLATE utf8_unicode_ci", MySqlconnection)
         Dim tblGroupProd As DataTable
         Dim DsGroupProd As New DataSet
 
