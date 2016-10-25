@@ -2,16 +2,12 @@
 Option Explicit On
 Option Compare Text
 
-Imports System.IO
 Imports System.Data.SqlClient
 Imports System
 Imports Microsoft.VisualBasic
-Imports System.Runtime.InteropServices
 Imports System.Globalization
 Imports System.Data
 Imports MySql.Data.MySqlClient
-Imports System.Data.OleDb
-Imports System.Text.RegularExpressions
 
 Public Class FormBomUtility
     Dim DsDocComp As New DataSet
@@ -45,16 +41,11 @@ Public Class FormBomUtility
         Next
     End Sub
     Private Sub ButtonOpen_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonOpen.Click
-        Dim pathExcel As String = ""
-        System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US")
-
+        Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US")
         CollectProcess()
 
         'open the offer template
-        Dim excelApp As New Object
-        excelApp = CreateObject("Excel.Application")
-
-        Dim excelWorkbook As Object
+        Dim excelApp As Object = CreateObject("Excel.Application")
         Dim excelSheet As Object
         ComboBoxIndesit.Items.Clear()
         ComboBoxIndesit.Text = ""
@@ -63,7 +54,7 @@ Public Class FormBomUtility
         LabelExcel.Text = OpenFileDialogExcel.FileName
         Try
             If OpenFileDialogExcel.CheckFileExists Then
-                excelWorkbook = excelApp.Workbooks.Open(LabelExcel.Text)
+                Dim excelWorkbook As Object = excelApp.Workbooks.Open(LabelExcel.Text)
                 For Each excelSheet In excelWorkbook.Worksheets
                     ComboBoxIndesit.Items.Add(excelSheet.name)
                 Next
@@ -75,36 +66,28 @@ Public Class FormBomUtility
 
         End Try
 
-
         excelApp.quit()
         KillLastExcel()
     End Sub
 
 
     Private Sub ButtonCompact_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonCompact.Click
-
-
-
-        Dim pathExcel As String = "", reference As String = ""
-        System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US")
+        Dim reference = ""
+        Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US")
         Dim avl(10000, 100) As String, name(100) As String
         Dim coll(10000, 100) As String
         If LabelExcel.Text <> "****" And ComboBoxIndesit.Text <> "" Then
 
-            Dim excelApp As New Object
-            excelApp = CreateObject("Excel.Application")
-            Dim excelWorkbook As Object, excelSheetNew As Object, endcol As Integer
-            Dim excelSheet As Object, i As Integer, j As Integer, idColl As Integer, collRow As Integer
-            Dim rowExcelCom As Integer, rowExcel As Integer
-            excelWorkbook = excelApp.Workbooks.Open(LabelExcel.Text)
+            Dim excelApp As Object = CreateObject("Excel.Application")
+            Dim endcol As Integer
+            Dim i As Integer, j As Integer
+            Dim excelWorkbook As Object = excelApp.Workbooks.Open(LabelExcel.Text)
             excelWorkbook.Activate()
-            excelSheet = excelWorkbook.Worksheets(ComboBoxIndesit.Text)
-
+            Dim excelSheet As Object = excelWorkbook.Worksheets(ComboBoxIndesit.Text)
             excelSheet.Activate()
-            Dim cc As New ColorConverter
             excelApp.Visible = True
-            rowExcelCom = -1
-            rowExcel = 7
+            Dim rowExcelCom As Integer = -1
+            Dim rowExcel As Integer = 7
             Dim col As Integer
             ' 1 indesit pn
             ' 2 desc
@@ -139,12 +122,11 @@ Public Class FormBomUtility
                 Next
             Next
 
-
-            collRow = -1
+            Dim collRow As Integer = -1
             i = 0
             While avl(i, 1) <> ""
 
-                idColl = searchid(avl(i, 1), coll)
+                Dim idColl As Integer = searchid(avl(i, 1), coll)
                 '
                 If idColl > 0 Then
 
@@ -182,7 +164,7 @@ Public Class FormBomUtility
 
             End Try
 
-            excelSheetNew = excelWorkbook.Worksheets.add()
+            Dim excelSheetNew As Object = excelWorkbook.Worksheets.add()
             excelSheetNew.name = "Collected"
 
 
@@ -258,7 +240,7 @@ Public Class FormBomUtility
     End Sub
 
     Function searchid(ByVal s As String, ByVal avlm(,) As String) As Integer
-        Dim i As Integer = 0
+        Dim i = 0
         While avlm(i, 1) <> ""
             If avlm(i, 1) = s Then
                 searchid = i
@@ -283,9 +265,6 @@ Public Class FormBomUtility
             MessageBox.Show(ex.ToString())
         End Try
 
-
-
-
     End Sub
 
     Sub CloseConnectionSqlOrcad()
@@ -298,17 +277,15 @@ Public Class FormBomUtility
             MessageBox.Show(ex.ToString())
         End Try
 
-
     End Sub
 
     Function OrcadDoc(ByVal bitronPN As String) As String
-        Dim rowShow As DataRow(), rowHC As DataRow()
         ' If "15002423" = bitronPN Then Stop
-        rowShow = tblDoc.Select("filename like '" & bitronPN & " - *' or filename like '" & bitronPN & "'", "rev DESC")
+        Dim rowShow As DataRow() = tblDoc.Select("filename like '" & bitronPN & " - *' or filename like '" & bitronPN & "'", "rev DESC")
         If rowShow.Length > 0 And Mid(bitronPN, 1, 2) <> "15" Then
             OrcadDoc = "SRV_DOC - " & rowShow(0)("header").ToString & "_" & rowShow(0)("filename").ToString & "_" & rowShow(0)("rev").ToString & "." & rowShow(0)("extension").ToString
         Else
-            rowHC = tblDocComp.Select("codice_bitron = '" & bitronPN & "'", "valido")
+            Dim rowHC As DataRow() = tblDocComp.Select("codice_bitron = '" & bitronPN & "'", "valido")
             If rowHC.Length = 1 Then
                 OrcadDoc = "HC-" & rowHC(0)("cod_comp").ToString & " - " & rowHC(0)("valido").ToString
             ElseIf rowHC.Length > 1 Then
@@ -329,9 +306,6 @@ Public Class FormBomUtility
     End Function
 
     Private Sub ButtonMissingPf_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonMissingPf.Click
-        Dim sql As String
-        Dim i As Integer = 0
-        Dim commandMySql As New MySqlCommand
         Dim OrcadDBAds = ParameterTable("OrcadDBAdr")
         Dim OrcadDBName = ParameterTable("OrcadDBName")
         Dim OrcadDBUserName = ParameterTable("OrcadDBUser")
@@ -381,9 +355,9 @@ Public Class FormBomUtility
 
 
             For Each row In tblPfp.Rows
-                sql = "UPDATE `missing_pf` SET `doc`='" & OrcadDoc(row("bitron_PN").ToString) & "' WHERE `bitron_pn`='" & row("bitron_PN").ToString & "'"
+                Dim sql As String = "UPDATE `missing_pf` SET `doc`='" & OrcadDoc(row("bitron_PN").ToString) & "' WHERE `bitron_pn`='" & row("bitron_PN").ToString & "'"
                 Try
-                    commandMySql = New MySqlCommand(sql, MySqlconnection)
+                    Dim commandMySql As MySqlCommand = New MySqlCommand(sql, MySqlconnection)
                     commandMySql.ExecuteNonQuery()
                 Catch ex As Exception
                     MsgBox("Error in DB update/Insert material request")
@@ -391,23 +365,16 @@ Public Class FormBomUtility
                 ButtonMissingPf.Text = "Elaboration of : " & row("bitron_PN").ToString
                 Application.DoEvents()
             Next
-
-
             ButtonMissingPf.Text = "Missing Pf update Doc"
-
     End Sub
 
 
-
     Private Sub ButtonCompactElux_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonCompactElux.Click
-        Dim pathExcel As String = "", reference As String = ""
-        System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US")
+        Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US")
         Dim avl(10000, 100) As String, name(100) As String
         Dim coll(10000, 100) As String
         If LabelExcel.Text <> "****" And ComboBoxIndesit.Text <> "" Then
-
-            Dim excelApp As New Object
-            excelApp = CreateObject("Excel.Application")
+            Dim excelApp As Object = CreateObject("Excel.Application")
             Dim excelWorkbook As Object, excelSheetNew As Object, endcol As Integer
             Dim excelSheet As Object, i As Integer, j As Integer, idColl As Integer, collRow As Integer
             Dim rowExcelCom As Integer, rowExcel As Integer
@@ -416,7 +383,6 @@ Public Class FormBomUtility
             excelSheet = excelWorkbook.Worksheets(ComboBoxIndesit.Text)
 
             excelSheet.Activate()
-            Dim cc As New ColorConverter
             excelApp.Visible = True
             rowExcelCom = -1
             rowExcel = 17
@@ -433,7 +399,6 @@ Public Class FormBomUtility
                 avl(rowExcelCom, 3) = excelSheet.Cells(rowExcel, 2).text
                 avl(rowExcelCom, 4) = excelSheet.Cells(rowExcel, 8).text
                 avl(rowExcelCom, 5) = EluxAvl(excelSheet.Cells(rowExcel, 6).text, excelSheet.Cells(rowExcel, 5).text)
-
 
                 Application.DoEvents()
                 col = 13
@@ -453,7 +418,6 @@ Public Class FormBomUtility
                     coll(i, j) = ""
                 Next
             Next
-
 
             collRow = -1
             i = 0
@@ -497,10 +461,8 @@ Public Class FormBomUtility
 
             End Try
 
-
             excelSheetNew = excelWorkbook.Worksheets.add()
             excelSheetNew.name = "Collected"
-
 
             i = 1
             While coll(i, 1) <> ""
@@ -576,7 +538,7 @@ Public Class FormBomUtility
     Private Function EluxAvl(ByVal brand As String, ByVal oc As String) As String
 
         Dim avlElux(100, 2) As String
-        Dim i As Integer = 1, j As Integer = 1, k As Integer = 1
+        Dim i = 1, j = 1, k = 1
 
         brand = brand & Chr(10)
         oc = oc & Chr(10)
@@ -609,7 +571,4 @@ Public Class FormBomUtility
 
     End Function
 
-    Private Sub FormBomUtility_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
-
-    End Sub
 End Class

@@ -1,10 +1,6 @@
 ﻿Option Explicit On
 Option Compare Text
 Imports MySql.Data.MySqlClient
-Imports System.IO
-Imports System.Data.SqlClient
-Imports System.Data.OleDb
-Imports System.Text.RegularExpressions
 Imports Microsoft.VisualBasic
 
 Public Class FormEqItem
@@ -101,14 +97,8 @@ Public Class FormEqItem
 
     Sub FillTreeViewEQAsset()
         Try
-
-
             Static Dim tblEQ As DataTable
             Static Dim DsEQ As New DataSet
-            Dim rootNode As TreeNode
-            Dim rootChildren1 As TreeNode
-            Dim rowShow As DataRow()
-            Dim rowShowAsset As DataRow()
             TreeViewEQAsset.Font = New Font("Segoe UI", 12, FontStyle.Bold)
             TreeViewEQAsset.Nodes.Clear()
             TreeViewEQAsset.BackColor = Color.White
@@ -133,12 +123,11 @@ Public Class FormEqItem
             AdapterEQAsset.Fill(DsEQAsset, "EQAsset")
             tblEQAsset = DsEQAsset.Tables("EQAsset")
 
-            rowShow = tblEQ.Select("idactivity ='" & TextBoxActivity.Text & "'", "Id")
+            Dim rowShow As DataRow() = tblEQ.Select("idactivity ='" & TextBoxActivity.Text & "'", "Id")
 
             For Each row In rowShow
 
-
-                rootNode = New TreeNode(row("Id").ToString & " - " & row("Toolname").ToString)
+                Dim rootNode As TreeNode = New TreeNode(row("Id").ToString & " - " & row("Toolname").ToString)
 
                 TreeViewEQAsset.BeginUpdate()
                 TreeViewEQAsset.Nodes.Add(rootNode)
@@ -159,10 +148,10 @@ Public Class FormEqItem
                     End If
                 End If
 
-                rowShowAsset = tblEQAsset.Select("idtool ='" & row("Id").ToString & "'", "Id")
+                Dim rowShowAsset As DataRow() = tblEQAsset.Select("idtool ='" & row("Id").ToString & "'", "Id")
 
                 For Each rowAsset In rowShowAsset
-                    rootChildren1 = New TreeNode(rowAsset("id").ToString & " - " & rowAsset("name").ToString)
+                    Dim rootChildren1 As TreeNode = New TreeNode(rowAsset("id").ToString & " - " & rowAsset("name").ToString)
                     rootChildren1.NodeFont = New Font("Segoe UI", 10, FontStyle.Regular)
                     rootChildren1.ForeColor = Color.Green
                     If rowAsset("closeddate").ToString = ("OPEN") Then rootChildren1.ForeColor = Color.Navy
@@ -180,11 +169,8 @@ Public Class FormEqItem
 
 
     Function TimingEQ(ByVal id As Long, ByVal tblEQ As DataTable) As String
-        ' If id = 33 Then Stop
 
-        Dim rowShow As DataRow()
-
-        rowShow = tblEQ.Select("id = " & id & "")
+        Dim rowShow As DataRow() = tblEQ.Select("id = " & id & "")
 
         If rowShow(0).Item("status").ToString = "CLOSED" Then
             TimingEQ = "CLOSED"
@@ -229,15 +215,12 @@ Public Class FormEqItem
 
 
     Private Sub ButtonRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRemove.Click
-
-        Dim cmd As New MySqlCommand()
-        Dim sql As String, id As Integer
         If CurrentAssetId() > 0 Then
             If vbYes = MsgBox("Do you want delete this Asset?", MsgBoxStyle.YesNo) Then
                 If CompareDatabase(CurrentAssetId()) Then
                     Try
-                        sql = "DELETE FROM `" & DBName & "`.`eqAsset` WHERE `eqAsset`.`id` = " & CurrentAssetId()
-                        cmd = New MySqlCommand(sql, MySqlconnection)
+                        Dim sql As String = "DELETE FROM `" & DBName & "`.`eqAsset` WHERE `eqAsset`.`id` = " & CurrentAssetId()
+                        Dim cmd = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
                         MsgBox("Asset deleted!")
                         TreeViewEQAsset.SelectedNode.Remove()
@@ -260,9 +243,7 @@ Public Class FormEqItem
 
     Private Sub ButtonAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAdd.Click
 
-        Dim rootNode As TreeNode, rootNodeChild As TreeNode
-        Dim cmd As New MySqlCommand()
-        Dim sql As String
+        Dim rootNode As TreeNode
         myNodeSelect(True)
 
         If Not IsNothing(TreeViewEQAsset.SelectedNode) Then
@@ -271,10 +252,7 @@ Public Class FormEqItem
             Else
                 rootNode = TreeViewEQAsset.SelectedNode
             End If
-
-
-            rootNodeChild = New TreeNode("---- New Tool ----")
-
+            Dim rootNodeChild = New TreeNode("---- New Tool ----")
             TreeViewEQAsset.BeginUpdate()
             rootNode.Nodes.Add(rootNodeChild)
 
@@ -282,8 +260,8 @@ Public Class FormEqItem
             TreeViewEQAsset.ResumeLayout()
 
             Try
-                sql = "INSERT INTO `" & DBName & "`.`eqasset` (`Name`,`idtool` ,`closeddate`,`rda`) VALUES ( '" & Trim(UCase(Replace(InputBox("Insert the item name: "), "'", ""))) & "' , '" & CurrentToolId() & "'" & ", 'OPEN','NEED_PRICE') ;"
-                cmd = New MySqlCommand(sql, MySqlconnection)
+                Dim sql As String = "INSERT INTO `" & DBName & "`.`eqasset` (`Name`,`idtool` ,`closeddate`,`rda`) VALUES ( '" & Trim(UCase(Replace(InputBox("Insert the item name: "), "'", ""))) & "' , '" & CurrentToolId() & "'" & ", 'OPEN','NEED_PRICE') ;"
+                Dim cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
 
             Catch ex As Exception
@@ -293,13 +271,9 @@ Public Class FormEqItem
 
             rootNode.Expand()
 
-
-
         End If
 
         myNodeSelect(False)
-
-
     End Sub
 
 
@@ -354,7 +328,6 @@ Public Class FormEqItem
     End Function
 
 
-
     Sub myNodeSelect(ByVal read As Boolean)
 
         Static Dim selNode As TreeNode
@@ -384,7 +357,6 @@ Public Class FormEqItem
             Next
 
             TreeViewEQAsset.SelectedNode = selNode
-            'TreeViewEQAsset.TopNode = TreeViewEQAsset.SelectedNode.Parent
             TreeViewEQAsset.Focus()
             TreeViewEQAsset.Visible = True
         End If
@@ -439,7 +411,7 @@ Public Class FormEqItem
     End Sub
 
 
-    Private Sub TreeViewEQAsset_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewEQAsset.AfterSelect
+    Private Sub TreeViewEQAsset_AfterSelect(ByVal sender As Object, ByVal e As TreeViewEventArgs) Handles TreeViewEQAsset.AfterSelect
         If ButtonSave.BackColor = Color.Red Then
             If MsgBox("Session open, do you want SAVE?", vbYesNo) = vbYes Then
                 ButtonSave_Click(Me, e)
@@ -447,8 +419,6 @@ Public Class FormEqItem
                 ButtonSave.BackColor = Color.Green
             End If
         End If
-
-
 
         If toolAsset(CurrentToolId()) <> "" Then
             ButtonAssetImport.Enabled = True
@@ -521,29 +491,24 @@ Public Class FormEqItem
         ButtonSave.Enabled = False
         If CurrentAssetId() > 0 And CompareDatabase(CurrentAssetId()) Then
             If IsNumeric(Replace(Replace(IIf(Mid(TextBoxCost.Text, 2) <> "", Mid(TextBoxCost.Text, 2), "0"), ",", ""), ".", "")) Then
-
-                Dim cmd As New MySqlCommand()
-                Dim sql As String
-
                 Try
+                    Dim sql As String = "UPDATE `" & DBName & "`.`EqAsset` SET " &
+                                        "`description` = '" & Replace(Replace(RichTextBoxNote.Text, "\", "\\"), "'", "") &
+                                        "',`Idasset` = '" & TextBoxAssetID.Text &
+                                        "',`responsible` = '" & Trim(UCase(ComboBoxResponsible.Text)) &
+                                        "',`EstimatedDate` = '" & ComboBoxEstimatedClosed.Text &
+                                        "',`OpenDate` = '" & ComboBoxOpenDate.Text &
+                                        "',`Supplier` = '" & TextBoxSupplier.Text &
+                                        "',`ds` = '" & Replace((TextBoxDS.Text), "\", "\\") &
+                                        "',`ClosedDate` = '" & ButtonClosedDate.Text &
+                                        "',`rda` = '" & ComboBoxRDA.Text &
+                                        "',`order` = '" & TextBoxOrder.Text &
+                                        "',`dai` = '" & UCase(ComboBoxDai.Text) &
+                                        "',`cost` = " & Replace(Replace(IIf(Mid(TextBoxCost.Text, 2) <> "", Mid(TextBoxCost.Text, 2), "0"), ",", ""), ".", "") &
+                                        ",`name` = '" & Trim(Mid(TreeViewEQAsset.SelectedNode.Text, InStr(TreeViewEQAsset.SelectedNode.Text, "-") + 1)) &
+                                        "' WHERE `eqasset`.`id` = " & CurrentAssetId() & " ;"
 
-                    sql = "UPDATE `" & DBName & "`.`EqAsset` SET " & _
-                    "`description` = '" & Replace(Replace(RichTextBoxNote.Text, "\", "\\"), "'", "") & _
-                    "',`Idasset` = '" & TextBoxAssetID.Text & _
-                    "',`responsible` = '" & Trim(UCase(ComboBoxResponsible.Text)) & _
-                    "',`EstimatedDate` = '" & ComboBoxEstimatedClosed.Text & _
-                    "',`OpenDate` = '" & ComboBoxOpenDate.Text & _
-                    "',`Supplier` = '" & TextBoxSupplier.Text & _
-                    "',`ds` = '" & Replace((TextBoxDS.Text), "\", "\\") & _
-                    "',`ClosedDate` = '" & ButtonClosedDate.Text & _
-                    "',`rda` = '" & ComboBoxRDA.Text & _
-                    "',`order` = '" & TextBoxOrder.Text & _
-                    "',`dai` = '" & UCase(ComboBoxDai.Text) & _
-                    "',`cost` = " & Replace(Replace(IIf(Mid(TextBoxCost.Text, 2) <> "", Mid(TextBoxCost.Text, 2), "0"), ",", ""), ".", "") & _
-                    ",`name` = '" & Trim(Mid(TreeViewEQAsset.SelectedNode.Text, InStr(TreeViewEQAsset.SelectedNode.Text, "-") + 1)) & _
-                    "' WHERE `eqasset`.`id` = " & CurrentAssetId() & " ;"
-
-                    cmd = New MySqlCommand(sql, MySqlconnection)
+                    Dim cmd = New MySqlCommand(sql, MySqlconnection)
                     cmd.ExecuteNonQuery()
 
                 Catch ex As Exception
@@ -572,16 +537,13 @@ Public Class FormEqItem
 
     Function SaveDelay()
         If CurrentAssetId() > 0 And CompareDatabase(CurrentAssetId()) Then
-
-            Dim cmd As New MySqlCommand()
-            Dim sql As String
             If TextBoxDelay.Text <> "" Then
                 Try
 
-                    sql = "UPDATE `" & DBName & "`.`EqAsset` SET " & _
-                    "`delay` = " & TextBoxDelay.Text & _
-                    " WHERE `eqasset`.`id` = " & CurrentAssetId() & " ;"
-                    cmd = New MySqlCommand(sql, MySqlconnection)
+                    Dim sql As String = "UPDATE `" & DBName & "`.`EqAsset` SET " &
+                                        "`delay` = " & TextBoxDelay.Text &
+                                        " WHERE `eqasset`.`id` = " & CurrentAssetId() & " ;"
+                    Dim cmd = New MySqlCommand(sql, MySqlconnection)
                     cmd.ExecuteNonQuery()
 
 
@@ -600,9 +562,8 @@ Public Class FormEqItem
     End Sub
 
     Function toolAsset(ByVal toolId As Integer) As String
-        Dim rowShow As DataRow()
         If toolId <> 0 Then
-            rowShow = tblEQ.Select("id =" & toolId, "Id")
+            Dim rowShow As DataRow() = tblEQ.Select("id =" & toolId, "Id")
             If rowShow.Length > 0 Then
                 toolAsset = rowShow(0)("asset_id").ToString()
             Else
@@ -618,12 +579,11 @@ Public Class FormEqItem
 
 
     Sub loadComboResponsible()
-        Dim rowResults As DataRow()
         Try
             ComboBoxResponsible.Items.Clear()
             ComboBoxResponsible.Items.Add("")
 
-            rowResults = tblEQAsset.Select("name like '*'", "name")
+            Dim rowResults As DataRow() = tblEQAsset.Select("name like '*'", "name")
             For Each row In rowResults
                 If Not ComboBoxResponsible.Items.Contains(row("responsible").ToString) Then ComboBoxResponsible.Items.Add(row("responsible").ToString)
             Next
@@ -656,7 +616,7 @@ Public Class FormEqItem
 
 
     Private Sub TreeViewEQAsset_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles TreeViewEQAsset.DoubleClick
-        Dim name As String = ""
+        Dim name
         If CurrentAssetId() > 0 Then
             name = Trim(UCase(Replace(InputBox("Change the bame the item name: ", ), "'", "")))
             If name <> "" Then
@@ -674,8 +634,8 @@ Public Class FormEqItem
     End Sub
 
 
-    Sub FieldChange() Handles TextBoxAssetID.KeyUp, RichTextBoxNote.KeyUp, ComboBoxResponsible.KeyUp, _
-        TextBoxSupplier.KeyUp, ComboBoxEstimatedClosed.TextChanged, ComboBoxOpenDate.TextChanged, _
+    Sub FieldChange() Handles TextBoxAssetID.KeyUp, RichTextBoxNote.KeyUp, ComboBoxResponsible.KeyUp,
+        TextBoxSupplier.KeyUp, ComboBoxEstimatedClosed.TextChanged, ComboBoxOpenDate.TextChanged,
         ButtonClosedDate.Click, ComboBoxRDA.KeyUp, TextBoxOrder.KeyUp, ComboBoxDai.KeyUp, TextBoxTotalCost.KeyUp, TextBoxDS.TextChanged, TextBoxCost.TextChanged
         If UpdatingAuto = False Then
             ButtonSave.BackColor = Color.Red
@@ -776,12 +736,8 @@ Public Class FormEqItem
         End If
     End Sub
 
-
     Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
         FillTreeViewEQAsset()
     End Sub
 
-    Private Sub GroupBoxItem_Enter(ByVal sender As Object, ByVal e As EventArgs) Handles GroupBoxItem.Enter
-
-    End Sub
 End Class

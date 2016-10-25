@@ -1,7 +1,7 @@
 ﻿
 Option Strict Off
 Option Compare Text
-Imports System.Security
+
 Imports System.Security.Cryptography
 Imports System.Text.UTF8Encoding
 Imports System.Text
@@ -136,7 +136,7 @@ Public Class FormCoding
     Public Function ToHex(ByVal Bytes() As Byte) As String
         Dim Result As New StringBuilder
 
-        For I As Int32 = 0 To Bytes.Length - 1
+        For I = 0 To Bytes.Length - 1
             'Accoda alla stringa il codice in formato esadecimale, 
             'facendo in modo che occupi sempre due posti, eventualmente
             'pareggiando con uno zero sulla sinistra
@@ -149,7 +149,7 @@ Public Class FormCoding
     Public Function ToBin(ByVal hexString As String) As Byte()
         Try
             Dim mybyte(0 To hexString.Length / 2 - 1) As Byte
-            For I As Int32 = 1 To hexString.Length / 2 Step 1
+            For I = 1 To hexString.Length / 2 Step 1
                 mybyte((I - 1)) = (16 * HexToInt(Mid(hexString, I * 2 - 1, 1)) + HexToInt(Mid(hexString, I * 2, 1)))
 
             Next
@@ -183,16 +183,13 @@ Public Class FormCoding
     End Function
 
     Sub Main()
-        Dim Input, Output As String
-        Dim Key As String
-
         Console.WriteLine("Inserire un testo qualsiasi:")
-        Input = Console.ReadLine
+        Dim Input As String = Console.ReadLine
         Console.WriteLine("Inserire una chiave di criptazione:")
-        Key = Console.ReadLine
+        Dim Key As String = Console.ReadLine
 
         Try
-            Output = ToHex(RijndaelEncrypt(Key, Input))
+            Dim Output As String = ToHex(RijndaelEncrypt(Key, Input))
             Console.WriteLine()
             Console.WriteLine("Il testo criptato è:")
             Console.WriteLine(Output)
@@ -231,12 +228,11 @@ Public Class FormCoding
     Private Sub ButtonValid_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonValid.Click
 
         If ButtonValid.Text = "CHECK VALIDITY" Then
-            Dim PSW As String = ""
+            Dim PSW = ""
             Dim Adapter As New MySqlDataAdapter("SELECT * FROM credentials where username='" & TextBoxName.Text & "'", MySqlconnection)
             Dim ds As New DataSet
             Adapter.Fill(ds)
-            Dim tblCredentials As New DataTable()
-            tblCredentials = ds.Tables(0)
+            Dim tblCredentials As DataTable = ds.Tables(0)
             If tblCredentials.Rows.Count = 1 Then
                 PSW = tblCredentials.Rows.Item(0)("PASSWORD").ToString
             Else
@@ -277,9 +273,9 @@ Public Class FormCoding
         ButtonValid.BackColor = Color.Gray
     End Sub
 
-
     Private Sub ButtonDate_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDate.TextChanged
         ButtonValid.Text = "CHECK VALIDITY"
         ButtonValid.BackColor = Color.Gray
     End Sub
+
 End Class

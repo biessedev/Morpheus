@@ -20,7 +20,6 @@ Public Class FormGroup
 
 
     Sub fillList()
-        Dim i As Integer, j As Integer
         ListViewGRU.Clear()
         If dictionaryForProd.Count > 0 Then
             Dim hname As New ColumnHeader
@@ -36,17 +35,15 @@ Public Class FormGroup
         h2.Width = 190
         ListViewGRU.Columns.Add(h)
         ListViewGRU.Columns.Add(h2)
-        Dim productNr As String
-        Dim group As String
         ListViewGRU.Items.Clear()
         If dictionaryForProd.Count > 0 Then
             For Each product In dictionaryForProd
-                productNr = product.Key
-                group = product.Value
+                Dim productNr As String = product.Key
+                Dim group As String = product.Value
                 If group <> "" Then
                     Dim str(3) As String
-                    i = 1
-                    j = InStr(group, "]", CompareMethod.Text)
+                    Dim i As Integer = 1
+                    Dim j As Integer = InStr(group, "]", CompareMethod.Text)
                     While j > 0
                         str(0) = productNr
                         str(1) = Mid(group, i, 11)
@@ -69,7 +66,6 @@ Public Class FormGroup
         AdapterDoc.Fill(DsDoc, "doc")
         tblDoc = DsDoc.Tables("doc")
 
-
         ComboBoxGroup.Text = StrComboBoxGroup
         ComboBoxName.Text = ""
         FillProductList()
@@ -77,13 +73,12 @@ Public Class FormGroup
     End Sub
 
     Sub FillProductList()
-        Dim rowShow As DataRow()
         DsProd.Clear()
         tblProd.Clear()
         AdapterProd.Update(DsProd, "product")
         AdapterProd.Fill(DsProd, "product")
         tblProd = DsProd.Tables("product")
-        rowShow = tblProd.Select("bitronpn like '*'", "bitronpn asc")
+        Dim rowShow As DataRow() = tblProd.Select("bitronpn like '*'", "bitronpn asc")
         Dim Widht(tblProd.Columns.Count - 1) As Integer
         Widht(0) = 0  ' 
         Widht(1) = 0  ' 
@@ -116,9 +111,9 @@ Public Class FormGroup
         Widht(28) = 0
         Widht(29) = 0
 
-        Dim c As DataColumn, i As Integer, strPrevDoc As String
+        Dim c As DataColumn
         ListViewForProducts.Clear()
-        i = 0
+        Dim i As Integer = 0
         For Each c In tblProd.Columns
             'adding names of columns as Listview columns				
             Dim h As New ColumnHeader
@@ -136,9 +131,8 @@ Public Class FormGroup
 
         Dim str(tblProd.Columns.Count - 1) As String
         'adding Datarows as listview Grids
-        strPrevDoc = ""
         For i = 0 To rowShow.Length - 1
-            For col As Integer = 0 To tblProd.Columns.Count - 1
+            For col = 0 To tblProd.Columns.Count - 1
                 str(col) = UCase(rowShow(i).ItemArray(col).ToString())
             Next
             Dim ii As New ListViewItem(str)
@@ -152,11 +146,11 @@ Public Class FormGroup
     End Sub
 
     Private Sub ComboBoxGroup_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxGroup.TextChanged
-        Dim i As Integer, resultdoc As DataRow()
+        Dim i As Integer
         Try
             ComboBoxName.Text = ""
             ComboBoxName.Items.Clear()
-            resultdoc = tblDoc.Select("header = '" & Mid(ComboBoxGroup.Text, 1, 11) & "'")
+            Dim resultdoc As DataRow() = tblDoc.Select("header = '" & Mid(ComboBoxGroup.Text, 1, 11) & "'")
             For i = 0 To resultdoc.Length - 1
                 ComboBoxName.Items.Add(resultdoc(i).Item("filename").ToString)
             Next
@@ -205,24 +199,19 @@ Public Class FormGroup
 
     Private Sub ButtonRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRemove.Click
 
-        Dim sql As String, cmd As MySqlCommand, oldGroupList As String, productNumber As String, type As String, filename As String
-        oldGroupList = GroupList
-        productNumber = ""
-        Type = ""
-        filename = ""
         If ListViewGRU.SelectedItems.Count > 0 Then
             Dim i = 0
             Using trans = MySqlconnection.BeginTransaction(IsolationLevel.ReadCommitted)
                 For Each itemFromList In ListViewGRU.SelectedItems
-                    productNumber = ListViewGRU.SelectedItems.Item(i).SubItems(0).Text
-                    type = ListViewGRU.SelectedItems.Item(i).SubItems(1).Text
-                    filename = ListViewGRU.SelectedItems.Item(i).SubItems(2).Text
+                    Dim productNumber As Object = ListViewGRU.SelectedItems.Item(i).SubItems(0).Text
+                    Dim type As Object = ListViewGRU.SelectedItems.Item(i).SubItems(1).Text
+                    Dim filename As Object = ListViewGRU.SelectedItems.Item(i).SubItems(2).Text
                     Dim valueOfGroupList = dictionaryForProd.Item(productNumber)
                     GroupList = Replace(valueOfGroupList, type & "[" & filename & "];", "", , , CompareMethod.Text)
                     Try
-                        sql = "UPDATE `product` SET `grouplist` = '" & GroupList &
-                "' WHERE `product`.`BitronPN` = '" & productNumber & "' ;"
-                        cmd = New MySqlCommand(sql, MySqlconnection)
+                        Dim sql As String = "UPDATE `product` SET `grouplist` = '" & GroupList &
+                                            "' WHERE `product`.`BitronPN` = '" & productNumber & "' ;"
+                        Dim cmd As MySqlCommand = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
                         dictionaryForProd.Item(productNumber) = GroupList
                     Catch ex As Exception
@@ -266,4 +255,5 @@ Public Class FormGroup
             Next
         End If
     End Sub
+
 End Class

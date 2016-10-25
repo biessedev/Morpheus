@@ -5,7 +5,6 @@ Imports System.IO
 Imports System.Data.SqlClient
 Imports System
 Imports Microsoft.VisualBasic
-Imports System.Runtime.InteropServices
 Imports System.Globalization
 Imports System.Data
 Imports System.Data.OleDb
@@ -20,7 +19,6 @@ Public Class FormOffer
     Dim AdapterSql As SqlDataAdapter
     Dim TblSql As New DataTable
     Dim DsSql As New DataSet
-    Dim typefilled As String = ""
     Dim updatigComponentTBD As Boolean
     Dim AdapterCustomerPrice As New MySqlDataAdapter("SELECT * FROM CustomerPrice", MySqlconnection)
     Dim tblCustomerPrice As DataTable
@@ -48,7 +46,7 @@ Public Class FormOffer
     Dim DsPfpElaborated As New DataSet
     Dim AdapterPfpElaborated As New MySqlDataAdapter("SELECT * FROM PfpElaborated", MySqlconnection)
     Dim tblCus As DataTable
-    Dim DsCus As New DataSet, selectedNode As TreeNode
+    Dim DsCus As New DataSet
     Dim OpenSession As Boolean, updating As Boolean
     Dim CurrentComponentID As Long
     Dim ComponentSession As Boolean
@@ -70,10 +68,8 @@ Public Class FormOffer
     Dim a As Single = 0.1
     Dim NoInfoBomBest As Boolean = False
     Dim OrcadProblem As Boolean = False
-    Dim EstimatedFirst As Boolean = True
 
-
-    Private Sub FormOffer_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+    Private Sub FormOffer_FormClosing(ByVal sender As Object, ByVal e As FormClosingEventArgs) Handles Me.FormClosing
         If OpenSession = True Then
             If vbYes = MsgBox("Session Open do you want Save?", MsgBoxStyle.YesNo) Then
                 ButtonBomSave_Click(Me, e)
@@ -84,7 +80,7 @@ Public Class FormOffer
         Else
         End If
         Dim n As New TreeNode
-        Dim eTree As New System.Windows.Forms.TreeViewCancelEventArgs(n, False, TreeViewAction.Unknown)
+        Dim eTree As New TreeViewCancelEventArgs(n, False, TreeViewAction.Unknown)
 
         If OpenSession Then TreeViewBomList_BeforeSelect(Me, eTree)
         If BrandSession Then TreeViewBrand_BeforeSelect(Me, eTree)
@@ -355,8 +351,6 @@ Public Class FormOffer
     ' update the table bom offer from the data table offfer
     ' ask to delete bom offer that arent item in offer table
     Sub FillcomboCustomer()
-        Dim rowResults As DataRow(), PrevCustomer As String
-
         ComboBoxCustomer.Items.Clear()
         ComboBoxCustomer.Items.Add("")
         ComboBoxCustomerFilter.Items.Clear()
@@ -370,9 +364,9 @@ Public Class FormOffer
         tblCus.Clear()
         AdapterCus.Fill(DsCus, "Customer")
         tblCus = DsCus.Tables("Customer")
-        PrevCustomer = ""
+        Dim PrevCustomer As String = ""
         Try
-            rowResults = tblBomOff.Select("CUSTOMER like '*'", "CUSTOMER")
+            Dim rowResults As DataRow() = tblBomOff.Select("CUSTOMER like '*'", "CUSTOMER")
             For Each row In rowResults
                 If PrevCustomer <> row("CUSTOMER").ToString Then
                     ComboBoxCustomer.Items.Add(row("CUSTOMER").ToString)
@@ -388,10 +382,7 @@ Public Class FormOffer
 
     End Sub
 
-   
-
     Sub FillComboBoxClass()
-        Dim rowResults As DataRow()
 
         ComboBoxClass.Items.Clear()
         ComboBoxClass.Items.Add("")
@@ -399,7 +390,7 @@ Public Class FormOffer
         tblClass.Clear()
         AdapterClass.Fill(DsClass, "componentClass")
         tblClass = DsClass.Tables("componentClass")
-        rowResults = tblClass.Select("class like '*'", "class")
+        Dim rowResults As DataRow() = tblClass.Select("class like '*'", "class")
         For Each row In rowResults
             ComboBoxClass.Items.Add(row("class").ToString)
         Next
@@ -409,18 +400,14 @@ Public Class FormOffer
 
     Sub FillcomboBrandSupplier()
 
-
-        Dim tblBrand As DataTable
         Dim DsBrand As New DataSet
-
-        Dim rowResults As DataRow()
 
         ComboBoxBrandSupplier.Items.Clear()
         ComboBoxBrandSupplier.Items.Add("")
 
         AdapterBrand.Fill(DsBrand, "brand")
-        tblBrand = DsBrand.Tables("brand")
-        rowResults = tblBrand.Select("not buyer = 'SystemLiking'", "supplier")
+        Dim tblBrand As DataTable = DsBrand.Tables("brand")
+        Dim rowResults As DataRow() = tblBrand.Select("not buyer = 'SystemLiking'", "supplier")
         For Each row In rowResults
             If Not ComboBoxBrandSupplier.Items.Contains(UCase(row("supplier").ToString)) And row("supplier").ToString <> "" Then ComboBoxBrandSupplier.Items.Add(UCase(row("supplier").ToString))
         Next
@@ -430,19 +417,18 @@ Public Class FormOffer
     ' update the tree bom offer list
     Sub UpdateTreeBomOffer()
         TreeViewBomList.BeginUpdate()
-        Dim name As String, customer As String, SEL As String
         TreeViewBomList.Nodes.Clear()
-        Dim rootNode As TreeNode, childNode As TreeNode
-        Dim rowShow As DataRow(), n As Integer = 0
+        Dim rootNode As TreeNode
+        Dim n = 0
         DsBomOff.Clear()
         tblBomOff.Clear()
         AdapterBomOff.Fill(DsBomOff, "BomOffer")
         tblBomOff = DsBomOff.Tables("BomOffer")
         'SEL = "result = '' or name like '*'" & IIf(ComboBoxBomStatusFilter.Text <> "", " AND result = '" & ComboBoxBomStatusFilter.Text & "' ", "") & IIf(ComboBoxCustomerFilter.Text <> "", " AND customer = '" & ComboBoxCustomerFilter.Text & "'", "") & IIf(CheckBoxOpen.Checked, " AND STATUS = 'OPEN'", "") & IIf(CheckEstimed.Checked, " AND bitronpn like '*e*'", "")
-        SEL = "name like '*'" & IIf(ComboBoxBomStatusFilter.Text <> "", " AND result = '" & ComboBoxBomStatusFilter.Text & "' ", "") & IIf(ComboBoxCustomerFilter.Text <> "", " AND customer = '" & ComboBoxCustomerFilter.Text & "'", "") & IIf(CheckBoxOpen.Checked, " AND STATUS = 'OPEN'", "") & IIf(CheckEstimed.Checked, " AND bitronpn like '*e*'", "")
-        rowShow = tblBomOff.Select(SEL, IIf(CheckBoxOrderByDate.Checked, "eta ", IIf(CheckBoxOrderByNumber.Checked, "id", "customer,name")))
-        name = ""
-        customer = "-"
+        Dim SEL As String = "name like '*'" & IIf(ComboBoxBomStatusFilter.Text <> "", " AND result = '" & ComboBoxBomStatusFilter.Text & "' ", "") & IIf(ComboBoxCustomerFilter.Text <> "", " AND customer = '" & ComboBoxCustomerFilter.Text & "'", "") & IIf(CheckBoxOpen.Checked, " AND STATUS = 'OPEN'", "") & IIf(CheckEstimed.Checked, " AND bitronpn like '*e*'", "")
+        Dim rowShow As DataRow() = tblBomOff.Select(SEL, IIf(CheckBoxOrderByDate.Checked, "eta ", IIf(CheckBoxOrderByNumber.Checked, "id", "customer,name")))
+        Dim name As String = ""
+        Dim customer As String = "-"
         For Each row In rowShow
             If row("customer").ToString <> customer And Not CheckBoxOrderByDate.Checked Then
                 rootNode = New TreeNode(" - " & row("customer").ToString)
@@ -451,7 +437,7 @@ Public Class FormOffer
 
             End If
             If row("name").ToString <> name Then
-                childNode = New TreeNode(row("id").ToString & " - " & row("name").ToString & " - ETA: " & row("eta").ToString)
+                Dim childNode As TreeNode = New TreeNode(row("id").ToString & " - " & row("name").ToString & " - ETA: " & row("eta").ToString)
                 childNode.NodeFont = New Font("times new roman", 12, FontStyle.Regular)
                 'If EstimatedFirst = True Then
                 If estimated(row("name").ToString) Then childNode.ForeColor = Color.Red
@@ -467,25 +453,22 @@ Public Class FormOffer
         Label13.Text = "Bom name  -  Finded " & n & " Bom"
         TreeViewBomList.ExpandAll()
         TreeViewBomList.EndUpdate()
-        EstimatedFirst = False
     End Sub
 
     ' is true if find estimated in the bom or "E" pr "Price_est"
     Function estimated(ByVal bomName As String) As Boolean
 
         estimated = False
-        Dim i As Integer
-        Dim rowShow As DataRow()
         Static Dim tblOff As DataTable
         Static Dim DsOff As New DataSet
         Try
-            i = tblOff.Rows.Count
+            Dim i As Integer = tblOff.Rows.Count
         Catch ex As Exception
             AdapterOff.Fill(DsOff, "Offer")
             tblOff = DsOff.Tables("offer")
         End Try
 
-        rowShow = tblOff.Select("name ='" & bomName & "' and ( status = 'ESTIMED' ) ")
+        Dim rowShow As DataRow() = tblOff.Select("name ='" & bomName & "' and ( status = 'ESTIMED' ) ")
         If rowShow.Length > 0 Then
             estimated = True
         Else
@@ -536,15 +519,14 @@ Public Class FormOffer
 
     ' check the sintax of brand[oc];brand2[oc2]
     Function CheckBrandString(ByVal s As String, ByVal id As String) As Boolean
-        Dim j As Integer, i As Integer, brand As String
         CheckBrandString = False
         If s <> "" Then
             Try
                 If Mid(s, Len(s), 1) <> ";" Then s = s & ";"
-                i = 1
-                j = InStr(s, ";", CompareMethod.Text)
+                Dim i As Integer = 1
+                Dim j As Integer = InStr(s, ";", CompareMethod.Text)
                 While j > 0
-                    brand = Mid(s, i, j - i)
+                    Dim brand As String = Mid(s, i, j - i)
                     If InStr(brand, "[", CompareMethod.Text) > 1 Then
                         If InStr(brand, "]", CompareMethod.Text) > 3 Then
                             If InStr(brand, "]", CompareMethod.Text) = Len(brand) Then
@@ -576,21 +558,19 @@ Public Class FormOffer
     ' check if there is bom name in the offer table.
     Function CheckBomExist(ByVal s As String, ByVal refresh As Boolean) As Boolean
 
-        Dim rowShow As DataRow()
-        Dim tblOff As DataTable
         Dim DsOff As New DataSet
         AdapterOff.Fill(DsOff, "Offer")
-        tblOff = DsOff.Tables("offer")
+        Dim tblOff As DataTable = DsOff.Tables("offer")
 
 
-            rowShow = tblOff.Select("name = '" & s & "'")
-            If rowShow.Length > 0 Then
-                CheckBomExist = True
-            Else
-                CheckBomExist = False
-            End If
-            DsOff.Dispose()
-            tblOff.Dispose()
+        Dim rowShow As DataRow() = tblOff.Select("name = '" & s & "'")
+        If rowShow.Length > 0 Then
+            CheckBomExist = True
+        Else
+            CheckBomExist = False
+        End If
+        DsOff.Dispose()
+        tblOff.Dispose()
 
     End Function
 
@@ -627,10 +607,9 @@ Public Class FormOffer
 
 
 
-    Private Sub TreeViewBomList_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewBomList.AfterSelect
+    Private Sub TreeViewBomList_AfterSelect(ByVal sender As Object, ByVal e As TreeViewEventArgs) Handles TreeViewBomList.AfterSelect
 
         If currentId() > 0 Then
-            selectedNode = TreeViewBomList.SelectedNode
             UpdateBomFields()
             If controlRight("R") >= 2 Then
                 DateTimePickerBom.Enabled = True
@@ -735,35 +714,32 @@ Public Class FormOffer
                 If currentId() > 0 Then
                     If DeltaSessionTime("BomOffer", currentId) < 30 And session("BomOffer", currentId, False) = "RESET" Then
                         TextBoxBomTime.Text = ""
-                        Dim cmd As New MySqlCommand()
-                        Dim sql As String
                         If currentId() > 0 Then
-
                             Try
-                                sql = "UPDATE `" & DBName & "`.`Bomoffer` SET " & _
-                                "`eta` = '" & DateTimePickerBom.Text & _
-                                "',`Customer` = '" & ComboBoxCustomer.Text & _
-                                "',`currency` = '" & ComboBoxBomCurrency.Text & _
-                                "',`var1` = '" & TextBoxNameV1.Text & _
-                                "',`var2` = '" & TextBoxNameV2.Text & _
-                                "',`var3` = '" & TextBoxNameV3.Text & _
-                                "',`var4` = '" & TextBoxNameV4.Text & _
-                                "',`var5` = '" & TextBoxNameV5.Text & _
-                                "',`var6` = '" & TextBoxNameV6.Text & _
-                                "',`vol1` = '" & TextBoxQt_V1.Text & _
-                                "',`vol2` = '" & TextBoxQt_V2.Text & _
-                                "',`vol3` = '" & TextBoxQt_V3.Text & _
-                                "',`vol4` = '" & TextBoxQt_V4.Text & _
-                                "',`vol5` = '" & TextBoxQt_V5.Text & _
-                                "',`vol6` = '" & TextBoxQt_V6.Text & _
-                                "',`name` = '" & TextBoxBomName.Text & _
-                                "',`RESULT` = '" & ComboBoxBomResult.Text & _
-                                "',`TURNOVER` = '" & Replace(Replace(TextBoxBomTurnover.Text, ".", ""), ",", "") & _
-                                "',`linkoffer` = '" & Replace(TextBoxBomOfferLink.Text, "\", "\\") & _
-                                "',`STATUS` = '" & ComboBoxBomStatus.Text & _
-                                "',`note` = '" & TextBoxNote.Text & "' WHERE `bomOffer`.`id` = " & currentId() & " ;"
+                                Dim sql As String = "UPDATE `" & DBName & "`.`Bomoffer` SET " &
+                                                    "`eta` = '" & DateTimePickerBom.Text &
+                                                    "',`Customer` = '" & ComboBoxCustomer.Text &
+                                                    "',`currency` = '" & ComboBoxBomCurrency.Text &
+                                                    "',`var1` = '" & TextBoxNameV1.Text &
+                                                    "',`var2` = '" & TextBoxNameV2.Text &
+                                                    "',`var3` = '" & TextBoxNameV3.Text &
+                                                    "',`var4` = '" & TextBoxNameV4.Text &
+                                                    "',`var5` = '" & TextBoxNameV5.Text &
+                                                    "',`var6` = '" & TextBoxNameV6.Text &
+                                                    "',`vol1` = '" & TextBoxQt_V1.Text &
+                                                    "',`vol2` = '" & TextBoxQt_V2.Text &
+                                                    "',`vol3` = '" & TextBoxQt_V3.Text &
+                                                    "',`vol4` = '" & TextBoxQt_V4.Text &
+                                                    "',`vol5` = '" & TextBoxQt_V5.Text &
+                                                    "',`vol6` = '" & TextBoxQt_V6.Text &
+                                                    "',`name` = '" & TextBoxBomName.Text &
+                                                    "',`RESULT` = '" & ComboBoxBomResult.Text &
+                                                    "',`TURNOVER` = '" & Replace(Replace(TextBoxBomTurnover.Text, ".", ""), ",", "") &
+                                                    "',`linkoffer` = '" & Replace(TextBoxBomOfferLink.Text, "\", "\\") &
+                                                    "',`STATUS` = '" & ComboBoxBomStatus.Text &
+                                                    "',`note` = '" & TextBoxNote.Text & "' WHERE `bomOffer`.`id` = " & currentId() & " ;"
                                 TextBoxBomTurnover.Text = Format(Val(Replace(Replace(TextBoxBomTurnover.Text, ".", ""), ",", "")), "#,0.")
-                                cmd = New MySqlCommand(sql, MySqlconnection)
+                                Dim cmd = New MySqlCommand(sql, MySqlconnection)
                                 cmd.ExecuteNonQuery()
                             Catch ex As Exception
                                 MsgBox("Mysql update query error!")
@@ -794,18 +770,18 @@ Public Class FormOffer
 
     ' is true when value consistent.
     Function checkValue() As Boolean
-        If (((TextBoxQt_V1.Text) <> "") = (TextBoxQt_V1.Text <> "")) And _
-      (((TextBoxQt_V1.Text) <> "") = (TextBoxQt_V1.Text <> "")) And _
-      (((TextBoxQt_V2.Text) <> "") = (TextBoxQt_V2.Text <> "")) And _
-      (((TextBoxQt_V3.Text) <> "") = (TextBoxQt_V3.Text <> "")) And _
-      (((TextBoxQt_V4.Text) <> "") = (TextBoxQt_V4.Text <> "")) And _
-      (((TextBoxQt_V5.Text) <> "") = (TextBoxQt_V5.Text <> "")) And _
-      (((TextBoxQt_V6.Text) <> "") = (TextBoxQt_V6.Text <> "")) And _
-      IsNumeric(TextBoxQt_V1.Text & "0") And _
-      IsNumeric(TextBoxQt_V2.Text & "0") And _
-      IsNumeric(TextBoxQt_V3.Text & "0") And _
-      IsNumeric(TextBoxQt_V4.Text & "0") And _
-      IsNumeric(TextBoxQt_V5.Text & "0") And _
+        If (((TextBoxQt_V1.Text) <> "") = (TextBoxQt_V1.Text <> "")) And
+      (((TextBoxQt_V1.Text) <> "") = (TextBoxQt_V1.Text <> "")) And
+      (((TextBoxQt_V2.Text) <> "") = (TextBoxQt_V2.Text <> "")) And
+      (((TextBoxQt_V3.Text) <> "") = (TextBoxQt_V3.Text <> "")) And
+      (((TextBoxQt_V4.Text) <> "") = (TextBoxQt_V4.Text <> "")) And
+      (((TextBoxQt_V5.Text) <> "") = (TextBoxQt_V5.Text <> "")) And
+      (((TextBoxQt_V6.Text) <> "") = (TextBoxQt_V6.Text <> "")) And
+      IsNumeric(TextBoxQt_V1.Text & "0") And
+      IsNumeric(TextBoxQt_V2.Text & "0") And
+      IsNumeric(TextBoxQt_V3.Text & "0") And
+      IsNumeric(TextBoxQt_V4.Text & "0") And
+      IsNumeric(TextBoxQt_V5.Text & "0") And
       IsNumeric(TextBoxQt_V6.Text & "0") Then
             checkValue = True
         End If
@@ -814,25 +790,25 @@ Public Class FormOffer
 
     ' value changed function
     Sub ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles _
-             DateTimePickerBom.TextChanged, _
-             ComboBoxBomCurrency.TextChanged, _
-             TextBoxNameV1.TextChanged, _
-             TextBoxNameV2.TextChanged, _
-             TextBoxNameV3.TextChanged, _
-             TextBoxNameV4.TextChanged, _
-             TextBoxNameV5.TextChanged, _
-             TextBoxNameV6.TextChanged, _
-             TextBoxQt_V1.TextChanged, _
-             TextBoxQt_V2.TextChanged, _
-             TextBoxQt_V3.TextChanged, _
-             TextBoxQt_V4.TextChanged, _
-             TextBoxQt_V5.TextChanged, _
-             TextBoxQt_V6.TextChanged, _
-             TextBoxBomTurnover.TextChanged, _
-             ComboBoxBomResult.TextChanged, _
-             ComboBoxBomStatus.TextChanged, _
-        TextBoxBomOfferLink.TextChanged, _
-        TextBoxBomName.TextChanged, _
+             DateTimePickerBom.TextChanged,
+             ComboBoxBomCurrency.TextChanged,
+             TextBoxNameV1.TextChanged,
+             TextBoxNameV2.TextChanged,
+             TextBoxNameV3.TextChanged,
+             TextBoxNameV4.TextChanged,
+             TextBoxNameV5.TextChanged,
+             TextBoxNameV6.TextChanged,
+             TextBoxQt_V1.TextChanged,
+             TextBoxQt_V2.TextChanged,
+             TextBoxQt_V3.TextChanged,
+             TextBoxQt_V4.TextChanged,
+             TextBoxQt_V5.TextChanged,
+             TextBoxQt_V6.TextChanged,
+             TextBoxBomTurnover.TextChanged,
+             ComboBoxBomResult.TextChanged,
+             ComboBoxBomStatus.TextChanged,
+        TextBoxBomOfferLink.TextChanged,
+        TextBoxBomName.TextChanged,
    TextBoxNote.TextChanged
 
         If updating = False Then
@@ -881,12 +857,11 @@ Public Class FormOffer
         If currentId() <> 0 Then
             updating = True
             updating = True
-            Dim rowShow As DataRow()
             DsBomOff.Clear()
             tblBomOff.Clear()
             AdapterBomOff.Fill(DsBomOff, "BomOffer")
             tblBomOff = DsBomOff.Tables("BomOffer")
-            rowShow = tblBomOff.Select("id = " & currentId())
+            Dim rowShow As DataRow() = tblBomOff.Select("id = " & currentId())
             If rowShow.Length > 0 Then
                 If rowShow(0).Item("eta").ToString <> "" Then
                     DateTimePickerBom.Text = DateTime.ParseExact(rowShow(0).Item("eta").ToString, "yyyy/MM/dd", CultureInfo.InvariantCulture)
@@ -919,11 +894,8 @@ Public Class FormOffer
     End Sub
 
     Function PercentComplited(ByVal name As String) As Integer
-        Dim rowShow As DataRow()
-        Dim n As Integer
         Static Dim tblOff As DataTable
         Static Dim DsOff As New DataSet
-
 
         If IsNothing(tblOff) Then
             AdapterOff.Fill(DsOff, "Offer")
@@ -931,9 +903,9 @@ Public Class FormOffer
         Else
 
             Try
-                rowShow = tblOff.Select("name = '" & name & "' and (( not Brandprice = '' or not AltPrice='') or ( (not BitronpnPrice='') and not bitronpn like 'E*'))")
+                Dim rowShow As DataRow() = tblOff.Select("name = '" & name & "' and (( not Brandprice = '' or not AltPrice='') or ( (not BitronpnPrice='') and not bitronpn like 'E*'))")
 
-                n = rowShow.Length
+                Dim n As Integer = rowShow.Length
                 rowShow = tblOff.Select("name = '" & name & "'")
                 If rowShow.Length > 0 Then PercentComplited = Int(100 * n / rowShow.Length)
                 DsOff.Dispose()
@@ -944,7 +916,7 @@ Public Class FormOffer
         End If
     End Function
 
-    Private Sub TreeViewBomList_BeforeSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewCancelEventArgs) Handles TreeViewBomList.BeforeSelect
+    Private Sub TreeViewBomList_BeforeSelect(ByVal sender As Object, ByVal e As TreeViewCancelEventArgs) Handles TreeViewBomList.BeforeSelect
         If OpenSession = True Then
             If vbYes = MsgBox("Session Open do you want Save?", MsgBoxStyle.YesNo) Then
                 ButtonBomSave_Click(Me, e)
@@ -975,13 +947,8 @@ Public Class FormOffer
 
 
     Sub ImportExcel()
-
-
         'open the offer template
-        Dim excelApp As New Object
-        excelApp = CreateObject("Excel.Application")
-        Dim excelWorkbook As Object
-        Dim excelSheet As Object
+        Dim excelApp As Object = CreateObject("Excel.Application")
         OpenFileDialog1.InitialDirectory = "c:"
         OpenFileDialog1.Filter = "Access 2007 (*.accdb)|*.accdb"
         OpenFileDialog1.ShowDialog()
@@ -989,34 +956,21 @@ Public Class FormOffer
         If OpenFileDialog1.CheckFileExists Then
 
             Try
-                excelWorkbook = excelApp.Workbooks.Open(OpenFileDialog1.FileName)
+                Dim excelWorkbook As Object = excelApp.Workbooks.Open(OpenFileDialog1.FileName)
                 excelWorkbook.Activate()
-                excelSheet = excelWorkbook.Worksheets("BOM")
+                Dim excelSheet As Object = excelWorkbook.Worksheets("BOM")
                 excelSheet.Activate()
             Catch ex As Exception
                 MsgBox(ex.Message)
             End Try
             excelApp.Visible = True
-
-
-
-
-
-
-
-
         End If
-
-
-
-
-
     End Sub
 
 
     Private Sub ButtonLoadBom_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonLoadBom.Click
 
-        Dim replaceBom As Boolean = False
+        Dim replaceBom = False
 
         If CheckBomExist(TextBoxBomName.Text, True) And Not IsNothing(TreeViewBomList.SelectedNode) Then
             MsgBox("The BOM is present in our system, please delete all component before reload!", MsgBoxStyle.Information)
@@ -1029,10 +983,8 @@ Public Class FormOffer
 
         If replaceBom And currentId() > 0 Then
 
-            Dim problem As Boolean = False, resultCheck As Boolean, firstTime As Boolean = True, qtNumeber As Integer
-            Dim bomname As String, nqt As Integer
-            Dim cmd As New MySqlCommand()
-            Dim sql As String
+            Dim firstTime = True, qtNumeber As Integer
+            Dim nqt As Integer
 
             OpenFileDialog1.InitialDirectory = "c:"
             OpenFileDialog1.Filter = "Access 2007 (*.accdb)|*.accdb"
@@ -1052,14 +1004,13 @@ Public Class FormOffer
                 Dim dtset As New DataSet
                 myadapter.Fill(dtset)
 
-                Dim tableBom As DataTable
-                tableBom = dtset.Tables("table")
+                Dim tableBom As DataTable = dtset.Tables("table")
                 Try
-                    problem = False
+                    Dim problem = False
                     ' sintax ceck
                     For Each row In tableBom.Rows
 
-                        resultCheck = CheckBrandString(s(row("brand").ToString), s(row("id").ToString))
+                        Dim resultCheck As Boolean = CheckBrandString(s(row("brand").ToString), s(row("id").ToString))
                         If resultCheck Then
 
                         Else
@@ -1075,11 +1026,11 @@ Public Class FormOffer
                         End If
 
                         nqt = 0
-                        nqt = IIf(s(row("qt_v1").ToString) <> "", 1, 0) + _
-                                      IIf(s(row("qt_v2").ToString) <> "", 1, 0) + _
-                                      IIf(s(row("qt_v3").ToString) <> "", 1, 0) + _
-                                      IIf(s(row("qt_v4").ToString) <> "", 1, 0) + _
-                                      IIf(s(row("qt_v5").ToString) <> "", 1, 0) + _
+                        nqt = IIf(s(row("qt_v1").ToString) <> "", 1, 0) +
+                                      IIf(s(row("qt_v2").ToString) <> "", 1, 0) +
+                                      IIf(s(row("qt_v3").ToString) <> "", 1, 0) +
+                                      IIf(s(row("qt_v4").ToString) <> "", 1, 0) +
+                                      IIf(s(row("qt_v5").ToString) <> "", 1, 0) +
                                       IIf(s(row("qt_v6").ToString) <> "", 1, 0)
 
                         If firstTime = True Then
@@ -1104,7 +1055,7 @@ Public Class FormOffer
                         If problem = True Then Exit For
 
                     Next
-                    bomname = TextBoxBomName.Text
+                    Dim bomname As String = TextBoxBomName.Text
                     ' Load in mysql
                     If CheckBomExist(bomname, True) = False Then
                         If problem = False Then
@@ -1115,29 +1066,29 @@ Public Class FormOffer
 
 
                                 Try
-                                    sql = "INSERT INTO `" & DBName & "`.`offer` (`BitronPN` ,`Name` ,`CustomerPN` ,`description` ,`brand` ,`brandALT`," & _
-                                    "`STATUS`,`qt_v1`,`qt_v2`,`qt_v3`,`qt_v4`,`qt_v5`,`qt_v6`,`reference`,`tum`,`noternd`,`notegeneric`,`class`,`type`) VALUES ('" & _
-                                   Replace(ReplaceChar(s(row("bitronpn").ToString)), "'", "") & "', '" & _
-                                    bomname & "', '" & _
-                                     Replace((s(row("customerpn").ToString)), "'", "") & "', '" & _
-                                     Replace((s(row("description").ToString)), "'", "") & "', '" & _
-                                     Replace(ReplaceChar(s(row("brand").ToString)), "'", "") & "', '" & _
-                                     Replace(ReplaceChar(s(row("brandALT").ToString)), "'", "") & "', '" & _
-                                    "UNCHECKED" & "', '" & _
-                                    (s(row("qt_v1").ToString)) & "', '" & _
-                                    (s(row("qt_v2").ToString)) & "', '" & _
-                                    (s(row("qt_v3").ToString)) & "', '" & _
-                                    (s(row("qt_v4").ToString)) & "', '" & _
-                                    (s(row("qt_v5").ToString)) & "', '" & _
-                                    (s(row("qt_v6").ToString)) & "', '" & _
-                                    Replace((s(row("reference").ToString)), "'", "") & "', '" & _
-                                    IIf((s(row("tum").ToString)) <> "", s(row("tum").ToString), "EA") & "', '" & _
-                                    Replace((s(row("noternd").ToString)), "'", "") & "', '" & _
-                                    Replace((s(row("notegeneric").ToString)), "'", "") & "', '" & _
-                                    Replace((s(row("ComponentClass").ToString)), "'", "") & "', '" & _
-                                    (s(row("type").ToString)) & "'" & ");"
+                                    Dim sql As String = "INSERT INTO `" & DBName & "`.`offer` (`BitronPN` ,`Name` ,`CustomerPN` ,`description` ,`brand` ,`brandALT`," &
+                                                        "`STATUS`,`qt_v1`,`qt_v2`,`qt_v3`,`qt_v4`,`qt_v5`,`qt_v6`,`reference`,`tum`,`noternd`,`notegeneric`,`class`,`type`) VALUES ('" &
+                                                        Replace(ReplaceChar(s(row("bitronpn").ToString)), "'", "") & "', '" &
+                                                        bomname & "', '" &
+                                                        Replace((s(row("customerpn").ToString)), "'", "") & "', '" &
+                                                        Replace((s(row("description").ToString)), "'", "") & "', '" &
+                                                        Replace(ReplaceChar(s(row("brand").ToString)), "'", "") & "', '" &
+                                                        Replace(ReplaceChar(s(row("brandALT").ToString)), "'", "") & "', '" &
+                                                        "UNCHECKED" & "', '" &
+                                                        (s(row("qt_v1").ToString)) & "', '" &
+                                                        (s(row("qt_v2").ToString)) & "', '" &
+                                                        (s(row("qt_v3").ToString)) & "', '" &
+                                                        (s(row("qt_v4").ToString)) & "', '" &
+                                                        (s(row("qt_v5").ToString)) & "', '" &
+                                                        (s(row("qt_v6").ToString)) & "', '" &
+                                                        Replace((s(row("reference").ToString)), "'", "") & "', '" &
+                                                        IIf((s(row("tum").ToString)) <> "", s(row("tum").ToString), "EA") & "', '" &
+                                                        Replace((s(row("noternd").ToString)), "'", "") & "', '" &
+                                                        Replace((s(row("notegeneric").ToString)), "'", "") & "', '" &
+                                                        Replace((s(row("ComponentClass").ToString)), "'", "") & "', '" &
+                                                        (s(row("type").ToString)) & "'" & ");"
 
-                                    cmd = New MySqlCommand(sql, MySqlconnection)
+                                    Dim cmd = New MySqlCommand(sql, MySqlconnection)
                                     cmd.ExecuteNonQuery()
                                 Catch ex As Exception
                                     MsgBox("Insert Error during import Access DB!")
@@ -1163,16 +1114,12 @@ Public Class FormOffer
 
     Function StatusComponent(ByVal id As Integer, Optional ByVal Update As Boolean = False) As String
         StatusComponent = "UNCHECKED"
-        Dim rowShow As DataRow()
         If Update = True Or IsNothing(tblOff) Then
-
-            Dim tblOff As DataTable
             Dim DsOff As New DataSet
             AdapterOff.Fill(DsOff, "Offer")
-            tblOff = DsOff.Tables("offer")
         End If
 
-        rowShow = tblOff.Select("id = " & id)
+        Dim rowShow As DataRow() = tblOff.Select("id = " & id)
         If rowShow.Length > 0 Then
             StatusComponent = rowShow(0).Item("status").ToString
         End If
@@ -1182,13 +1129,10 @@ Public Class FormOffer
     End Function
 
     Function CheckBomExistID(ByVal id As Long) As Boolean
-
-        Dim rowShow As DataRow()
-        Dim tblOff As DataTable
         Dim DsOff As New DataSet
         AdapterOff.Fill(DsOff, "Offer")
-        tblOff = DsOff.Tables("offer")
-        rowShow = tblOff.Select("id =" & id & "")
+        Dim tblOff As DataTable = DsOff.Tables("offer")
+        Dim rowShow As DataRow() = tblOff.Select("id =" & id & "")
         If rowShow.Length > 0 Then
             CheckBomExistID = True
         Else
@@ -1200,12 +1144,10 @@ Public Class FormOffer
 
     Function PurchSign(ByVal id As Long) As String
 
-        Dim rowShow As DataRow()
-        Dim tblOff As DataTable
         Dim DsOff As New DataSet
         AdapterOff.Fill(DsOff, "Offer")
-        tblOff = DsOff.Tables("offer")
-        rowShow = tblOff.Select("id =" & id & "")
+        Dim tblOff As DataTable = DsOff.Tables("offer")
+        Dim rowShow As DataRow() = tblOff.Select("id =" & id & "")
         If rowShow.Length > 0 Then
             PurchSign = rowShow(0).Item("PurchSign").ToString
         End If
@@ -1215,12 +1157,10 @@ Public Class FormOffer
 
     Function RndSign(ByVal id As Long) As String
 
-        Dim rowShow As DataRow()
-        Dim tblOff As DataTable
         Dim DsOff As New DataSet
         AdapterOff.Fill(DsOff, "Offer")
-        tblOff = DsOff.Tables("offer")
-        rowShow = tblOff.Select("id =" & id & "")
+        Dim tblOff As DataTable = DsOff.Tables("offer")
+        Dim rowShow As DataRow() = tblOff.Select("id =" & id & "")
         If rowShow.Length > 0 Then
             RndSign = rowShow(0).Item("RndSign").ToString
         End If
@@ -1230,7 +1170,6 @@ Public Class FormOffer
 
     Function CheckCustomerPriceExist() As Boolean
 
-        Dim rowShow As DataRow()
         Try
             DsCustomerPrice.Clear()
             tblCustomerPrice.Clear()
@@ -1239,7 +1178,7 @@ Public Class FormOffer
         End Try
         AdapterCustomerPrice.Fill(DsCustomerPrice, "CustomerPrice")
         tblCustomerPrice = DsCustomerPrice.Tables("CustomerPrice")
-        rowShow = tblCustomerPrice.Select("customer = '" & TextBoxComponentCustomer.Text & "'")
+        Dim rowShow As DataRow() = tblCustomerPrice.Select("customer = '" & TextBoxComponentCustomer.Text & "'")
         If rowShow.Length > 0 Then
             CheckCustomerPriceExist = True
         Else
@@ -1249,19 +1188,15 @@ Public Class FormOffer
     End Function
 
     Private Sub ButtonNewBom_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonNewBom.Click
-        Dim cmd As New MySqlCommand()
-        Dim sql As String, BOMNAME As String
-        BOMNAME = InputBox("Insert the Bom Name Example" & vbCrLf & "Basic Digit")
+        Dim BOMNAME As String = InputBox("Insert the Bom Name Example" & vbCrLf & "Basic Digit")
         If BOMNAME <> "" And Regex.IsMatch(BOMNAME, "^\w+[a-zA-Z0-9]$", RegexOptions.IgnoreCase) Then
             Try
-                sql = "INSERT INTO `" & (DBName) & "`.`BOMOFFER` (`Name`,`STATUS`) VALUES ('" & UCase(BOMNAME) & "', 'OPEN');"
-
-                cmd = New MySqlCommand(sql, MySqlconnection)
+                Dim sql As String = "INSERT INTO `" & (DBName) & "`.`BOMOFFER` (`Name`,`STATUS`) VALUES ('" & UCase(BOMNAME) & "', 'OPEN');"
+                Dim cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
             Catch ex As Exception
                 MsgBox("Insert Error during import Access DB!")
             End Try
-
             UpdateTreeBomOffer()
         Else
             MsgBox("Name no valid!, can use only alphanumeric char or undescore")
@@ -1269,14 +1204,9 @@ Public Class FormOffer
     End Sub
 
 
-
     ' update the form with component info
     Sub updateComponentList()
         TreeViewComponent.Nodes.Clear()
-        Dim sql As String
-        Dim rowShow As DataRow()
-
-
         Try
             tblOff.Clear()
             DsOff.Clear()
@@ -1287,22 +1217,21 @@ Public Class FormOffer
 
         Try
             TreeViewComponent.Scrollable = True
-            Dim rootNode As TreeNode
             AdapterOff.Fill(DsOff, "Offer")
             tblOff = DsOff.Tables("Offer")
-            sql = ("name = '" & TextBoxBomName.Text & IIf(IsNumeric(TextBoxComponentFilter.Text), "' and ( id=" & TextBoxComponentFilter.Text & " or ", "' and ( ") & " ( description like '*" & TextBoxComponentFilter.Text & "*' )) " & _
-            IIf(CheckBoxNoPrice.Checked = True, " and   ( ( Brandprice= '') and ( BitronpnPrice= '') and ( AltPrice= ''))", "") & _
-            IIf(CheckBoxNO_ALTP.Checked = True, " and   ( ( AltPrice= '') and ( brandalt<> '') )", "") & _
-            IIf(CheckBoxClass.Checked = True, " and  ( class= '') ", "") & _
-            IIf(CheckEstimed.Checked = True, " and (( not BitronpnPrice= '' and  Brandprice= '' and  AltPrice= '' and bitronpn like 'E*')) ", "") & _
-            IIf(CheckBoxNoCustomerPrice.Checked = True, " and ( customerPrice= '' ) ", ""))
+            Dim sql As String = ("name = '" & TextBoxBomName.Text & IIf(IsNumeric(TextBoxComponentFilter.Text), "' and ( id=" & TextBoxComponentFilter.Text & " or ", "' and ( ") & " ( description like '*" & TextBoxComponentFilter.Text & "*' )) " &
+                                 IIf(CheckBoxNoPrice.Checked = True, " and   ( ( Brandprice= '') and ( BitronpnPrice= '') and ( AltPrice= ''))", "") &
+                                 IIf(CheckBoxNO_ALTP.Checked = True, " and   ( ( AltPrice= '') and ( brandalt<> '') )", "") &
+                                 IIf(CheckBoxClass.Checked = True, " and  ( class= '') ", "") &
+                                 IIf(CheckEstimed.Checked = True, " and (( not BitronpnPrice= '' and  Brandprice= '' and  AltPrice= '' and bitronpn like 'E*')) ", "") &
+                                 IIf(CheckBoxNoCustomerPrice.Checked = True, " and ( customerPrice= '' ) ", ""))
 
-            rowShow = tblOff.Select(sql, IIf(CheckBoxBestPrice.Checked, "pricesortcny DESC, ", "") & "status")
+            Dim rowShow As DataRow() = tblOff.Select(sql, IIf(CheckBoxBestPrice.Checked, "pricesortcny DESC, ", "") & "status")
             LabelComponentFinded.Text = "Found rows: " & rowShow.Length
             TreeViewComponent.HideSelection = Not TreeViewComponent.HideSelection
             TreeViewComponent.BeginUpdate()
             For Each row In rowShow
-                rootNode = New TreeNode(row("id") & " - " & LCase(row("Description")))
+                Dim rootNode As TreeNode = New TreeNode(row("id") & " - " & LCase(row("Description")))
                 rootNode.NodeFont = New Font("courier new", 10, FontStyle.Regular)
 
                 'TreeViewComponent.ItemHeight = rootNode.NodeFont.GetHeight()
@@ -1317,12 +1246,7 @@ Public Class FormOffer
                     rootNode.NodeFont = New Font("courier new", 11, FontStyle.Bold)
                 End If
 
-
-
-
                 TreeViewComponent.Nodes.Add(rootNode)
-
-
 
                 Application.DoEvents()
             Next
@@ -1351,22 +1275,20 @@ Public Class FormOffer
         priceSensitiveChangesBrand = False
         priceSensitiveChangesBrandAlt = False
 
-        Dim rowShow As DataRow()
-        Dim tblOff As DataTable
         Dim DsOff As New DataSet
         AdapterOff.Fill(DsOff, "Offer")
-        tblOff = DsOff.Tables("Offer")
-        rowShow = tblOff.Select("id = " & id)
+        Dim tblOff As DataTable = DsOff.Tables("Offer")
+        Dim rowShow As DataRow() = tblOff.Select("id = " & id)
         If rowShow.Length = 1 Then
 
             TextBoxComponentBitronPN.Text = rowShow(0).Item("bitronpn").ToString
             TextBoxComponentCustomer.Text = rowShow(0).Item("customerpn").ToString
             TextBoxCompenentGenNote.Text = rowShow(0).Item("notegeneric").ToString
-            TextBoxComponentQT.Text = CodQt(Math.Round(Val(volumes(currentId(), "vol1") * Val((rowShow(0).Item("qt_v1").ToString)) + _
-                                           volumes(currentId(), "vol2") * Val((rowShow(0).Item("qt_v2").ToString)) + _
-                                           volumes(currentId(), "vol3") * Val((rowShow(0).Item("qt_v3").ToString)) + _
-                                           volumes(currentId(), "vol4") * Val((rowShow(0).Item("qt_v4").ToString)) + _
-                                           volumes(currentId(), "vol5") * Val((rowShow(0).Item("qt_v5").ToString)) + _
+            TextBoxComponentQT.Text = CodQt(Math.Round(Val(volumes(currentId(), "vol1") * Val((rowShow(0).Item("qt_v1").ToString)) +
+                                           volumes(currentId(), "vol2") * Val((rowShow(0).Item("qt_v2").ToString)) +
+                                           volumes(currentId(), "vol3") * Val((rowShow(0).Item("qt_v3").ToString)) +
+                                           volumes(currentId(), "vol4") * Val((rowShow(0).Item("qt_v4").ToString)) +
+                                           volumes(currentId(), "vol5") * Val((rowShow(0).Item("qt_v5").ToString)) +
                                            volumes(currentId(), "vol6") * Val((rowShow(0).Item("qt_v6").ToString))), 0))
             ComboBoxComponentTHM.Text = rowShow(0).Item("tum").ToString
             ComboBoxClass.Text = rowShow(0).Item("class").ToString
@@ -1443,34 +1365,28 @@ Public Class FormOffer
 
         End If
 
-
-
-
         updatigComponent = False
         DsOff.Dispose()
         tblOff.Dispose()
     End Sub
 
     Function VersionName(ByVal idBom As Integer, ByVal pos As Integer, Optional ByVal update As Boolean = True) As String
-        Dim rowShow As DataRow()
         If update Then
             AdapterBomOff.Fill(DsBomOffVer, "BomOffer")
             tblBomOffVer = DsBomOffVer.Tables("BomOffer")
         End If
 
-        rowShow = tblBomOffVer.Select("id = " & idBom)
+        Dim rowShow As DataRow() = tblBomOffVer.Select("id = " & idBom)
         If rowShow.Length > 0 Then
             VersionName = rowShow(0).Item("var" & pos)
         End If
     End Function
 
     Function volumes(ByVal id As Long, ByVal position As String) As Long
-        Dim rowShow As DataRow()
-        Dim tblBomOff As DataTable
         Dim DsbomOff As New DataSet
         AdapterBomOff.Fill(DsbomOff, "bomOffer")
-        tblBomOff = DsbomOff.Tables("bomoffer")
-        rowShow = tblBomOff.Select("id = " & id)
+        Dim tblBomOff As DataTable = DsbomOff.Tables("bomoffer")
+        Dim rowShow As DataRow() = tblBomOff.Select("id = " & id)
         If rowShow.Length > 0 Then volumes = Val(rowShow(0).Item(position).ToString)
     End Function
 
@@ -1506,7 +1422,7 @@ Public Class FormOffer
 
     End Sub
 
-    Private Sub TreeViewComponent_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewComponent.AfterSelect
+    Private Sub TreeViewComponent_AfterSelect(ByVal sender As Object, ByVal e As TreeViewEventArgs) Handles TreeViewComponent.AfterSelect
         afterSelectComp = True
         TreeViewComponent.Enabled = False
         CurrentComponentID = Mid(TreeViewComponent.SelectedNode.Text, 1, InStr(TreeViewComponent.SelectedNode.Text, " - "))
@@ -1518,23 +1434,21 @@ Public Class FormOffer
         TreeViewComponent.Focus()
         afterSelectComp = False
 
-
     End Sub
 
     Function LoadComboBoxComponentALTBrand(ByVal s As String) As Boolean
         ComboBoxComponentALTBrand.Items.Clear()
         ComboBoxComponentALTBrand.Text = ""
-        Dim j As Integer, i As Integer, brand As String
         LoadComboBoxComponentALTBrand = False
         If s <> "" Then
             Try
                 If Mid(s, Len(s), 1) <> ";" Then s = s & ";"
-                i = 1
-                j = InStr(s, ";", CompareMethod.Text)
+                Dim i As Integer = 1
+                Dim j As Integer = InStr(s, ";", CompareMethod.Text)
                 While j > 0
-                    brand = Mid(s, i, j - i)
+                    Dim brand As String = Mid(s, i, j - i)
                     If InStr(brand, "[", CompareMethod.Text) > 1 Then
-                        If InStr(brand, "]", CompareMethod.Text) > 3 Or ((InStr(brand, "]", CompareMethod.Text) = 3) And _
+                        If InStr(brand, "]", CompareMethod.Text) > 3 Or ((InStr(brand, "]", CompareMethod.Text) = 3) And
                                                                          (InStr(Replace(Mid(brand, i + 1, j - 1 - i), " ", ""), "GENERALBRAND", CompareMethod.Text))) Then
                             If InStr(brand, "]", CompareMethod.Text) = Len(brand) Then
                                 ComboBoxComponentALTBrand.Items.Add(Replace(Mid(s, i, j - i), ";", ""))
@@ -1566,17 +1480,16 @@ Public Class FormOffer
     Function LoadComboBoxComponentBrand(ByVal s As String) As Boolean
         ComboBoxComponentBrand.Items.Clear()
         ComboBoxComponentBrand.Text = ""
-        Dim j As Integer, i As Integer, brand As String
         LoadComboBoxComponentBrand = False
         If s <> "" Then
             Try
                 If Mid(s, Len(s), 1) <> ";" Then s = s & ";"
-                i = 1
-                j = InStr(s, ";", CompareMethod.Text)
+                Dim i As Integer = 1
+                Dim j As Integer = InStr(s, ";", CompareMethod.Text)
                 While j > 0
-                    brand = Mid(s, i, j - i)
+                    Dim brand As String = Mid(s, i, j - i)
                     If InStr(brand, "[", CompareMethod.Text) > 1 Then
-                        If InStr(brand, "]", CompareMethod.Text) > 3 Or ((InStr(brand, "]", CompareMethod.Text) = 3) And _
+                        If InStr(brand, "]", CompareMethod.Text) > 3 Or ((InStr(brand, "]", CompareMethod.Text) = 3) And
                                                                          (InStr(Replace(Mid(brand, i + 1, j - 1 - i), " ", ""), "GENERALBRAND", CompareMethod.Text))) Then
                             If InStr(brand, "]", CompareMethod.Text) = Len(brand) Then
                                 ComboBoxComponentBrand.Items.Add(Replace(Mid(s, i, j - i), ";", ""))
@@ -1607,17 +1520,13 @@ Public Class FormOffer
     End Function
 
     Private Sub ButtonNewComponent_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonComponentAdd.Click
-        Dim cmd As New MySqlCommand()
-        Dim sql As String
-        Dim descr As String
-        descr = InputBox("Insert Description")
+        Dim descr As String = InputBox("Insert Description")
         If descr <> "" Then
             Try
-                sql = "INSERT INTO `" & DBName & "`.`offer` (`description` ,`Name` ) VALUES ('" & _
-                descr & "', '" & TextBoxBomName.Text & "');"
-                cmd = New MySqlCommand(sql, MySqlconnection)
+                Dim sql As String = "INSERT INTO `" & DBName & "`.`offer` (`description` ,`Name` ) VALUES ('" &
+                                    descr & "', '" & TextBoxBomName.Text & "');"
+                Dim cmd As MySqlCommand = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
-
                 MsgBox("Component insert, please fill all needs info")
                 updateComponentList()
                 'ValueChangedComponent(Me, e)
@@ -1632,15 +1541,13 @@ Public Class FormOffer
 
     Private Sub ButtonComponentDelete_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonComponentDelete.Click
 
-        Dim cmd As New MySqlCommand()
-        Dim sql As String
         If Not IsNothing(TreeViewComponent.SelectedNode) Then
             Dim id As Long = Mid(TreeViewComponent.SelectedNode.Text, 1, InStr(TreeViewComponent.SelectedNode.Text, "-") - 2)
             If vbYes = MsgBox("Do you want delete this component?", MsgBoxStyle.YesNo) Then
                 If (session("offer", id, False) = "RESET") Then
                     Try
-                        sql = "DELETE FROM `" & DBName & "`.`offer` WHERE `offer`.`id` = " & id
-                        cmd = New MySqlCommand(sql, MySqlconnection)
+                        Dim sql As String = "DELETE FROM `" & DBName & "`.`offer` WHERE `offer`.`id` = " & id
+                        Dim cmd = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
                         MsgBox("Component deleted")
                         updateComponentList()
@@ -1675,9 +1582,8 @@ Public Class FormOffer
 
 
     Private Sub ButtonBrandAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBrandAdd.Click
-        Dim brand As String
 
-        brand = UCase(ReplaceChar(InputBox("Please insert Brand example: ST[1n4148]")))
+        Dim brand As String = UCase(ReplaceChar(InputBox("Please insert Brand example: ST[1n4148]")))
         If brand <> "" And CheckBrandString(brand, 0) And Not ComboBrandContain(brand) Then
             If Not ComboBrandAltContain(brand) Then
                 ComboBoxComponentBrand.Items.Add(ReplaceChar(brand))
@@ -1691,8 +1597,7 @@ Public Class FormOffer
     End Sub
 
     Private Sub ButtonAltAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAltAdd.Click
-        Dim brand As String
-        brand = InputBox("Please insert Brand example: ST[1n4148]")
+        Dim brand As String = InputBox("Please insert Brand example: ST[1n4148]")
         If InStr(brand, "GENERAL", CompareMethod.Text) <= 0 Then
             brand = UCase(ReplaceChar(brand))
         Else
@@ -1741,40 +1646,40 @@ Public Class FormOffer
 
     ' value changed function
     Sub ValueChangedComponent(ByVal sender As Object, ByVal e As EventArgs) Handles _
-        TextBoxCompenentGenNote.TextChanged, _
-        TextBoxComponentBitronPN.TextChanged, _
-        TextBoxComponentCustomer.TextChanged, _
-        TextBoxComponentDescription.TextChanged, _
-        TextBoxComponentEstimation.TextChanged, _
-        TextBoxComponentPrice.TextChanged, _
-        TextBoxComponentCustomerPrice.TextChanged, _
-        TextBoxComponentPriceAlt.TextChanged, _
-        TextBoxComponentPurchNote.TextChanged, _
-        TextBoxComponentRNDNote.TextChanged, _
-        TextBoxComponentReference.TextChanged, _
-        TextBoxComponentqt1.TextChanged, _
-        TextBoxComponentqt2.TextChanged, _
-        TextBoxComponentqt3.TextChanged, _
-        TextBoxComponentqt4.TextChanged, _
-        TextBoxComponentqt5.TextChanged, _
-        TextBoxComponentqt6.TextChanged, _
-        ComboBoxComponentTHM.TextChanged, _
-        ComboBoxClass.TextChanged, _
-        TextBoxComponentDS.TextChanged, _
-        ComboBoxCompoentType.TextChanged, _
-        ComboBoxComponentEstimation.TextChanged, _
-        ComboBoxComponentPrice.TextChanged, _
-        ComboBoxComponentPriceAlt.TextChanged, _
-        ComboBoxComponentCustomerCurrency.TextChanged, _
+        TextBoxCompenentGenNote.TextChanged,
+        TextBoxComponentBitronPN.TextChanged,
+        TextBoxComponentCustomer.TextChanged,
+        TextBoxComponentDescription.TextChanged,
+        TextBoxComponentEstimation.TextChanged,
+        TextBoxComponentPrice.TextChanged,
+        TextBoxComponentCustomerPrice.TextChanged,
+        TextBoxComponentPriceAlt.TextChanged,
+        TextBoxComponentPurchNote.TextChanged,
+        TextBoxComponentRNDNote.TextChanged,
+        TextBoxComponentReference.TextChanged,
+        TextBoxComponentqt1.TextChanged,
+        TextBoxComponentqt2.TextChanged,
+        TextBoxComponentqt3.TextChanged,
+        TextBoxComponentqt4.TextChanged,
+        TextBoxComponentqt5.TextChanged,
+        TextBoxComponentqt6.TextChanged,
+        ComboBoxComponentTHM.TextChanged,
+        ComboBoxClass.TextChanged,
+        TextBoxComponentDS.TextChanged,
+        ComboBoxCompoentType.TextChanged,
+        ComboBoxComponentEstimation.TextChanged,
+        ComboBoxComponentPrice.TextChanged,
+        ComboBoxComponentPriceAlt.TextChanged,
+        ComboBoxComponentCustomerCurrency.TextChanged,
         TextBoxComponentStatus.TextChanged
         TextBoxComponentBitronPN.Text = Replace(TextBoxComponentBitronPN.Text, "'", "")
 
 
-        If updatigComponent = False And (sender.name = ComboBoxComponentPriceAlt.Name Or _
-            sender.name = ComboBoxComponentPrice.Name Or _
-            sender.name = TextBoxComponentPrice.Name Or _
-            sender.name = TextBoxComponentPriceAlt.Name Or _
-            sender.name = TextBoxComponentEstimation.Name Or _
+        If updatigComponent = False And (sender.name = ComboBoxComponentPriceAlt.Name Or
+            sender.name = ComboBoxComponentPrice.Name Or
+            sender.name = TextBoxComponentPrice.Name Or
+            sender.name = TextBoxComponentPriceAlt.Name Or
+            sender.name = TextBoxComponentEstimation.Name Or
             sender.name = ComboBoxComponentEstimation.Name) Then
             TextBoxComponentCustomerPrice.Text = ""
             ComboBoxComponentCustomerCurrency.Text = ""
@@ -1846,19 +1751,16 @@ Public Class FormOffer
         updateComponentList()
     End Sub
 
-
     Private Sub ButtonBomRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBomRemove.Click
 
-        Dim cmd As New MySqlCommand()
-        Dim sql As String
         If vbYes = MsgBox("Do you want delete this bom?", MsgBoxStyle.YesNo) Then
             If CheckBomExist(TextBoxBomName.Text, True) Then
                 MsgBox("The bom " & TextBoxBomName.Text & " has component. Please delete all component before delete bom ")
             Else
                 If (session("bomoffer", currentId, False) = "RESET") Then
                     Try
-                        sql = "DELETE FROM `" & DBName & "`.`bomoffer` WHERE `bomoffer`.`id` = " & currentId()
-                        cmd = New MySqlCommand(sql, MySqlconnection)
+                        Dim sql As String = "DELETE FROM `" & DBName & "`.`bomoffer` WHERE `bomoffer`.`id` = " & currentId()
+                        Dim cmd = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
                         MsgBox("Bom deleted!")
                         UpdateTreeBomOffer()
@@ -1913,26 +1815,15 @@ Public Class FormOffer
             End If
             priceSensitiveChangesBrandAlt = False
 
-
-
-
-
-
-
             If PriceConsistance() = True Then
                 Dim id As Long = Mid(TreeViewComponent.SelectedNode.Text, 1, InStr(TreeViewComponent.SelectedNode.Text, "-") - 2)
 
                 If DeltaSessionTime("Offer", id) <= 30 And session("Offer", id, False) = "RESET" Then
-
-
-
                     ' price association
 
                     If controlRight("U") >= 2 Then PriceAssociation()
-
-
                     ' price customer            
-                    Dim BaseSelected As String = ""
+                    Dim BaseSelected = ""
                     If InStr(ComboBoxComponentProposalCustomer.Text, "BrandAlt") > 0 Then
 
                         BaseSelected = "BRANDALT"
@@ -1947,54 +1838,48 @@ Public Class FormOffer
                     End If
 
                     TextBoxComponentSession.Text = ""
-                    Dim cmd As New MySqlCommand()
-                    Dim sql As String
                     Try
-                        sql = "UPDATE `" & DBName & "`.`offer` SET " & _
-                        "`notegeneric` = '" & Replace(TextBoxCompenentGenNote.Text, "'", "") & _
-                        "',`bitronpn` = '" & Replace(TextBoxComponentBitronPN.Text, "'", "") & _
-                        "',`customerpn` = '" & Replace(TextBoxComponentCustomer.Text, "'", "") & _
-                        "',`description` = '" & UCase(Replace(TextBoxComponentDescription.Text, "'", "")) & _
-                        "',`BitronpnPrice` = '" & IIf(TextBoxComponentEstimation.Text <> "", Replace(Math.Round(Val(TextBoxComponentEstimation.Text), 5), ",", "."), "") & _
-                        "',`Brandprice` = '" & IIf(TextBoxComponentPrice.Text <> "", Replace(Math.Round(Val(TextBoxComponentPrice.Text), 5), ",", "."), "") & _
-                        "',`AltPrice` = '" & IIf(TextBoxComponentPriceAlt.Text <> "", Replace(Math.Round(Val(TextBoxComponentPriceAlt.Text), 5), ",", "."), "") & _
-                        "',`customerPrice` = '" & IIf(Price_modified, "", IIf(TextBoxComponentCustomerPrice.Text <> "", Replace(Math.Round(Val(TextBoxComponentCustomerPrice.Text), 5), ",", "."), "")) & _
-                        "',`notepurchasing` = '" & Replace(TextBoxComponentPurchNote.Text, "'", "") & _
-                        "',`qt_v1` = '" & TextBoxComponentqt1.Text & _
-                        "',`qt_v2` = '" & TextBoxComponentqt2.Text & _
-                        "',`qt_v3` = '" & TextBoxComponentqt3.Text & _
-                        "',`qt_v4` = '" & TextBoxComponentqt4.Text & _
-                        "',`qt_v5` = '" & TextBoxComponentqt5.Text & _
-                        "',`qt_v6` = '" & TextBoxComponentqt6.Text & _
-                        "',`Brandcurrency` = '" & ComboBoxComponentPrice.Text & _
-                        "',`class` = '" & ComboBoxClass.Text & _
-                        "',`brandalt` = '" & UCase(Replace(StringBrandAlt(), "'", "")) & _
-                        "',`DSlink` = '" & Replace((TextBoxComponentDS.Text), "\", "\\") & _
-                        "',`brand` = '" & UCase(Replace(StringBrand(), "'", "")) & _
-                        IIf(controlRight("U") >= 2, "',`purchSign` = '" & PurchSign(id) & " - " & CreAccount.strUserName & "[" & date_to_string(Today) & "]", "") & _
-                        IIf(controlRight("R") >= 2, "',`rndSign` = '" & RndSign(id) & " - " & CreAccount.strUserName & "[" & date_to_string(Today) & "]", "") & _
-                        "',`AltCurrency` = '" & ComboBoxComponentPriceAlt.Text & _
-                        "',`CustomerCurrency` = '" & IIf(Price_modified, "", ComboBoxComponentCustomerCurrency.Text) & _
-                        "',`BitronpnCurrency` = '" & ComboBoxComponentEstimation.Text & _
-                        "',`reference` = '" & Replace(TextBoxComponentReference.Text, "'", "") & _
-                        "',`tum` = '" & ComboBoxComponentTHM.Text & _
-                        "',`CustomerPriceBased` = '" & BaseSelected & _
-                        "',`type` = '" & ComboBoxCompoentType.Text & _
-                        "',`status` = '" & StatusCalc() & _
-                        "',`noternd` = '" & Replace(TextBoxComponentRNDNote.Text, "'", "") & "' WHERE `Offer`.`id` = " & id & " ;"
+                        Dim sql As String = "UPDATE `" & DBName & "`.`offer` SET " &
+                                            "`notegeneric` = '" & Replace(TextBoxCompenentGenNote.Text, "'", "") &
+                                            "',`bitronpn` = '" & Replace(TextBoxComponentBitronPN.Text, "'", "") &
+                                            "',`customerpn` = '" & Replace(TextBoxComponentCustomer.Text, "'", "") &
+                                            "',`description` = '" & UCase(Replace(TextBoxComponentDescription.Text, "'", "")) &
+                                            "',`BitronpnPrice` = '" & IIf(TextBoxComponentEstimation.Text <> "", Replace(Math.Round(Val(TextBoxComponentEstimation.Text), 5), ",", "."), "") &
+                                            "',`Brandprice` = '" & IIf(TextBoxComponentPrice.Text <> "", Replace(Math.Round(Val(TextBoxComponentPrice.Text), 5), ",", "."), "") &
+                                            "',`AltPrice` = '" & IIf(TextBoxComponentPriceAlt.Text <> "", Replace(Math.Round(Val(TextBoxComponentPriceAlt.Text), 5), ",", "."), "") &
+                                            "',`customerPrice` = '" & IIf(Price_modified, "", IIf(TextBoxComponentCustomerPrice.Text <> "", Replace(Math.Round(Val(TextBoxComponentCustomerPrice.Text), 5), ",", "."), "")) &
+                                            "',`notepurchasing` = '" & Replace(TextBoxComponentPurchNote.Text, "'", "") &
+                                            "',`qt_v1` = '" & TextBoxComponentqt1.Text &
+                                            "',`qt_v2` = '" & TextBoxComponentqt2.Text &
+                                            "',`qt_v3` = '" & TextBoxComponentqt3.Text &
+                                            "',`qt_v4` = '" & TextBoxComponentqt4.Text &
+                                            "',`qt_v5` = '" & TextBoxComponentqt5.Text &
+                                            "',`qt_v6` = '" & TextBoxComponentqt6.Text &
+                                            "',`Brandcurrency` = '" & ComboBoxComponentPrice.Text &
+                                            "',`class` = '" & ComboBoxClass.Text &
+                                            "',`brandalt` = '" & UCase(Replace(StringBrandAlt(), "'", "")) &
+                                            "',`DSlink` = '" & Replace((TextBoxComponentDS.Text), "\", "\\") &
+                                            "',`brand` = '" & UCase(Replace(StringBrand(), "'", "")) &
+                                            IIf(controlRight("U") >= 2, "',`purchSign` = '" & PurchSign(id) & " - " & CreAccount.strUserName & "[" & date_to_string(Today) & "]", "") &
+                                            IIf(controlRight("R") >= 2, "',`rndSign` = '" & RndSign(id) & " - " & CreAccount.strUserName & "[" & date_to_string(Today) & "]", "") &
+                                            "',`AltCurrency` = '" & ComboBoxComponentPriceAlt.Text &
+                                            "',`CustomerCurrency` = '" & IIf(Price_modified, "", ComboBoxComponentCustomerCurrency.Text) &
+                                            "',`BitronpnCurrency` = '" & ComboBoxComponentEstimation.Text &
+                                            "',`reference` = '" & Replace(TextBoxComponentReference.Text, "'", "") &
+                                            "',`tum` = '" & ComboBoxComponentTHM.Text &
+                                            "',`CustomerPriceBased` = '" & BaseSelected &
+                                            "',`type` = '" & ComboBoxCompoentType.Text &
+                                            "',`status` = '" & StatusCalc() &
+                                            "',`noternd` = '" & Replace(TextBoxComponentRNDNote.Text, "'", "") & "' WHERE `Offer`.`id` = " & id & " ;"
 
-                        cmd = New MySqlCommand(sql, MySqlconnection)
+                        Dim cmd = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
-
 
                         If TextBoxComponentStatus.Text = ("PRICE OK") Then TreeViewComponent.SelectedNode.ForeColor = Color.Green
                         If TextBoxComponentStatus.Text = ("R&D CHEKED") Then TreeViewComponent.SelectedNode.ForeColor = Color.Blue
                         If TextBoxComponentStatus.Text = ("PRICE ASKED") Then TreeViewComponent.SelectedNode.ForeColor = Color.Brown
                         If TextBoxComponentStatus.Text = ("UNCHECKED") Then TreeViewComponent.SelectedNode.ForeColor = Color.Black
                         If TextBoxComponentStatus.Text = ("R&D MODIFIED") Then TreeViewComponent.SelectedNode.ForeColor = Color.Red
-
-
-
 
                     Catch ex As Exception
                         MsgBox("Mysql update query error!" & ex.Message)
@@ -2024,7 +1909,7 @@ Public Class FormOffer
 
         If controlRight("R") >= 2 Then
 
-            If (Not onlyType) And (StatusComponent(id) = ("PRICE OK") Or StatusComponent(id) = ("PRICE ASKED")) And ComponentSession And _
+            If (Not onlyType) And (StatusComponent(id) = ("PRICE OK") Or StatusComponent(id) = ("PRICE ASKED")) And ComponentSession And
             TextBoxComponentCustomerPrice.Text & TextBoxComponentPrice.Text & TextBoxComponentPriceAlt.Text & TextBoxComponentEstimation.Text <> "" And NoStatusChange = False Then
                 If vbYes = MsgBox("Do you want change in R&D MODIFIED? if chenges is related to price is mandatory modify the status!", vbYesNo) Then
                     StatusCalc = ("R&D MODIFIED")
@@ -2038,7 +1923,7 @@ Public Class FormOffer
 
         ElseIf controlRight("U") >= 2 Then
 
-            If TextBoxComponentCustomerPrice.Text & TextBoxComponentCustomerPrice.Text & TextBoxComponentPriceAlt.Text & TextBoxComponentEstimation.Text <> "" And _
+            If TextBoxComponentCustomerPrice.Text & TextBoxComponentCustomerPrice.Text & TextBoxComponentPriceAlt.Text & TextBoxComponentEstimation.Text <> "" And
                 TextBoxComponentStatus.Text = "R&D CHEKED" And StatusComponent(id) <> "R&D CHEKED" Then
                 If vbYes = MsgBox("Need delete all price for perform this operation! do you want do it?", MsgBoxStyle.YesNo) Then
                     TextBoxComponentCustomerPrice.Text = ""
@@ -2069,7 +1954,7 @@ Public Class FormOffer
             Else
                 StatusCalc = TextBoxComponentStatus.Text
             End If
-            If InStr(TextBoxComponentBitronPN.Text, "Price_Est_", CompareMethod.Text) > 0 Or (Mid(TextBoxComponentBitronPN.Text, 1, 1) = "E" And _
+            If InStr(TextBoxComponentBitronPN.Text, "Price_Est_", CompareMethod.Text) > 0 Or (Mid(TextBoxComponentBitronPN.Text, 1, 1) = "E" And
                TextBoxComponentPrice.Text & TextBoxComponentEstimation.Text = "") Then StatusCalc = "ESTIMED"
         Else
             ' no acces for this kind of user
@@ -2077,28 +1962,23 @@ Public Class FormOffer
 
     End Function
 
-
-
-
-
     Function PriceConsistance() As Boolean
         PriceConsistance = True
-        If (ComboBoxComponentPrice.Text <> "" And TextBoxComponentPrice.Text = "") Or _
-        (ComboBoxComponentPrice.Text = "" And TextBoxComponentPrice.Text <> "") Or _
-        (ComboBoxComponentPriceAlt.Text <> "" And TextBoxComponentPriceAlt.Text = "") Or _
-        (ComboBoxComponentPriceAlt.Text = "" And TextBoxComponentPriceAlt.Text <> "") Or _
-        (ComboBoxComponentEstimation.Text <> "" And TextBoxComponentEstimation.Text = "") Or _
-        (ComboBoxComponentEstimation.Text = "" And TextBoxComponentEstimation.Text <> "") Or _
-        (ComboBoxComponentCustomerCurrency.Text = "" And TextBoxComponentCustomerPrice.Text <> "") Or _
-        (ComboBoxComponentCustomerCurrency.Text <> "" And TextBoxComponentCustomerPrice.Text = "") Or _
-        (TextBoxComponentDescription.Text = "" And ComboBoxComponentALTBrand.Text = "" And TextBoxComponentBitronPN.Text = "" And ComboBoxComponentBrand.Text = "" And TextBoxComponentPrice.Text <> "") Or _
-        (ComboBoxComponentALTBrand.Text = "" And TextBoxComponentPriceAlt.Text <> "") Or _
-        (TextBoxComponentPrice.Text <> "" And ComboBoxComponentBrand.Text = "") Or _
-        (TextBoxComponentEstimation.Text <> "" And TextBoxComponentBitronPN.Text = "") Or _
+        If (ComboBoxComponentPrice.Text <> "" And TextBoxComponentPrice.Text = "") Or
+        (ComboBoxComponentPrice.Text = "" And TextBoxComponentPrice.Text <> "") Or
+        (ComboBoxComponentPriceAlt.Text <> "" And TextBoxComponentPriceAlt.Text = "") Or
+        (ComboBoxComponentPriceAlt.Text = "" And TextBoxComponentPriceAlt.Text <> "") Or
+        (ComboBoxComponentEstimation.Text <> "" And TextBoxComponentEstimation.Text = "") Or
+        (ComboBoxComponentEstimation.Text = "" And TextBoxComponentEstimation.Text <> "") Or
+        (ComboBoxComponentCustomerCurrency.Text = "" And TextBoxComponentCustomerPrice.Text <> "") Or
+        (ComboBoxComponentCustomerCurrency.Text <> "" And TextBoxComponentCustomerPrice.Text = "") Or
+        (TextBoxComponentDescription.Text = "" And ComboBoxComponentALTBrand.Text = "" And TextBoxComponentBitronPN.Text = "" And ComboBoxComponentBrand.Text = "" And TextBoxComponentPrice.Text <> "") Or
+        (ComboBoxComponentALTBrand.Text = "" And TextBoxComponentPriceAlt.Text <> "") Or
+        (TextBoxComponentPrice.Text <> "" And ComboBoxComponentBrand.Text = "") Or
+        (TextBoxComponentEstimation.Text <> "" And TextBoxComponentBitronPN.Text = "") Or
         (TextBoxComponentPriceAlt.Text <> "" And ComboBoxComponentALTBrand.Text = "") Then
             PriceConsistance = False
         End If
-
 
     End Function
 
@@ -2160,14 +2040,11 @@ Public Class FormOffer
         Dim rowShow As DataRow()
         If ComboBoxComponentBrand.Text <> "" Or ComboBoxComponentALTBrand.Text <> "" Or TextBoxComponentBitronPN.Text <> "" Then
 
-            Dim tblBrand As DataTable
             Dim DsBrand As New DataSet
-            Dim Ass As Integer
-
 
             ' Search Brand corrispondence
             AdapterBrand.Fill(DsBrand, "Brand")
-            tblBrand = DsBrand.Tables("Brand")
+            Dim tblBrand As DataTable = DsBrand.Tables("Brand")
             rowShow = tblBrand.Select("Brand = '" & ReplaceCharBrandOC(ComboBoxComponentBrand.Text) & "'")
             For Each row In rowShow
                 ComboBoxComponentProposalBrand.Items.Add(row("Price") & " - " & row("Currency") & "  Qt/y " & Math.Round(Val(row("qt")), 5) & "  Date " & row("date"))
@@ -2184,7 +2061,7 @@ Public Class FormOffer
             ' Search PFP corrispondence
             If InStr(TextBoxComponentBitronPN.Text, "price_est_", CompareMethod.Text) <= 0 Then
                 rowShow = tblPfp.Select("pfidf = '" & Replace(ReplaceChar(TextBoxComponentBitronPN.Text), "E", "") & "'  and  pedfi = '0'", "pfpan desc,  pfpaf desc, pedin")
-                Ass = 0
+                Dim Ass As Integer = 0
                 For Each row In rowShow
                     If (Val(row("pfpan")) + Val(row("pfpaf"))) <> 0 Then
                         ComboBoxComponentProposalPFP.Items.Add(ConvPrice(row("pepre"), row("pelot")) & " - " & row("peval") & "  Date " & row("pedin"))
@@ -2267,7 +2144,6 @@ Public Class FormOffer
         Application.DoEvents()
     End Sub
 
-
     Function PerCnvCustomerPrice(ByVal cust As String, ByVal price As String, ByVal cur As String) As Double
         Try
             Dim percCust As Double = Val(Mid(ParameterTable(cust), 1, InStr(ParameterTable(cust), ";") - 1))
@@ -2282,7 +2158,6 @@ Public Class FormOffer
         Catch ex As Exception
 
         End Try
-
 
     End Function
 
@@ -2351,15 +2226,11 @@ Public Class FormOffer
 
         End Try
 
-
-
         AdapterBrand.Fill(DsBrand, "Brand")
         tblBrand = DsBrand.Tables("Brand")
 
         AdapterCustomerPrice.Fill(DsCustomerPrice, "CustomerPrice")
         tblCustomerPrice = DsCustomerPrice.Tables("CustomerPrice")
-
-
 
         If CheckBox1.Checked = False Then
 
@@ -2370,12 +2241,12 @@ Public Class FormOffer
                     If vbYes = MsgBox("Do you want make association beetwen :" & vbCrLf & vbCrLf & ComboBoxComponentBrand.Text & vbCrLf & vbCrLf & " and price : " & vbCrLf & vbCrLf & Math.Round(Val(TextBoxComponentPrice.Text), 5) & " " & ComboBoxComponentPrice.Text, MsgBoxStyle.YesNo, "Brand Association") Then
 
                         Try
-                            sql = "INSERT INTO `" & DBName & "`.`Brand` (`brand` ,`price`,`qt`,`date`,`buyer`,`currency` ) VALUES ('" & _
-                            ReplaceCharBrandOC(ComboBoxComponentBrand.Text) & "', '" & _
-                            Replace(Math.Round(Val(TextBoxComponentPrice.Text), 5), ",", ".") & "', '" & _
-                            DecQt(TextBoxComponentQT.Text) & "', '" & _
-                            date_to_string(Now) & "', '" & _
-                            CreAccount.strUserName & "', '" & _
+                            sql = "INSERT INTO `" & DBName & "`.`Brand` (`brand` ,`price`,`qt`,`date`,`buyer`,`currency` ) VALUES ('" &
+                            ReplaceCharBrandOC(ComboBoxComponentBrand.Text) & "', '" &
+                            Replace(Math.Round(Val(TextBoxComponentPrice.Text), 5), ",", ".") & "', '" &
+                            DecQt(TextBoxComponentQT.Text) & "', '" &
+                            date_to_string(Now) & "', '" &
+                            CreAccount.strUserName & "', '" &
                             ComboBoxComponentPrice.Text & "');"
                             cmd = New MySqlCommand(sql, MySqlconnection)
                             cmd.ExecuteNonQuery()
@@ -2387,7 +2258,7 @@ Public Class FormOffer
                         End Try
                     End If
                 ElseIf rowShow.Length = 1 Then
-                    If ComboBoxComponentPrice.Text = rowShow(0).Item("CURRENCY").ToString And _
+                    If ComboBoxComponentPrice.Text = rowShow(0).Item("CURRENCY").ToString And
                           rowShow(0).Item("Price").ToString = Math.Round(Val(TextBoxComponentPrice.Text), 5) Then
                     Else
                         MsgBox("One Brand-Price part already present in DB, please edit it in Brand section if you want change price or add others price quantity. Association not established", MsgBoxStyle.Information)
@@ -2400,19 +2271,19 @@ Public Class FormOffer
 
             ' alternative 
             If TextBoxComponentPriceAlt.Text <> "" And ComboBoxComponentALTBrand.Text <> "" And InStr(ComboBoxComponentALTBrand.Text, "TBD") <= 0 And InStr(ComboBoxComponentALTBrand.Text, "PACKAGE") <= 0 Then
-                rowShow = tblBrand.Select("Brand = '" & ReplaceCharBrandOC(ComboBoxComponentALTBrand.Text) & "' and currency ='" & ComboBoxComponentPriceAlt.Text & _
+                rowShow = tblBrand.Select("Brand = '" & ReplaceCharBrandOC(ComboBoxComponentALTBrand.Text) & "' and currency ='" & ComboBoxComponentPriceAlt.Text &
                                   "' and price = '" & Math.Round(Val(TextBoxComponentPriceAlt.Text), 5) & "'")
                 If rowShow.Length = 0 Then
-                    If vbYes = MsgBox("Do you want make association beetwen :" & vbCrLf & vbCrLf & ComboBoxComponentALTBrand.Text & vbCrLf & vbCrLf & " and price : " & _
+                    If vbYes = MsgBox("Do you want make association beetwen :" & vbCrLf & vbCrLf & ComboBoxComponentALTBrand.Text & vbCrLf & vbCrLf & " and price : " &
                                       vbCrLf & vbCrLf & Math.Round(Val(TextBoxComponentPriceAlt.Text), 5) & " " & ComboBoxComponentPriceAlt.Text, MsgBoxStyle.YesNo, "Alternative Brand Association") Then
 
                         Try
-                            sql = "INSERT INTO `" & DBName & "`.`Brand` (`brand` ,`price`,`qt`,`date`,`buyer`,`currency`) VALUES ('" & _
-                            ReplaceCharBrandOC(ComboBoxComponentALTBrand.Text) & "', '" & _
-                            Replace(Math.Round(Val(TextBoxComponentPriceAlt.Text), 5), ",", ".") & "', '" & _
-                            DecQt(TextBoxComponentQT.Text) & "', '" & _
-                            date_to_string(Now) & "', '" & _
-                            CreAccount.strUserName & "', '" & _
+                            sql = "INSERT INTO `" & DBName & "`.`Brand` (`brand` ,`price`,`qt`,`date`,`buyer`,`currency`) VALUES ('" &
+                            ReplaceCharBrandOC(ComboBoxComponentALTBrand.Text) & "', '" &
+                            Replace(Math.Round(Val(TextBoxComponentPriceAlt.Text), 5), ",", ".") & "', '" &
+                            DecQt(TextBoxComponentQT.Text) & "', '" &
+                            date_to_string(Now) & "', '" &
+                            CreAccount.strUserName & "', '" &
                             ComboBoxComponentPriceAlt.Text & "');"
                             cmd = New MySqlCommand(sql, MySqlconnection)
                             cmd.ExecuteNonQuery()
@@ -2429,86 +2300,78 @@ Public Class FormOffer
         End If
 
         ' price customer            
-        Dim ref As String = "", BaseSelected As String = ""
+        Dim ref = ""
         If InStr(ComboBoxComponentProposalCustomer.Text, "BrandAlt") > 0 Then
             If ref = "" Then ref = collectCombo(ComboBoxComponentALTBrand)
-            BaseSelected = "BRANDALT"
         ElseIf InStr(ComboBoxComponentProposalCustomer.Text, "BitronPN") > 0 And InStr(TextBoxComponentBitronPN.Text, "E", CompareMethod.Text) <= 0 Then
             ref = TextBoxComponentBitronPN.Text
-            BaseSelected = "BITRON_PN"
         ElseIf InStr(ComboBoxComponentProposalCustomer.Text, "Brand") > 0 Then
             ref = collectCombo(ComboBoxComponentBrand)
-            BaseSelected = "BRAND"
         Else
             If Replace(TextBoxComponentBitronPN.Text, "E", "") <> "" And Mid(TextBoxComponentBitronPN.Text, 1, 1) <> "E" Then
                 ref = Replace(TextBoxComponentBitronPN.Text, "E", "")
-                BaseSelected = "BITRON_PN"
             ElseIf collectCombo(ComboBoxComponentALTBrand) <> "" Then
                 If ref = "" Then ref = collectCombo(ComboBoxComponentALTBrand)
-                BaseSelected = "BRANDALT"
 
             ElseIf collectCombo(ComboBoxComponentBrand) <> "" Then
                 ref = collectCombo(ComboBoxComponentBrand)
-                BaseSelected = "BRAND"
             Else
                 MsgBox("Please fill at least of field for correct association of customer price! ")
             End If
 
         End If
 
+        Dim price As String = TextBoxComponentCustomerPrice.Text
+        Dim currency As String = ComboBoxComponentCustomerCurrency.Text
+        Dim perc As Single = 0
+        Try
+            perc = Val(Mid(ParameterTable(ComboBoxCustomer.Text), 1, InStr(ParameterTable(ComboBoxCustomer.Text), ";") - 1))
+        Catch ex As Exception
+
+        End Try
+
+        If price <> "" And currency <> "" And ref <> "" And InStr(ref, "TBD") <= 0 And InStr(ref, "PACKAGE") <= 0 And perc > 0 Then
+
+            rowShow = tblCustomerPrice.Select("customer = '" & ComboBoxCustomer.Text & "' and currency ='" & currency &
+                              "' and price = '" & Math.Round(Val(TextBoxComponentCustomerPrice.Text), 5) & "' and partnumber ='" & ref & "'")
+            If rowShow.Length = 0 Then
+                If vbYes = MsgBox("Do you want make association beetwen :" & vbCrLf & vbCrLf & ref & vbCrLf & vbCrLf & " and price : " &
+                                  vbCrLf & vbCrLf & Math.Round(Val(price), 5) & " " & currency, MsgBoxStyle.YesNo, "Customer Price Association") Then
 
 
-            Dim price As String = TextBoxComponentCustomerPrice.Text
-            Dim currency As String = ComboBoxComponentCustomerCurrency.Text
-            Dim perc As Single = 0
-            Try
-                perc = Val(Mid(ParameterTable(ComboBoxCustomer.Text), 1, InStr(ParameterTable(ComboBoxCustomer.Text), ";") - 1))
-            Catch ex As Exception
-
-            End Try
-
-            If price <> "" And currency <> "" And ref <> "" And InStr(ref, "TBD") <= 0 And InStr(ref, "PACKAGE") <= 0 And perc > 0 Then
-
-                rowShow = tblCustomerPrice.Select("customer = '" & ComboBoxCustomer.Text & "' and currency ='" & currency & _
-                                  "' and price = '" & Math.Round(Val(TextBoxComponentCustomerPrice.Text), 5) & "' and partnumber ='" & ref & "'")
-                If rowShow.Length = 0 Then
-                    If vbYes = MsgBox("Do you want make association beetwen :" & vbCrLf & vbCrLf & ref & vbCrLf & vbCrLf & " and price : " & _
-                                      vbCrLf & vbCrLf & Math.Round(Val(price), 5) & " " & currency, MsgBoxStyle.YesNo, "Customer Price Association") Then
-
-
-                        rowShow = tblCustomerPrice.Select("customer = '" & ComboBoxCustomer.Text & "' and partnumber ='" & ref & "'")
-                        If rowShow.Length > 0 Then
-                            If vbYes = MsgBox("Do you want remove others occurence of this p/n and this customer already associated?", MsgBoxStyle.YesNo) Then
-                                Try
-                                    ComboBoxComponentProposalCustomer.Items.Clear()
-                                    sql = "DELETE FROM `" & DBName & "`.`customerPrice` WHERE `customerPrice`.`partnumber` = '" & ref & "'"
-                                    cmd = New MySqlCommand(sql, MySqlconnection)
-                                    cmd.ExecuteNonQuery()
-                                    MsgBox("delete done!")
-                                Catch ex As Exception
-                                    MsgBox("Component delete error " & ex.Message)
-                                End Try
-                            End If
+                    rowShow = tblCustomerPrice.Select("customer = '" & ComboBoxCustomer.Text & "' and partnumber ='" & ref & "'")
+                    If rowShow.Length > 0 Then
+                        If vbYes = MsgBox("Do you want remove others occurence of this p/n and this customer already associated?", MsgBoxStyle.YesNo) Then
+                            Try
+                                ComboBoxComponentProposalCustomer.Items.Clear()
+                                sql = "DELETE FROM `" & DBName & "`.`customerPrice` WHERE `customerPrice`.`partnumber` = '" & ref & "'"
+                                cmd = New MySqlCommand(sql, MySqlconnection)
+                                cmd.ExecuteNonQuery()
+                                MsgBox("delete done!")
+                            Catch ex As Exception
+                                MsgBox("Component delete error " & ex.Message)
+                            End Try
                         End If
-
-                        Try
-                            sql = "INSERT INTO `" & DBName & "`.`customerPrice` (`customer` ,`price`,`currency`,`date`,`partnumber`) VALUES ('" & _
-                            ComboBoxCustomer.Text & "', '" & _
-                            Replace(Math.Round(Val(price), 5), ",", ".") & "', '" & _
-                            currency & "', '" & _
-                            date_to_string(Now) & "', '" & _
-                            ref & "');"
-
-                            cmd = New MySqlCommand(sql, MySqlconnection)
-                            cmd.ExecuteNonQuery()
-                            MsgBox("Association enstabilished!")
-                        Catch ex As Exception
-                            MsgBox("Component insert error " & ex.Message)
-                        End Try
-
                     End If
+
+                    Try
+                        sql = "INSERT INTO `" & DBName & "`.`customerPrice` (`customer` ,`price`,`currency`,`date`,`partnumber`) VALUES ('" &
+                        ComboBoxCustomer.Text & "', '" &
+                        Replace(Math.Round(Val(price), 5), ",", ".") & "', '" &
+                        currency & "', '" &
+                        date_to_string(Now) & "', '" &
+                        ref & "');"
+
+                        cmd = New MySqlCommand(sql, MySqlconnection)
+                        cmd.ExecuteNonQuery()
+                        MsgBox("Association enstabilished!")
+                    Catch ex As Exception
+                        MsgBox("Component insert error " & ex.Message)
+                    End Try
+
                 End If
             End If
+        End If
 
     End Sub
 
@@ -2545,7 +2408,6 @@ Public Class FormOffer
     Sub updateBrandList()
 
         TreeViewBrand.Nodes.Clear()
-        Dim rowShow As DataRow()
 
         Try
             tblBrand.Clear()
@@ -2558,7 +2420,7 @@ Public Class FormOffer
         AdapterBrand.Fill(DsBrand, "brand")
         tblBrand = DsBrand.Tables("brand")
 
-        rowShow = tblBrand.Select("(not buyer = 'SystemLiking') and (brand like " & IIf(TextBoxBrandRefresh.Text = "", "'*'", "'*" & OnlyChar(TextBoxBrandRefresh.Text) & "*'") & ")", "brand")
+        Dim rowShow As DataRow() = tblBrand.Select("(not buyer = 'SystemLiking') and (brand like " & IIf(TextBoxBrandRefresh.Text = "", "'*'", "'*" & OnlyChar(TextBoxBrandRefresh.Text) & "*'") & ")", "brand")
 
         For Each row In rowShow
             If CheckBoxBrandBomOnly.Checked = True Then
@@ -2674,7 +2536,7 @@ Public Class FormOffer
         updateBrandList()
     End Sub
 
-    Private Sub TreeViewBrand_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewBrand.AfterSelect
+    Private Sub TreeViewBrand_AfterSelect(ByVal sender As Object, ByVal e As TreeViewEventArgs) Handles TreeViewBrand.AfterSelect
 
         updatigBrand = True
         Dim rowShow As DataRow()
@@ -2713,8 +2575,6 @@ Public Class FormOffer
 
     End Sub
 
-
-
     Private Sub ButtonBrandAddOffer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBrandAddOffer.Click
         OpenFileDialog1.InitialDirectory = ParameterTable("SupplierOffer")
         OpenFileDialog1.Filter = "All File (*.*)|*.*"
@@ -2746,23 +2606,20 @@ Public Class FormOffer
                 Dim id As Long = Mid(TreeViewBrand.SelectedNode.Text, 1, InStr(TreeViewBrand.SelectedNode.Text, "-") - 2)
 
                 If DeltaSessionTime("Brand", id) <= 30 And session("Brand", id, False) = "RESET" Then
-
                     TextBoxBrandSession.Text = ""
-                    Dim cmd As New MySqlCommand()
-                    Dim sql As String
                     Try
-                        sql = "UPDATE `" & DBName & "`.`Brand` SET " & _
-                        "`buyer` = '" & Replace(IIf(TextBoxBrandBuyer.Text <> "", CreAccount.strUserName, ""), "'", "") & _
-                        "',`Date` = '" & date_to_string(DateTimePickerBrand.Value) & _
-                        "',`Brand` = '" & ReplaceCharBrandOC(TextBoxBrandOC.Text) & _
-                        "',`Price` = '" & IIf(TextBoxBrandPrice.Text <> "", Replace(Math.Round(Val(TextBoxBrandPrice.Text), 5), ",", "."), "") & _
-                        "',`Supplier` = '" & Replace(UCase(ComboBoxBrandSupplier.Text), "'", "") & _
-                        "',`currency` = '" & ComboBoxBrandCurrency.Text & _
-                        "',`OfferLink` = '" & Replace(TextBoxBrandLink.Text, "\", "\\") & _
-                        "',`qt` = '" & IIf(TextBoxBrandQuantity.Text <> "", DecQt(TextBoxBrandQuantity.Text), "") & _
-                        "' WHERE `Brand`.`id` = " & id & " ;"
+                        Dim sql As String = "UPDATE `" & DBName & "`.`Brand` SET " &
+                                            "`buyer` = '" & Replace(IIf(TextBoxBrandBuyer.Text <> "", CreAccount.strUserName, ""), "'", "") &
+                                            "',`Date` = '" & date_to_string(DateTimePickerBrand.Value) &
+                                            "',`Brand` = '" & ReplaceCharBrandOC(TextBoxBrandOC.Text) &
+                                            "',`Price` = '" & IIf(TextBoxBrandPrice.Text <> "", Replace(Math.Round(Val(TextBoxBrandPrice.Text), 5), ",", "."), "") &
+                                            "',`Supplier` = '" & Replace(UCase(ComboBoxBrandSupplier.Text), "'", "") &
+                                            "',`currency` = '" & ComboBoxBrandCurrency.Text &
+                                            "',`OfferLink` = '" & Replace(TextBoxBrandLink.Text, "\", "\\") &
+                                            "',`qt` = '" & IIf(TextBoxBrandQuantity.Text <> "", DecQt(TextBoxBrandQuantity.Text), "") &
+                                            "' WHERE `Brand`.`id` = " & id & " ;"
 
-                        cmd = New MySqlCommand(sql, MySqlconnection)
+                        Dim cmd = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
                     Catch ex As Exception
                         MsgBox("Mysql update query error!" & ex.Message)
@@ -2792,15 +2649,13 @@ Public Class FormOffer
     End Sub
 
     Private Sub ButtonBrandRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBrandRemove.Click
-        Dim cmd As New MySqlCommand()
-        Dim sql As String
         If Not IsNothing(TreeViewBrand.SelectedNode) Then
             Dim id As Long = Mid(TreeViewBrand.SelectedNode.Text, 1, InStr(TreeViewBrand.SelectedNode.Text, "-") - 2)
             If vbYes = MsgBox("Do you want delete this Brand[OC]?", MsgBoxStyle.YesNo) Then
                 If (session("brand", id, False) = "RESET") Then
                     Try
-                        sql = "DELETE FROM `" & DBName & "`.`Brand` WHERE `Brand`.`id` = " & id
-                        cmd = New MySqlCommand(sql, MySqlconnection)
+                        Dim sql As String = "DELETE FROM `" & DBName & "`.`Brand` WHERE `Brand`.`id` = " & id
+                        Dim cmd = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
                         MsgBox("Brand deleted!")
                         updateBrandList()
@@ -2824,12 +2679,12 @@ Public Class FormOffer
     End Sub
 
     Private Sub ValueChangedBrand(ByVal sender As Object, ByVal e As EventArgs) Handles _
-    TextBoxBrandPrice.TextChanged, _
-    TextBoxBrandOC.TextChanged, _
-    TextBoxBrandBuyer.TextChanged, _
-    TextBoxBrandLink.TextChanged, _
-    TextBoxBrandQuantity.TextChanged, _
-    ComboBoxBrandSupplier.TextChanged, _
+    TextBoxBrandPrice.TextChanged,
+    TextBoxBrandOC.TextChanged,
+    TextBoxBrandBuyer.TextChanged,
+    TextBoxBrandLink.TextChanged,
+    TextBoxBrandQuantity.TextChanged,
+    ComboBoxBrandSupplier.TextChanged,
     ComboBoxBrandCurrency.TextChanged
 
         If updatigBrand = False And Not IsNothing(TreeViewBrand.SelectedNode) Then
@@ -2853,17 +2708,13 @@ Public Class FormOffer
 
     End Sub
 
-
     Private Sub ButtonBrandNew_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBrandNew.Click
-        Dim cmd As New MySqlCommand()
-        Dim sql As String
-        Dim descr As String
-        descr = ReplaceCharBrandOC(InputBox("Insert Brand[OrderingCode] : " & vbCrLf & vbCrLf & "For Example nxp[bav99]"))
+        Dim descr As String = ReplaceCharBrandOC(InputBox("Insert Brand[OrderingCode] : " & vbCrLf & vbCrLf & "For Example nxp[bav99]"))
         If CheckBrandString(descr, descr) Then
             Try
-                sql = "INSERT INTO `" & DBName & "`.`Brand` (`Brand` ,`buyer` ,`date`) VALUES ('" & _
-                descr & "', '" & CreAccount.strUserName & "', '" & date_to_string(Today) & "' ); "
-                cmd = New MySqlCommand(sql, MySqlconnection)
+                Dim sql As String = "INSERT INTO `" & DBName & "`.`Brand` (`Brand` ,`buyer` ,`date`) VALUES ('" &
+                                    descr & "', '" & CreAccount.strUserName & "', '" & date_to_string(Today) & "' ); "
+                Dim cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
 
                 MsgBox("Brand insert, please fill all needs info")
@@ -2929,8 +2780,7 @@ Public Class FormOffer
     End Sub
 
 
-
-    Private Sub TreeViewBrand_BeforeSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewCancelEventArgs) Handles TreeViewBrand.BeforeSelect
+    Private Sub TreeViewBrand_BeforeSelect(ByVal sender As Object, ByVal e As TreeViewCancelEventArgs) Handles TreeViewBrand.BeforeSelect
         If updatigBrand = False And Not IsNothing(TreeViewBrand.SelectedNode) Then
             CurrentBrandID = Mid(TreeViewBrand.SelectedNode.Text, 1, InStr(TreeViewBrand.SelectedNode.Text, " - "))
             If BrandSession Then
@@ -2946,7 +2796,7 @@ Public Class FormOffer
         End If
     End Sub
 
-    Private Sub TreeViewComponent_BeforeSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewCancelEventArgs) Handles TreeViewComponent.BeforeSelect
+    Private Sub TreeViewComponent_BeforeSelect(ByVal sender As Object, ByVal e As TreeViewCancelEventArgs) Handles TreeViewComponent.BeforeSelect
         If updatigComponent = False And Not IsNothing(TreeViewComponent.SelectedNode) Then
             CurrentComponentID = Mid(TreeViewComponent.SelectedNode.Text, 1, InStr(TreeViewComponent.SelectedNode.Text, " - "))
             If ComponentSession = True Then
@@ -2976,10 +2826,8 @@ Public Class FormOffer
     End Sub
 
 
-
-
     Private Sub Proposal_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles _
-        ComboBoxComponentBrand.SelectedIndexChanged, _
+        ComboBoxComponentBrand.SelectedIndexChanged,
         ComboBoxComponentALTBrand.SelectedIndexChanged
 
         Application.DoEvents()
@@ -2996,19 +2844,15 @@ Public Class FormOffer
     End Sub
 
     Sub OfferComponentDelete(ByVal name As String)
-        Dim cmd As New MySqlCommand()
-        Dim sql As String
-        Dim rowShow As DataRow()
-        Dim tblOff As DataTable
         Dim DsOff As New DataSet
         AdapterOff.Fill(DsOff, "Offer")
-        tblOff = DsOff.Tables("Offer")
-        rowShow = tblOff.Select("name = " & name & "'")
+        Dim tblOff As DataTable = DsOff.Tables("Offer")
+        Dim rowShow As DataRow() = tblOff.Select("name = " & name & "'")
         For Each row In rowShow
             If (session("offer", row("id").ToString, False) = "RESET") Then
                 Try
-                    sql = "DELETE FROM `" & DBName & "`.`offer` WHERE `offer`.`name` = '" & name & "'"
-                    cmd = New MySqlCommand(sql, MySqlconnection)
+                    Dim sql As String = "DELETE FROM `" & DBName & "`.`offer` WHERE `offer`.`name` = '" & name & "'"
+                    Dim cmd = New MySqlCommand(sql, MySqlconnection)
                     cmd.ExecuteNonQuery()
                     Application.DoEvents()
 
@@ -3024,24 +2868,18 @@ Public Class FormOffer
         tblOff.Dispose()
 
     End Sub
-
-
-
     Private Sub ButtonComponentRefresh_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonComponentRefresh.Click
         updateComponentList()
     End Sub
 
-
-
     Private Sub ButtonExportXML_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonExportXML.Click
 
-        SaveFileDialog1.FileName = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\" & TextBoxBomName.Text & ".xls"
-        Dim tblOff As DataTable
+        SaveFileDialog1.FileName = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\" & TextBoxBomName.Text & ".xls"
 
         Dim AdapterOff As New MySqlDataAdapter("SELECT * FROM offer where name = '" & TextBoxBomName.Text & "'", MySqlconnection)
         Dim DsOff As New DataSet
         AdapterOff.Fill(DsOff, "Offer")
-        tblOff = DsOff.Tables("Offer")
+        Dim tblOff As DataTable = DsOff.Tables("Offer")
 
         If SaveFileDialog1.FileName <> "" And DialogResult.OK = SaveFileDialog1.ShowDialog() Then
             Try
@@ -3061,20 +2899,17 @@ Public Class FormOffer
         sender.SelectionStart = Len(sender.Text)
     End Sub
 
-
-
-
     Private Sub TextBoxComponentPrice_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles _
-           TextBoxComponentPrice.TextChanged, _
-           TextBoxComponentCustomerPrice.TextChanged, _
-           TextBoxComponentEstimation.TextChanged, _
-           TextBoxComponentPriceAlt.TextChanged, _
-        TextBoxComponentqt1.TextChanged, _
-        TextBoxComponentqt2.TextChanged, _
-        TextBoxComponentqt3.TextChanged, _
-        TextBoxComponentqt4.TextChanged, _
-        TextBoxComponentqt5.TextChanged, _
-        TextBoxComponentqt6.TextChanged, _
+           TextBoxComponentPrice.TextChanged,
+           TextBoxComponentCustomerPrice.TextChanged,
+           TextBoxComponentEstimation.TextChanged,
+           TextBoxComponentPriceAlt.TextChanged,
+        TextBoxComponentqt1.TextChanged,
+        TextBoxComponentqt2.TextChanged,
+        TextBoxComponentqt3.TextChanged,
+        TextBoxComponentqt4.TextChanged,
+        TextBoxComponentqt5.TextChanged,
+        TextBoxComponentqt6.TextChanged,
         TextBoxBrandPrice.TextChanged
 
         If InStr(sender.Text, "'", CompareMethod.Text) > 0 Then
@@ -3115,7 +2950,7 @@ Public Class FormOffer
     End Sub
 
     Private Sub ComboBoxComponentALTBrand_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles _
-    ComboBoxComponentALTBrand.KeyDown, _
+    ComboBoxComponentALTBrand.KeyDown,
     ComboBoxComponentBrand.KeyDown
         If Not sender.FindStringExact(sender.Text) < 0 Then
             LastValueBrandCombo = sender.Text
@@ -3124,8 +2959,8 @@ Public Class FormOffer
         End If
     End Sub
 
-    Private Sub ComboBoxComponentALTBrand_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles _
-        ComboBoxComponentALTBrand.KeyUp, _
+    Private Sub ComboBoxComponentALTBrand_KeyUp(ByVal sender As Object, ByVal e As KeyEventArgs) Handles _
+        ComboBoxComponentALTBrand.KeyUp,
         ComboBoxComponentBrand.KeyUp
         If LastValueBrandCombo = "" Then
         Else
@@ -3137,16 +2972,11 @@ Public Class FormOffer
     ' calculate the best proposal for price
     Private Sub ButtonBomBest_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBomBest.Click
 
-
         If TextBoxBomName.Text <> "" Then
-            Dim rowShow As DataRow()
-            Dim tblOff As DataTable
             Dim DsOff As New DataSet
-            Dim bestCurrency As String, BestPrice As String, DeltaAVL As String, selectedPrice As String, selectedCurrency As String
-            Dim cmd As New MySqlCommand(), DeltaOrcad As String = ""
-            Dim sql As String, Selected As String
-            Dim DisableErrorClass As Integer = 0
-            typefilled = ""
+            Dim selectedPrice As String, selectedCurrency As String
+            Dim DeltaOrcad = ""
+            Dim DisableErrorClass = 0
             ' update the component type qt
             SumBomQt(TextBoxBomName.Text, "SMD_T")
             SumBomQt(TextBoxBomName.Text, "SMD_B")
@@ -3156,8 +2986,6 @@ Public Class FormOffer
             SumBomQt(TextBoxBomName.Text, "FP")
             SumBomQt(TextBoxBomName.Text, "")
 
-
-
             TextBoxBomV1.Text = ""
             TextBoxBomV2.Text = ""
             TextBoxBomV3.Text = ""
@@ -3165,12 +2993,10 @@ Public Class FormOffer
             TextBoxBomV5.Text = ""
             TextBoxBomv6.Text = ""
 
-
             AdapterOff.Fill(DsOff, "Offer")
-            tblOff = DsOff.Tables("offer")
-            rowShow = tblOff.Select("name ='" & TextBoxBomName.Text & "'")
+            Dim tblOff As DataTable = DsOff.Tables("offer")
+            Dim rowShow As DataRow() = tblOff.Select("name ='" & TextBoxBomName.Text & "'")
             For Each row In rowShow
-
 
                 If NoInfoBomBest = False Then
                     If TextBoxNameV1.Text <> "" And row("qt_v1").ToString = "" Then MsgBox("Quantity not fill for this p/n: " & row("id").ToString)
@@ -3199,10 +3025,10 @@ Public Class FormOffer
 
                 End Try
 
-                BestPrice = row("BrandPrice").ToString
-                bestCurrency = row("Brandcurrency").ToString
-                DeltaAVL = ""
-                Selected = "BRAND"
+                Dim BestPrice As String = row("BrandPrice").ToString
+                Dim bestCurrency As String = row("Brandcurrency").ToString
+                Dim DeltaAVL = ""
+                Dim Selected As String = "BRAND"
                 If Val(BestPrice) = 0 Or (Val(row("AltPrice").ToString) > 0 And Val(BestPrice) > 0) And (usd(row("BrandPrice").ToString, row("Brandcurrency").ToString) > usd(row("AltPrice").ToString, row("AltCurrency").ToString)) Then
                     BestPrice = Math.Round(Val(row("AltPrice").ToString), 5)
                     bestCurrency = row("AltCurrency").ToString
@@ -3217,22 +3043,6 @@ Public Class FormOffer
                     Selected = "ORCAD"
                 End If
 
-                'If BestPrice <> 0 Then
-                '    If row("BrandPrice").ToString <> "" Then
-                '        BestPrice = usd(BestPrice, bestCurrency)
-
-                '    Else
-                '        BestPrice = usd(BestPrice, bestCurrency)
-
-                '    End If
-
-                '    If bestCurrency = "USD" Then BestPrice = usd(BestPrice, "USD")
-                '    If bestCurrency = "EUR" Then BestPrice = eur(BestPrice, "USD")
-                '    If bestCurrency = "CNY" Then BestPrice = cny(BestPrice, "USD")
-                'Else
-
-                'End If
-
                 If Val(BestPrice) <> 0 Then
                     selectedCurrency = bestCurrency
                     selectedPrice = BestPrice
@@ -3240,10 +3050,6 @@ Public Class FormOffer
                     selectedCurrency = row("Brandcurrency").ToString
                     selectedPrice = row("BrandPrice").ToString
                 End If
-
-
-                'If NoInfoBomBest = False Then If Val(selectedPrice) = 0 Then MsgBox("Selcted Price 0 for: " & row("id").ToString & " - " & row("description").ToString)
-
 
                 If TextBoxNameV1.Text <> "" Then TextBoxBomV1.Text = Str(Math.Round(Val(TextBoxBomV1.Text) + Val(row("qt_v1").ToString) * ConvertPriceCurency(ComboBoxBomCurrency.Text, selectedPrice, selectedCurrency), 2))
                 If TextBoxNameV2.Text <> "" Then TextBoxBomV2.Text = Str(Math.Round(Val(TextBoxBomV2.Text) + Val(row("qt_v2").ToString) * ConvertPriceCurency(ComboBoxBomCurrency.Text, selectedPrice, selectedCurrency), 2))
@@ -3261,23 +3067,21 @@ Public Class FormOffer
 
 
 
-                    sql = "UPDATE `" & DBName & "`.`offer` SET " & _
-                    "`DeltaPrice` = '" & Selected & " --> " & IIf(Val(BestPrice) <> 0, Math.Round(Val(BestPrice), 5), "") & _
-                    "',`DeltaPriceCurrency` = '" & IIf(Val(BestPrice) <> 0, bestCurrency, "") & _
-                    "',`DeltaAVL` = '" & IIf(Val(BestPrice) <> 0, DeltaAVL, "") & _
-                    "',`DeltaOrcad` = '" & IIf(DeltaOrcad <> "", DeltaOrcad, "=""""") & _
-                    "',`PriceSortCny` = '" & cny(BestPrice, bestCurrency) & _
-                    "' WHERE `Offer`.`id` = " & row("id").ToString & " ;"
+                    Dim sql As String = "UPDATE `" & DBName & "`.`offer` SET " &
+                                        "`DeltaPrice` = '" & Selected & " --> " & IIf(Val(BestPrice) <> 0, Math.Round(Val(BestPrice), 5), "") &
+                                        "',`DeltaPriceCurrency` = '" & IIf(Val(BestPrice) <> 0, bestCurrency, "") &
+                                        "',`DeltaAVL` = '" & IIf(Val(BestPrice) <> 0, DeltaAVL, "") &
+                                        "',`DeltaOrcad` = '" & IIf(DeltaOrcad <> "", DeltaOrcad, "=""""") &
+                                        "',`PriceSortCny` = '" & cny(BestPrice, bestCurrency) &
+                                        "' WHERE `Offer`.`id` = " & row("id").ToString & " ;"
 
 
-                    cmd = New MySqlCommand(sql, MySqlconnection)
+                    Dim cmd = New MySqlCommand(sql, MySqlconnection)
                     cmd.ExecuteNonQuery()
-
 
                 Catch ex As Exception
                     MsgBox("Best update error !" & ex.Message, MsgBoxStyle.Critical)
                 End Try
-
 
             Next
             MsgBox("Best Bom Price Elaborated!")
@@ -3404,18 +3208,17 @@ Public Class FormOffer
     Function LoadComboBoxOrcad(ByVal s As String) As Boolean
         ComboBoxComponentOrcadSupplier.Items.Clear()
         ComboBoxComponentOrcadSupplier.Text = ""
-        Dim j As Integer, i As Integer, brand As String
         LoadComboBoxOrcad = False
 
         If s <> "" Then
             Try
                 If Mid(s, Len(s), 1) <> ";" Then s = s & ";"
-                i = 1
-                j = InStr(s, ";", CompareMethod.Text)
+                Dim i As Integer = 1
+                Dim j As Integer = InStr(s, ";", CompareMethod.Text)
                 While j > 0
-                    brand = Mid(s, i, j - i)
+                    Dim brand As String = Mid(s, i, j - i)
                     If InStr(brand, "[", CompareMethod.Text) > 1 Then
-                        If InStr(brand, "]", CompareMethod.Text) > 3 Or ((InStr(brand, "]", CompareMethod.Text) = 3) And _
+                        If InStr(brand, "]", CompareMethod.Text) > 3 Or ((InStr(brand, "]", CompareMethod.Text) = 3) And
                                                                          (InStr(Replace(Mid(brand, i + 1, j - 1 - i), " ", ""), "GENERALBRAND", CompareMethod.Text))) Then
                             If InStr(brand, "]", CompareMethod.Text) = Len(brand) Then
                                 ComboBoxComponentOrcadSupplier.Items.Add(Replace(Mid(s, i, j - i), ";", ""))
@@ -3447,14 +3250,12 @@ Public Class FormOffer
 
     Sub SumBomQt(ByVal bom As String, ByVal type As String)
 
-        Dim tblMySql As New System.Data.DataTable
+        Dim tblMySql As New DataTable
         Dim dsMySql As New DataSet
-
-
         Try
             tblMySql.Clear()
             dsMySql.Clear()
-            Dim adapterMySql As MySqlDataAdapter = New MySqlDataAdapter("SELECT SUM(`qt_v1`) AS `qt_v1`,SUM(`qt_v2`) AS `qt_v2`,SUM(`qt_v3`) AS `qt_v3`,SUM(`qt_v4`) AS `qt_v4`," & _
+            Dim adapterMySql = New MySqlDataAdapter("SELECT SUM(`qt_v1`) AS `qt_v1`,SUM(`qt_v2`) AS `qt_v2`,SUM(`qt_v3`) AS `qt_v3`,SUM(`qt_v4`) AS `qt_v4`," &
                                             "SUM(`qt_v5`) AS `qt_v5`,SUM(`qt_v6`) AS `qt_v6` FROM `offer` WHERE `name`='" & bom & "' AND `type`='" & type & "'", MySqlconnection)
             adapterMySql.Fill(dsMySql, "offer")
             tblMySql = dsMySql.Tables("offer")
@@ -3470,13 +3271,8 @@ Public Class FormOffer
         Dim qt_v5 As String = ss(tblMySql.Rows(0).Item("qt_v5").ToString())
         Dim qt_v6 As String = ss(tblMySql.Rows(0).Item("qt_v6").ToString())
 
-        'If qt_v1 + qt_v1 + qt_v1 + qt_v1 + qt_v1 + qt_v1 + qt_v1 > 0 And type = "" And typefilled = "" Then
-        '    MsgBox("type not fill!")
-        '    typefilled = "INFORMED"
-        'End If
-
         Dim str As String = "[1]" & If(qt_v1 <> "", qt_v1, "0") & "[2]" & If(qt_v2 <> "", qt_v2, "0") & "[3]" & If(qt_v3 <> "", qt_v3, "0") & "[4]" & If(qt_v4 <> "", qt_v4, "0") & "[5]" & If(qt_v5 <> "", qt_v5, "0") & "[6]" & If(qt_v6 <> "", qt_v6, "0") & ""
-        Dim commandMySql As MySqlCommand = New MySqlCommand("UPDATE `bomoffer` SET `" & IIf(type = "", "UN", type) & "`='" & str & "'  WHERE `name`='" & bom & "'", MySqlconnection)
+        Dim commandMySql = New MySqlCommand("UPDATE `bomoffer` SET `" & IIf(type = "", "UN", type) & "`='" & str & "'  WHERE `name`='" & bom & "'", MySqlconnection)
         commandMySql.ExecuteNonQuery()
 
     End Sub
@@ -3499,10 +3295,10 @@ Public Class FormOffer
             If TextBoxBomName.Text <> "" Then
 
                 Dim bomOfferName As String = TextBoxBomName.Text
-                Dim tblOffer As New System.Data.DataTable
+                Dim tblOffer As New DataTable
                 Dim dsOffer As New DataSet
                 Dim adapterOffer As MySqlDataAdapter
-                Dim tblBomOffer As New System.Data.DataTable
+                Dim tblBomOffer As New DataTable
                 Dim dsBomOffer As New DataSet
                 Dim adapterBomOffer As MySqlDataAdapter
 
@@ -3512,7 +3308,6 @@ Public Class FormOffer
                 Dim eur_usd As Double = ParameterTable("eur_usd")
                 Dim usd_cny As Double = ParameterTable("usd_cny")
                 Dim eur_jpy As Double = ParameterTable("eur_jpy")
-                Dim pathOffer As String = ParameterTable("pathoffer")
                 Dim pathTemplate As String = ParameterTable("OfferTemplate")
 
                 Dim msgREsult = MsgBox("Do you want select a specific offer? ", MsgBoxStyle.YesNoCancel)
@@ -3524,29 +3319,25 @@ Public Class FormOffer
                     Exit Sub
                 End If
 
-                System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US")
+                Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US")
 
                 'open the offer template
-                Dim excelApp As New Object
-                excelApp = CreateObject("Excel.Application")
-
+                Dim excelApp As Object = CreateObject("Excel.Application")
                 Dim excelWorkbook As Object
-                Dim excelSheet As Object
                 Try
                     excelWorkbook = excelApp.Workbooks.Open(pathTemplate)
                     excelWorkbook.Activate()
-                    excelSheet = excelWorkbook.Worksheets("DATA")
+                    Dim excelSheet As Object = excelWorkbook.Worksheets("DATA")
                     excelSheet.Activate()
                 Catch ex As Exception
                     MsgBox(ex.Message)
                 End Try
                 excelApp.Visible = True
 
-
                 'extract data from OFFER table
                 tblOffer.Clear()
                 dsOffer.Clear()
-                adapterOffer = New MySqlDataAdapter("SELECT `id`,`name`,`bitronpn`,`description`,`brand`,`brandalt`,`qt_v1`,`qt_v2`,`qt_v3`,`qt_v4`,`qt_v5`,`qt_v6`,`reference`," & _
+                adapterOffer = New MySqlDataAdapter("SELECT `id`,`name`,`bitronpn`,`description`,`brand`,`brandalt`,`qt_v1`,`qt_v2`,`qt_v3`,`qt_v4`,`qt_v5`,`qt_v6`,`reference`," &
                 "`noternd`,`notepurchasing`,`notegeneric`,`customerpn`,`type`,`Class`,`tum`,`status`,`BitronpnPrice`,`BitronpnCurrency`,`AltPrice`,`AltCurrency`,`customerprice`,`customercurrency`,`Brandprice`,`Brandcurrency`,`deltaavl`,`deltaorcad`,`deltaprice`,`deltapricecurrency` FROM `offer` WHERE `name`='" & bomOfferName & "' order by id", MySqlconnection)
                 adapterOffer.Fill(dsOffer, "offer")
                 tblOffer = dsOffer.Tables("offer")
@@ -3659,13 +3450,10 @@ Public Class FormOffer
     End Sub
 
     Private Sub Update_Pfp()
-        Dim sql As String
-        Dim commandMySql As MySqlCommand
         CollectProcess()
         'open Parti_Fornitori_Prezzi.xls
         ButtonUpdatePfp.BackColor = Color.LightYellow
-        Dim xlsApp As New Object
-        xlsApp = CreateObject("Excel.Application")
+        Dim xlsApp As Object = CreateObject("Excel.Application")
 
         xlsApp.DisplayAlerts = False
         xlsApp.Visible = False
@@ -3675,7 +3463,7 @@ Public Class FormOffer
         xlsWorksheet.Activate()
 
         'empty the PFP table
-        commandMySql = New MySqlCommand("TRUNCATE TABLE `" & DBName & "`.`pfp`", MySqlconnection)
+        Dim commandMySql = New MySqlCommand("TRUNCATE TABLE `" & DBName & "`.`pfp`", MySqlconnection)
         commandMySql.ExecuteNonQuery()
 
         'save the .xls file in .csv format
@@ -3695,7 +3483,7 @@ Public Class FormOffer
         End Try
 
         'copy data from excel to `pfp`
-        sql = "load data local infile '" & Replace(tempPath, "\", "\\") & "' into table `pfp` fields terminated by ','  lines terminated by '\r\n' ignore 1 lines  (`pfidf`,`pepre`,`peval`,`pfpaf`,`pfpan`,`pfpad`,`pelot`,`pedin`,`pedfi`,`pefor`,`forsc`)"
+        Dim sql As String = "load data local infile '" & Replace(tempPath, "\", "\\") & "' into table `pfp` fields terminated by ','  lines terminated by '\r\n' ignore 1 lines  (`pfidf`,`pepre`,`peval`,`pfpaf`,`pfpan`,`pfpad`,`pelot`,`pedin`,`pedfi`,`pefor`,`forsc`)"
         commandMySql = New MySqlCommand(sql, MySqlconnection)
         commandMySql.ExecuteNonQuery()
 
@@ -3724,31 +3512,31 @@ Public Class FormOffer
                 average = "NO"
                 supcode = ""
                 For Each row In rowShow
-                        If Val(row("pfpan")) <> 0 Then
-                            If currency = "" Then currency = row("peval")
-                            If datePfp = "" Then datePfp = row("pedin")
-                            value = value + Val(row("pfpan")) * usd(ConvPrice(Val(row("pepre")), row("pelot")), row("peval"))
-                            ass = Val(row("pfpan")) + ass
-                            If ass > 0 And ass < 100 Then average = "YES"
-                            supplier = supplier & IIf(supplier <> "", " ; ", "") & strip(row("FORSC"))
-                            supcode = supcode & IIf(supcode <> "", ";", "") & strip(row("pefor"))
-                            If ass >= 100 Then Exit For
-                        End If
+                    If Val(row("pfpan")) <> 0 Then
+                        If currency = "" Then currency = row("peval")
+                        If datePfp = "" Then datePfp = row("pedin")
+                        value = value + Val(row("pfpan")) * usd(ConvPrice(Val(row("pepre")), row("pelot")), row("peval"))
+                        ass = Val(row("pfpan")) + ass
+                        If ass > 0 And ass < 100 Then average = "YES"
+                        supplier = supplier & IIf(supplier <> "", " ; ", "") & strip(row("FORSC"))
+                        supcode = supcode & IIf(supcode <> "", ";", "") & strip(row("pefor"))
+                        If ass >= 100 Then Exit For
+                    End If
 
                 Next
 
                 If ass = 0 Then
                     For Each row In rowShow
-                            If Val(row("pfpaf")) <> 0 Then
-                                If currency = "" Then currency = row("peval")
-                                If datePfp = "" Then datePfp = row("pedin")
-                                value = value + Val(row("pfpaf")) * usd(ConvPrice(Val(row("pepre")), row("pelot")), row("peval"))
-                                ass = Val(row("pfpaf")) + ass
-                                If ass > 0 And ass < 100 Then average = "YES"
-                                supplier = supplier & IIf(supplier <> "", " ; ", "") & strip(row("FORSC"))
-                                supcode = supcode & IIf(supcode <> "", ";", "") & strip(row("pefor"))
-                                If ass >= 100 Then Exit For
-                            End If
+                        If Val(row("pfpaf")) <> 0 Then
+                            If currency = "" Then currency = row("peval")
+                            If datePfp = "" Then datePfp = row("pedin")
+                            value = value + Val(row("pfpaf")) * usd(ConvPrice(Val(row("pepre")), row("pelot")), row("peval"))
+                            ass = Val(row("pfpaf")) + ass
+                            If ass > 0 And ass < 100 Then average = "YES"
+                            supplier = supplier & IIf(supplier <> "", " ; ", "") & strip(row("FORSC"))
+                            supcode = supcode & IIf(supcode <> "", ";", "") & strip(row("pefor"))
+                            If ass >= 100 Then Exit For
+                        End If
 
                     Next
                 End If
@@ -3759,7 +3547,7 @@ Public Class FormOffer
                     'MsgBox("Pfp not recognized!  " & rowMain("pfidf"))
                 ElseIf ass = 100 Then
                     'write pfpElaborated
-                    sql = "INSERT INTO `" & DBName & "`.`pfp_Elaborated` (`bitronpn` ,`value`,`currency`,`datePfp`,`average`,`supplier`,`suppliercode`) VALUES ('" & _
+                    sql = "INSERT INTO `" & DBName & "`.`pfp_Elaborated` (`bitronpn` ,`value`,`currency`,`datePfp`,`average`,`supplier`,`suppliercode`) VALUES ('" &
                     rowMain("pfidf") & "', " & Replace(Str(Math.Round(value, 6)), ",", ".") & ", '" & currency & "', '" & datePfp & "', '" & average & "', '" & supplier & "', '" & supcode & "'); "
                     commandMySql = New MySqlCommand(sql, MySqlconnection)
                     commandMySql.ExecuteNonQuery()
@@ -3773,14 +3561,10 @@ Public Class FormOffer
 
     End Sub
 
-
-
     Public Function strip(ByVal des As String)
-        Dim strorigFileName As String
-        Dim intCounter As Integer
         Dim arrSpecialChar() As String = {".", ",", "<", ">", ":", "?", """", "/", "{", "[", "}", "]", "`", "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "-", "+", "=", "|", "'", "\"}
-        strorigFileName = des
-        intCounter = 0
+        Dim strorigFileName As String = des
+        Dim intCounter As Integer = 0
         Dim i As Integer
         For i = 0 To arrSpecialChar.Length - 1
             Do Until intCounter = 29
@@ -3827,9 +3611,6 @@ Public Class FormOffer
     End Function
 
     Function ReadBrandLiking(ByVal brand As String) As String
-
-
-        Dim rowShow As DataRow()
         ReadBrandLiking = "MISSING"
         ' Search Brand corrispondence
         If BooLinkingChanges = True Then
@@ -3844,7 +3625,7 @@ Public Class FormOffer
             BooLinkingChanges = False
         End If
 
-        rowShow = tblBrand.Select("Brand = '" & brand & "' and buyer='SystemLiking' ")
+        Dim rowShow As DataRow() = tblBrand.Select("Brand = '" & brand & "' and buyer='SystemLiking' ")
 
         For Each row In rowShow
             ReadBrandLiking = row("SUPPLIER").ToString
@@ -3858,12 +3639,11 @@ Public Class FormOffer
 
         Dim cmd As New MySqlCommand()
         Dim sql As String
-
         If ReadBrandLiking(brand) <> "MISSING" Then
             Try
-                sql = "UPDATE `" & DBName & "`.`Brand` SET " & _
-                "`Supplier` = '" & liking & "'" & _
-                ", `buyer` = 'SystemLiking'" & _
+                sql = "UPDATE `" & DBName & "`.`Brand` SET " &
+                "`Supplier` = '" & liking & "'" &
+                ", `buyer` = 'SystemLiking'" &
                 " WHERE `Brand`.`brand` = '" & brand & "'"
 
                 cmd = New MySqlCommand(sql, MySqlconnection)
@@ -3875,7 +3655,7 @@ Public Class FormOffer
         Else
 
             Try
-                sql = "INSERT INTO `" & DBName & "`.`Brand` (`Brand` ,`supplier`,`buyer`) VALUES ('" & _
+                sql = "INSERT INTO `" & DBName & "`.`Brand` (`Brand` ,`supplier`,`buyer`) VALUES ('" &
                 brand & "', '" & liking & "','SystemLiking' ); "
                 cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
@@ -3890,13 +3670,7 @@ Public Class FormOffer
 
     Sub UpdateLiking()
         Try
-
-
-
             Dim AllLiked As Boolean, Liking As String
-
-            ' BRAND
-
             If ComboBoxComponentBrand.Text <> "" Then
                 ButtonBrandLiking.Visible = True
                 Liking = ReadBrandLiking(Mid(ComboBoxComponentBrand.Text, 1, InStr(ComboBoxComponentBrand.Text, "[") - 1))
@@ -3924,7 +3698,6 @@ Public Class FormOffer
             Else
                 ButtonBrandLiking.Text = "?"
             End If
-
 
             ' BRAND ALT
             Try
@@ -3959,7 +3732,6 @@ Public Class FormOffer
             Else
                 ButtonBrandAltLiking.Text = "?"
             End If
-
 
             ' BITRON PN
 
@@ -4034,11 +3806,10 @@ Public Class FormOffer
         ' primo tentativo pare non ok, da debaggare
         SigipOfferDifference()
         Application.DoEvents()
-        Dim sw As StreamWriter
         SaveFileDialog1.FileName = "Difference SIGIP and " & TextBoxBomName.Text & ".txt"
         If DialogResult.OK = SaveFileDialog1.ShowDialog() Then
             Dim FileDifference = SaveFileDialog1.FileName
-            sw = File.CreateText(FileDifference)
+            Dim sw As StreamWriter = File.CreateText(FileDifference)
             sw.WriteLine(SigipOfferDifference)
             sw.Flush()
             sw.Close()
@@ -4052,30 +3823,24 @@ Public Class FormOffer
         Dim cmd As New MySqlCommand()
         Dim sql As String
         Dim rowShowOffer As DataRow()
-        Dim rowShowSigip As DataRow()
-        Dim tblOff As DataTable
         Dim DsOff As New DataSet
-        Dim tblSigip As DataTable
         Dim DsSigip As New DataSet
-        Dim TotQt As Double
-        Dim lastSigipPn As String = ""
-        Dim VectorResult As String = ""
+        Dim lastSigipPn = ""
         Dim AdapterOffMY As New MySqlDataAdapter("SELECT * FROM offer", MySqlconnection)
         AdapterOffMY.Fill(DsOff, "Offer")
-        tblOff = DsOff.Tables("Offer")
+        Dim tblOff As DataTable = DsOff.Tables("Offer")
 
         Dim AdapterSigipMY As New MySqlDataAdapter("SELECT * FROM sigip", MySqlconnection)
         AdapterSigipMY.Fill(DsSigip, "sigip")
-        tblSigip = DsSigip.Tables("sigip")
+        Dim tblSigip As DataTable = DsSigip.Tables("sigip")
         Application.DoEvents()
         ButtonBomSigipCompare.BackColor = Color.Yellow
         If TextBoxBomName.Text <> "" Then
-            VectorResult = ""
+            Dim VectorResult As Object = ""
             For i = 1 To 6
-
                 If TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text <> "" Then
                     Try
-                        sql = "UPDATE `" & DBName & "`.`offer` SET " & _
+                        sql = "UPDATE `" & DBName & "`.`offer` SET " &
                         "`CompareFlag` = 'X'  WHERE `offer`.`name` = '" & TextBoxBomName.Text & "'"
                         cmd = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
@@ -4083,7 +3848,7 @@ Public Class FormOffer
                         MsgBox("Compare flag delete error error!" & ex.Message, MsgBoxStyle.Critical)
                     End Try
 
-                    rowShowSigip = tblSigip.Select("bom = '" & TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text & "'", "bitron_pn")
+                    Dim rowShowSigip As DataRow() = tblSigip.Select("bom = '" & TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text & "'", "bitron_pn")
                     If rowShowSigip.Length > 0 Then
 
                         For Each RowSigip In rowShowSigip
@@ -4092,18 +3857,18 @@ Public Class FormOffer
                                 lastSigipPn = RowSigip("bitron_pn").ToString
                                 Application.DoEvents()
                                 rowShowOffer = tblOff.Select("bitronpn='" & RowSigip("bitron_pn").ToString & "' and name = '" & TextBoxBomName.Text & "'")
-                                TotQt = 0
+                                Dim TotQt As Double = 0
                                 For Each RowOffer In rowShowOffer
                                     TotQt = TotQt + RowOffer("qt_v" & i)
                                 Next
                                 If Math.Round(Val(TotQt), 5) <> Math.Round(Val(TotQtSigip(RowSigip("bitron_pn").ToString, TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text, tblSigip))) Then
-                                    VectorResult = VectorResult & TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text & _
-                                          " --> " & Mid(RowSigip("bitron_pn").ToString & "                    ", 1, 12) & " " & Mid(RowSigip("des_pn").ToString & "                                        ", 1, 30) & " SIGIP_Qt[" & TotQtSigip(RowSigip("bitron_pn").ToString, TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text, tblSigip) & "] -- Quote Qt[" & _
+                                    VectorResult = VectorResult & TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text &
+                                          " --> " & Mid(RowSigip("bitron_pn").ToString & "                    ", 1, 12) & " " & Mid(RowSigip("des_pn").ToString & "                                        ", 1, 30) & " SIGIP_Qt[" & TotQtSigip(RowSigip("bitron_pn").ToString, TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text, tblSigip) & "] -- Quote Qt[" &
                                           TotQt & "]" & vbCrLf
                                 End If
 
                                 Try
-                                    sql = "UPDATE `" & DBName & "`.`offer` SET " & _
+                                    sql = "UPDATE `" & DBName & "`.`offer` SET " &
                                     "`CompareFlag` = 'C'  WHERE `offer`.`name` = '" & TextBoxBomName.Text & "' and bitronpn='" & RowSigip("bitron_pn").ToString & "'"
                                     cmd = New MySqlCommand(sql, MySqlconnection)
                                     cmd.ExecuteNonQuery()
@@ -4118,9 +3883,9 @@ Public Class FormOffer
                         rowShowOffer = tblOff.Select("CompareFlag='X' AND name = '" & TextBoxBomName.Text & "'")
 
                         For Each RowOffer In rowShowOffer
-                            VectorResult = VectorResult & TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text & _
+                            VectorResult = VectorResult & TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text &
                             " --> " & Mid(RowOffer("bitronpn").ToString & "                     ", 1, 12) & " " & Mid(RowOffer("description").ToString & "                                              ", 1, 30) _
-                            & " SIGIP_Qt[0] -- Quote Qt[" & _
+                            & " SIGIP_Qt[0] -- Quote Qt[" &
                             RowOffer("qt_v" & i).ToString & "]" & vbCrLf
                         Next
 
@@ -4141,31 +3906,27 @@ Public Class FormOffer
     Private Sub ButtonBomImportSigipBom_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBomImportSigipBom.Click
         Dim cmd As New MySqlCommand()
         Dim sql As String
-        Dim rowShowOffer As DataRow()
-        Dim rowShowSigip As DataRow()
-        Dim tblOff As DataTable
         Dim DsOff As New DataSet
-        Dim tblSigip As DataTable
         Dim DsSigip As New DataSet
 
         ButtonBomImportSigipBom.BackColor = Color.Yellow
         ButtonBomImportSigipBom.Enabled = False
         Dim AdapterOffMY As New MySqlDataAdapter("SELECT * FROM offer", MySqlconnection)
         AdapterOffMY.Fill(DsOff, "Offer")
-        tblOff = DsOff.Tables("Offer")
+        Dim tblOff As DataTable = DsOff.Tables("Offer")
 
         Dim AdapterSigipMY As New MySqlDataAdapter("SELECT * FROM sigip", MySqlconnection)
         AdapterSigipMY.Fill(DsSigip, "sigip")
-        tblSigip = DsSigip.Tables("sigip")
+        Dim tblSigip As DataTable = DsSigip.Tables("sigip")
 
         Application.DoEvents()
-        rowShowOffer = tblOff.Select("name = '" & TextBoxBomName.Text & "'")
+        Dim rowShowOffer As DataRow() = tblOff.Select("name = '" & TextBoxBomName.Text & "'")
         If TextBoxBomName.Text <> "" And rowShowOffer.Length = 0 Then
             For i = 1 To 6
 
                 If TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text <> "" Then
 
-                    rowShowSigip = tblSigip.Select("(not BITRON_PN like '18*') and ACQ_FAB ='ACQ' AND bom = '" & TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text & "'")
+                    Dim rowShowSigip As DataRow() = tblSigip.Select("(not BITRON_PN like '18*') and ACQ_FAB ='ACQ' AND bom = '" & TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text & "'")
                     If rowShowSigip.Length > 0 Then
 
                         For Each RowSigip In rowShowSigip
@@ -4177,7 +3938,7 @@ Public Class FormOffer
                             rowShowOffer = tblOff.Select("bitronpn='" & RowSigip("bitron_pn").ToString & "' and name = '" & TextBoxBomName.Text & "'")
                             If rowShowOffer.Length > 0 Then
                                 Try
-                                    sql = "UPDATE `" & DBName & "`.`offer` SET " & _
+                                    sql = "UPDATE `" & DBName & "`.`offer` SET " &
                                     " `description` = '" & RowSigip("des_pn").ToString & "', `" & "qt_v" & i & "` = '" & Val(RowSigip("qt").ToString) + Val(rowShowOffer(0).Item("qt_v" & i).ToString) & "' WHERE `offer`.`name` = '" & TextBoxBomName.Text & "' and bitronpn='" & RowSigip("bitron_pn").ToString & "'"
                                     cmd = New MySqlCommand(sql, MySqlconnection)
                                     cmd.ExecuteNonQuery()
@@ -4187,7 +3948,7 @@ Public Class FormOffer
 
                             Else
                                 Try
-                                    sql = "INSERT INTO `" & DBName & "`.`offer` (`" & "qt_v" & i & "` ,`bitronpn` ,`Name` ,`description`) VALUES ('" & _
+                                    sql = "INSERT INTO `" & DBName & "`.`offer` (`" & "qt_v" & i & "` ,`bitronpn` ,`Name` ,`description`) VALUES ('" &
                                     Val(RowSigip("qt").ToString) & "', '" & RowSigip("bitron_pn").ToString & "', '" & TextBoxBomName.Text & "', '" & RowSigip("des_pn").ToString & "');"
                                     cmd = New MySqlCommand(sql, MySqlconnection)
                                     cmd.ExecuteNonQuery()
@@ -4213,7 +3974,7 @@ Public Class FormOffer
                     For i = 1 To 6
                         If RowOffer("qt_v" & i).ToString = "" And TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text <> "" Then
                             Try
-                                sql = "UPDATE `" & DBName & "`.`offer` SET " & _
+                                sql = "UPDATE `" & DBName & "`.`offer` SET " &
                                 " `" & "qt_v" & i & "` = '0'  WHERE `offer`.`name` = '" & TextBoxBomName.Text & "' and id='" & RowOffer("id").ToString & "'"
                                 cmd = New MySqlCommand(sql, MySqlconnection)
                                 cmd.ExecuteNonQuery()
@@ -4238,10 +3999,9 @@ Public Class FormOffer
     End Sub
 
     Function TotQtSigip(ByVal pn As String, ByVal bom As String, ByVal tblSigip As DataTable) As String
-        Dim rowShowOffer As DataRow()
 
         Application.DoEvents()
-        rowShowOffer = tblSigip.Select("bom = '" & bom & "' and bitron_pn='" & pn & "'")
+        Dim rowShowOffer As DataRow() = tblSigip.Select("bom = '" & bom & "' and bitron_pn='" & pn & "'")
 
         TotQtSigip = 0
         For i = 1 To rowShowOffer.Length
@@ -4272,11 +4032,7 @@ Public Class FormOffer
         NoInfoBomBest = False
     End Sub
 
-    Private Sub TabPageComponent_Click(ByVal sender As Object, ByVal e As EventArgs) Handles TabPageComponent.Click
-
-    End Sub
-
-    Private Sub TextBoxComponentFilter_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TextBoxComponentFilter.KeyUp
+    Private Sub TextBoxComponentFilter_KeyUp(ByVal sender As Object, ByVal e As KeyEventArgs) Handles TextBoxComponentFilter.KeyUp
         If e.KeyValue = 13 Then updateComponentList()
     End Sub
 
@@ -4284,14 +4040,11 @@ Public Class FormOffer
         updateComponentList()
     End Sub
 
-    Private Sub TreeViewComponent_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TreeViewComponent.KeyUp
+    Private Sub TreeViewComponent_KeyUp(ByVal sender As Object, ByVal e As KeyEventArgs) Handles TreeViewComponent.KeyUp
         If e.KeyCode = 112 Then ButtonComponentCustomerTRF_Click(Me, e)
     End Sub
 
     Private Sub ButtonOpenOfferBrand_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonOpenOfferBrand.Click
-
-        Dim rowShow As DataRow()
-
         Try
             tblBrand.Clear()
             DsBrand.Clear()
@@ -4302,7 +4055,7 @@ Public Class FormOffer
             AdapterBrand.Fill(DsBrand, "brand")
             tblBrand = DsBrand.Tables("brand")
 
-            rowShow = tblBrand.Select("(not buyer = 'SystemLiking') and (brand like '" & Mid(Replace(ComboBoxComponentBrand.Text, "[", "[[]"), 1, -1 + Len(Replace(ComboBoxComponentBrand.Text, "[", "[[]"))) & "[]]')", "brand")
+            Dim rowShow As DataRow() = tblBrand.Select("(not buyer = 'SystemLiking') and (brand like '" & Mid(Replace(ComboBoxComponentBrand.Text, "[", "[[]"), 1, -1 + Len(Replace(ComboBoxComponentBrand.Text, "[", "[[]"))) & "[]]')", "brand")
 
             For Each row In rowShow
                 If row("offerlink").ToString <> "" Then
@@ -4319,11 +4072,9 @@ Public Class FormOffer
         Catch ex As Exception
 
         End Try
-
     End Sub
 
     Private Sub ButtonOpenOfferBrandAlt_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonOpenOfferBrandAlt.Click
-        Dim rowShow As DataRow()
 
         Try
             tblBrand.Clear()
@@ -4335,7 +4086,7 @@ Public Class FormOffer
         AdapterBrand.Fill(DsBrand, "brand")
         tblBrand = DsBrand.Tables("brand")
 
-        rowShow = tblBrand.Select("(not buyer = 'SystemLiking') and (brand like '" & Mid(Replace(ComboBoxComponentALTBrand.Text, "[", "[[]"), 1, -1 + Len(Replace(ComboBoxComponentALTBrand.Text, "[", "[[]"))) & "[]]')", "brand")
+        Dim rowShow As DataRow() = tblBrand.Select("(not buyer = 'SystemLiking') and (brand like '" & Mid(Replace(ComboBoxComponentALTBrand.Text, "[", "[[]"), 1, -1 + Len(Replace(ComboBoxComponentALTBrand.Text, "[", "[[]"))) & "[]]')", "brand")
 
         For Each row In rowShow
             If row("offerlink").ToString <> "" Then
@@ -4354,25 +4105,16 @@ Public Class FormOffer
 
     Private Sub ButtonPredict_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonPredict.Click
 
-        Dim cmd As New MySqlCommand()
-        Dim sql As String
-        Dim rowShowOffer As DataRow()
-
-        Dim tblOff As DataTable
         Dim DsOff As New DataSet
-        Dim ComponentClass As String = ""
-
-
         Dim AdapterOffMY As New MySqlDataAdapter("SELECT * FROM offer", MySqlconnection)
         AdapterOffMY.Fill(DsOff, "Offer")
-        tblOff = DsOff.Tables("Offer")
+        Dim tblOff As DataTable = DsOff.Tables("Offer")
 
         If vbYes = MsgBox("Do you want fill all class based on description?", vbYesNo) Then
-
-            rowShowOffer = tblOff.Select("name = '" & TextBoxBomName.Text & "'")
+            Dim rowShowOffer As DataRow() = tblOff.Select("name = '" & TextBoxBomName.Text & "'")
             If rowShowOffer.Length > 0 Then
                 For Each RowOffer In rowShowOffer
-                    ComponentClass = ""
+                    Dim ComponentClass As Object = ""
                     If Mid(RowOffer("description").ToString = "", 1, 3) = "res" Then ComponentClass = "Resistor"
                     If Mid(RowOffer("description").ToString = "", 1, 3) = "cc." Then ComponentClass = "Capacitor"
                     If Mid(RowOffer("description").ToString = "", 1, 3) = "ic." Then ComponentClass = "Ic"
@@ -4384,9 +4126,9 @@ Public Class FormOffer
 
                     If ComponentClass <> "" Then
                         Try
-                            sql = "UPDATE `" & DBName & "`.`offer` SET " & _
-                            " `" & "class" & ComponentClass & "` = '0'  WHERE `offer`.`id` = " & RowOffer("id").ToString
-                            cmd = New MySqlCommand(sql, MySqlconnection)
+                            Dim sql As String = "UPDATE `" & DBName & "`.`offer` SET " &
+                                                " `" & "class" & ComponentClass & "` = '0'  WHERE `offer`.`id` = " & RowOffer("id").ToString
+                            Dim cmd = New MySqlCommand(sql, MySqlconnection)
                             cmd.ExecuteNonQuery()
                         Catch ex As Exception
                             MsgBox("error in class writing!" & ex.Message, MsgBoxStyle.Critical)
@@ -4406,10 +4148,6 @@ Public Class FormOffer
 
     Private Sub CheckBoxOrderByNumber_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBoxOrderByNumber.CheckedChanged
         UpdateTreeBomOffer()
-    End Sub
-
-    Private Sub TabPageOffer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles TabPageOffer.Click
-
     End Sub
 
     Private Sub ButtonEstimation_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonEstimation.Click
@@ -4439,7 +4177,6 @@ Public Class FormOffer
         End Try
     End Sub
 
-
     Private Sub ButtonComponentImportBrand_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonComponentImportBrand.Click
         ComboBoxComponentALTBrand.Items.Clear()
         ComboBoxComponentALTBrand.Text = ""
@@ -4467,6 +4204,5 @@ Public Class FormOffer
         UpdateTreeBomOffer()
         ProgressBarBom.Value = 0
     End Sub
-
 
 End Class

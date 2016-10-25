@@ -20,7 +20,6 @@ Public Class FormTypeAdmin
 
     Private Sub FormTypeAdmin_load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         FormStart.Hide()
-        Dim ds As New DataSet
         AdapterType.Fill(DsType, "doctype")
         tblDocType = DsType.Tables("doctype")
         AdapterDoc.Fill(DsDoc, "doc")
@@ -30,12 +29,11 @@ Public Class FormTypeAdmin
     End Sub
 
     Private Sub ComboBoxFirstType_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxFirstType.TextChanged
-        Dim strOld As String = ""
-        Dim returnValue As DataRow()
+        Dim strOld = ""
 
         ComboBoxSecondType.Items.Clear()
 
-        returnValue = tblDocType.Select("FirstType='" & ComboBoxFirstType.Text & "'", "SecondType DESC")
+        Dim returnValue As DataRow() = tblDocType.Select("FirstType='" & ComboBoxFirstType.Text & "'", "SecondType DESC")
         For Each row In returnValue
             If StrComp(Mid(strOld, 1, 3), Mid(row("SecondType").ToString, 1, 3)) <> 0 Then
                 strOld = row("SecondType").ToString
@@ -50,11 +48,10 @@ Public Class FormTypeAdmin
 
     End Sub
 
-    Private Sub ComboBoxSecondType_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBoxSecondType.TextChanged
-        Dim strOld As String = ""
-        Dim returnValue As DataRow()
+    Private Sub ComboBoxSecondType_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxSecondType.TextChanged
+        Dim strOld = ""
         ComboBoxThirdType.Items.Clear()
-        returnValue = tblDocType.Select("FirstType='" & ComboBoxFirstType.Text & "' and SecondType='" & ComboBoxSecondType.Text & "'", "SecondType DESC")
+        Dim returnValue As DataRow() = tblDocType.Select("FirstType='" & ComboBoxFirstType.Text & "' and SecondType='" & ComboBoxSecondType.Text & "'", "SecondType DESC")
         For Each row In returnValue
             If StrComp(Mid(strOld, 1, 3), Mid(row("ThirdType").ToString, 1, 3)) <> 0 Then
                 strOld = row("ThirdType").ToString
@@ -76,9 +73,7 @@ Public Class FormTypeAdmin
     ' Function to create new type
 
     Private Sub ButtonTypeAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonTypeAdd.Click
-        Dim returnValue As DataRow()
-        Dim AllOk As Boolean = False
-        Dim myrow As DataRow
+        Dim AllOk = False
 
         DisableControl()
         ComboBoxFirstType.Text = Trim(ComboBoxFirstType.Text)
@@ -99,7 +94,7 @@ Public Class FormTypeAdmin
 
         If AllOk Then
             If controlRight("T") >= 3 And controlRight(Mid(ComboBoxFirstType.Text, 3, 1)) >= 2 Then
-                returnValue = tblDocType.Select("header='" & HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text) & "'")
+                Dim returnValue As DataRow() = tblDocType.Select("header='" & HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text) & "'")
                 If returnValue.Length = 1 Then
                     ComunicationLog("0039") '("This type is already present in the database. No record added!")
                 ElseIf returnValue.Length > 1 Then
@@ -108,7 +103,7 @@ Public Class FormTypeAdmin
 
                     If TextBoxExtension.Text <> "" Then
 
-                        myrow = tblDocType.NewRow
+                        Dim myrow As DataRow = tblDocType.NewRow
                         myrow.Item("FirstType") = Trim(cap7(ComboBoxFirstType.Text))
                         myrow.Item("SecondType") = Trim(cap7(ComboBoxSecondType.Text))
                         myrow.Item("ThirdType") = Trim(cap7(ComboBoxThirdType.Text))
@@ -142,18 +137,17 @@ Public Class FormTypeAdmin
     End Sub
 
     Private Sub ButtonDelete_Click_1(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDelete.Click
-        Dim returnValue As DataRow(), cmd As MySqlCommand, sql As String
         If controlRight("T") >= 3 And controlRight(Mid(ComboBoxFirstType.Text, 3, 1)) >= 2 Then
             If vbYes = MsgBox(StrSettingRead("0035"), MsgBoxStyle.YesNo) Then
-                returnValue = tblDoc.Select("header='" & HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text) & "'")
+                Dim returnValue As DataRow() = tblDoc.Select("header='" & HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text) & "'")
                 If returnValue.Length > 0 Then
                     MsgBox(StrSettingRead("0036"), MsgBoxStyle.Critical)
                 Else
                     returnValue = tblDocType.Select("header='" & HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text) & "'")
                     If returnValue.Length > 0 Then
 
-                        sql = String.Format("DELETE FROM `{0}`.`doctype` WHERE `doctype`.`header` ='{1}'", DBName, HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text))
-                        cmd = New MySqlCommand(sql, MySqlconnection)
+                        Dim sql As String = String.Format("DELETE FROM `{0}`.`doctype` WHERE `doctype`.`header` ='{1}'", DBName, HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text))
+                        Dim cmd As MySqlCommand = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
                         ComunicationLog("5034") 'Record deleted from database
                         resetCont()
@@ -171,13 +165,11 @@ Public Class FormTypeAdmin
 
     Sub FillComboFirstType()
         ComboBoxFirstType.Items.Clear()
-        Dim strOld As String = ""
-        Dim strNew As String = ""
-        Dim result As DataRow()
+        Dim strOld = ""
         Dim row As DataRow
-        result = tblDocType.Select("FirstType like '*'", "firstType")
+        Dim result As DataRow() = tblDocType.Select("FirstType like '*'", "firstType")
         For Each row In result
-            strNew = (row("FirstType").ToString)
+            Dim strNew As Object = (row("FirstType").ToString)
             If StrComp(Mid(strOld, 1, 3), Mid(strNew, 1, 3)) <> 0 Then
                 strOld = strNew
                 ComboBoxFirstType.Items.Add(strNew)
@@ -206,14 +198,11 @@ Public Class FormTypeAdmin
     End Function
 
     Function CheckFieldType(ByVal s As String) As Boolean
-
-        Dim BooNoNumeric As Boolean
-        Dim BooTratSpace As Boolean
         Dim Boofilled As Boolean
 
         If s <> "" Then Boofilled = True
-        BooNoNumeric = True ' NoNumeric(s) ' can use also numeric
-        BooTratSpace = TratPositionSpace(s)
+        ' NoNumeric(s) ' can use also numeric
+        Dim BooTratSpace As Boolean = TratPositionSpace(s)
         CheckFieldType = BooTratSpace And BooTratSpace And Boofilled
 
     End Function
@@ -264,9 +253,8 @@ Public Class FormTypeAdmin
         DsType.Clear()
         AdapterType.Fill(DsType, "doctype")
         tblDocType = DsType.Tables("doctype")
-        Dim returnValue As DataRow()
 
-        returnValue = tblDocType.Select("header='" & HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text) & "'")
+        Dim returnValue As DataRow() = tblDocType.Select("header='" & HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text) & "'")
         If returnValue.Length <= 1 Then
             returnValue = tblDocType.Select("FirstType='" & ComboBoxFirstType.Text & "' and SecondType='" & ComboBoxSecondType.Text & "' and ThirdType='" & ComboBoxThirdType.Text & "'", "SecondType DESC")
             If returnValue.Length <= 1 Then
@@ -288,8 +276,7 @@ Public Class FormTypeAdmin
     ' comunication function
 
     Sub ComunicationLog(ByVal ComCode As String)
-        Dim rsResult As DataRow()
-        rsResult = tblError.Select("code='" & ComCode & "'")
+        Dim rsResult As DataRow() = tblError.Select("code='" & ComCode & "'")
         ListBoxLog.Items.Add(ComCode & " -> " & rsResult(0).Item("en").ToString)
         'ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
 
@@ -310,7 +297,7 @@ Public Class FormTypeAdmin
     End Sub
 
 
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
         MsgBox("First Type: 3 letters - Description" & vbCrLf & _
                 "Second Type: 3 letters - Description" & vbCrLf & _
                 "Third Type: 3 letters - Description" & " (Example: LAB - Label Specification)" & vbCrLf & _
@@ -328,23 +315,4 @@ Public Class FormTypeAdmin
                 "Each file extension is followed by ';' and no SPACE are allowed between them. " & vbCrLf)
     End Sub
 
-    Private Sub ComboBoxFirstType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxFirstType.SelectedIndexChanged
-
-    End Sub
-
-    Private Sub TextBoxPropriety_TextChanged(sender As Object, e As EventArgs) Handles TextBoxPropriety.TextChanged
-
-    End Sub
-
-    Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
-
-    End Sub
-
-    Private Sub ComboBoxThirdType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxThirdType.SelectedIndexChanged
-
-    End Sub
-
-    Private Sub ListBoxLog_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBoxLog.SelectedIndexChanged
-
-    End Sub
 End Class

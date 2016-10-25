@@ -1,7 +1,6 @@
 ﻿Option Explicit On
 Option Compare Text
 Imports MySql.Data.MySqlClient
-Imports System.IO
 Imports System.Data.SqlClient
 Imports System.Text.RegularExpressions
 
@@ -36,7 +35,6 @@ Public Class FormProduct
     Dim DsSql As New DataSet
     Dim ConnectionStringOrcad As String
     Dim SqlconnectionOrcad As New SqlConnection
-    ' EVENT
 
     Private Sub FormProduct_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
         FormStart.Show()
@@ -57,12 +55,9 @@ Public Class FormProduct
         End With
     End Sub
 
-
-
     Private Sub FormProduct_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
-        System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US")
+        Threading.Thread.CurrentThread.CurrentCulture = Globalization.CultureInfo.CreateSpecificCulture("en-US")
         PreVentFlicker()
-
         Me.Focus()
         AdapterProd.Fill(DsProd, "product")
         tblProd = DsProd.Tables("product")
@@ -131,11 +126,7 @@ Public Class FormProduct
     End Sub
 
     Private Sub ButtonAddProduct_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAddProduct.Click
-
-        Dim cmd As New MySqlCommand()
-        Dim sql As String
-
-        Dim mch As String = ""
+        Dim mch = ""
         For i = 0 To ListViewMch.Items.Count - 1
             mch = mch & StrDup(20 - Len(ListViewMch.Items(i).SubItems(0).Text()), " ") & ListViewMch.Items(i).SubItems(0).Text
             mch = mch & StrDup(40 - Len(ListViewMch.Items(i).SubItems(1).Text()), " ") & ListViewMch.Items(i).SubItems(1).Text
@@ -144,13 +135,13 @@ Public Class FormProduct
         If controlRight("W") = 3 Then
             If ComboBoxCustomer.Text <> "" And TextBoxProduct.Text <> "" And TextBoxDescription.Text <> "" Then
                 Try
-                    sql = "INSERT INTO `" & DBName & "`.`product` (`BitronPN` ,`Name` ,`Customer` ,`Status` ,`DocFlag` ,`pcbCode`,`PiastraCode`,`StatusUpdateDate`,`MchElement`) VALUES ('" & _
-                    Trim(TextBoxProduct.Text) & "', '" & Trim(UCase(TextBoxDescription.Text)) & "', '" & Trim(ComboBoxCustomer.Text) & "', '" & _
-                    "" & "', '" & strControl() & "', '" & Trim(TextBoxPcb.Text) & "', '" & _
-                    Trim(TextBoxPiastra.Text) & "', 'INSERT[" & date_to_string(Today) & "]','" & _
-                    mch & "'" & ");"
+                    Dim sql As String = "INSERT INTO `" & DBName & "`.`product` (`BitronPN` ,`Name` ,`Customer` ,`Status` ,`DocFlag` ,`pcbCode`,`PiastraCode`,`StatusUpdateDate`,`MchElement`) VALUES ('" &
+                                        Trim(TextBoxProduct.Text) & "', '" & Trim(UCase(TextBoxDescription.Text)) & "', '" & Trim(ComboBoxCustomer.Text) & "', '" &
+                                        "" & "', '" & strControl() & "', '" & Trim(TextBoxPcb.Text) & "', '" &
+                                        Trim(TextBoxPiastra.Text) & "', 'INSERT[" & date_to_string(Today) & "]','" &
+                                        mch & "'" & ");"
 
-                    cmd = New MySqlCommand(sql, MySqlconnection)
+                    Dim cmd As MySqlCommand = New MySqlCommand(sql, MySqlconnection)
                     cmd.ExecuteNonQuery()
 
                     ComunicationLog("5041") ' 
@@ -169,11 +160,7 @@ Public Class FormProduct
     End Sub
 
     Private Sub ButtonUpdate_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonUpdate.Click
-
-        Dim cmd As New MySqlCommand()
-        Dim sql As String
-
-        Dim mch As String = ""
+        Dim mch = ""
         For i = 0 To ListViewMch.Items.Count - 1
             mch = mch & StrDup(20 - Len(ListViewMch.Items(i).SubItems(0).Text()), " ") & ListViewMch.Items(i).SubItems(0).Text
             mch = mch & StrDup(40 - Len(Mid(ListViewMch.Items(i).SubItems(1).Text(), 1, 40)), " ") & Mid(ListViewMch.Items(i).SubItems(1).Text, 1, 40)
@@ -182,15 +169,15 @@ Public Class FormProduct
         If controlRight("W") >= 2 Then
             If TextBoxProduct.Text <> "" And TextBoxDescription.Text <> "" And (TextBoxDAI.Text = "" Or TextBoxDAI.Text = "NO_DAI" Or (Regex.IsMatch(TextBoxDAI.Text, "^K[0-9]+")) And Len(TextBoxDAI.Text) = 8) Then
                 Try
-                    sql = "UPDATE `" & DBName & "`.`product` SET `Name` = '" & Trim(UCase(TextBoxDescription.Text)) & _
-                    "',`Customer` = '" & Trim(ComboBoxCustomer.Text) & _
-                    "',`PcbCode` = '" & Trim(TextBoxPcb.Text) & _
-                    "',`PiastraCode` = '" & Trim(TextBoxPiastra.Text) & _
-                    "',`LS_rmb` = '" & TextBoxLS.Text & _
-                    "',`dai` = '" & UCase(Trim(TextBoxDAI.Text)) & _
-                    "',`mchElement` = '" & (mch) & _
-                    "',`DocFlag` = '" & Trim(strControl()) & "' WHERE `product`.`BitronPN` = '" & Trim(TextBoxProduct.Text) & "' ;"
-                    cmd = New MySqlCommand(sql, MySqlconnection)
+                    Dim sql As String = "UPDATE `" & DBName & "`.`product` SET `Name` = '" & Trim(UCase(TextBoxDescription.Text)) &
+                                        "',`Customer` = '" & Trim(ComboBoxCustomer.Text) &
+                                        "',`PcbCode` = '" & Trim(TextBoxPcb.Text) &
+                                        "',`PiastraCode` = '" & Trim(TextBoxPiastra.Text) &
+                                        "',`LS_rmb` = '" & TextBoxLS.Text &
+                                        "',`dai` = '" & UCase(Trim(TextBoxDAI.Text)) &
+                                        "',`mchElement` = '" & (mch) &
+                                        "',`DocFlag` = '" & Trim(strControl()) & "' WHERE `product`.`BitronPN` = '" & Trim(TextBoxProduct.Text) & "' ;"
+                    Dim cmd = New MySqlCommand(sql, MySqlconnection)
                     cmd.ExecuteNonQuery()
                     Try
                         griddUpdate(ListView1.SelectedItems.Item(0).SubItems(3).Text = TextBoxProduct.Text)
@@ -229,7 +216,7 @@ Public Class FormProduct
 
     End Sub
 
-    Private Sub ListView1_ColumnClick1(ByVal sender As Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs) Handles ListView1.ColumnClick
+    Private Sub ListView1_ColumnClick1(ByVal sender As Object, ByVal e As ColumnClickEventArgs) Handles ListView1.ColumnClick
 
         Me.ListView1.ListViewItemSorter = New ListViewItemComparer(e.Column)
         ' Call the sort method to manually sort.
@@ -237,8 +224,7 @@ Public Class FormProduct
 
     End Sub
 
-    Private Sub ListView1_ItemSelectionChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.ListViewItemSelectionChangedEventArgs) Handles ListView1.ItemSelectionChanged
-        Dim mech As String
+    Private Sub ListView1_ItemSelectionChanged(ByVal sender As Object, ByVal e As ListViewItemSelectionChangedEventArgs) Handles ListView1.ItemSelectionChanged
         If ListView1.SelectedItems.Count = 1 Then
             ComboBoxStatus.Text = ListView1.SelectedItems.Item(0).SubItems(7).Text
             TextBoxDescription.Text = ListView1.SelectedItems.Item(0).SubItems(4).Text
@@ -250,7 +236,7 @@ Public Class FormProduct
             TextBoxDAI.Text = ListView1.SelectedItems.Item(0).SubItems(6).Text
             ListViewMch.Items.Clear()
 
-            mech = ListView1.SelectedItems.Item(0).SubItems(11).Text
+            Dim mech As String = ListView1.SelectedItems.Item(0).SubItems(11).Text
 
             Dim str(2) As String
 
@@ -278,13 +264,11 @@ Public Class FormProduct
     End Sub
 
     Private Sub ButtonDelete_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDelete.Click
-        Dim cmd As New MySqlCommand()
-        Dim sql As String
         If controlRight("W") = 3 Then
             If TextBoxProduct.Text <> "" And MsgBox("Do you want to delete this product?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
                 Try
-                    sql = "DELETE FROM `" & DBName & "`.`product` WHERE `product`.`BitronPN` = '" & TextBoxProduct.Text & "'"
-                    cmd = New MySqlCommand(sql, MySqlconnection)
+                    Dim sql As String = "DELETE FROM `" & DBName & "`.`product` WHERE `product`.`BitronPN` = '" & TextBoxProduct.Text & "'"
+                    Dim cmd = New MySqlCommand(sql, MySqlconnection)
                     cmd.ExecuteNonQuery()
                     reset()
                     ComunicationLog("5052") ' Product Deleted
@@ -302,9 +286,7 @@ Public Class FormProduct
     End Sub
 
     Private Sub ButtonQuery_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonQuery.Click
-
         FillListView()
-
     End Sub
 
     Private Sub ButtonReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonReset.Click
@@ -312,14 +294,12 @@ Public Class FormProduct
     End Sub
 
     Private Sub ButtonCustomerAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonCustomerAdd.Click
-        Dim cmd As New MySqlCommand()
-        Dim sql As String
-        sql = InputBox("Please write the new customer name", "New Customer - Data input")
+        Dim sql As String = InputBox("Please write the new customer name", "New Customer - Data input")
         If controlRight("W") = 3 Then
             If sql <> "" Then
                 Try
                     sql = "INSERT INTO `" & DBName & "`.`customer` (`name`  ) VALUES ( '" & UCase(sql) & "');"
-                    cmd = New MySqlCommand(sql, MySqlconnection)
+                    Dim cmd = New MySqlCommand(sql, MySqlconnection)
                     cmd.ExecuteNonQuery()
                     ComunicationLog("5051") ' Customer insert
                 Catch ex As Exception
@@ -336,13 +316,11 @@ Public Class FormProduct
     End Sub
 
     Private Sub ButtonDeleteCustomer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDeleteCustomer.Click
-        Dim cmd As New MySqlCommand()
-        Dim sql As String
         If controlRight("W") = 3 Then
             If ComboBoxCustomer.Text <> "" And MsgBox("Do you want to delete this Customer?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
                 Try
-                    sql = "DELETE FROM `" & DBName & "`.`customer` WHERE `customer`.`name` = '" & ComboBoxCustomer.Text & "'"
-                    cmd = New MySqlCommand(sql, MySqlconnection)
+                    Dim sql As String = "DELETE FROM `" & DBName & "`.`customer` WHERE `customer`.`name` = '" & ComboBoxCustomer.Text & "'"
+                    Dim cmd = New MySqlCommand(sql, MySqlconnection)
                     cmd.ExecuteNonQuery()
                 Catch ex As Exception
                     ComunicationLog("5050") ' Mysql delete error 
@@ -358,7 +336,7 @@ Public Class FormProduct
     End Sub
 
     Private Sub ButtonAddMch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAddMch.Click
-        Dim pos As Integer, exist As Boolean
+        Dim exist As Boolean
         If ComboBoxMch.Text <> "" Then
             If ListViewMch.Items.Count > 0 Then
                 For i = 0 To ListViewMch.Items.Count - 1
@@ -369,7 +347,7 @@ Public Class FormProduct
                 Next
             End If
             If Not exist Then
-                pos = InStr(ComboBoxMch.Text, "-", CompareMethod.Text)
+                Dim pos As Integer = InStr(ComboBoxMch.Text, "-", CompareMethod.Text)
                 Dim str(2) As String
                 str(0) = Mid(ComboBoxMch.Text, 1, pos - 2)
                 str(1) = Mid(ComboBoxMch.Text, pos + 2)
@@ -390,9 +368,7 @@ Public Class FormProduct
                         ListViewMch.Items(i).Remove()
                     End If
                 Catch ex As Exception
-
                 End Try
-
             Next
         End If
 
@@ -421,8 +397,8 @@ Public Class FormProduct
 
     Sub fillEcrComboMch()
         ListViewMch.Clear()
-        Dim i As Integer, result As DataRow()
-        result = tblDoc.Select("header = '" & ParameterTable("plant") & "R_PRO_MED'")
+        Dim i As Integer
+        Dim result As DataRow() = tblDoc.Select("header = '" & ParameterTable("plant") & "R_PRO_MED'")
         ComboBoxMch.Items.Clear()
         For i = 0 To result.Length - 1
             ComboBoxMch.Items.Add(result(i).Item("filename").ToString)
@@ -432,8 +408,7 @@ Public Class FormProduct
 
     Sub ComunicationLog(ByVal ComCode As String)
 
-        Dim rsResult As DataRow()
-        rsResult = tblError.Select("code='" & ComCode & "'")
+        Dim rsResult As DataRow() = tblError.Select("code='" & ComCode & "'")
         If rsResult.Length = 0 Then
             ComCode = "0051"
             rsResult = tblError.Select("code='" & ComCode & "'")
@@ -474,7 +449,6 @@ Public Class FormProduct
     End Sub
 
     Sub FillCustomerCombo()
-        Dim rowResults As DataRow()
 
         ComboBoxCustomer.Items.Clear()
         ComboBoxCustomer.Items.Add("")
@@ -482,7 +456,7 @@ Public Class FormProduct
         tblCus.Clear()
         AdapterCus.Fill(DsCus, "Customer")
         tblCus = DsCus.Tables("Customer")
-        rowResults = tblCus.Select("name like '*'", "name")
+        Dim rowResults As DataRow() = tblCus.Select("name like '*'", "name")
         For Each row In rowResults
             ComboBoxCustomer.Items.Add(row("name").ToString)
         Next
@@ -490,9 +464,6 @@ Public Class FormProduct
     End Sub
 
     Sub FillListView()
-
-
-        Dim rowShow As DataRow()
         DsProd.Clear()
         tblProd.Clear()
         AdapterProd.Update(DsProd, "product")
@@ -500,20 +471,20 @@ Public Class FormProduct
 
         tblProd = DsProd.Tables("product")
 
-        rowShow = tblProd.Select("Status like '*" & IIf(Trim(ComboBoxStatus.Text) <> "", Trim(ComboBoxStatus.Text), "*") & _
-        "*' and bitronpn like '*" & IIf(TextBoxProduct.Text <> "", TextBoxProduct.Text, "*") & _
-        "*' and customer like '*" & IIf(ComboBoxCustomer.Text <> "", ComboBoxCustomer.Text, "*") & _
-        "*' and pcbCode like '*" & IIf(TextBoxPcb.Text <> "", TextBoxPcb.Text, "*") & _
-        "*' and dai like '*" & IIf(TextBoxDAI.Text <> "", TextBoxDAI.Text, "*") & _
-        "*' and PiastraCode like '*" & IIf(TextBoxPiastra.Text <> "", TextBoxPiastra.Text, "*") & _
-        "*' and " & IIf(ComboBoxStatus.Text = "OBSOLETE", "Status like 'OBSOLETE", "not Status like 'OBSOLETE") & _
-        "*' and name like '*" & IIf(Trim(TextBoxDescription.Text) <> "", TextBoxDescription.Text, "*") & "*'", "Customer")
+        Dim rowShow As DataRow() = tblProd.Select("Status like '*" & IIf(Trim(ComboBoxStatus.Text) <> "", Trim(ComboBoxStatus.Text), "*") &
+                                                  "*' and bitronpn like '*" & IIf(TextBoxProduct.Text <> "", TextBoxProduct.Text, "*") &
+                                                  "*' and customer like '*" & IIf(ComboBoxCustomer.Text <> "", ComboBoxCustomer.Text, "*") &
+                                                  "*' and pcbCode like '*" & IIf(TextBoxPcb.Text <> "", TextBoxPcb.Text, "*") &
+                                                  "*' and dai like '*" & IIf(TextBoxDAI.Text <> "", TextBoxDAI.Text, "*") &
+                                                  "*' and PiastraCode like '*" & IIf(TextBoxPiastra.Text <> "", TextBoxPiastra.Text, "*") &
+                                                  "*' and " & IIf(ComboBoxStatus.Text = "OBSOLETE", "Status like 'OBSOLETE", "not Status like 'OBSOLETE") &
+                                                  "*' and name like '*" & IIf(Trim(TextBoxDescription.Text) <> "", TextBoxDescription.Text, "*") & "*'", "Customer")
 
         ListView1.Clear()
         ListBoxLog.Items.Add("Finded " & rowShow.Length & " product")
         ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
         ListBoxLog.ScrollAlwaysVisible = True
-        Dim c As DataColumn, i As Integer, strPrevDoc As String
+        Dim c As DataColumn
         Dim Widht(tblProd.Columns.Count - 1) As Integer
         If CheckBoxVis.Checked Then
             Widht(0) = 0  ' 
@@ -580,7 +551,7 @@ Public Class FormProduct
 
         End If
 
-        i = 0
+        Dim i As Integer = 0
         For Each c In tblProd.Columns
             'adding names of columns as Listview columns				
             Dim h As New ColumnHeader
@@ -592,9 +563,8 @@ Public Class FormProduct
 
         Dim str(tblProd.Columns.Count - 1) As String
         'adding Datarows as listview Grids
-        strPrevDoc = ""
         For i = 0 To rowShow.Length - 1
-            For col As Integer = 0 To tblProd.Columns.Count - 1
+            For col = 0 To tblProd.Columns.Count - 1
                 str(col) = UCase(rowShow(i).ItemArray(col).ToString())
             Next
             Dim ii As New ListViewItem(str)
@@ -624,11 +594,11 @@ Public Class FormProduct
         AdapterProd.Fill(DsProd, "product")
         tblProd = DsProd.Tables("product")
 
-        Dim i As Integer, result As DataRow()
+        Dim i As Integer
         GroupList = ""
         If TextBoxProduct.Text <> "" Then
 
-            result = tblProd.Select("BitronPN = '" & TextBoxProduct.Text & "'")
+            Dim result As DataRow() = tblProd.Select("BitronPN = '" & TextBoxProduct.Text & "'")
             If result.Length > 0 Then
                 GroupList = result(0).Item("groupList").ToString
 
@@ -657,11 +627,10 @@ Public Class FormProduct
         tblProd = DsProd.Tables("product")
         User3 = user()
 
-        Dim i As Integer, result As DataRow()
         OpenIssue = ""
         If TextBoxProduct.Text <> "" Then
 
-            result = tblProd.Select("BitronPN = '" & TextBoxProduct.Text & "'")
+            Dim result As DataRow() = tblProd.Select("BitronPN = '" & TextBoxProduct.Text & "'")
             If result.Length > 0 Then
                 OpenIssue = result(0).Item("OpenIssue").ToString
                 ProdOpenIssue = result(0).Item("bitronpn").ToString
@@ -682,26 +651,21 @@ Public Class FormProduct
                 FormOpenIssue.ComboBoxGroup.Text = ""
                 FormOpenIssue.Show()
 
-
-
             End If
         End If
 
     End Sub
 
     Private Sub ButtonStatusUP_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonStatusUP.Click
-        Dim currentStatus As String
-        Dim result As DataRow()
-
 
         User3 = user()
         If controlRight("W") >= 3 Then
             If TextBoxProduct.Text <> "" Then
 
-                result = tblProd.Select("BitronPN = '" & TextBoxProduct.Text & "'")
+                Dim result As DataRow() = tblProd.Select("BitronPN = '" & TextBoxProduct.Text & "'")
                 If result.Length = 1 Then
                     If (result(0).Item("mail").ToString <> "SENT") Or (ComboBoxStatus.Text = "OBSOLETE" And controlRight("R") >= 2) Then
-                        currentStatus = result(0).Item("status").ToString
+                        Dim currentStatus As String = result(0).Item("status").ToString
                         If controlRight("R") >= 2 Then
                             If (ComboBoxStatus.Text = "OBSOLETE" Or ComboBoxStatus.Text = "" Or ComboBoxStatus.Text = "SOP_SAMPLE" Or ComboBoxStatus.Text = "R&D_APPROVED") _
                                 And (currentStatus = "MPA_APPROVED" And ComboBoxStatus.Text = "OBSOLETE" Or currentStatus = "OBSOLETE" Or currentStatus = "" Or currentStatus = "SOP_SAMPLE" Or currentStatus = "R&D_APPROVED") Then
@@ -812,16 +776,11 @@ Public Class FormProduct
     End Sub
 
     Sub StatusUpdate(ByVal StatusUpdateDate As String)
-
-        Dim cmd As New MySqlCommand()
-        Dim sql As String
-
-
         If controlRight("W") >= 2 Then
             If TextBoxProduct.Text <> "" And TextBoxDescription.Text <> "" Then
                 Try
-                    sql = "UPDATE `" & DBName & "`.`product` SET `StatusUpdateDate` = '" & Trim(ComboBoxStatus.Text) & "[" & string_to_date(Today.Year & "/" & Today.Month & "/" & Today.Day) & "]" & StatusUpdateDate & "',`Status` = '" & Trim(ComboBoxStatus.Text) & "', `MAIL` = '' WHERE `product`.`BitronPN` = '" & Trim(TextBoxProduct.Text) & "' ;"
-                    cmd = New MySqlCommand(sql, MySqlconnection)
+                    Dim sql As String = "UPDATE `" & DBName & "`.`product` SET `StatusUpdateDate` = '" & Trim(ComboBoxStatus.Text) & "[" & string_to_date(Today.Year & "/" & Today.Month & "/" & Today.Day) & "]" & StatusUpdateDate & "',`Status` = '" & Trim(ComboBoxStatus.Text) & "', `MAIL` = '' WHERE `product`.`BitronPN` = '" & Trim(TextBoxProduct.Text) & "' ;"
+                    Dim cmd = New MySqlCommand(sql, MySqlconnection)
                     cmd.ExecuteNonQuery()
                 Catch ex As Exception
                     ComunicationLog("5050") ' Mysql update query error 
@@ -868,10 +827,10 @@ Public Class FormProduct
             End If
 
         Next
-        SaveFileDialog1.FileName = System.IO.Path.GetTempPath & "SrvQueryLog.txt"
+        SaveFileDialog1.FileName = IO.Path.GetTempPath & "SrvQueryLog.txt"
         SaveFileDialog1.ShowDialog()
         Try
-            FileCopy(System.IO.Path.GetTempPath & "SrvQueryLog.txt", SaveFileDialog1.FileName)
+            FileCopy(IO.Path.GetTempPath & "SrvQueryLog.txt", SaveFileDialog1.FileName)
         Catch ex As Exception
 
         End Try
@@ -896,10 +855,9 @@ Public Class FormProduct
 
                     AdapterSigip.Fill(DsSigip, "sigip")
                     tblSigip = DsSigip.Tables("sigip")
-                    Dim cmd As New MySqlCommand(), sql As String
                     Try
-                        sql = "DELETE FROM `" & DBName & "`.`sigip` "
-                        cmd = New MySqlCommand(sql, MySqlconnection)
+                        Dim sql As String = "DELETE FROM `" & DBName & "`.`sigip` "
+                        Dim cmd = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
                         reset()
                     Catch ex As Exception
@@ -962,347 +920,66 @@ Public Class FormProduct
             ListBoxLog.Items.Add("No enought right for this operation...")
         End If
     End Sub
-    ' "InsertSigipBom" is not used
-    'Sub InsertSigipBom(ByVal sfilename As String)
-    '    ParameterTableWrite("LAST_BOM_UPDATE", "Start but not finish....")
-    '    '1         09001495                NR       0,031250   0,012556                                                                                                                             0,012556*
-    '    '                                                                                                                                                                                                   *D1
-    '    '      ACQ COCONUT-SHELL ACTIVATED CARBON 15  CNFG                                                                                                                                          ///      D2
-    '    '          Fornitore 1: 770155S QINGDAO XIANGYUAN DESICCA   % Ass:  100                                                                                                                              D3
-
-    '    '1         20418867                NR       1,000000                                               0,150316   0,257094   0,105492   0,081500                                                0,594402*
-    '    Dim cmd As New MySqlCommand(), sLine As String, nr As String
-    '    Dim sql As String = "", bom As String, currency As String, bitron_pn As String, des As String, qt As String, price As String
-    '    Dim liv As String, acq_fab As String, despn As String, supp1 As String, ass1 As String, des1 As String, supp2 As String, ass2 As String, des2 As String
-    '    Dim sReader = New IO.StreamReader(sfilename)
-    '    Dim mdo As String, mdi As String, amm As String, spe As String
-    '    Dim cb As New MySqlCommandBuilder(AdapterSigip)
-
-    '    ListBoxLog.Items.Clear()
-
-    '    bom = ""
-    '    des = ""
-    '    currency = ""
-
-
-
-    '    For i = 1 To 100
-    '        sLine = sReader.ReadLine
-    '        sLine = Replace(sLine, "Valuta di stampa ", "Printout Currency")
-    '        sLine = Replace(sLine, "Assieme ", "Assembly")
-    '        If InStr(sLine, "Printout Currency") > 0 Then
-    '            currency = Trim(Mid(sLine, InStr(sLine, "currency", CompareMethod.Text) + 8, 40))
-    '        End If
-    '        If InStr(sLine, "Assembly") > 0 Then
-    '            bom = Trim(Mid(sLine, InStr(sLine, "Assembly", CompareMethod.Text) + 8, 20))
-    '            des = Trim(Mid(sLine, InStr(sLine, "Assembly", CompareMethod.Text) + 29, 50))
-    '            Exit For
-    '        End If
-    '        If i = 49 Then MsgBox("BOM not full recognized, please check the txt format: " & sfilename)
-    '    Next
-
-
-
-
-    '    If bom = Mid(sfilename, Len(sfilename) - 3 - Len(bom), Len(bom)) Then
-    '        ListBoxLog.Items.Add("Process BOM: " & bom)
-    '        Application.DoEvents()
-    '        ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
-    '        ListBoxLog.ScrollAlwaysVisible = True
-
-    '        sLine = sReader.ReadLine
-    '        While Not sReader.EndOfStream
-
-    '            supp1 = ""
-    '            ass1 = ""
-    '            des1 = ""
-    '            supp2 = ""
-    '            ass2 = ""
-    '            des2 = ""
-    '            despn = ""
-    '            price = ""
-    '            liv = ""
-    '            qt = ""
-    '            nr = ""
-    '            bitron_pn = ""
-    '            despn = ""
-    '            mdo = ""
-    '            mdi = ""
-    '            amm = ""
-    '            spe = ""
-    '            If Mid(sLine, 1, 1) = "1" Or Mid(sLine, 1, 1) = "." Then
-    '                bitron_pn = Trim(Mid(sLine, 10, 24))
-    '                nr = Trim(Mid(sLine, 35, 8))
-    '                qt = Replace(Trim(Mid(sLine, 41, 11)), ",", ".")
-    '                price = Replace(Trim(Mid(sLine, 181, 14)), ",", ".")
-    '                mdo = Replace(Trim(Mid(sLine, 99, 8)), ",", ".")
-    '                If mdi <> "" Then Stop
-    '                mdi = Replace(Trim(Mid(sLine, 110, 8)), ",", ".")
-    '                amm = Replace(Trim(Mid(sLine, 121, 8)), ",", ".")
-    '                spe = Replace(Trim(Mid(sLine, 132, 8)), ",", ".")
-
-    '                liv = Mid(sLine, 1, 10)
-    '                sLine = sReader.ReadLine()
-    '                acq_fab = Replace(Trim(Mid(sLine, 1, 10)), ".", "")
-    '                If acq_fab = "acq" Or acq_fab = "fab" Or acq_fab = "acv" Then
-
-    '                Else
-    '                    sLine = sReader.ReadLine()
-    '                    acq_fab = Replace(Trim(Mid(sLine, 1, 10)), ".", "")
-    '                End If
-    '                despn = Trim(Mid(sLine, 10, 36))
-    '                sLine = sReader.ReadLine()
-    '                If Mid(sLine, 11, 9) = "fornitore" Then
-    '                    supp1 = Trim(Mid(sLine, 23, 8))
-    '                    ass1 = Trim(Mid(sLine, 68, 3))
-    '                    des1 = Trim(Mid(sLine, 30, 30))
-    '                    supp2 = Trim(Mid(sLine, 89, 8))
-    '                    ass2 = (Mid(sLine, 132, 3))
-    '                    des2 = Trim(Mid(sLine, 97, 28))
-    '                Else
-
-    '                End If
-
-
-    '                sql = "(" & index & "," & _
-    '                "'" & bom & "'," & _
-    '                "'" & Replace(des, "'", "") & "'," & _
-    '                "'" & nr & "'," & _
-    '                "'" & (qt) & "'," & _
-    '                "'" & (price) & "'," & _
-    '                "'" & currency & "'," & _
-    '                "'" & liv & "'," & _
-    '                "'" & acq_fab & "'," & _
-    '                "'" & bitron_pn & "'," & _
-    '                "'" & supp1 & "'," & _
-    '                "'" & (ass1) & "'," & _
-    '                "'" & Replace(des1, "'", "") & "'," & _
-    '                "'" & supp2 & "'," & _
-    '                "'" & (ass2) & "'," & _
-    '                "'" & Replace(des2, "'", "") & "'," & _
-    '                "'" & ReplaceChar(despn) & "'," & _
-    '                "'" & mdi & "'," & _
-    '                "'" & mdo & "'," & _
-    '                "'" & amm & "'," & _
-    '                "'" & spe & "'" & _
-    '                 ")," & sql
-
-    '                Try
-    '                    sql = Mid(sql, 1, Len(sql) - 1)
-    '                    sql = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn`  ,`pn_supp1`,`ass1`,`des_supp1`,`pn_supp2`,`ass2`,`des_supp2` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`) VALUES " & sql & ";"
-    '                    cmd = New MySqlCommand(sql, MySqlconnection)
-    '                    cmd.ExecuteNonQuery()
-    '                    sql = ""
-    '                Catch ex As Exception
-    '                    MsgBox("Sigip update error! " & ex.Message)
-    '                End Try
-
-    '                index = index + 1
-
-    '            Else
-
-
-    '            End If
-    '            sLine = sReader.ReadLine
-
-    '        End While
-    '        '   Application.DoEvents()
-    '    Else
-
-    '        MsgBox("Mismatch between filename and PN_BOM inside the file: " & sfilename)
-    '    End If
-    '    sReader.Close()
-
-
-    'End Sub
-
-    ' BEC
-    'Sub InsertSigipBomXLS(ByVal sfilename As String)
-
-    '    Dim cmd As New MySqlCommand(), nr As String
-    '    Dim sql As String = "", bom As String, currency As String, bitron_pn As String, des As String, qt As String, price As String
-    '    Dim liv As String, acq_fab As String, despn As String, mdo_t As String, mdi_t As String, spe_t As String, amm_t As String
-    '    Dim mdo As String, mdi As String, amm As String, spe As String
-    '    Dim cb As New MySqlCommandBuilder(AdapterSigip), xlsRow As Integer
-
-    '    'Dim excel() As Process = Process.GetProcessesByName("excel")
-    '    'For Each Process As Process In excel
-    '    '    Process.Kill()
-    '    'Next
-
-    '    'open the offer template
-    '    Dim excelApp As New Object
-    '    excelApp = CreateObject("Excel.Application")
-
-    '    Dim excelWorkbook As Object
-    '    Dim excelSheet As Object
-    '    Try
-    '        excelWorkbook = excelApp.Workbooks.Open(sfilename)
-    '        excelWorkbook.Activate()
-    '        excelSheet = excelWorkbook.Worksheets("Foglio 1")
-    '        excelSheet.Activate()
-
-
-    '        bom = excelSheet.Cells(1, 2).Text
-    '        sql = ""
-    '        des = excelSheet.Cells(1, 3).Text
-    '        mdi_t = Replace(excelSheet.Cells(1, 11).Text, ",", ".")
-    '        mdo_t = Replace(excelSheet.Cells(1, 10).Text, ",", ".")
-    '        amm_t = Replace(excelSheet.Cells(1, 12).Text, ",", ".")
-    '        spe_t = Replace(excelSheet.Cells(1, 13).Text, ",", ".")
-
-    '        If bom = Mid(sfilename, Len(sfilename) - 3 - Len(bom), Len(bom)) Then
-    '            ListBoxLog.Items.Add("Process BOM: " & bom)
-    '            Application.DoEvents()
-    '            ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
-    '            ListBoxLog.ScrollAlwaysVisible = True
-
-    '            xlsRow = 3
-    '            While excelSheet.Cells(xlsRow, 1).text <> ""
-
-
-    '                nr = excelSheet.Cells(xlsRow, 5).Text
-    '                qt = Replace(excelSheet.Cells(xlsRow, 6).Text, ",", ".")
-    '                price = Replace(excelSheet.Cells(xlsRow, 17).Text, ",", ".")
-    '                currency = ""
-    '                liv = excelSheet.Cells(xlsRow, 1).Text
-    '                acq_fab = excelSheet.Cells(xlsRow, 4).Text
-    '                bitron_pn = excelSheet.Cells(xlsRow, 2).Text
-    '                despn = excelSheet.Cells(xlsRow, 3).Text
-    '                mdi = Replace(excelSheet.Cells(xlsRow, 12).Text, ",", ".")
-    '                mdo = Replace(excelSheet.Cells(xlsRow, 11).Text, ",", ".")
-    '                amm = Replace(excelSheet.Cells(xlsRow, 13).Text, ",", ".")
-    '                spe = Replace(excelSheet.Cells(xlsRow, 14).Text, ",", ".")
-
-
-
-    '                sql = "(" & index & "," & _
-    '                "'" & bom & "'," & _
-    '                "'" & Replace(des, "'", "") & "'," & _
-    '                "'" & nr & "'," & _
-    '                "'" & (qt) & "'," & _
-    '                "'" & (price) & "'," & _
-    '                "'" & currency & "'," & _
-    '                "'" & liv & "'," & _
-    '                "'" & acq_fab & "'," & _
-    '                "'" & Replace(ReplaceChar(bitron_pn), "-", "") & "'," & _
-    '                "'" & ReplaceChar(despn) & "'," & _
-    '                "'" & mdi & "'," & _
-    '                "'" & mdo & "'," & _
-    '                "'" & amm & "'," & _
-    '                "'" & spe & "'," & _
-    '                "'" & mdi_t & "'," & _
-    '                "'" & mdo_t & "'," & _
-    '                "'" & amm_t & "'," & _
-    '                "'" & spe_t & "'" & _
-    '                 ")," & sql
-
-    '                If excelApp.Cells(xlsRow + 1, 1).text = "" Or Int(xlsRow / 100) = xlsRow / 100 Then
-    '                    Try
-    '                        sql = Mid(sql, 1, Len(sql) - 1)
-    '                        sql = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`) VALUES " & sql & ";"
-    '                        cmd = New MySqlCommand(sql, MySqlconnection)
-    '                        cmd.ExecuteNonQuery()
-    '                        sql = ""
-    '                    Catch ex As Exception
-    '                        MsgBox("Sigip update error! " & ex.Message)
-    '                    End Try
-
-    '                End If
-    '                xlsRow = xlsRow + 1
-    '                index = index + 1
-    '            End While
-
-    '        Else
-    '            MsgBox("Mismatch between filename and product inside the file! File not considered " & sfilename)
-    '        End If
-    '        excelWorkbook.Close(True)
-    '        excelApp.Quit()
-    '    Catch ex As Exception
-    '        MsgBox(ex.Message)
-    '    End Try
-
-    'End Sub
-
 
     ' CO18 in BitronPoland
     Sub InsertSigipBomXLS(ByVal sfilename As String)
-
-        Dim cmd As New MySqlCommand(), nr As String
-        Dim sql As String = "", bom As String, currency As String, bitron_pn As String, des As String, qt As String, price As String
-        Dim liv As String, acq_fab As String, despn As String, mdo_t As String, mdi_t As String, spe_t As String, amm_t As String
-        Dim mdo As String, mdi As String, amm As String, spe As String
-        Dim cb As New MySqlCommandBuilder(AdapterSigip), xlsRow As Integer
-
-        'Dim excel() As Process = Process.GetProcessesByName("excel")
-        'For Each Process As Process In excel
-        '    Process.Kill()
-        'Next
-
-        'open the offer template
-
-
-        Dim excelApp As New Object
-        excelApp = CreateObject("Excel.Application")
-
-        Dim excelWorkbook As Object
-        Dim excelSheet As Object
+        Dim excelApp As Object = CreateObject("Excel.Application")
         Try
-            excelWorkbook = excelApp.Workbooks.Open(sfilename)
+            Dim excelWorkbook As Object = excelApp.Workbooks.Open(sfilename)
             excelWorkbook.Activate()
-            excelSheet = excelWorkbook.Worksheets("Foglio 1")
+            Dim excelSheet As Object = excelWorkbook.Worksheets("Foglio 1")
             excelSheet.Activate()
 
-            bom = Mid(sfilename, Len(sfilename) - 11, 8)
-            sql = ""
-            des = ""
-            mdi_t = ""
-            mdo_t = ""
-            amm_t = ""
-            spe_t = ""
+            Dim bom As String = Mid(sfilename, Len(sfilename) - 11, 8)
+            Dim sql = ""
+            Dim des = ""
+            Dim mdi_t = ""
+            Dim mdo_t = ""
+            Dim amm_t = ""
+            Dim spe_t = ""
 
             ListBoxLog.Items.Add("Process BOM: " & bom)
             Application.DoEvents()
             ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
             ListBoxLog.ScrollAlwaysVisible = True
 
-            xlsRow = 2
+            Dim xlsRow = 2
             While excelSheet.Cells(xlsRow, 1).text <> ""
 
                 If excelSheet.Cells(xlsRow, 3).text <> "" Then 'Non considera le righe contenenti il nome del fornitore
 
-                    nr = excelSheet.Cells(xlsRow, 6).Text
-                    qt = Replace(excelSheet.Cells(xlsRow, 7).Text, ",", ".")
-                    price = Replace(excelSheet.Cells(xlsRow, 18).Text, ",", ".")
-                    currency = ""
-                    liv = excelSheet.Cells(xlsRow, 1).Text
-                    acq_fab = excelSheet.Cells(xlsRow, 5).Text
-                    bitron_pn = excelSheet.Cells(xlsRow, 2).Text
-                    despn = excelSheet.Cells(xlsRow, 3).Text
-                    mdi = Replace(excelSheet.Cells(xlsRow, 13).Text, ",", ".")
-                    mdo = Replace(excelSheet.Cells(xlsRow, 12).Text, ",", ".")
-                    amm = Replace(excelSheet.Cells(xlsRow, 14).Text, ",", ".")
-                    spe = Replace(excelSheet.Cells(xlsRow, 15).Text, ",", ".")
+                    Dim nr As String = excelSheet.Cells(xlsRow, 6).Text
+                    Dim qt As String = Replace(excelSheet.Cells(xlsRow, 7).Text, ",", ".")
+                    Dim price As String = Replace(excelSheet.Cells(xlsRow, 18).Text, ",", ".")
+                    Dim currency = ""
+                    Dim liv As String = excelSheet.Cells(xlsRow, 1).Text
+                    Dim acq_fab As String = excelSheet.Cells(xlsRow, 5).Text
+                    Dim bitron_pn As String = excelSheet.Cells(xlsRow, 2).Text
+                    Dim despn As String = excelSheet.Cells(xlsRow, 3).Text
+                    Dim mdi As String = Replace(excelSheet.Cells(xlsRow, 13).Text, ",", ".")
+                    Dim mdo As String = Replace(excelSheet.Cells(xlsRow, 12).Text, ",", ".")
+                    Dim amm As String = Replace(excelSheet.Cells(xlsRow, 14).Text, ",", ".")
+                    Dim spe As String = Replace(excelSheet.Cells(xlsRow, 15).Text, ",", ".")
 
-                    sql = "(" & index & "," & _
-                    "'" & bom & "'," & _
-                    "'" & Replace(des, "'", "") & "'," & _
-                    "'" & nr & "'," & _
-                    "'" & (qt) & "'," & _
-                    "'" & (price) & "'," & _
-                    "'" & currency & "'," & _
-                    "'" & liv & "'," & _
-                    "'" & acq_fab & "'," & _
-                    "'" & Replace(ReplaceChar(bitron_pn), "-", "") & "'," & _
-                    "'" & ReplaceChar(despn) & "'," & _
-                    "'" & mdi & "'," & _
-                    "'" & mdo & "'," & _
-                    "'" & amm & "'," & _
-                    "'" & spe & "'," & _
-                    "'" & mdi_t & "'," & _
-                    "'" & mdo_t & "'," & _
-                    "'" & amm_t & "'," & _
-                    "'" & spe_t & "'" & _
+                    sql = "(" & index & "," &
+                    "'" & bom & "'," &
+                    "'" & Replace(des, "'", "") & "'," &
+                    "'" & nr & "'," &
+                    "'" & (qt) & "'," &
+                    "'" & (price) & "'," &
+                    "'" & currency & "'," &
+                    "'" & liv & "'," &
+                    "'" & acq_fab & "'," &
+                    "'" & Replace(ReplaceChar(bitron_pn), "-", "") & "'," &
+                    "'" & ReplaceChar(despn) & "'," &
+                    "'" & mdi & "'," &
+                    "'" & mdo & "'," &
+                    "'" & amm & "'," &
+                    "'" & spe & "'," &
+                    "'" & mdi_t & "'," &
+                    "'" & mdo_t & "'," &
+                    "'" & amm_t & "'," &
+                    "'" & spe_t & "'" &
                      ")," & sql
 
                 End If
@@ -1311,56 +988,15 @@ Public Class FormProduct
             End While
 
             Try
-                Dim sqlCommand As String
-                sqlCommand = Mid(sql, 1, Len(sql) - 1)
+                Dim sqlCommand As String = Mid(sql, 1, Len(sql) - 1)
                 sqlCommand = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`) VALUES " & sqlCommand & ";"
-                cmd = New MySqlCommand(sqlCommand, MySqlconnection)
+                Dim cmd = New MySqlCommand(sqlCommand, MySqlconnection)
                 cmd.ExecuteNonQuery()
                 sqlCommand = ""
                 sql = ""
             Catch ex As Exception
                 MsgBox("Sigip update error! " & ex.Message)
             End Try
-
-            ' *** OLD CODE (with issues during import Sigip BOM process) *** '
-            'sql = "(" & index & "," & _
-            '"'" & bom & "'," & _
-            '"'" & Replace(des, "'", "") & "'," & _
-            '"'" & nr & "'," & _
-            '"'" & (qt) & "'," & _
-            '"'" & (price) & "'," & _
-            '"'" & currency & "'," & _
-            '"'" & liv & "'," & _
-            '"'" & acq_fab & "'," & _
-            '"'" & Replace(ReplaceChar(bitron_pn), "-", "") & "'," & _
-            '"'" & ReplaceChar(despn) & "'," & _
-            '"'" & mdi & "'," & _
-            '"'" & mdo & "'," & _
-            '"'" & amm & "'," & _
-            '"'" & spe & "'," & _
-            '"'" & mdi_t & "'," & _
-            '"'" & mdo_t & "'," & _
-            '"'" & amm_t & "'," & _
-            '"'" & spe_t & "'" & _
-            ' ")," & sql
-
-            'If excelApp.Cells(xlsRow + 1, 1).text = "" Or Int(xlsRow / 100) = xlsRow / 100 Then
-            '    Try
-            '        sql = Mid(sql, 1, Len(sql) - 1)
-            '        sql = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`) VALUES " & sql & ";"
-            '        cmd = New MySqlCommand(sql, MySqlconnection)
-            '        cmd.ExecuteNonQuery()
-            '        sql = ""
-            '    Catch ex As Exception
-            '        MsgBox("Sigip update error! " & ex.Message)
-            '    End Try
-
-            'End If
-
-            '    End If
-            '    xlsRow = xlsRow + 1
-            '    index = index + 1
-            'End While
 
             excelWorkbook.Close(True)
             excelApp.Quit()
@@ -1372,10 +1008,7 @@ Public Class FormProduct
 
     Function ProductStatus(ByVal bom As String) As String
 
-
-        Dim results As DataRow()
-
-        results = tblProd.Select("bitronpn = '" & bom & "'")
+        Dim results As DataRow() = tblProd.Select("bitronpn = '" & bom & "'")
         ProductStatus = ""
         For Each res In results
             ProductStatus = res("status").ToString
@@ -1383,8 +1016,6 @@ Public Class FormProduct
 
     End Function
     Sub UpdateBomCost()
-
-        Dim cmd As New MySqlCommand(), sql As String
         DsProd.Clear()
         tblProd.Clear()
         AdapterProd.Fill(DsProd, "product")
@@ -1394,9 +1025,9 @@ Public Class FormProduct
         AdapterSigip.Fill(DsSigip, "sigip")
         tblSigip = DsSigip.Tables("sigip")
 
-        Dim results As DataRow(), cost As Single, resultSigip As DataRow()
+        Dim cost As Single
 
-        results = tblProd.Select("status like '*' AND not status ='OBSOLETE'")
+        Dim results As DataRow() = tblProd.Select("status like '*' AND not status ='OBSOLETE'")
 
         For Each res In results
             ListBoxLog.Items.Add("Update BOM cost: " & res("bitronpn").ToString)
@@ -1404,7 +1035,7 @@ Public Class FormProduct
             ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
             ListBoxLog.ScrollAlwaysVisible = True
 
-            resultSigip = tblSigip.Select("bom = '" & res("bitronpn").ToString & "' and acq_fab = 'acq' and not (bitron_pn like '18*')")
+            Dim resultSigip As DataRow() = tblSigip.Select("bom = '" & res("bitronpn").ToString & "' and acq_fab = 'acq' and not (bitron_pn like '18*')")
             If resultSigip.Length > 0 Then
 
                 cost = 0
@@ -1428,21 +1059,18 @@ Public Class FormProduct
             End If
 
             Try
-                sql = "UPDATE `" & DBName & "`.`product` SET `bom_val` = '" & Math.Round(cost, 2) & "', `bom_ratio` = '" & If(Val(res("ls_rmb").ToString) > 0, Math.Round(cost / Val(res("ls_rmb").ToString), 2) * 100, 0) & "%'  WHERE `product`.`bitronpn` = '" & res("bitronpn").ToString & "' ;"
-                cmd = New MySqlCommand(sql, MySqlconnection)
+                Dim sql As String = "UPDATE `" & DBName & "`.`product` SET `bom_val` = '" & Math.Round(cost, 2) & "', `bom_ratio` = '" & If(Val(res("ls_rmb").ToString) > 0, Math.Round(cost / Val(res("ls_rmb").ToString), 2) * 100, 0) & "%'  WHERE `product`.`bitronpn` = '" & res("bitronpn").ToString & "' ;"
+                Dim cmd As MySqlCommand = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
             Catch ex As Exception
                 ComunicationLog("5050") ' Mysql update query error 
             End Try
 
-
         Next
-
 
     End Sub
 
     Sub updateSigipMark()
-
         Dim cmd As New MySqlCommand(), sql As String
         DsProd.Clear()
         tblProd.Clear()
@@ -1453,9 +1081,8 @@ Public Class FormProduct
         AdapterSigip.Fill(DsSigip, "sigip")
         tblSigip = DsSigip.Tables("sigip")
 
-        Dim result As DataRow(), sigip As String, resultSigip As DataRow()
-
-        result = tblProd.Select("status like '*'")
+        Dim sigip As String
+        Dim result As DataRow() = tblProd.Select("status like '*'")
 
         For Each res In result
 
@@ -1463,7 +1090,7 @@ Public Class FormProduct
             ListBoxLog.Items.Add("Update Sigip mark " & res("bitronpn").ToString)
             ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
 
-            resultSigip = tblSigip.Select("bom = '" & res("bitronpn").ToString & "'")
+            Dim resultSigip As DataRow() = tblSigip.Select("bom = '" & res("bitronpn").ToString & "'")
             If resultSigip.Length > 0 Then
                 If ProductStatus(resultSigip(0).Item("bom").ToString) <> "OBSOLETE" Then
                     sigip = "YES"
@@ -1478,7 +1105,6 @@ Public Class FormProduct
             If MySqlconnection.State = ConnectionState.Closed Then
                 MySqlconnection.Open()
             End If
-
 
             Try
                 sql = "UPDATE `" & DBName & "`.`sigip` SET `active` = '" & sigip & "' WHERE `sigip`.`bom` = '" & res("bitronpn").ToString & "' ;"
@@ -1501,8 +1127,6 @@ Public Class FormProduct
 
     Sub updateECRMark()
 
-
-        Dim cmd As New MySqlCommand(), sql As String
         DsProd.Clear()
         tblProd.Clear()
         AdapterProd.Fill(DsProd, "product")
@@ -1512,22 +1136,19 @@ Public Class FormProduct
         AdapterEcr.Fill(DsEcr, "ecr")
         tblEcr = DsEcr.Tables("ecr")
 
-        Dim result As DataRow(), ecr As String, resultEcr As DataRow()
-
-        result = tblProd.Select("status like '*'")
+        Dim result As DataRow() = tblProd.Select("status like '*'")
 
         For Each res In result
 
-            ecr = ""
-            resultEcr = tblEcr.Select("prod like '*" & res("bitronpn").ToString & "*'")
+            Dim ecr As String = ""
+            Dim resultEcr As DataRow() = tblEcr.Select("prod like '*" & res("bitronpn").ToString & "*'")
             For Each resEcr In resultEcr
-
                 ecr = ecr & resEcr("number").ToString & "[" & IIf(resEcr("confirm").ToString <> "", "C", "W") & "]" & ";"
             Next
 
             Try
-                sql = "UPDATE `" & DBName & "`.`product` SET `ECR` = '" & ecr & "' WHERE `product`.`BitronPN` = '" & res("bitronpn").ToString & "' ;"
-                cmd = New MySqlCommand(sql, MySqlconnection)
+                Dim sql As String = "UPDATE `" & DBName & "`.`product` SET `ECR` = '" & ecr & "' WHERE `product`.`BitronPN` = '" & res("bitronpn").ToString & "' ;"
+                Dim cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
             Catch ex As Exception
                 ComunicationLog("5050") ' Mysql update query error 
@@ -1540,10 +1161,6 @@ Public Class FormProduct
     Sub updateSigipBomOrcadDoc()
         Dim cmd As New MySqlCommand()
         Dim sql As String, doc As String
-        Dim RowSearchBom As DataRow()
-        Dim RowSearchDoc As DataRow()
-        Dim RowHC As DataRow()
-        Dim i As Long, updated As Boolean
 
         Dim OrcadDBAdr = ParameterTable("OrcadDBAdr")
         Dim OrcadDBName = ParameterTable("OrcadDBName")
@@ -1552,7 +1169,7 @@ Public Class FormProduct
 
         ParameterTableWrite("LAST_BOM_UPDATE", "Start but not finish....")
         ' clear field
-        Dim allOK As Boolean = True
+        Dim allOK = True
         Try
             sql = "UPDATE `" & DBName & "`.`sigip` SET `doc` = '';"
             cmd = New MySqlCommand(sql, MySqlconnection)
@@ -1568,7 +1185,6 @@ Public Class FormProduct
         AdapterDoc.Fill(DsDoc, "doc")
         tblDoc = DsDoc.Tables("doc")
 
-        updated = True
         ListBoxLog.Items.Add("Open Orcad Homologation Card......Wait...")
         Try
             Dim AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where not valido = 'no_valido'", SqlconnectionOrcad)
@@ -1611,10 +1227,8 @@ Public Class FormProduct
         sql = ""
 
         Application.DoEvents()
-        updated = True
-        i = 1
 
-        Dim changed As Boolean = True
+        Dim changed = True
 
         While changed
             changed = False
@@ -1623,10 +1237,10 @@ Public Class FormProduct
             tblbom.Clear()
             AdapterBom.Fill(dsbom, "sigip")
             tblbom = dsbom.Tables("sigip")
-            RowSearchBom = tblbom.Select("ACQ_FAB like '*ACQ*' and doc =''", "bitron_pn")
+            Dim RowSearchBom As DataRow() = tblbom.Select("ACQ_FAB like '*ACQ*' and doc =''", "bitron_pn")
             ListBoxLog.Items.Add("Comp. updating.. For finish.." & RowSearchBom.Length)
             Application.DoEvents()
-            Dim CurrentBitronPN As String = ""
+            Dim CurrentBitronPN = ""
             For Each row In RowSearchBom
 
                 If CurrentBitronPN <> row("bitron_pn").ToString Then
@@ -1635,11 +1249,11 @@ Public Class FormProduct
                     ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
                     ' find only file type c1 or c2 also if not declared.To avoid to find code inside others code.
 
-                    RowSearchDoc = tblDoc.Select("filename like '" & row("bitron_pn").ToString & " - *' or filename like '" & row("bitron_pn").ToString & "'", "rev DESC")
+                    Dim RowSearchDoc As DataRow() = tblDoc.Select("filename like '" & row("bitron_pn").ToString & " - *' or filename like '" & row("bitron_pn").ToString & "'", "rev DESC")
                     If RowSearchDoc.Length > 0 And Mid(row("bitron_pn").ToString, 1, 2) <> "15" Then
                         doc = "SRV_DOC - " & RowSearchDoc(0)("header").ToString & "_" & RowSearchDoc(0)("filename").ToString & "_" & RowSearchDoc(0)("rev").ToString & "." & RowSearchDoc(0)("extension").ToString
                     Else
-                        RowHC = tblDocComp.Select("codice_bitron = '" & row("bitron_pn").ToString & "'", "valido")
+                        Dim RowHC As DataRow() = tblDocComp.Select("codice_bitron = '" & row("bitron_pn").ToString & "'", "valido")
                         If RowHC.Length = 1 Then
                             doc = "HC-" & RowHC(0)("cod_comp").ToString
                         ElseIf RowHC.Length > 1 Then
@@ -1693,7 +1307,6 @@ Public Class FormProduct
 
     Function GetOrcadSupplier(ByVal BitronPN As String) As String
         GetOrcadSupplier = ""
-        Dim info As String = ""
         Try
             Dim AdapterSql As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where ( valido = 'valido') and codice_bitron = '" & BitronPN & "'", SqlconnectionOrcad)
             TblSql.Clear()
@@ -1702,7 +1315,6 @@ Public Class FormProduct
             TblSql = DsSql.Tables("orcadw.T_orcadcis")
 
             If TblSql.Rows.Count > 0 Then
-                info = IIf(TblSql.Rows.Item(0)("costruttore").ToString <> "", TblSql.Rows.Item(0)("costruttore").ToString & "[" & TblSql.Rows.Item(0)("orderingcode").ToString & "];", "")
                 'GetOrcadSupplier = ReplaceChar(info)
                 For i = 2 To 9
                     GetOrcadSupplier = GetOrcadSupplier & IIf(TblSql.Rows.Item(0)("costruttore" & i).ToString <> "", TblSql.Rows.Item(0)("costruttore" & i).ToString & "[" & TblSql.Rows.Item(0)("orderingcode" & i).ToString & "];", "")

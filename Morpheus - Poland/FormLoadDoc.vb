@@ -8,7 +8,6 @@ Public Class FormLoadDoc
     Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc order by rev desc", MySqlconnection)
     Dim AdapterRevNote As New MySqlDataAdapter("SELECT * FROM revNote", MySqlconnection)
     Dim AdapterType As New MySqlDataAdapter("SELECT * FROM doctype", MySqlconnection)
-
     Dim tblDoc As DataTable, tblRevNote As DataTable, tblType As DataTable
     Dim DsDoc As New DataSet, DsRevNote As New DataSet, DsType As New DataSet
     Dim builder As MySqlCommandBuilder = New MySqlCommandBuilder(AdapterDoc)
@@ -25,7 +24,6 @@ Public Class FormLoadDoc
     Private Sub FormLoadDoc_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Try
             FormStart.Hide()
-
             AdapterDoc.Fill(DsDoc, "doc")
             tblDoc = DsDoc.Tables("doc")
             AdapterType.Fill(DsType, "doctype")
@@ -145,20 +143,16 @@ Public Class FormLoadDoc
 
     Function loadCreFile(ByVal ReplaceOnly As Boolean) As String
 
-        Dim myrow As DataRow
-        Dim intPos As Integer
-        Dim objFtp As ftp = New ftp()
-        Dim strRes As String
-        Dim strPathFtp As String
-        Dim strList As String = ""
+        Dim objFtp = New ftp()
+        Dim strList = ""
 
         objFtp.UserName = strFtpServerUser
         objFtp.Password = strFtpServerPsw
         objFtp.Host = strFtpServerAdd
         If controlRight(Mid(CreFile.Header, 3, 1)) >= 2 Then 'editor()
-            intPos = InStrRev(TextBoxDocName.Text, "\", -1, CompareMethod.Text)
-            strPathFtp = ("/" & Mid(CreFile.Header, 1, 3) & "/" & CreFile.Header)
-            strRes = objFtp.CreateDir("/" & Mid(CreFile.Header, 1, 3))
+            Dim intPos As Integer = InStrRev(TextBoxDocName.Text, "\", -1, CompareMethod.Text)
+            Dim strPathFtp As String = ("/" & Mid(CreFile.Header, 1, 3) & "/" & CreFile.Header)
+            Dim strRes As String = objFtp.CreateDir("/" & Mid(CreFile.Header, 1, 3))
             strRes = objFtp.CreateDir(strPathFtp)
             strRes = objFtp.ListDirectory(strPathFtp, strList)
 
@@ -184,7 +178,7 @@ Public Class FormLoadDoc
                         strRes = objFtp.ListDirectory(strPathFtp & "/" & Mid(TextBoxDocName.Text, intPos + 1), strList)
 
                         If Not ReplaceOnly Then
-                            myrow = tblDoc.NewRow
+                            Dim myrow As DataRow = tblDoc.NewRow
                             myrow.Item("FileName") = CreFile.FileName
                             myrow.Item("header") = CreFile.Header
                             myrow.Item("rev") = CreFile.Rev
@@ -222,38 +216,31 @@ Public Class FormLoadDoc
 
     Function PathSintaxAnalysis() As String
 
-        Dim strNomeFile As String
-        Dim Header1 As String
-        Dim intPos As Integer
-        Dim strRev As String
-        Dim HeaderCheck As Integer, FileNameCheck As Integer, RevCheck As Integer, ExtCheck As Integer
-        Dim BooFileName As Boolean = False
-        Dim returnValue As DataRow()
-
-        HeaderCheck = 0
-        FileNameCheck = 0
-        RevCheck = 0
-        ExtCheck = 0
+        Dim BooFileName = False
+        Dim HeaderCheck As Integer = 0
+        Dim FileNameCheck As Integer = 0
+        Dim RevCheck As Integer = 0
+        Dim ExtCheck As Integer = 0
 
         Try
 
             If TextBoxDocName.Text <> "" Then
 
-                intPos = InStrRev(TextBoxDocName.Text, "\", -1, CompareMethod.Text)
+                Dim intPos As Integer = InStrRev(TextBoxDocName.Text, "\", -1, CompareMethod.Text)
                 If intPos > 0 Then
-                    strNomeFile = Mid(TextBoxDocName.Text, intPos + 1)
+                    Dim strNomeFile As String = Mid(TextBoxDocName.Text, intPos + 1)
 
                     CreFile.Header = UCase(Mid(strNomeFile, 1, 11))
-                    Header1 = UCase(Mid(strNomeFile, 1, 12))
+                    Dim Header1 As String = UCase(Mid(strNomeFile, 1, 12))
                     If Regex.IsMatch(Header1, "^[0-9][0-9][a-zA-Z]_([a-zA-Z0-9][a-zA-Z0-9][a-zA-Z0-9]_){2}$", RegexOptions.IgnoreCase) Then 'Check su sintassi dell'header
                         HeaderCheck = 1
-                        returnValue = tblType.Select("header = '" & CreFile.Header & "'")
+                        Dim returnValue As DataRow() = tblType.Select("header = '" & CreFile.Header & "'")
                         If returnValue.Length = 0 Then ' header not defined
                             HeaderCheck = 2
                         End If
                     End If
 
-                    strRev = Regex.Match(strNomeFile, "(?<=_)\d+(?=.\w+$)").ToString
+                    Dim strRev As String = Regex.Match(strNomeFile, "(?<=_)\d+(?=.\w+$)").ToString
                     If IsNumeric(strRev) And (Mid(strRev, 1, 1) <> "0" Or strRev = "0") Then   'Check su sintassi della revisione
                         CreFile.Rev = Str(strRev)
                         RevCheck = 1
@@ -423,9 +410,9 @@ Public Class FormLoadDoc
 
     End Function
     Function EnumerateCheck(ByVal typeEcrTcr As String) As Integer
-        Dim rsResult As DataRow(), pos As Integer, i As Integer, maxN As Integer = -1
+        Dim pos As Integer, i As Integer, maxN As Integer = -1
         If controlType("E") = 1 Then ' enumerate the ECR, TCR and EOR for example
-            rsResult = tblDoc.Select("header='" & typeEcrTcr & "'")
+            Dim rsResult As DataRow() = tblDoc.Select("header='" & typeEcrTcr & "'")
             For i = 0 To rsResult.Length - 1
                 pos = InStr(1, rsResult(i).Item("filename").ToString, "-", CompareMethod.Text)
                 If pos > 0 Then
@@ -455,12 +442,10 @@ Public Class FormLoadDoc
     ' Find sign
     ' If not exist return ""
     Function SignExtract(ByRef sign As String) As String
-
-        Dim returnValue As DataRow()
         Try
             SignExtract = ("5069") ' Sign extract ok
-            returnValue = tblDoc.Select("header='" & CreFile.Header & "' and FileName='" & CreFile.FileName & _
-            "' and Extension='" & CreFile.Extension & "' and rev = " & CreFile.Rev, "rev DESC")
+            Dim returnValue As DataRow() = tblDoc.Select("header='" & CreFile.Header & "' and FileName='" & CreFile.FileName & _
+                                                         "' and Extension='" & CreFile.Extension & "' and rev = " & CreFile.Rev, "rev DESC")
             If returnValue.Length >= 1 Then
                 sign = returnValue(0).Item("sign")
             ElseIf returnValue.Length = 0 Then ' no file in DB
@@ -474,8 +459,7 @@ Public Class FormLoadDoc
 
     Sub ComunicationLog(ByVal ComCode As String)
 
-        Dim rsResult As DataRow()
-        rsResult = tblError.Select("code='" & ComCode & "'")
+        Dim rsResult As DataRow() = tblError.Select("code='" & ComCode & "'")
         If rsResult.Length = 0 Then
             ComCode = "0051"
             rsResult = tblError.Select("code='" & ComCode & "'")
@@ -513,12 +497,10 @@ Public Class FormLoadDoc
     ' Check the control type of file
     ' If type not find give -1
     Function controlType(ByVal header As String) As Integer
-        Dim intpos As Integer
         controlType = -1 ' type not find
-        Dim row As DataRow()
-        row = tblType.Select("header = '" & CreFile.Header & "'")
+        Dim row As DataRow() = tblType.Select("header = '" & CreFile.Header & "'")
         If row.Length > 0 Then
-            intpos = InStr(1, row(0).Item("control").ToString, header, CompareMethod.Text)
+            Dim intpos As Integer = InStr(1, row(0).Item("control").ToString, header, CompareMethod.Text)
             If intpos > 0 Then
                 controlType = Val(Mid(row(0).Item("Control").ToString, intpos + 1, 1))
             Else
@@ -529,8 +511,7 @@ Public Class FormLoadDoc
 
     Function FileExtensionAllowed(ByVal header As String) As String
         FileExtensionAllowed = "" 'extension not find
-        Dim row As DataRow()
-        row = tblType.Select("header = '" & CreFile.Header & "'")
+        Dim row As DataRow() = tblType.Select("header = '" & CreFile.Header & "'")
         If row.Length > 0 Then
             FileExtensionAllowed = row(0).Item("extension").ToString
         End If
@@ -538,40 +519,33 @@ Public Class FormLoadDoc
 
     Sub ReplaceNameFileC2()
 
-        Dim objFtp As ftp = New ftp()
-        Dim strRes As String
-        Dim strPathFtp As String
-        Dim strList As String = ""
+        Dim objFtp = New ftp()
+        Dim strList = ""
 
         objFtp.UserName = strFtpServerUser
         objFtp.Password = strFtpServerPsw
         objFtp.Host = strFtpServerAdd
 
-        strPathFtp = (Mid(CreFile.Header, 1, 3) & "/" & CreFile.Header)
-        strRes = objFtp.ListDirectory(strPathFtp, strList)
-
-        Dim cmd As New MySqlCommand()
-        Dim sql As String
-        Dim returnValue As DataRow()
+        Dim strPathFtp As String = (Mid(CreFile.Header, 1, 3) & "/" & CreFile.Header)
+        Dim strRes As String = objFtp.ListDirectory(strPathFtp, strList)
         Try
 
             If controlType("C") = 2 Then
-                returnValue = tblDoc.Select("header='" & CreFile.Header & "' and FileName like '" & Regex.Match(CreFile.FileName, "^\w+").ToString & "*' and Extension='" & CreFile.Extension & "' ", "rev DESC")
+                Dim returnValue As DataRow() = tblDoc.Select("header='" & CreFile.Header & "' and FileName like '" & Regex.Match(CreFile.FileName, "^\w+").ToString & "*' and Extension='" & CreFile.Extension & "' ", "rev DESC")
 
                 For Each row In returnValue
                     Try
                         strRes = objFtp.DeleteFile(strPathFtp & "/", row("header").ToString & "_" & row("filename").ToString & "_" & row("rev").ToString & "." & row("extension").ToString)
                         If strRes = "5000" Then
-                            sql = "UPDATE `" & DBName & "`.`doc` SET " & _
-                            "`sign` = '', `filename` = '" & CreFile.FileName & "' WHERE `doc`.`id` = " & row("id").ToString & " ;"
-                            cmd = New MySqlCommand(sql, MySqlconnection)
+                            Dim sql As String = "UPDATE `" & DBName & "`.`doc` SET " & _
+                                                "`sign` = '', `filename` = '" & CreFile.FileName & "' WHERE `doc`.`id` = " & row("id").ToString & " ;"
+                            Dim cmd = New MySqlCommand(sql, MySqlconnection)
                             cmd.ExecuteNonQuery()
                         End If
                     Catch ex As Exception
                         MsgBox("Mysql update query error!")
                     End Try
                 Next
-
             Else
 
             End If

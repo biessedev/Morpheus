@@ -2,11 +2,6 @@
 Option Compare Text
 Imports MySql.Data.MySqlClient
 Imports System.IO
-Imports System.Data.SqlClient
-Imports System.Data.OleDb
-Imports System.Text.RegularExpressions
-Imports System.Globalization
-
 
 Public Class FormTimeShow
     Dim yelloDelay As Integer = 5
@@ -38,41 +33,9 @@ Public Class FormTimeShow
     End Sub
 
     Function quality(ByVal id As String, ByVal refresh As Boolean) As Integer
-
-        Dim rowShow As DataRow(), i As Integer
         quality = 0
         Try
-            i = tbltp_static.Rows.Count
-        Catch ex As Exception
-            AdapterTP.Fill(Dstp_static, "TimeProject")
-            tbltp_static = Dstp_static.Tables("TimeProject")
-        End Try
-
-        If refresh Then
-            Dstp_static.Clear()
-            tbltp_static.Clear()
-            AdapterTP.Fill(Dstp_static, "TimeProject")
-            tbltp = Dstp_static.Tables("TimeProject")
-        End If
-
-        quality = 100
-        rowShow = tbltp_static.Select("Project = '" & id & "'")
-        If rowShow.Length > 0 Then
-            For Each row In rowShow
-                If Val(row("quality").ToString) < quality Then quality = Val(row("quality").ToString)
-            Next
-        Else
-            quality = 100
-        End If
-
-    End Function
-
-    Function ProjectLeader(ByVal id As String, ByVal refresh As Boolean) As String
-
-        Dim rowShow As DataRow(), i As Integer
-        ProjectLeader = ""
-        Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -85,7 +48,36 @@ Public Class FormTimeShow
             tblTP = Dstp_static.Tables("TimeProject")
         End If
 
-        rowShow = tbltp_static.Select("Project = '" & id & "'")
+        quality = 100
+        Dim rowShow As DataRow() = tbltp_static.Select("Project = '" & id & "'")
+        If rowShow.Length > 0 Then
+            For Each row In rowShow
+                If Val(row("quality").ToString) < quality Then quality = Val(row("quality").ToString)
+            Next
+        Else
+            quality = 100
+        End If
+
+    End Function
+
+    Function ProjectLeader(ByVal id As String, ByVal refresh As Boolean) As String
+
+        ProjectLeader = ""
+        Try
+            Dim i As Integer = tbltp_static.Rows.Count
+        Catch ex As Exception
+            AdapterTP.Fill(Dstp_static, "TimeProject")
+            tbltp_static = Dstp_static.Tables("TimeProject")
+        End Try
+
+        If refresh Then
+            Dstp_static.Clear()
+            tbltp_static.Clear()
+            AdapterTP.Fill(Dstp_static, "TimeProject")
+            tblTP = Dstp_static.Tables("TimeProject")
+        End If
+
+        Dim rowShow As DataRow() = tbltp_static.Select("Project = '" & id & "'")
 
         For Each row In rowShow
             ProjectLeader = row("ProjectLeader").ToString
@@ -142,13 +134,10 @@ Public Class FormTimeShow
     End Sub
 
     Function TimingTS(ByVal Taskstart As String, ByVal Taskend As String, ByVal compleated As String, ByVal taskStatus As String) As String
-        Dim TotalTimeTask As Integer
-        Dim EquivalentTime As Date
-        TotalTimeTask = 0
         If Len(Taskstart) = 10 And Len(Taskend) = 10 Then
             TimingTS = "ONTIME"
-            TotalTimeTask = DateDiff("d", string_to_date(Taskstart), string_to_date(Taskend))
-            EquivalentTime = DateAdd("d", Int(Val(compleated) * TotalTimeTask / 100), string_to_date(Taskstart))
+            Dim TotalTimeTask As Integer = DateDiff("d", string_to_date(Taskstart), string_to_date(Taskend))
+            Dim EquivalentTime As Date = DateAdd("d", Int(Val(compleated) * TotalTimeTask / 100), string_to_date(Taskstart))
             If DateDiff("d", Today, EquivalentTime) < 0 Then
                 TimingTS = "DELAY"
             End If
@@ -162,10 +151,9 @@ Public Class FormTimeShow
 
     Function area(ByVal id As String, ByVal refresh As Boolean) As String
 
-        Dim rowShow As DataRow(), i As Integer
         area = ""
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -175,10 +163,10 @@ Public Class FormTimeShow
             Dstp_static.Clear()
             tbltp_static.Clear()
             AdapterTP.Fill(Dstp_static, "TimeProject")
-            tbltp = Dstp_static.Tables("TimeProject")
+            tblTP = Dstp_static.Tables("TimeProject")
         End If
 
-        rowShow = tbltp_static.Select("Project = '" & id & "'")
+        Dim rowShow As DataRow() = tbltp_static.Select("Project = '" & id & "'")
 
         For Each row In rowShow
             If row("area").ToString <> "" Then area = row("area").ToString
@@ -186,13 +174,12 @@ Public Class FormTimeShow
 
     End Function
 
-    Private Sub TreeViewProjectList_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewProjectList.AfterSelect
-        Dim projectStatusStr As String
+    Private Sub TreeViewProjectList_AfterSelect(ByVal sender As Object, ByVal e As TreeViewEventArgs) Handles TreeViewProjectList.AfterSelect
         LabelDelayAdvance.Text = ""
         LabelProject.Text = Mid(area(TreeViewProjectList.SelectedNode.Text, True), 3) & "  -  " & TreeViewProjectList.SelectedNode.Text
         ProgressBarProject.Width = Int(ProjectCompleated(TreeViewProjectList.SelectedNode.Text, False) * 1079 / 100)
 
-        projectStatusStr = ProjectStatus(TreeViewProjectList.SelectedNode.Text, False)
+        Dim projectStatusStr As String = ProjectStatus(TreeViewProjectList.SelectedNode.Text, False)
         If projectStatusStr = "ONTIME" Then ProgressBarProject.BackColor = Color.Green
         If projectStatusStr = "DELAY" Then ProgressBarProject.BackColor = Color.Red
         If projectStatusStr = "CLOSED" Then ProgressBarProject.BackColor = Color.SeaGreen
@@ -257,10 +244,9 @@ Public Class FormTimeShow
 
     Function ProjectStart(ByVal id As String, ByVal refresh As Boolean) As String
 
-        Dim rowShow As DataRow(), i As Integer
         ProjectStart = ""
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -273,8 +259,7 @@ Public Class FormTimeShow
             tblTP = Dstp_static.Tables("TimeProject")
         End If
 
-
-        rowShow = tbltp_static.Select("Project = '" & id & "'")
+        Dim rowShow As DataRow() = tbltp_static.Select("Project = '" & id & "'")
         If rowShow.Length > 0 Then
             For Each row In rowShow
                 If ProjectStart = "" Or DateDiff("d", string_to_date(ProjectStart), string_to_date(row("start").ToString)) < 0 Then
@@ -287,10 +272,9 @@ Public Class FormTimeShow
 
     Function ProjectEnd(ByVal id As String, ByVal refresh As Boolean) As String
 
-        Dim rowShow As DataRow(), i As Integer
         ProjectEnd = ""
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -304,7 +288,7 @@ Public Class FormTimeShow
         End If
 
 
-        rowShow = tbltp_static.Select("Project = '" & id & "'")
+        Dim rowShow As DataRow() = tbltp_static.Select("Project = '" & id & "'")
         If rowShow.Length > 0 Then
             For Each row In rowShow
                 If ProjectEnd = "" Or DateDiff("d", string_to_date(ProjectEnd), string_to_date(row("end").ToString)) > 0 Then
@@ -316,12 +300,7 @@ Public Class FormTimeShow
     End Function
 
     Sub UpdateTreeTaskList(ByVal refresh As Boolean)
-        Dim rootNode As TreeNode, Project As String, projectStatusStr As String
-
-        Dim rowShow As DataRow(), i As Integer, sql As String
-        ' TreeViewTaskList.Font = New Font("Courier New", 14, FontStyle.Bold)
         TreeViewTaskList.Nodes.Clear()
-
 
         If refresh Then
             DsTP.Clear()
@@ -329,19 +308,17 @@ Public Class FormTimeShow
             AdapterTP.Fill(DsTP, "TimeProject")
             tblTP = DsTP.Tables("TimeProject")
         End If
-        sql = IIf(ComboBoxAreaFilter.Text = "", "area like '*' and ", "area LIKE '" & ComboBoxAreaFilter.Text & "*' and ") & _
-                               IIf(ComboBoxStatusFilter.Text = "", "status like '*'  and ", "status = '" & ComboBoxCustomerFilter.Text & "'  and ") & _
-                               IIf(ComboBoxCustomerFilter.Text = "", "customer like '*'  and ", "customer = '" & ComboBoxCustomerFilter.Text & "'  and ") & _
-                               IIf(True, "not project like '*template*'  and ", "") & _
-                               " project = '" & TreeViewProjectList.SelectedNode.Text & "'  and " & _
-                               IIf(ComboBoxResponsibleFilter.Text = "", "ProjectLeader like '*'  ", "projectleader = '" & ComboBoxResponsibleFilter.Text & "'  ")
-        rowShow = tblTP.Select(sql, "project, id")
+        Dim sql As String = IIf(ComboBoxAreaFilter.Text = "", "area like '*' and ", "area LIKE '" & ComboBoxAreaFilter.Text & "*' and ") &
+                            IIf(ComboBoxStatusFilter.Text = "", "status like '*'  and ", "status = '" & ComboBoxCustomerFilter.Text & "'  and ") &
+                            IIf(ComboBoxCustomerFilter.Text = "", "customer like '*'  and ", "customer = '" & ComboBoxCustomerFilter.Text & "'  and ") &
+                            IIf(True, "not project like '*template*'  and ", "") &
+                            " project = '" & TreeViewProjectList.SelectedNode.Text & "'  and " &
+                            IIf(ComboBoxResponsibleFilter.Text = "", "ProjectLeader like '*'  ", "projectleader = '" & ComboBoxResponsibleFilter.Text & "'  ")
+        Dim rowShow As DataRow() = tblTP.Select(sql, "project, id")
 
-        Project = ""
-        projectStatusStr = ""
         For Each row In rowShow
 
-            rootNode = New TreeNode(Mid(row("taskname").ToString, 1, 42) & Mid("  --------------------------------------------------", 1, 43 - Len(Mid(row("taskname").ToString, 1, 42))) & "> " & row("taskleader").ToString)
+            Dim rootNode As TreeNode = New TreeNode(Mid(row("taskname").ToString, 1, 42) & Mid("  --------------------------------------------------", 1, 43 - Len(Mid(row("taskname").ToString, 1, 42))) & "> " & row("taskleader").ToString)
             '  rootNode.NodeFont = New Font("Courier New", 16, FontStyle.Bold)
 
 
@@ -368,9 +345,6 @@ Public Class FormTimeShow
 
     Sub UpdateTreeProjectList(ByVal refresh As Boolean)
 
-        Dim rootNode As TreeNode, Project As String, projectStatusStr As String
-
-        Dim rowShow As DataRow(), i As Integer, sql As String
         ' TreeViewProjectList.Font = New Font("Courier New", 14, FontStyle.Bold)
         TreeViewProjectList.Nodes.Clear()
 
@@ -380,19 +354,19 @@ Public Class FormTimeShow
             AdapterTP.Fill(DsTP, "TimeProject")
             tblTP = DsTP.Tables("TimeProject")
         End If
-        sql = IIf(ComboBoxAreaFilter.Text = "", "area like '*' and ", "area like '" & ComboBoxAreaFilter.Text & "*' and ") & _
-                               IIf(ComboBoxStatusFilter.Text = "", "status like '*'  and ", "status = '" & ComboBoxStatusFilter.Text & "'  and ") & _
-                               IIf(ComboBoxCustomerFilter.Text = "", "customer like '*'  and ", "customer = '" & ComboBoxCustomerFilter.Text & "'  and ") & _
-                               IIf(True, "not project like '*template*'  and ", "") & _
-                               IIf(ComboBoxResponsibleFilter.Text = "", "ProjectLeader like '*'  ", "projectleader = '" & ComboBoxResponsibleFilter.Text & "'  ")
-        rowShow = tblTP.Select(sql, "project, id")
+        Dim sql As String = IIf(ComboBoxAreaFilter.Text = "", "area like '*' and ", "area like '" & ComboBoxAreaFilter.Text & "*' and ") &
+                            IIf(ComboBoxStatusFilter.Text = "", "status like '*'  and ", "status = '" & ComboBoxStatusFilter.Text & "'  and ") &
+                            IIf(ComboBoxCustomerFilter.Text = "", "customer like '*'  and ", "customer = '" & ComboBoxCustomerFilter.Text & "'  and ") &
+                            IIf(True, "not project like '*template*'  and ", "") &
+                            IIf(ComboBoxResponsibleFilter.Text = "", "ProjectLeader like '*'  ", "projectleader = '" & ComboBoxResponsibleFilter.Text & "'  ")
+        Dim rowShow As DataRow() = tblTP.Select(sql, "project, id")
 
-        Project = ""
-        projectStatusStr = ""
+        Dim Project As String = ""
+        Dim projectStatusStr As String = ""
         For Each row In rowShow
 
             If row("project").ToString <> Project Then
-                rootNode = New TreeNode(row("project").ToString)
+                Dim rootNode As TreeNode = New TreeNode(row("project").ToString)
 
                 TreeViewProjectList.BeginUpdate()
                 TreeViewProjectList.Nodes.Add(rootNode)
@@ -415,12 +389,12 @@ Public Class FormTimeShow
     End Sub
 
     Sub FillCustomerCombo()
-        Dim rowResults As DataRow(), customer As String = ""
+        Dim customer = ""
 
         ComboBoxCustomerFilter.Items.Clear()
         ComboBoxCustomerFilter.Items.Add("")
 
-        rowResults = tblTP.Select("project like '*'", "customer")
+        Dim rowResults As DataRow() = tblTP.Select("project like '*'", "customer")
         For Each row In rowResults
             If customer <> row("customer").ToString Then ComboBoxCustomerFilter.Items.Add(UCase(row("customer").ToString))
             customer = row("customer").ToString
@@ -429,12 +403,12 @@ Public Class FormTimeShow
     End Sub
 
     Sub FillAreaCombo()
-        Dim rowResults As DataRow(), Area As String = ""
+        Dim Area = ""
 
         ComboBoxAreaFilter.Items.Clear()
         ComboBoxAreaFilter.Items.Add("")
 
-        rowResults = tblTP.Select("project like '*'", "area")
+        Dim rowResults As DataRow() = tblTP.Select("project like '*'", "area")
         For Each row In rowResults
             If Area <> row("Area").ToString Then
                 If Not ComboBoxAreaFilter.Items.Contains(Mid(row("Area").ToString, 1, 1)) Then
@@ -447,12 +421,12 @@ Public Class FormTimeShow
     End Sub
 
     Sub FillResponsibleCombo()
-        Dim rowResults As DataRow(), ProjectLeader As String = ""
+        Dim ProjectLeader = ""
 
         ComboBoxResponsibleFilter.Items.Clear()
         ComboBoxResponsibleFilter.Items.Add("")
 
-        rowResults = tblTP.Select("project like '*'", "ProjectLeader")
+        Dim rowResults As DataRow() = tblTP.Select("project like '*'", "ProjectLeader")
         For Each row In rowResults
             If ProjectLeader <> row("ProjectLeader").ToString Then ComboBoxResponsibleFilter.Items.Add(UCase(row("ProjectLeader").ToString))
             ProjectLeader = row("ProjectLeader").ToString
@@ -463,11 +437,9 @@ Public Class FormTimeShow
     Function ProjectStatus(ByVal id As String, ByVal refresh As Boolean) As String
         Static Dim tbltp As DataTable
         Static Dim Dstp As New DataSet
-        Dim timingTStr As String = ""
-        Dim rowShow As DataRow(), i As Integer
         ProjectStatus = "MISSING"
         Try
-            i = tbltp.Rows.Count
+            Dim i As Integer = tbltp.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp, "TimeProject")
             tbltp = Dstp.Tables("TimeProject")
@@ -480,11 +452,11 @@ Public Class FormTimeShow
             tbltp = Dstp.Tables("TimeProject")
         End If
 
-        rowShow = tbltp.Select("Project = '" & id & "'")
+        Dim rowShow As DataRow() = tbltp.Select("Project = '" & id & "'")
 
         For Each row In rowShow
 
-            timingTStr = TimingTS(row("start").ToString, row("end").ToString, row("compleated").ToString, row("status").ToString)
+            Dim timingTStr As Object = TimingTS(row("start").ToString, row("end").ToString, row("compleated").ToString, row("status").ToString)
             Application.DoEvents()
             If timingTStr = "ONTIME" And (ProjectStatus = "ONTIME" Or ProjectStatus = "CLOSED" Or ProjectStatus = "MISSING") Then
                 ProjectStatus = "ONTIME"
@@ -520,11 +492,9 @@ Public Class FormTimeShow
     End Function
 
     Function TaskCompleated(ByVal id As String, ByVal idp As String, ByVal refresh As Boolean) As String
-
-        Dim rowShow As DataRow(), i As Integer
         TaskCompleated = ""
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -537,7 +507,7 @@ Public Class FormTimeShow
             tblTP = Dstp_static.Tables("TimeProject")
         End If
 
-        rowShow = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
+        Dim rowShow As DataRow() = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
 
         For Each row In rowShow
             TaskCompleated = row("Compleated").ToString
@@ -546,11 +516,10 @@ Public Class FormTimeShow
     End Function
 
     Function ProjectCompleated(ByVal id As String, ByVal refresh As Boolean) As Integer
-
-        Dim rowShow As DataRow(), i As Integer, TotalTime As Integer
+        
         ProjectCompleated = 0
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -563,8 +532,8 @@ Public Class FormTimeShow
             tblTP = Dstp_static.Tables("TimeProject")
         End If
 
-        TotalTime = 0
-        rowShow = tbltp_static.Select("Project = '" & id & "'")
+        Dim TotalTime As Integer = 0
+        Dim rowShow As DataRow() = tbltp_static.Select("Project = '" & id & "'")
         If rowShow.Length > 0 Then
             For Each row In rowShow
                 TotalTime = TotalTime + DateDiff("d", string_to_date(row("start").ToString), string_to_date(row("end").ToString))
@@ -610,10 +579,9 @@ Public Class FormTimeShow
 
     Function TaskStart(ByVal id As String, ByVal idp As String, ByVal refresh As Boolean) As String
 
-        Dim rowShow As DataRow(), i As Integer
         TaskStart = ""
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -627,7 +595,7 @@ Public Class FormTimeShow
         End If
 
 
-        rowShow = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
+        Dim rowShow As DataRow() = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
         For Each row In rowShow
             TaskStart = row("Start").ToString
         Next
@@ -636,10 +604,9 @@ Public Class FormTimeShow
 
     Function TaskEnd(ByVal id As String, ByVal idp As String, ByVal refresh As Boolean) As String
 
-        Dim rowShow As DataRow(), i As Integer
         TaskEnd = ""
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -652,7 +619,7 @@ Public Class FormTimeShow
             tblTP = Dstp_static.Tables("TimeProject")
         End If
 
-        rowShow = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
+        Dim rowShow As DataRow() = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
 
         For Each row In rowShow
             TaskEnd = row("End").ToString
@@ -664,7 +631,7 @@ Public Class FormTimeShow
         Me.Dispose()
     End Sub
 
-    Private Sub FormTimeShow_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseClick
+    Private Sub FormTimeShow_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles Me.MouseClick
         ButtonClose.Visible = Not ButtonClose.Visible
         ButtonShow.Visible = Not ButtonShow.Visible
 

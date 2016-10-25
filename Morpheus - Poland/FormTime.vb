@@ -1,13 +1,9 @@
 ﻿Option Explicit On
 Option Compare Text
 Imports MySql.Data.MySqlClient
-Imports System.IO
-Imports System.Data.SqlClient
-Imports System.Data.OleDb
-Imports System.Text.RegularExpressions
 
 Public Class FormTime
-    Dim CultureInfo_ja_JP As New System.Globalization.CultureInfo("ja-JP", False)
+    Dim CultureInfo_ja_JP As New Globalization.CultureInfo("ja-JP", False)
     Dim XmlTree As New TreeViewToFromXml
 
     Dim AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", MySqlconnection)
@@ -23,6 +19,7 @@ Public Class FormTime
     Dim NodeSelect As Integer
     Dim CurrentNodeIndex As Integer
     Dim yelloDelay As Integer = 5
+
     Private Sub FormTime_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         AdapterTP.Fill(DsTP, "TimeProject")
         tblTP = DsTP.Tables("TimeProject")
@@ -47,7 +44,6 @@ Public Class FormTime
         If controlRight("J") >= 2 Then ButtonSave.Visible = True
         If controlRight("J") >= 2 Then ButtonDelProject.Visible = True
         If controlRight("J") >= 2 Then ButtonDuplicate.Visible = True
-
 
         ComboBoxResponsible.Sorted = True
 
@@ -81,11 +77,7 @@ Public Class FormTime
     End Function
 
     Sub UpdateTreeTPList(ByVal refresh As Boolean)
-
-
-        Dim rootNode As TreeNode, Project As String, projectStatusStr As String
-        Dim rootChildren1 As TreeNode
-        Dim rowShow As DataRow(), i As Integer, sql As String
+        Dim rootNode As TreeNode
         TreeViewTP.Font = New Font("Courier New", 12, FontStyle.Bold)
         TreeViewTP.Nodes.Clear()
         TreeViewTP.BackColor = Color.White
@@ -96,18 +88,17 @@ Public Class FormTime
             AdapterTP.Fill(DsTP, "TimeProject")
             tblTP = DsTP.Tables("TimeProject")
         End If
-        sql = IIf(ComboBoxAreaFilter.Text = "", "area like '*' and ", "area = '" & ComboBoxAreaFilter.Text & "' and ") & _
-                               IIf(ComboBoxStatusFilter.Text = "", "status like '*'  and ", "status = '" & ComboBoxStatusFilter.Text & "'  and ") & _
-                               IIf(ComboBoxCustomerFilter.Text = "", "customer like '*'  and ", "customer = '" & ComboBoxCustomerFilter.Text & "'  and ") & _
-                               IIf(ComboBoxCompleatedFilter.Text = "", "compleated like '*'  and ", "compleated = '" & ComboBoxCompleatedFilter.Text & "'  and ") & _
-                               IIf(CheckBoxTemplate.Checked = False, "not project like '*template*'  and ", "") & _
-                               IIf(ComboBoxtaskFilter.Text = "", "", " taskleader = '" & ComboBoxtaskFilter.Text & "'  and ") & _
-                               IIf(ComboBoxResponsibleFilter.Text = "", "ProjectLeader like '*'  ", "projectleader = '" & ComboBoxResponsibleFilter.Text & "'  ")
-        rowShow = tblTP.Select(sql, "project, id")
+        Dim sql As String = IIf(ComboBoxAreaFilter.Text = "", "area like '*' and ", "area = '" & ComboBoxAreaFilter.Text & "' and ") &
+                            IIf(ComboBoxStatusFilter.Text = "", "status like '*'  and ", "status = '" & ComboBoxStatusFilter.Text & "'  and ") &
+                            IIf(ComboBoxCustomerFilter.Text = "", "customer like '*'  and ", "customer = '" & ComboBoxCustomerFilter.Text & "'  and ") &
+                            IIf(ComboBoxCompleatedFilter.Text = "", "compleated like '*'  and ", "compleated = '" & ComboBoxCompleatedFilter.Text & "'  and ") &
+                            IIf(CheckBoxTemplate.Checked = False, "not project like '*template*'  and ", "") &
+                            IIf(ComboBoxtaskFilter.Text = "", "", " taskleader = '" & ComboBoxtaskFilter.Text & "'  and ") &
+                            IIf(ComboBoxResponsibleFilter.Text = "", "ProjectLeader like '*'  ", "projectleader = '" & ComboBoxResponsibleFilter.Text & "'  ")
+        Dim rowShow As DataRow() = tblTP.Select(sql, "project, id")
 
-        Project = ""
+        Dim Project As String = ""
         UpdatigTree = True
-        projectStatusStr = ""
         For Each row In rowShow
 
             If row("project").ToString <> Project Then
@@ -118,26 +109,24 @@ Public Class FormTime
                 TreeViewTP.EndUpdate()
                 TreeViewTP.ResumeLayout()
                 Project = row("project").ToString
-                projectStatusStr = projectStatus(row("project").ToString, refresh)
+                Dim projectStatusStr As Object = ProjectStatus(row("project").ToString, refresh)
                 If projectStatusStr = "ONTIME" Then rootNode.ForeColor = Color.Green
                 If projectStatusStr = "DELAY" Then rootNode.ForeColor = Color.Red
                 If projectStatusStr = "CLOSED" Then rootNode.ForeColor = Color.Gray
                 If projectStatusStr = "STANDBY" Then rootNode.ForeColor = Color.Blue
                 If projectStatusStr = "CRITIC" Then rootNode.ForeColor = Color.Orange
 
-                If row("projectleader").ToString = "" Or _
+                If row("projectleader").ToString = "" Or
                     row("area").ToString = "" Then
 
                     rootNode.ForeColor = Color.DarkMagenta
 
                 End If
 
-
-
             End If
 
             ' If row("taskleader").ToString = "BAXI" Then Stop
-            rootChildren1 = New TreeNode(row("taskname").ToString)
+            Dim rootChildren1 As TreeNode = New TreeNode(row("taskname").ToString)
             rootChildren1.NodeFont = New Font("Courier New", 10, FontStyle.Bold)
 
             If ProjectStatusOpenClosed(row("project").ToString, True) = "OPEN" Then
@@ -166,7 +155,6 @@ Public Class FormTime
                 rootChildren1.ForeColor = Color.DarkMagenta
                 rootNode.ForeColor = Color.DarkMagenta
             End If
-
 
         Next
 
@@ -204,11 +192,9 @@ Public Class FormTime
     Function ProjectStatus(ByVal id As String, ByVal refresh As Boolean) As String
         Static Dim tbltp As DataTable
         Static Dim Dstp As New DataSet
-        Dim timingTStr As String = ""
-        Dim rowShow As DataRow(), i As Integer
         ProjectStatus = "MISSING"
         Try
-            i = tbltp.Rows.Count
+            Dim i As Integer = tbltp.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp, "TimeProject")
             tbltp = Dstp.Tables("TimeProject")
@@ -221,11 +207,11 @@ Public Class FormTime
             tbltp = Dstp.Tables("TimeProject")
         End If
 
-        rowShow = tbltp.Select("Project = '" & id & "'")
+        Dim rowShow As DataRow() = tbltp.Select("Project = '" & id & "'")
 
         For Each row In rowShow
 
-            timingTStr = TimingTS(row("start").ToString, row("end").ToString, row("compleated").ToString, row("status").ToString)
+            Dim timingTStr As Object = TimingTS(row("start").ToString, row("end").ToString, row("compleated").ToString, row("status").ToString)
             Application.DoEvents()
             If timingTStr = "ONTIME" And (ProjectStatus = "ONTIME" Or ProjectStatus = "CLOSED" Or ProjectStatus = "MISSING") Then
                 ProjectStatus = "ONTIME"
@@ -249,18 +235,13 @@ Public Class FormTime
     End Function
 
     Function TimingTS(ByVal Taskstart As String, ByVal Taskend As String, ByVal compleated As String, ByVal TaskStatus As String) As String
-        Dim TotalTimeTask As Integer
-        Dim EquivalentTime As Date
-        TotalTimeTask = 0
         If Len(Taskstart) = 10 And Len(Taskend) = 10 Then
             TimingTS = "ONTIME"
-            TotalTimeTask = DateDiff("d", string_to_date(Taskstart), string_to_date(Taskend))
-            EquivalentTime = DateAdd("d", Int(Val(compleated) * TotalTimeTask / 100), string_to_date(Taskstart))
+            Dim TotalTimeTask As Integer = DateDiff("d", string_to_date(Taskstart), string_to_date(Taskend))
+            Dim EquivalentTime As Date = DateAdd("d", Int(Val(compleated) * TotalTimeTask / 100), string_to_date(Taskstart))
             If DateDiff("d", Today, EquivalentTime) < 0 Then
                 TimingTS = "DELAY"
-
             End If
-
         Else
             TimingTS = ""
         End If
@@ -269,12 +250,12 @@ Public Class FormTime
     End Function
 
     Sub FillCustomerCombo()
-        Dim rowResults As DataRow(), customer As String = ""
+        Dim customer = ""
 
         ComboBoxCustomerFilter.Items.Clear()
         ComboBoxCustomerFilter.Items.Add("")
 
-        rowResults = tblTP.Select("project like '*'", "customer")
+        Dim rowResults As DataRow() = tblTP.Select("project like '*'", "customer")
         For Each row In rowResults
             If customer <> row("customer").ToString Then
                 ComboBoxCustomerFilter.Items.Add(UCase(row("customer").ToString))
@@ -287,12 +268,12 @@ Public Class FormTime
     End Sub
 
     Sub FillAreaCombo()
-        Dim rowResults As DataRow(), Area As String = ""
+        Dim Area = ""
 
         ComboBoxAreaFilter.Items.Clear()
         ComboBoxAreaFilter.Items.Add("")
 
-        rowResults = tblTP.Select("project like '*'", "area")
+        Dim rowResults As DataRow() = tblTP.Select("project like '*'", "area")
         For Each row In rowResults
             If Area <> row("Area").ToString Then
                 ComboBoxAreaFilter.Items.Add(UCase(row("Area").ToString))
@@ -306,12 +287,12 @@ Public Class FormTime
     End Sub
 
     Sub FillTaskLeaderCombo()
-        Dim rowResults As DataRow(), Area As String = ""
+        Dim Area = ""
 
         ComboBoxtaskFilter.Items.Clear()
         ComboBoxtaskFilter.Items.Add("")
 
-        rowResults = tblTP.Select("project like '*'", "taskleader")
+        Dim rowResults As DataRow() = tblTP.Select("project like '*'", "taskleader")
         For Each row In rowResults
             If Area <> row("taskleader").ToString Then
                 ComboBoxtaskFilter.Items.Add(UCase(row("taskleader").ToString))
@@ -324,12 +305,12 @@ Public Class FormTime
     End Sub
 
     Sub FillResponsibleCombo()
-        Dim rowResults As DataRow(), ProjectLeader As String = ""
+        Dim ProjectLeader = ""
 
         ComboBoxResponsibleFilter.Items.Clear()
         ComboBoxResponsibleFilter.Items.Add("")
 
-        rowResults = tblTP.Select("project like '*'", "projectleader")
+        Dim rowResults As DataRow() = tblTP.Select("project like '*'", "projectleader")
         For Each row In rowResults
             If ProjectLeader <> row("projectleader").ToString Then
                 ComboBoxResponsibleFilter.Items.Add(UCase(row("projectleader").ToString))
@@ -337,7 +318,7 @@ Public Class FormTime
 
 
 
-                End If
+            End If
 
             ProjectLeader = row("projectleader").ToString
         Next
@@ -366,7 +347,6 @@ Public Class FormTime
                         Catch ex As Exception
 
                         End Try
-
 
                         If idSelected = id Then
                             If selNode.Level = 1 Then
@@ -424,14 +404,12 @@ Public Class FormTime
     End Sub
 
     Private Sub ButtonDelProject_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDelProject.Click
-        Dim cmd As New MySqlCommand()
-        Dim sql As String
         If controlRight("J") >= 2 And (controlRight(Mid(ComboBoxArea.Text, 1, 1)) > 2 Or ComboBoxArea.Text = "") Then
             If vbYes = MsgBox("Do you want delete this Item?", MsgBoxStyle.YesNo) Then
                 If OpenSession = False And TreeViewTP.SelectedNode.Level = 1 Then
                     Try
-                        sql = "DELETE FROM `" & DBName & "`.`TimeProject` WHERE `TimeProject`.`Project` = '" & TreeViewTP.SelectedNode.Parent.Text & "' and `TimeProject`.`TaskName` = '" & TreeViewTP.SelectedNode.Text & "'"
-                        cmd = New MySqlCommand(sql, MySqlconnection)
+                        Dim sql As String = "DELETE FROM `" & DBName & "`.`TimeProject` WHERE `TimeProject`.`Project` = '" & TreeViewTP.SelectedNode.Parent.Text & "' and `TimeProject`.`TaskName` = '" & TreeViewTP.SelectedNode.Text & "'"
+                        Dim cmd As MySqlCommand = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
                         MsgBox("Milestone deleted!")
                         UpdatigTree = True
@@ -453,8 +431,8 @@ Public Class FormTime
     End Sub
 
     Private Sub Controls_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles _
-                ComboBoxArea.TextChanged, ComboBoxCustomer.TextChanged, ComboBoxQuality.TextChanged, ComboBoxResponsible.TextChanged, _
-                ComboBoxStatus.TextChanged, TextBoxFinish.TextChanged, TextBoxStart.TextChanged, TextBoxNote.TextChanged, ComboBoxCompleated.TextChanged, _
+                ComboBoxArea.TextChanged, ComboBoxCustomer.TextChanged, ComboBoxQuality.TextChanged, ComboBoxResponsible.TextChanged,
+                ComboBoxStatus.TextChanged, TextBoxFinish.TextChanged, TextBoxStart.TextChanged, TextBoxNote.TextChanged, ComboBoxCompleated.TextChanged,
                 CheckBoxFixedEnd.CheckedChanged, CheckBoxFixedStart.CheckedChanged
 
         If UpdatigTree = False Then
@@ -463,7 +441,7 @@ Public Class FormTime
         End If
     End Sub
 
-    Private Sub TreeViewTP_BeforeSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewCancelEventArgs) Handles TreeViewTP.BeforeSelect
+    Private Sub TreeViewTP_BeforeSelect(ByVal sender As Object, ByVal e As TreeViewCancelEventArgs) Handles TreeViewTP.BeforeSelect
         If UpdatigTree = False And Not IsNothing(TreeViewTP.SelectedNode) Then
 
             If OpenSession = True Then
@@ -479,10 +457,10 @@ Public Class FormTime
 
     Private Sub ButtonSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSave.Click
 
-        Dim cmd As New MySqlCommand(), nodeparent As String = ""
-        Dim sql As String, datevalid As Boolean
-        If OpenSession = True And Not IsNothing(TreeViewTP.SelectedNode) And (Trim(UCase(ReplaceChar(ComboBoxArea.Text))) = "" Or _
-           (user() = Mid(Trim(UCase(ReplaceChar(ComboBoxArea.Text))), 1, 1) And _
+        Dim nodeparent 
+        Dim datevalid As Boolean
+        If OpenSession = True And Not IsNothing(TreeViewTP.SelectedNode) And (Trim(UCase(ReplaceChar(ComboBoxArea.Text))) = "" Or
+           (user() = Mid(Trim(UCase(ReplaceChar(ComboBoxArea.Text))), 1, 1) And
            Mid(Trim(UCase(ReplaceChar(ComboBoxArea.Text))), 2, 1) = "-" And Len(Trim(UCase(ReplaceChar(ComboBoxArea.Text)))) >= 4)) Then
             myNodeSelect(True)
             If Len(TextBoxFinish.Text) = 10 And Len(TextBoxStart.Text) = 10 Then
@@ -491,7 +469,6 @@ Public Class FormTime
                 datevalid = True
             End If
 
-
             If datevalid Then
                 Try
                     Try
@@ -499,21 +476,21 @@ Public Class FormTime
                     Catch ex As Exception
                         nodeparent = " `TimeProject`.`project` like '*'"
                     End Try
-                    sql = "UPDATE `" & DBName & "`.`TimeProject` SET " & _
-                            IIf(TreeViewTP.SelectedNode.Level = 0, "`area` = '" & Replace(Trim(UCase(ReplaceChar(ComboBoxArea.Text))), " ", "") & "',", "") & _
-                            IIf(TreeViewTP.SelectedNode.Level = 0, "`customer` = '" & Trim(UCase(ReplaceChar(ComboBoxCustomer.Text))), "") & _
-                            IIf(TreeViewTP.SelectedNode.Level = 0, "',`ProjectLeader` = '" & Trim(UCase(ReplaceChar(ComboBoxResponsible.Text))), "") & _
-                            IIf(TreeViewTP.SelectedNode.Level = 1, "`taskLeader` = '" & Trim(UCase(ReplaceChar(ComboBoxResponsible.Text))), "") & _
-                            IIf(TreeViewTP.SelectedNode.Level = 1, "',`quality` = '" & ComboBoxQuality.Text, "") & _
-                            IIf(TreeViewTP.SelectedNode.Level = 1, "',`Compleated` = '" & ComboBoxCompleated.Text, "") & _
-                            IIf(TreeViewTP.SelectedNode.Level = 1, "',`start` = '" & TextBoxStart.Text, "") & _
-                            IIf(TreeViewTP.SelectedNode.Level = 1, "',`end` = '" & TextBoxFinish.Text, "") & _
-                            IIf(TreeViewTP.SelectedNode.Level = 1, "',`FixedEnd` = '" & IIf(CheckBoxFixedEnd.Checked, "YES", ""), "") & _
-                            IIf(TreeViewTP.SelectedNode.Level = 1, "',`FixedStart` = '" & IIf(CheckBoxFixedStart.Checked, "YES", ""), "") & _
-                            IIf(TreeViewTP.SelectedNode.Level = 1, "',`note` = '" & Trim(TextBoxNote.Text), "") & _
-                            IIf(TreeViewTP.SelectedNode.Level = 1, "',`status` = '" & UCase(ComboBoxStatus.Text) & "'", "' ") & _
-                            " WHERE " & IIf(TreeViewTP.SelectedNode.Level = 1, "`TimeProject`.`taskname` = '" & TreeViewTP.SelectedNode.Text & "' and " & nodeparent, "`TimeProject`.`project` = '" & TreeViewTP.SelectedNode.Text & "'")
-                    cmd = New MySqlCommand(sql, MySqlconnection)
+                    Dim sql As String = "UPDATE `" & DBName & "`.`TimeProject` SET " &
+                                        IIf(TreeViewTP.SelectedNode.Level = 0, "`area` = '" & Replace(Trim(UCase(ReplaceChar(ComboBoxArea.Text))), " ", "") & "',", "") &
+                                        IIf(TreeViewTP.SelectedNode.Level = 0, "`customer` = '" & Trim(UCase(ReplaceChar(ComboBoxCustomer.Text))), "") &
+                                        IIf(TreeViewTP.SelectedNode.Level = 0, "',`ProjectLeader` = '" & Trim(UCase(ReplaceChar(ComboBoxResponsible.Text))), "") &
+                                        IIf(TreeViewTP.SelectedNode.Level = 1, "`taskLeader` = '" & Trim(UCase(ReplaceChar(ComboBoxResponsible.Text))), "") &
+                                        IIf(TreeViewTP.SelectedNode.Level = 1, "',`quality` = '" & ComboBoxQuality.Text, "") &
+                                        IIf(TreeViewTP.SelectedNode.Level = 1, "',`Compleated` = '" & ComboBoxCompleated.Text, "") &
+                                        IIf(TreeViewTP.SelectedNode.Level = 1, "',`start` = '" & TextBoxStart.Text, "") &
+                                        IIf(TreeViewTP.SelectedNode.Level = 1, "',`end` = '" & TextBoxFinish.Text, "") &
+                                        IIf(TreeViewTP.SelectedNode.Level = 1, "',`FixedEnd` = '" & IIf(CheckBoxFixedEnd.Checked, "YES", ""), "") &
+                                        IIf(TreeViewTP.SelectedNode.Level = 1, "',`FixedStart` = '" & IIf(CheckBoxFixedStart.Checked, "YES", ""), "") &
+                                        IIf(TreeViewTP.SelectedNode.Level = 1, "',`note` = '" & Trim(TextBoxNote.Text), "") &
+                                        IIf(TreeViewTP.SelectedNode.Level = 1, "',`status` = '" & UCase(ComboBoxStatus.Text) & "'", "' ") &
+                                        " WHERE " & IIf(TreeViewTP.SelectedNode.Level = 1, "`TimeProject`.`taskname` = '" & TreeViewTP.SelectedNode.Text & "' and " & nodeparent, "`TimeProject`.`project` = '" & TreeViewTP.SelectedNode.Text & "'")
+                    Dim cmd = New MySqlCommand(sql, MySqlconnection)
                     cmd.ExecuteNonQuery()
                     myNodeSelect(True, True)
                     UpdateTreeTPList(True)
@@ -538,7 +515,7 @@ Public Class FormTime
 
     End Sub
 
-    Private Sub TreeViewTP_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewTP.AfterSelect
+    Private Sub TreeViewTP_AfterSelect(ByVal sender As Object, ByVal e As TreeViewEventArgs) Handles TreeViewTP.AfterSelect
 
         Dim UpdatigTreePrev As Boolean = UpdatigTree
 
@@ -559,9 +536,7 @@ Public Class FormTime
             ComboBoxResponsible.Text = ""
             ComboBoxStatus.Text = ""
 
-
         Else
-
 
             ButtonSave.Enabled = True
             ButtonExportGantt.Enabled = True
@@ -604,7 +579,7 @@ Public Class FormTime
             CheckBoxFixedStart.Visible = False
 
             If controlRight("J") >= 3 And controlRight(Mid(ComboBoxArea.Text, 1, 1)) > 2 Or ComboBoxArea.Text = "" Then
-            ComboBoxCustomer.Enabled = True
+                ComboBoxCustomer.Enabled = True
                 ComboBoxArea.Enabled = True
                 ButtonSave.Enabled = True
             Else
@@ -703,7 +678,6 @@ Public Class FormTime
 
         End If
 
-
         UpdatigTree = UpdatigTreePrev
 
         If controlRight(Mid(ComboBoxArea.Text, 1, 1)) >= 2 Then ButtonDuplicate.Visible = True
@@ -712,10 +686,9 @@ Public Class FormTime
 
     Function ProjectCompleated(ByVal id As String, ByVal refresh As Boolean) As Integer
 
-        Dim rowShow As DataRow(), i As Integer, TotalTime As Integer
         ProjectCompleated = 0
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -728,8 +701,8 @@ Public Class FormTime
             tblTP = Dstp_static.Tables("TimeProject")
         End If
 
-        TotalTime = 0
-        rowShow = tbltp_static.Select("Project = '" & id & "'")
+        Dim TotalTime As Integer = 0
+        Dim rowShow As DataRow() = tbltp_static.Select("Project = '" & id & "'")
         If rowShow.Length > 0 Then
             For Each row In rowShow
                 TotalTime = TotalTime + DateDiff("d", string_to_date(row("start").ToString), string_to_date(row("end").ToString))
@@ -745,10 +718,9 @@ Public Class FormTime
 
     Function ProjectStart(ByVal id As String, ByVal refresh As Boolean) As String
 
-        Dim rowShow As DataRow(), i As Integer
         ProjectStart = ""
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -762,7 +734,7 @@ Public Class FormTime
         End If
 
 
-        rowShow = tbltp_static.Select("Project = '" & id & "'")
+        Dim rowShow As DataRow() = tbltp_static.Select("Project = '" & id & "'")
         If rowShow.Length > 0 Then
             For Each row In rowShow
                 If ProjectStart = "" Or DateDiff("d", string_to_date(ProjectStart), string_to_date(row("start").ToString)) < 0 Then
@@ -775,10 +747,9 @@ Public Class FormTime
 
     Function ProjectEnd(ByVal id As String, ByVal refresh As Boolean) As String
 
-        Dim rowShow As DataRow(), i As Integer
         ProjectEnd = ""
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -792,7 +763,7 @@ Public Class FormTime
         End If
 
 
-        rowShow = tbltp_static.Select("Project = '" & id & "'")
+        Dim rowShow As DataRow() = tbltp_static.Select("Project = '" & id & "'")
         If rowShow.Length > 0 Then
             For Each row In rowShow
                 If ProjectEnd = "" Or DateDiff("d", string_to_date(ProjectEnd), string_to_date(row("end").ToString)) > 0 Then
@@ -805,10 +776,9 @@ Public Class FormTime
 
     Function quality(ByVal id As String, ByVal refresh As Boolean) As Integer
 
-        Dim rowShow As DataRow(), i As Integer
         quality = 0
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -818,11 +788,11 @@ Public Class FormTime
             Dstp_static.Clear()
             tbltp_static.Clear()
             AdapterTP.Fill(Dstp_static, "TimeProject")
-            tbltp = Dstp_static.Tables("TimeProject")
+            tblTP = Dstp_static.Tables("TimeProject")
         End If
 
         quality = 0
-        rowShow = tbltp_static.Select("Project = '" & id & "'")
+        Dim rowShow As DataRow() = tbltp_static.Select("Project = '" & id & "'")
         If rowShow.Length > 0 Then
             For Each row In rowShow
                 quality = quality + Val(row("quality").ToString)
@@ -836,11 +806,9 @@ Public Class FormTime
     End Function
 
     Function customer(ByVal id As String, ByVal refresh As Boolean) As String
-
-        Dim rowShow As DataRow(), i As Integer
         customer = ""
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -853,7 +821,7 @@ Public Class FormTime
             tblTP = Dstp_static.Tables("TimeProject")
         End If
 
-        rowShow = tbltp_static.Select("Project = '" & id & "'")
+        Dim rowShow As DataRow() = tbltp_static.Select("Project = '" & id & "'")
 
         For Each row In rowShow
             If row("customer").ToString <> "" Then customer = row("customer").ToString
@@ -863,10 +831,9 @@ Public Class FormTime
 
     Function TaskCompleated(ByVal id As String, ByVal idp As String, ByVal refresh As Boolean) As String
 
-        Dim rowShow As DataRow(), i As Integer
         TaskCompleated = ""
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -879,7 +846,7 @@ Public Class FormTime
             tblTP = Dstp_static.Tables("TimeProject")
         End If
 
-        rowShow = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
+        Dim rowShow As DataRow() = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
 
         For Each row In rowShow
             TaskCompleated = row("Compleated").ToString
@@ -889,10 +856,9 @@ Public Class FormTime
 
     Function TaskFixedStart(ByVal id As String, ByVal idp As String, ByVal refresh As Boolean) As String
 
-        Dim rowShow As DataRow(), i As Integer
         TaskFixedStart = ""
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -905,7 +871,7 @@ Public Class FormTime
             tblTP = Dstp_static.Tables("TimeProject")
         End If
 
-        rowShow = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
+        Dim rowShow As DataRow() = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
 
         For Each row In rowShow
             TaskFixedStart = row("FixedStart").ToString
@@ -915,10 +881,9 @@ Public Class FormTime
 
     Function TaskFixedEnd(ByVal id As String, ByVal idp As String, ByVal refresh As Boolean) As String
 
-        Dim rowShow As DataRow(), i As Integer
         TaskFixedEnd = ""
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -931,7 +896,7 @@ Public Class FormTime
             tblTP = Dstp_static.Tables("TimeProject")
         End If
 
-        rowShow = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
+        Dim rowShow As DataRow() = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
 
         For Each row In rowShow
             TaskFixedEnd = row("FixedEnd").ToString
@@ -941,10 +906,9 @@ Public Class FormTime
 
     Function TaskStatus(ByVal id As String, ByVal idp As String, ByVal refresh As Boolean) As String
 
-        Dim rowShow As DataRow(), i As Integer
         TaskStatus = "MISSING"
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -957,7 +921,7 @@ Public Class FormTime
             tblTP = Dstp_static.Tables("TimeProject")
         End If
 
-        rowShow = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
+        Dim rowShow As DataRow() = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
         If rowShow.Length > 0 Then
             For Each row In rowShow
                 TaskStatus = row("status").ToString
@@ -967,10 +931,9 @@ Public Class FormTime
 
     Function ProjectLeader(ByVal id As String, ByVal refresh As Boolean) As String
 
-        Dim rowShow As DataRow(), i As Integer
         ProjectLeader = ""
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -983,7 +946,7 @@ Public Class FormTime
             tblTP = Dstp_static.Tables("TimeProject")
         End If
 
-        rowShow = tbltp_static.Select("Project = '" & id & "'")
+        Dim rowShow As DataRow() = tbltp_static.Select("Project = '" & id & "'")
 
         For Each row In rowShow
             ProjectLeader = row("ProjectLeader").ToString
@@ -993,10 +956,9 @@ Public Class FormTime
 
     Function TaskEnd(ByVal id As String, ByVal idp As String, ByVal refresh As Boolean) As String
 
-        Dim rowShow As DataRow(), i As Integer
         TaskEnd = ""
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -1009,7 +971,7 @@ Public Class FormTime
             tblTP = Dstp_static.Tables("TimeProject")
         End If
 
-        rowShow = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
+        Dim rowShow As DataRow() = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
 
         For Each row In rowShow
             TaskEnd = row("End").ToString
@@ -1019,10 +981,9 @@ Public Class FormTime
 
     Function TaskQuality(ByVal id As String, ByVal idp As String, ByVal refresh As Boolean) As String
 
-        Dim rowShow As DataRow(), i As Integer
         TaskQuality = ""
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -1035,7 +996,7 @@ Public Class FormTime
             tblTP = Dstp_static.Tables("TimeProject")
         End If
 
-        rowShow = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
+        Dim rowShow As DataRow() = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
 
         For Each row In rowShow
             TaskQuality = row("quality").ToString
@@ -1045,10 +1006,9 @@ Public Class FormTime
 
     Function TaskStart(ByVal id As String, ByVal idp As String, ByVal refresh As Boolean) As String
 
-        Dim rowShow As DataRow(), i As Integer
         TaskStart = ""
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -1062,7 +1022,7 @@ Public Class FormTime
         End If
 
 
-        rowShow = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
+        Dim rowShow As DataRow() = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
         For Each row In rowShow
             TaskStart = row("Start").ToString
         Next
@@ -1070,12 +1030,9 @@ Public Class FormTime
     End Function
 
     Function TaskLeader(ByVal id As String, ByVal idp As String, ByVal refresh As Boolean) As String
-
-
-        Dim rowShow As DataRow(), i As Integer
         TaskLeader = ""
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -1088,7 +1045,7 @@ Public Class FormTime
             tblTP = Dstp_static.Tables("TimeProject")
         End If
 
-        rowShow = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
+        Dim rowShow As DataRow() = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
 
         For Each row In rowShow
             TaskLeader = row("TaskLeader").ToString
@@ -1098,10 +1055,9 @@ Public Class FormTime
 
     Function area(ByVal id As String, ByVal refresh As Boolean) As String
 
-        Dim rowShow As DataRow(), i As Integer
         area = ""
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -1111,10 +1067,10 @@ Public Class FormTime
             Dstp_static.Clear()
             tbltp_static.Clear()
             AdapterTP.Fill(Dstp_static, "TimeProject")
-            tbltp = Dstp_static.Tables("TimeProject")
+            tblTP = Dstp_static.Tables("TimeProject")
         End If
 
-        rowShow = tbltp_static.Select("Project = '" & id & "'")
+        Dim rowShow As DataRow() = tbltp_static.Select("Project = '" & id & "'")
 
         For Each row In rowShow
             If row("area").ToString <> "" Then area = row("area").ToString
@@ -1124,10 +1080,9 @@ Public Class FormTime
 
     Function taskname(ByVal id As String, ByVal idp As String, ByVal refresh As Boolean) As String
 
-        Dim rowShow As DataRow(), i As Integer
         taskname = ""
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -1140,7 +1095,7 @@ Public Class FormTime
             tblTP = Dstp_static.Tables("TimeProject")
         End If
 
-        rowShow = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
+        Dim rowShow As DataRow() = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
 
         For Each row In rowShow
             taskname = row("taskname").ToString
@@ -1150,10 +1105,9 @@ Public Class FormTime
 
     Function note(ByVal id As String, ByVal idp As String, ByVal refresh As Boolean) As String
 
-        Dim rowShow As DataRow(), i As Integer
         note = ""
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -1166,7 +1120,7 @@ Public Class FormTime
             tblTP = Dstp_static.Tables("TimeProject")
         End If
 
-        rowShow = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
+        Dim rowShow As DataRow() = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
 
         For Each row In rowShow
             note = row("note").ToString
@@ -1176,10 +1130,9 @@ Public Class FormTime
 
     Function ProjectStatusOpenClosed(ByVal id As String, ByVal refresh As Boolean) As String
 
-        Dim rowShow As DataRow(), i As Integer
         ProjectStatusOpenClosed = "CLOSED"
         Try
-            i = tbltp_static.Rows.Count
+            Dim i As Integer = tbltp_static.Rows.Count
         Catch ex As Exception
             AdapterTP.Fill(Dstp_static, "TimeProject")
             tbltp_static = Dstp_static.Tables("TimeProject")
@@ -1192,7 +1145,7 @@ Public Class FormTime
             tblTP = Dstp_static.Tables("TimeProject")
         End If
 
-        rowShow = tbltp_static.Select("Project = '" & id & "'")
+        Dim rowShow As DataRow() = tbltp_static.Select("Project = '" & id & "'")
         If rowShow.Length > 0 Then
             For Each row In rowShow
                 If "OPEN" = row("status").ToString And ProjectStatusOpenClosed = "CLOSED" Then ProjectStatusOpenClosed = "OPEN"
@@ -1204,8 +1157,6 @@ Public Class FormTime
     End Function
 
     Private Sub ButtonAddTemplate_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDuplicate.Click
-        Dim cmd As New MySqlCommand()
-        Dim sql As String, newName As String
         DsTP.Clear()
         tblTP.Clear()
 
@@ -1214,15 +1165,15 @@ Public Class FormTime
         myNodeSelect(True, True)
         Dim rowShow As DataRow()
         If TreeViewTP.SelectedNode.Text <> "" Then
-            newName = ReplaceChar(InputBox("Insert new Project name: "))
+            Dim newName As String = ReplaceChar(InputBox("Insert new Project name: "))
             If newName <> "" And ProjectStatus(newName, True) = "MISSING" Then
 
                 rowShow = tblTP.Select("Project = '" & TreeViewTP.SelectedNode.Text & "'")
 
                 For Each row In rowShow
                     Try
-                        sql = "INSERT INTO `" & DBName & "`.`timeproject` (`Project`,`TaskName` ) VALUES ( '" & newName & "' , '" & row("Taskname").ToString & "'" & ");"
-                        cmd = New MySqlCommand(sql, MySqlconnection)
+                        Dim sql As String = "INSERT INTO `" & DBName & "`.`timeproject` (`Project`,`TaskName` ) VALUES ( '" & newName & "' , '" & row("Taskname").ToString & "'" & ");"
+                        Dim cmd = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
 
                     Catch ex As Exception
@@ -1243,8 +1194,7 @@ Public Class FormTime
 
     Private Sub ButtonAddProject_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAddProject.Click
 
-        Dim cmd As New MySqlCommand()
-        Dim sql As String, needAdd As Boolean
+        Dim needAdd As Boolean
         myNodeSelect(True, True)
         If controlRight("J") >= 2 And (controlRight(Mid(ComboBoxArea.Text, 1, 1)) > 2 Or ComboBoxArea.Text = "") Or ProjectStatus(TextBoxProject.Text, True) = "MISSING" Then
             If TextBoxProject.Text <> "" And TextBoxTask.Text <> "" Then
@@ -1258,8 +1208,8 @@ Public Class FormTime
                 If needAdd Then
 
                     Try
-                        sql = "INSERT INTO `" & DBName & "`.`timeproject` (`Project`,`TaskName` ) VALUES ( '" & TextBoxProject.Text & "' , '" & TextBoxTask.Text & "'" & ");"
-                        cmd = New MySqlCommand(sql, MySqlconnection)
+                        Dim sql As String = "INSERT INTO `" & DBName & "`.`timeproject` (`Project`,`TaskName` ) VALUES ( '" & TextBoxProject.Text & "' , '" & TextBoxTask.Text & "'" & ");"
+                        Dim cmd = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
 
                     Catch ex As Exception
@@ -1288,43 +1238,37 @@ Public Class FormTime
     End Sub
 
     Private Sub ButtonExportGantt_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonExportGantt.Click
-        Dim Project As String, i As Integer
+        Dim i As Integer
         Dim PresenceTmp As Integer
-        Dim rowShow As DataRow(), rowExcel As Integer, sql As String
-
 
         DsTP.Clear()
         tblTP.Clear()
         AdapterTP.Fill(DsTP, "TimeProject")
         tblTP = DsTP.Tables("TimeProject")
 
-        sql = IIf(ComboBoxAreaFilter.Text = "", "area like '*' and ", "area = '" & ComboBoxAreaFilter.Text & "' and ") & _
-                               IIf(ComboBoxStatusFilter.Text = "", "status like '*'  and ", "status = '" & ComboBoxCustomerFilter.Text & "'  and ") & _
-                               IIf(ComboBoxCustomerFilter.Text = "", "customer like '*'  and ", "customer = '" & ComboBoxCustomerFilter.Text & "'  and ") & _
-                               IIf(ComboBoxCompleatedFilter.Text = "", "compleated like '*'  and ", "compleated = '" & ComboBoxCompleatedFilter.Text & "'  and ") & _
-                               IIf(CheckBoxTemplate.Checked = False, "not project like '*template*'  and ", "") & _
-                               IIf(ComboBoxtaskFilter.Text = "", "", " taskleader = '" & ComboBoxtaskFilter.Text & "'  and ") & _
-                               IIf(ComboBoxResponsibleFilter.Text = "", "ProjectLeader like '*'  ", "projectleader = '" & ComboBoxResponsibleFilter.Text & "'  ")
-        rowShow = tblTP.Select(sql, "project, id")
+        Dim sql As String = IIf(ComboBoxAreaFilter.Text = "", "area like '*' and ", "area = '" & ComboBoxAreaFilter.Text & "' and ") &
+                            IIf(ComboBoxStatusFilter.Text = "", "status like '*'  and ", "status = '" & ComboBoxCustomerFilter.Text & "'  and ") &
+                            IIf(ComboBoxCustomerFilter.Text = "", "customer like '*'  and ", "customer = '" & ComboBoxCustomerFilter.Text & "'  and ") &
+                            IIf(ComboBoxCompleatedFilter.Text = "", "compleated like '*'  and ", "compleated = '" & ComboBoxCompleatedFilter.Text & "'  and ") &
+                            IIf(CheckBoxTemplate.Checked = False, "not project like '*template*'  and ", "") &
+                            IIf(ComboBoxtaskFilter.Text = "", "", " taskleader = '" & ComboBoxtaskFilter.Text & "'  and ") &
+                            IIf(ComboBoxResponsibleFilter.Text = "", "ProjectLeader like '*'  ", "projectleader = '" & ComboBoxResponsibleFilter.Text & "'  ")
+        Dim rowShow As DataRow() = tblTP.Select(sql, "project, id")
 
-        System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US")
+        Threading.Thread.CurrentThread.CurrentCulture = Globalization.CultureInfo.CreateSpecificCulture("en-US")
 
         CollectProcess()
         'open the offer template
-        Dim excelApp As New Object
-        excelApp = CreateObject("Excel.Application")
+        Dim excelApp As Object = CreateObject("Excel.Application")
 
-        Dim excelWorkbook As Object
-        Dim excelSheet As Object
         'Try
-        excelWorkbook = excelApp.Workbooks.Open(ParameterTable("PathMorpheus") & ParameterTable("PathNPI") & ParameterTable("PathPicture") & ParameterTable("plant") & "R_GEN_GTT_Template_0.xlsx")
+        Dim excelWorkbook As Object = excelApp.Workbooks.Open(ParameterTable("PathMorpheus") & ParameterTable("PathNPI") & ParameterTable("PathPicture") & ParameterTable("plant") & "R_GEN_GTT_Template_0.xlsx")
         excelWorkbook.Activate()
-        excelSheet = excelWorkbook.Worksheets("GANTT")
+        Dim excelSheet As Object = excelWorkbook.Worksheets("GANTT")
         excelSheet.Activate()
-        Dim cc As New ColorConverter
         excelApp.Visible = True
-        rowExcel = 1
-        Project = ""
+        Dim rowExcel As Integer = 1
+        Dim Project As String = ""
         For Each row In rowShow
 
             If row("project").ToString <> Project Then
@@ -1419,7 +1363,6 @@ Public Class FormTime
             rowExcel = rowExcel + 1
         Next
 
-
         Try
             SaveFileDialog1.FileName = ParameterTable("plant") & "R_GEN_GTT_" & Replace(Today, "/", "_") & "_0.xlsx"
             SaveFileDialog1.ShowDialog()
@@ -1443,9 +1386,8 @@ Public Class FormTime
     Function PresenceWeek(ByVal timestr As String, ByVal start As String, ByVal finish As String) As Integer
         Dim myWeek As Integer = Int(Mid(timestr, 7))
         Dim myYear As Integer = Int(Mid(timestr, 1, 4))
-        Dim MydateMond As Date
 
-        MydateMond = DateAdd("d", 7 * (myWeek - 1) + 1 - Weekday(string_to_date(myYear & "/01/01"), FirstDayOfWeek.Monday), string_to_date(myYear & "/01/01"))
+        Dim MydateMond As Date = DateAdd("d", 7 * (myWeek - 1) + 1 - Weekday(string_to_date(myYear & "/01/01"), FirstDayOfWeek.Monday), string_to_date(myYear & "/01/01"))
         If DateDiff("d", string_to_date(start), MydateMond) >= -4 And DateDiff("d", string_to_date(start), MydateMond) <= 0 Then
             PresenceWeek = 5 + DateDiff("d", string_to_date(start), MydateMond)
         ElseIf DateDiff("d", string_to_date(finish), MydateMond) >= -4 And DateDiff("d", string_to_date(finish), MydateMond) <= 0 Then
@@ -1455,7 +1397,6 @@ Public Class FormTime
         Else
             PresenceWeek = 0
         End If
-
 
     End Function
 

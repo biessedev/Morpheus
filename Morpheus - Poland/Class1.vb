@@ -11,7 +11,7 @@
     End Sub
 
     Public Function Compare(ByVal x As Object, ByVal y As Object) As Integer _
-                            Implements System.Collections.IComparer.Compare
+                            Implements IComparer.Compare
         Dim returnVal As Integer = -1
         returnVal = [String].Compare(CType(x,  _
                         ListViewItem).SubItems(col).Text, _

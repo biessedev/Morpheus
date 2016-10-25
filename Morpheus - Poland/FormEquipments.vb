@@ -2,9 +2,6 @@
 Option Explicit Off
 Option Compare Text
 Imports MySql.Data.MySqlClient
-Imports System.IO
-Imports System.Data.SqlClient
-Imports System.Data.OleDb
 
 Public Class FormEquipments
 
@@ -22,17 +19,13 @@ Public Class FormEquipments
     Dim NodeSelect As Integer
     Dim CurrentNodeIndex As Integer
 
-
-
     Private Sub FormEquipments_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         UpdatigTree = True
         ComboBoxActivityId.Items.Add("")
         ComboBoxActivityId.Items.Add("GBES - Grugliasco Build Equipment Service")
         FillCustomerCombo()
 
-
         ComboBoxmpa.Items.Add("")
-
 
         ComboBoxStatus.Items.Add("")
         ComboBoxStatus.Items.Add("OPEN")
@@ -52,7 +45,6 @@ Public Class FormEquipments
         ComboBoxToolsType.Items.Add("DEPANELING")
         ComboBoxToolsType.Items.Add("MOULD")
         ComboBoxToolsType.Items.Add("OTHER")
-
 
         ComboBoxHWBuilding.Items.Add("")
         ComboBoxHWDebug.Items.Add("")
@@ -112,55 +104,7 @@ Public Class FormEquipments
         ComboBoxCustomer.Sorted = True
     End Sub
 
-    'Sub DrawSimultaneusTools()
-
-    '    Dim tblEQ As DataTable
-    '    Dim DsEQ As New DataSet
-    '    Dim rowShow As DataRow(), openTypeTool As Integer
-    '    AdapterEQ.Fill(DsEQ, "equipment")
-    '    tblEQ = DsEQ.Tables("equipment")
-    '    Dim limit As Integer = Val(ComboBoxRange.Text)
-
-    '    Dim xPoint(limit) As String
-    '    Dim yPoint(limit) As Double
-    '    Dim yPointT(limit) As Double
-    '    'ChartEq.Series(0).Points.Clear()
-    '    'ChartEq.Series(1).Points.Clear()
-
-    '    rowShow = tblEQ.Select("type = '" & ComboBoxToolsType.Text & "' and status = 'OPEN' ")
-
-    '    openTypeTool = 0
-    '    For i = 1 To limit
-    '        openTypeTool = 0
-    '        For Each row In rowShow
-    '            If Len(row("start").ToString) = 10 And Len(row("start").ToString) = 10 Then
-    '                If string_to_date(row("start").ToString) < DateAdd("d", i, Today) _
-    '                    And string_to_date(row("end").ToString) > DateAdd("d", i, Today) Then
-    '                    openTypeTool = openTypeTool + 1
-    '                End If
-    '            End If
-    '        Next
-
-
-    '        xPoint(i) = (Format(DateAdd("d", i, Today), "MMM/dd"))
-    '        yPoint(i) = openTypeTool
-
-
-    '    Next
-    '    Dim integral As Double = 0
-    '    For i = 1 To limit
-    '        integral = yPoint(i) + integral
-    '    Next
-    '    For i = 1 To limit
-    '        yPointT(i) = (integral / limit)
-    '    Next
-    '    'ChartEq.Series(0).Points.DataBindXY(xPoint, yPoint)
-    '    'ChartEq.Series(1).Points.DataBindXY(xPoint, yPointT)
-
-    'End Sub
-
     Sub ResetComboData()
-
 
         ComboBoxHWBuilding.Items.Clear()
         ComboBoxHWDebug.Items.Clear()
@@ -202,14 +146,13 @@ Public Class FormEquipments
 
         Static Dim tblEQ As DataTable
         Static Dim DsEQ As New DataSet
-        Dim rootNode As TreeNode, activity As String
+        Dim rootNode As TreeNode
         Dim rootChildren1 As TreeNode
-        Dim rowShow As DataRow(), i As Integer
         TreeViewEQ.Font = New Font("Segoe UI", 12, FontStyle.Bold)
         TreeViewEQ.Nodes.Clear()
         TreeViewEQ.BackColor = Color.White
         Try
-            i = tblEQ.Rows.Count
+            Dim i As Integer = tblEQ.Rows.Count
             AdapterEQ.Update(DsEQ, "equipment")
             tblEQ = DsEQ.Tables("equipment")
         Catch ex As Exception
@@ -224,9 +167,9 @@ Public Class FormEquipments
             tblEQ = DsEQ.Tables("equipment")
         End If
 
-        rowShow = tblEQ.Select(IIf(ComboBoxToolsType.Text = "", "type like '*' and ", "type = '" & ComboBoxToolsType.Text & "' and ") & IIf(ComboBoxStatus.Text = "", "status like '*' ", "status = '" & ComboBoxStatus.Text & "'"), "IdActivity, status")
+        Dim rowShow As DataRow() = tblEQ.Select(IIf(ComboBoxToolsType.Text = "", "type like '*' and ", "type = '" & ComboBoxToolsType.Text & "' and ") & IIf(ComboBoxStatus.Text = "", "status like '*' ", "status = '" & ComboBoxStatus.Text & "'"), "IdActivity, status")
 
-        activity = ""
+        Dim activity As String = ""
         UpdatigTree = True
         For Each row In rowShow
 
@@ -274,13 +217,12 @@ Public Class FormEquipments
 
     Function ActivityStatusStandby(ByVal act As String, ByVal refresh As Boolean) As Boolean
         Static Dim tblEQ As DataTable
-        Static Dim DsEQ As New DataSet, i As Integer
+        Static Dim DsEQ As New DataSet
 
-        Dim rowShow As DataRow()
         ActivityStatusStandby = False
 
         Try
-            i = tblEQ.Rows.Count
+            Dim i As Integer = tblEQ.Rows.Count
         Catch ex As Exception
             AdapterEQ.Fill(DsEQ, "equipment")
             tblEQ = DsEQ.Tables("equipment")
@@ -293,7 +235,7 @@ Public Class FormEquipments
             tblEQ = DsEQ.Tables("equipment")
         End If
 
-        rowShow = tblEQ.Select("idactivity = '" & act & "' and status = 'STANDBY'")
+        Dim rowShow As DataRow() = tblEQ.Select("idactivity = '" & act & "' and status = 'STANDBY'")
 
         If rowShow.Length > 0 Then
             ActivityStatusStandby = True
@@ -304,13 +246,12 @@ Public Class FormEquipments
 
     Function ActivityStatusClosed(ByVal act As String, ByVal refresh As Boolean) As Boolean
         Static Dim tblEQ As DataTable
-        Static Dim DsEQ As New DataSet, i As Integer
+        Static Dim DsEQ As New DataSet
 
-        Dim rowShow As DataRow()
         ActivityStatusClosed = True
 
         Try
-            i = tblEQ.Rows.Count
+            Dim i As Integer = tblEQ.Rows.Count
         Catch ex As Exception
             AdapterEQ.Fill(DsEQ, "equipment")
             tblEQ = DsEQ.Tables("equipment")
@@ -323,8 +264,7 @@ Public Class FormEquipments
             tblEQ = DsEQ.Tables("equipment")
         End If
 
-
-        rowShow = tblEQ.Select("idactivity = '" & act & "' and not status like 'CLOSED' and not status like 'NONEED'")
+        Dim rowShow As DataRow() = tblEQ.Select("idactivity = '" & act & "' and not status like 'CLOSED' and not status like 'NONEED'")
 
         If rowShow.Length > 0 Then
             ActivityStatusClosed = False
@@ -334,13 +274,12 @@ Public Class FormEquipments
 
     Function ActivityStatusDelay(ByVal act As String, ByVal refresh As Boolean) As Boolean
         Static Dim tblEQ As DataTable
-        Static Dim DsEQ As New DataSet, i As Integer
+        Static Dim DsEQ As New DataSet
 
-        Dim rowShow As DataRow()
         ActivityStatusDelay = False
 
         Try
-            i = tblEQ.Rows.Count
+            Dim i As Integer = tblEQ.Rows.Count
         Catch ex As Exception
             AdapterEQ.Fill(DsEQ, "equipment")
             tblEQ = DsEQ.Tables("equipment")
@@ -353,7 +292,7 @@ Public Class FormEquipments
             tblEQ = DsEQ.Tables("equipment")
         End If
 
-        rowShow = tblEQ.Select("idactivity = '" & act & "'")
+        Dim rowShow As DataRow() = tblEQ.Select("idactivity = '" & act & "'")
         For Each row In rowShow
             If TimingEQ(row("id").ToString, tblEQ) = "DELAY" Then ActivityStatusDelay = True
         Next
@@ -363,12 +302,11 @@ Public Class FormEquipments
     Function ActivityStatusOnTime(ByVal act As String, ByVal refresh As Boolean) As Boolean
         Static Dim tblEQ As DataTable
         Static Dim DsEQ As New DataSet
-        Dim timing As String = ""
-        Dim rowShow As DataRow(), i As Integer
+        Dim timing = ""
         ActivityStatusOnTime = True
 
         Try
-            i = tblEQ.Rows.Count
+            Dim i As Integer = tblEQ.Rows.Count
         Catch ex As Exception
             AdapterEQ.Fill(DsEQ, "equipment")
             tblEQ = DsEQ.Tables("equipment")
@@ -382,7 +320,7 @@ Public Class FormEquipments
         End If
 
 
-        rowShow = tblEQ.Select("idactivity = '" & act & "'")
+        Dim rowShow As DataRow() = tblEQ.Select("idactivity = '" & act & "'")
 
         For Each row In rowShow
 
@@ -446,8 +384,6 @@ Public Class FormEquipments
     Private Sub ButtonAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAdd.Click
 
         Dim rootNode As TreeNode, rootNodeChild As TreeNode
-        Dim cmd As New MySqlCommand()
-        Dim sql As String
         myNodeSelect(True)
 
         If Not IsNothing(TreeViewEQ.SelectedNode) Then
@@ -461,8 +397,8 @@ Public Class FormEquipments
             TreeViewEQ.ResumeLayout()
 
             Try
-                sql = "INSERT INTO `" & DBName & "`.`equipments` (`ToolName`,`idactivity` ) VALUES ( '" & "---- New Tool ----" & "' , '" & ComboBoxActivityId.Text & "'" & ");"
-                cmd = New MySqlCommand(sql, MySqlconnection)
+                Dim sql As String = "INSERT INTO `" & DBName & "`.`equipments` (`ToolName`,`idactivity` ) VALUES ( '" & "---- New Tool ----" & "' , '" & ComboBoxActivityId.Text & "'" & ");"
+                Dim cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
 
             Catch ex As Exception
@@ -480,15 +416,14 @@ Public Class FormEquipments
 
     End Sub
 
-    Private Sub TreeViewEQ_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewEQ.AfterSelect
+    Private Sub TreeViewEQ_AfterSelect(ByVal sender As Object, ByVal e As TreeViewEventArgs) Handles TreeViewEQ.AfterSelect
         Dim tblEQ As DataTable
         Dim DsEQ As New DataSet
-        Dim rowShow As DataRow(), id As Integer = 0
-        Dim UpdatigTreePrev As Boolean
+        Dim rowShow As DataRow()
         AdapterEQ.Fill(DsEQ, "equipments")
         tblEQ = DsEQ.Tables("equipments")
-        UpdatigTreePrev = UpdatigTree
-        id = CurrentID()
+        Dim UpdatigTreePrev As Boolean = UpdatigTree
+        Dim id As Integer = CurrentID()
 
         If currentActivityID() > 0 Then
             resetField()
@@ -590,62 +525,51 @@ Public Class FormEquipments
     Function sumHour(ByVal act As String) As Integer
         Dim tblEQ As DataTable
         Dim DsEQ As New DataSet
-        Dim timing As String = ""
-        Dim rowShow As DataRow(), i As Integer
-
         sumHour = 0
-
         AdapterEQ.Fill(DsEQ, "equipment")
         tblEQ = DsEQ.Tables("equipment")
 
-
-        rowShow = tblEQ.Select("idactivity = '" & act & "'")
+        Dim rowShow As DataRow() = tblEQ.Select("idactivity = '" & act & "'")
 
         For Each row In rowShow
-            i = row("id").ToString
+            Dim i As Integer = row("id").ToString
             sumHour = sumHour + Val(row("workhour").ToString)
         Next
     End Function
 
     Private Sub ButtonBomSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSave.Click
-        Dim id As Integer, idSelected As Integer
-        id = CurrentID()
+        Dim id As Integer = CurrentID()
         If id > 0 Then
             If (ComboBoxStatus.Text <> "" And ComboBoxToolsType.Text <> "") Or (ComboBoxStatus.Text = "NONEED") Then
                 If DeltaSessionTime("equipments", id) < 30 And session("equipments", id, False) = "RESET" Then
                     TextBoxTime.Text = ""
-                    Dim cmd As New MySqlCommand()
-                    Dim sql As String
-
                     Try
 
-                        sql = "UPDATE `" & DBName & "`.`equipments` SET " & _
-                        "`start` = '" & ComboBoxStart.Text &
-                        "',`IdActivity` = '" & ComboBoxActivityId.Text &
-                        "',`toolname` = '" & TextBoxToolName.Text &
-                        "',`type` = '" & ComboBoxToolsType.Text &
-                        "',`sop` = '" & ComboBoxSop.Text &
-                        "',`mpa` = '" & ComboBoxmpa.Text &
-                        "',`start` = '" & ComboBoxStart.Text &
-                        "',`Asset_ID` = '" & TextBoxToolId.Text &
-                        "',`HWDebug` = '" & ComboBoxHWDebug.Text &
-                        "',`HWDoc` = '" & ComboBoxHWDoc.Text &
-                        "',`HWBuilding` = '" & ComboBoxHWBuilding.Text &
-                        "',`workhour` = " & Int(Val(TextBoxWorkHours.Text)) &
-                        ",`SWDebug` = '" & ComboBoxSWDebug.Text &
-                        "',`note` = '" & Replace(Replace(RichTextBoxNote.Text, "'", ""), "'", "") &
-                        "',`end` = '" & ComboBoxEnd.Text &
-                        "',`status` = '" & ComboBoxStatus.Text & "' WHERE `equipments`.`id` = " & id & " ;"
+                        Dim sql As String = "UPDATE `" & DBName & "`.`equipments` SET " &
+                                            "`start` = '" & ComboBoxStart.Text &
+                                            "',`IdActivity` = '" & ComboBoxActivityId.Text &
+                                            "',`toolname` = '" & TextBoxToolName.Text &
+                                            "',`type` = '" & ComboBoxToolsType.Text &
+                                            "',`sop` = '" & ComboBoxSop.Text &
+                                            "',`mpa` = '" & ComboBoxmpa.Text &
+                                            "',`start` = '" & ComboBoxStart.Text &
+                                            "',`Asset_ID` = '" & TextBoxToolId.Text &
+                                            "',`HWDebug` = '" & ComboBoxHWDebug.Text &
+                                            "',`HWDoc` = '" & ComboBoxHWDoc.Text &
+                                            "',`HWBuilding` = '" & ComboBoxHWBuilding.Text &
+                                            "',`workhour` = " & Int(Val(TextBoxWorkHours.Text)) &
+                                            ",`SWDebug` = '" & ComboBoxSWDebug.Text &
+                                            "',`note` = '" & Replace(Replace(RichTextBoxNote.Text, "'", ""), "'", "") &
+                                            "',`end` = '" & ComboBoxEnd.Text &
+                                            "',`status` = '" & ComboBoxStatus.Text & "' WHERE `equipments`.`id` = " & id & " ;"
 
 
-                        cmd = New MySqlCommand(sql, MySqlconnection)
+                        Dim cmd As MySqlCommand = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
-                        idSelected = CurrentID()
+                        CurrentID()
                         TreeViewEQ.HideSelection = False
                         TreeViewEQ.Focus()
                         TreeViewEQ.SelectedNode.Text = Mid(TreeViewEQ.SelectedNode.Text, 1, InStr(TreeViewEQ.SelectedNode.Text, " - ") - 1) & " - " & IIf(ComboBoxToolsType.Text <> "", ComboBoxToolsType.Text, "?") & " - " & TextBoxToolName.Text
-
-
 
                     Catch ex As Exception
                         MsgBox(ex.Message)
@@ -654,8 +578,6 @@ Public Class FormEquipments
                     ButtonSave.BackColor = Color.Green
                     OpenSession = False
                     TimerRecord.Stop()
-
-
                 Else
                     MsgBox("Section USED " & session("BomOffer", id, False))
                 End If
@@ -664,19 +586,16 @@ Public Class FormEquipments
             End If
         ElseIf currentActivityID() > 0 Then
 
-            Dim cmd As New MySqlCommand()
-            Dim sql As String
-
             Try
 
-                sql = "UPDATE `" & DBName & "`.`equipments` SET " &
-                "`sop` = '" & ComboBoxSop.Text &
-                "',`mpa` = '" & ComboBoxmpa.Text &
-                 "',`customer` = '" & ComboBoxCustomer.Text &
-                "',`NoteActivity` = '" & Replace(Replace(RichTextBoxNote.Text, "'", ""), "'", "") &
-                "',`start` = '" & ComboBoxStart.Text & "' WHERE `equipments`.`idactivity` = '" & TreeViewEQ.SelectedNode.Text & "' ;"
+                Dim sql As String = "UPDATE `" & DBName & "`.`equipments` SET " &
+                                    "`sop` = '" & ComboBoxSop.Text &
+                                    "',`mpa` = '" & ComboBoxmpa.Text &
+                                    "',`customer` = '" & ComboBoxCustomer.Text &
+                                    "',`NoteActivity` = '" & Replace(Replace(RichTextBoxNote.Text, "'", ""), "'", "") &
+                                    "',`start` = '" & ComboBoxStart.Text & "' WHERE `equipments`.`idactivity` = '" & TreeViewEQ.SelectedNode.Text & "' ;"
 
-                cmd = New MySqlCommand(sql, MySqlconnection)
+                Dim cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
                 ButtonSave.BackColor = Color.Green
 
@@ -692,7 +611,6 @@ Public Class FormEquipments
 
     Sub myNodeSelect(ByVal read As Boolean)
         Static Dim selNode As TreeNode
-
         If read Then
             selNode = TreeViewEQ.SelectedNode
             TreeViewEQ.Select()
@@ -749,9 +667,7 @@ Public Class FormEquipments
     ComboBoxEnd.TextChanged, ComboBoxHWDoc.TextChanged, ComboBoxHWDebug.TextChanged, ComboBoxHWBuilding.TextChanged,
     ComboBoxStart.TextChanged, ComboBoxSWDebug.TextChanged, ComboBoxCustomer.TextChanged, TextBoxToolId.TextChanged, ComboBoxmpa.TextChanged,
     ComboBoxSop.TextChanged, RichTextBoxNote.TextChanged, TextBoxToolName.TextChanged, TextBoxWorkHours.TextChanged
-
-        Dim id As Integer
-        id = CurrentID()
+        Dim id As Integer = CurrentID()
 
         If UpdatigTree = False And id > 0 Then
 
@@ -802,8 +718,7 @@ Public Class FormEquipments
     End Sub
 
     Private Sub TimerRecord_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerRecord.Tick
-        Dim id As Integer
-        id = CurrentID()
+        Dim id As Integer = CurrentID()
         If id = 0 Then
             OpenSession = False
             TextBoxTime.Text = ""
@@ -823,24 +738,18 @@ Public Class FormEquipments
     End Sub
 
     Private Sub ButtonRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRemove.Click
-        Dim cmd As New MySqlCommand()
-        Dim sql As String, id As Integer
-
-
-        id = CurrentID()
+        Dim id As Integer = CurrentID()
         If id = 0 Then
             OpenSession = False
             TextBoxTime.Text = ""
         End If
 
-
-
         If vbYes = MsgBox("Do you want delete this Tool?", MsgBoxStyle.YesNo) Then
             If id > 0 Then
                 If (session("equipments", id, False) = "RESET") Then
                     Try
-                        sql = "DELETE FROM `" & DBName & "`.`equipments` WHERE `equipments`.`id` = " & id
-                        cmd = New MySqlCommand(sql, MySqlconnection)
+                        Dim sql As String = "DELETE FROM `" & DBName & "`.`equipments` WHERE `equipments`.`id` = " & id
+                        Dim cmd = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
                         MsgBox("Bom deleted!")
                         'UpdateTreeEQList(False)    
@@ -954,8 +863,8 @@ Public Class FormEquipments
     End Function
 
     Private Sub ButtonAddActivity_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAddActivity.Click
-        Dim nameActivity As String, i As Integer
-        nameActivity = InputBox("Insert name activity in the format:  acronim - description" & vbCrLf & vbCrLf & "Example ""GBES - Grugliasco Build Equipment Service""")
+        Dim i As Integer
+        Dim nameActivity As String = InputBox("Insert name activity in the format:  acronim - description" & vbCrLf & vbCrLf & "Example ""GBES - Grugliasco Build Equipment Service""")
         Try
             i = InStr(nameActivity, "-")
         Catch ex As Exception
@@ -975,7 +884,7 @@ Public Class FormEquipments
         Dim DsProd As New DataSet
         AdapterProd.Fill(DsProd, "Product")
         tblProd = DsProd.Tables("Product")
-        Dim currentIdActivity As Integer = 0, rowShow As DataRow(), activityname As String
+        Dim currentIdActivity = 0, rowShow As DataRow(), activityname As String
         Dim TOOLNAME As String
         rowShow = tblProd.Select("statusActivity = 'open' or statusActivity = 'sent'")
 
@@ -988,18 +897,15 @@ Public Class FormEquipments
 
                 For Each node In TreeViewEQ.Nodes(0).Nodes
 
-                    Dim dr As String = node.ToString
                     If InStr(node.ToString, "EQUIPMENTS") > 0 Then
-                        Dim cmd As New MySqlCommand()
-                        Dim sql As String
                         For Each n In node.Nodes
                             TOOLNAME = Replace((Mid(n.ToString, InStr(n.ToString, "-") + 1, InStr(InStr(n.ToString, "-") + 1, n.ToString, "-") - InStr(n.ToString, "-") - 1)), "_", " ")
                             activityname = row("idactivity").ToString & " - " & row("NAMEactivity").ToString
 
                             If Not ExistEq(TOOLNAME, activityname) Then
                                 Try
-                                    sql = "INSERT INTO `" & DBName & "`.`equipments` (`ToolName`,`idactivity` ) VALUES ( '" & TOOLNAME & "' , '" & activityname & " '" & ");"
-                                    cmd = New MySqlCommand(sql, MySqlconnection)
+                                    Dim sql As String = "INSERT INTO `" & DBName & "`.`equipments` (`ToolName`,`idactivity` ) VALUES ( '" & TOOLNAME & "' , '" & activityname & " '" & ");"
+                                    Dim cmd = New MySqlCommand(sql, MySqlconnection)
                                     cmd.ExecuteNonQuery()
 
                                 Catch ex As Exception
@@ -1021,10 +927,9 @@ Public Class FormEquipments
     Function ExistEq(ByVal toolname As String, ByVal activityname As String) As Boolean
         Dim tblEQ As DataTable
         Dim DsEQ As New DataSet
-        Dim rowShow As DataRow()
         AdapterEQ.Fill(DsEQ, "equipments")
         tblEQ = DsEQ.Tables("equipments")
-        rowShow = tblEQ.Select("toolname='" & toolname & "' and idactivity='" & activityname & "'", "IdActivity")
+        Dim rowShow As DataRow() = tblEQ.Select("toolname='" & toolname & "' and idactivity='" & activityname & "'", "IdActivity")
         If rowShow.Length > 0 Then
             ExistEq = True
         Else
@@ -1033,9 +938,8 @@ Public Class FormEquipments
 
     End Function
 
-    Private Sub TreeViewEQ_BeforeSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewCancelEventArgs) Handles TreeViewEQ.BeforeSelect
+    Private Sub TreeViewEQ_BeforeSelect(ByVal sender As Object, ByVal e As TreeViewCancelEventArgs) Handles TreeViewEQ.BeforeSelect
         If UpdatigTree = False And Not IsNothing(TreeViewEQ.SelectedNode) Then
-
             If OpenSession = True Then
                 If vbYes = MsgBox("Session Open do you want Save?", MsgBoxStyle.YesNo) Then
                     ButtonBomSave_Click(Me, e)
@@ -1063,34 +967,6 @@ Public Class FormEquipments
     Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
         UpdateTreeEQList(True)
     End Sub
-
-    'Private Sub ButtonEqGr_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonEqGr.Click
-    '    TreeViewEQ.Visible = False
-    '    'ChartEq.Visible = False
-    '    If ButtonEqGr.Text = "Equipments List" Then
-    '        ButtonEqGr.Text = "Tools Schedule"
-    '    Else
-    '        ButtonEqGr.Text = "Equipments List"
-    '    End If
-
-
-    '    If ButtonEqGr.Text = "Equipments List" Then
-    '        TreeViewEQ.Visible = True
-    '        Label1Range.Visible = False
-    '        ComboBoxRange.Visible = False
-    '    End If
-
-    '    If ButtonEqGr.Text = "Tools Schedule" Then
-    '        'ChartEq.Visible = True
-    '        Label1Range.Visible = True
-    '        ComboBoxRange.Visible = True
-    '        SetControl("ACTIVITY")
-    '        DrawSimultaneusTools()
-    '    End If
-
-
-
-    'End Sub
 
     Function ReplaceChar(ByVal s As String) As String
         ReplaceChar = s

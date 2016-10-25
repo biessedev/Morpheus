@@ -2,10 +2,8 @@
 
 Imports MySql.Data.MySqlClient
 Imports System.IO
-Imports System.Net
 Imports System.Data.SqlClient
 Imports System.Globalization
-Imports System.Net.Dns
 Imports System.Xml
 
 
@@ -25,7 +23,7 @@ Module PublicFunction
     Public DBName As String
     Public tblError As DataTable
     Public DsError As New DataSet
-    Public CultureInfo_ja_JP As New System.Globalization.CultureInfo("ja-JP", False)
+    Public CultureInfo_ja_JP As New CultureInfo("ja-JP", False)
     Public strFtpServerAdd As String
     Public strFtpServerUser As String
     Public strFtpServerPsw As String
@@ -178,17 +176,11 @@ Module PublicFunction
     Public Function ToDateTime(ByVal _
           dataGG_MM_AAAA As String) As DateTime
 
-
-
-        Dim myCultureInfo As New  _
-           System.Globalization.CultureInfo("en-US", _
-           True)
-
-        myCultureInfo = System.Globalization.CultureInfo.CurrentCulture
+        Dim myCultureInfo As CultureInfo = CultureInfo.CurrentCulture
         dataGG_MM_AAAA = Replace(dataGG_MM_AAAA, "-", "/")
-        Dim formato As String = "MM/dd/yyyy"
+        Dim formato = "MM/dd/yyyy"
         Return _
-          Date.ParseExact(dataGG_MM_AAAA, _
+          Date.ParseExact(dataGG_MM_AAAA,
              formato, myCultureInfo)
     End Function
 
@@ -267,8 +259,8 @@ Module PublicFunction
         returnValue = tblCh.Select("des = '" & des & "'")
         If returnValue.Length >= 1 Then
             Try
-                sql = "UPDATE `" & DBName & "`.`mant` SET `des` = '" & des & _
-                "', `data` = '" & "[" & date_to_string(Now) & "]" & _
+                sql = "UPDATE `" & DBName & "`.`mant` SET `des` = '" & des &
+                "', `data` = '" & "[" & date_to_string(Now) & "]" &
                 "'WHERE `mant`.`id` = " & returnValue(0).Item("id").ToString & " ;"
 
                 cmd = New MySqlCommand(sql, MySqlconnection)
@@ -278,7 +270,7 @@ Module PublicFunction
             End Try
         Else
             Try
-                sql = "INSERT INTO `" & DBName & "`.`mant`(`des`, `data`) VALUES ('" & _
+                sql = "INSERT INTO `" & DBName & "`.`mant`(`des`, `data`) VALUES ('" &
                 des & "', '[" & date_to_string(Now) & "]'" & ");"
 
                 cmd = New MySqlCommand(sql, MySqlconnection)
@@ -390,20 +382,16 @@ Module PublicFunction
 
     'Write and get the time of server.
     Function MySqlServerTimeString() As String
-        Dim cmd As New MySqlCommand(), sql As String
-
         Try
-            sql = "UPDATE `" & DBName & "`.`parameterset` SET `value` =  NOW() +0 where name = 'sessionTime'"
-            cmd = New MySqlCommand(sql, MySqlconnection)
+            Dim sql As String = "UPDATE `" & DBName & "`.`parameterset` SET `value` =  NOW() +0 where name = 'sessionTime'"
+            Dim cmd = New MySqlCommand(sql, MySqlconnection)
             cmd.ExecuteNonQuery()
         Catch ex As Exception
             MsgBox("Time Write error!")
         End Try
         Dim Adapter As New MySqlDataAdapter("SELECT * FROM parameterset where name = 'sessionTime'", MySqlconnection)
-        Dim tbl As DataTable
         Dim Ds As New DataSet
         Adapter.Fill(Ds, "parameterset")
-        tbl = Ds.Tables("parameterset")
         MySqlServerTimeString = ParameterTable("sessionTime")
 
     End Function
@@ -418,12 +406,10 @@ Module PublicFunction
         session = "ID_0"
         If id <> 0 Then
             Dim SessionTime As String, SessionUser As String
-            Dim cmd As New MySqlCommand(), sql As String
             Dim Adapter As New MySqlDataAdapter("SELECT * FROM " & bomName & " where id = " & id, MySqlconnection)
-            Dim tbl As DataTable
             Dim Ds As New DataSet
             Adapter.Fill(Ds, bomName)
-            tbl = Ds.Tables(bomName)
+            Dim tbl As DataTable = Ds.Tables(bomName)
             Try
                 SessionTime = tbl.Rows(0).Item("SessionTime").ToString()
                 SessionUser = tbl.Rows(0).Item("SessionUser").ToString()
@@ -431,7 +417,7 @@ Module PublicFunction
 
             End Try
 
-            sql = ""
+            Dim sql As String = ""
             If SessionTime = "" Then
                 If setT_clearF = True Then
                     sql = "UPDATE `" & DBName & "`.`" & bomName & "` SET `SessionTime` =  now() +0,`SessionUser` = '" & CreAccount.strUserName & "' where id= " & id
@@ -465,7 +451,7 @@ Module PublicFunction
 
             If sql <> "" Then
                 Try
-                    cmd = New MySqlCommand(sql, MySqlconnection)
+                    Dim cmd As MySqlCommand = New MySqlCommand(sql, MySqlconnection)
                     cmd.ExecuteNonQuery()
                 Catch ex As Exception
                     MsgBox("Set session error!")
@@ -477,15 +463,11 @@ Module PublicFunction
 
 
     Function DeltaSessionTime(ByVal TableName As String, ByVal id As Long) As Integer
-        Dim SessionTime As String, SessionUser As String
-        Dim cmd As New MySqlCommand()
         Dim Adapter As New MySqlDataAdapter("SELECT * FROM " & TableName & " where id = " & id, MySqlconnection)
-        Dim tbl As DataTable
         Dim Ds As New DataSet
         Adapter.Fill(Ds, TableName)
-        tbl = Ds.Tables(TableName)
-        SessionTime = tbl.Rows(0).Item("SessionTime").ToString()
-        SessionUser = tbl.Rows(0).Item("SessionUser").ToString()
+        Dim tbl As DataTable = Ds.Tables(TableName)
+        Dim SessionTime As String = tbl.Rows(0).Item("SessionTime").ToString()
         If SessionTime <> "" Then
             DeltaSessionTime = -DateDiff("n", DateTime.ParseExact(MySqlServerTimeString, "yyyyMMddHHmmss", CultureInfo.InvariantCulture), DateTime.ParseExact(SessionTime, "yyyyMMddHHmmss", CultureInfo.InvariantCulture))
         End If
@@ -495,15 +477,15 @@ Module PublicFunction
     'Write and get the time of server.
     Function ParameterTable(ByVal param As String) As String
         Try
-        Dim Adapter As New MySqlDataAdapter("SELECT * FROM parameterset", MySqlconnection)
-        Dim tbl As DataTable
-        Dim Ds As New DataSet, resultRow As DataRow()
-        Adapter.Fill(Ds, "parameterset")
-        tbl = Ds.Tables("parameterset")
-        resultRow = tbl.Select("name = '" & param & "'")
-        If resultRow.Length > 0 Then
-            ParameterTable = resultRow(0).Item("value").ToString()
-        End If
+            Dim Adapter As New MySqlDataAdapter("SELECT * FROM parameterset", MySqlconnection)
+            Dim tbl As DataTable
+            Dim Ds As New DataSet, resultRow As DataRow()
+            Adapter.Fill(Ds, "parameterset")
+            tbl = Ds.Tables("parameterset")
+            resultRow = tbl.Select("name = '" & param & "'")
+            If resultRow.Length > 0 Then
+                ParameterTable = resultRow(0).Item("value").ToString()
+            End If
             Adapter.Dispose()
             Ds.Dispose()
         Catch ex As Exception
@@ -513,12 +495,10 @@ Module PublicFunction
     End Function
 
     Function ParameterTableWrite(ByVal param As String, ByVal value As String) As String
-
-        Dim cmd As New MySqlCommand(), sql As String
         ParameterTableWrite = "KO"
         Try
-            sql = "UPDATE `" & DBName & "`.`parameterset` SET `value` ='" & value & "' where name = '" & param & "'"
-            cmd = New MySqlCommand(sql, MySqlconnection)
+            Dim sql As String = "UPDATE `" & DBName & "`.`parameterset` SET `value` ='" & value & "' where name = '" & param & "'"
+            Dim cmd = New MySqlCommand(sql, MySqlconnection)
             cmd.ExecuteNonQuery()
             ParameterTableWrite = "OK"
         Catch ex As Exception
@@ -726,9 +706,7 @@ Module PublicFunction
         Private Sub GenerateTree()
             TVTFX_Tree.Nodes.Clear()
             TVTFX_Tree.Nodes.Add(New TreeNode(TVTFX_XmlDoc.DocumentElement.Name))
-
-            Dim StartNode As New TreeNode()
-            StartNode = TVTFX_Tree.Nodes(0)
+            Dim StartNode As TreeNode = TVTFX_Tree.Nodes(0)
 
             TreeviewAddNode(TVTFX_XmlDoc.DocumentElement, StartNode)
             'frmTree.ExpandAll()
@@ -749,7 +727,7 @@ Module PublicFunction
             If TXmlNode.HasChildNodes() Then
                 xml_NodeList = TXmlNode.ChildNodes
 
-                For I As Integer = 0 To xml_NodeList.Count - 1
+                For I = 0 To xml_NodeList.Count - 1
                     xml_SingleNode = TXmlNode.ChildNodes(I)
 
                     TreeViewNode.Nodes.Add(New TreeNode(XmlConvert.DecodeName(xml_SingleNode.Name).Replace(":", ":")))

@@ -17,7 +17,7 @@ Public Class FormNPIDocMamagement
     Dim tblNPI As New DataTable
     Dim DsNPI As New DataSet
 
-    Private Sub FormNPIDocMamagement_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+    Private Sub FormNPIDocMamagement_FormClosing(ByVal sender As Object, ByVal e As FormClosingEventArgs) Handles Me.FormClosing
 
         FormSamples.Show()
         FormSamples.Focus()
@@ -36,11 +36,10 @@ Public Class FormNPIDocMamagement
     End Sub
 
     Private Sub Btn_TypeDocFill()
-        Dim returnValue As DataRow()
         Cob_TypeDoc.Items.Clear()
         Cob_TypeDoc.Text = ""
 
-        returnValue = tblDocType.Select()
+        Dim returnValue As DataRow() = tblDocType.Select()
         For Each row In returnValue
             Cob_TypeDoc.Items.Add(row("header").ToString)
         Next
@@ -48,11 +47,11 @@ Public Class FormNPIDocMamagement
 
     Private Sub Cob_TypeDoc_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles Cob_TypeDoc.TextChanged
 
-        Dim i As Integer, resultdoc As DataRow(), returnValue As DataRow()
+        Dim i As Integer
         Try
             Cob_NameDoc.Items.Clear()
 
-            resultdoc = tblDocNPI.Select("header = '" & Cob_TypeDoc.Text & "'")
+            Dim resultdoc As DataRow() = tblDocNPI.Select("header = '" & Cob_TypeDoc.Text & "'")
 
             For i = 0 To resultdoc.Length - 1
                 Cob_NameDoc.Items.Add(resultdoc(i).Item("FileName").ToString & "_" & resultdoc(i).Item("rev").ToString & "." & resultdoc(i).Item("Extension").ToString)
@@ -65,13 +64,12 @@ Public Class FormNPIDocMamagement
 
     Private Sub Cob_NameDoc_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles Cob_NameDoc.TextChanged
 
-        Dim DR As DataRow()
         Dim i As Integer
         Dim m As Integer = InStrRev(Cob_NameDoc.Text, "_")
         Dim n As Integer = InStrRev(Cob_NameDoc.Text, ".")
         Dim FileName As String = Mid(Cob_NameDoc.Text, 1, m - 1)
         Dim Rev As String = Mid(Cob_NameDoc.Text, m + 1, n - m - 1)
-        DR = tblDocNPI.Select("FileName =  '" & FileName & "' And rev =  '" & Rev & "'")
+        Dim DR As DataRow() = tblDocNPI.Select("FileName =  '" & FileName & "' And rev =  '" & Rev & "'")
 
         With ListViewNPI
             .Clear()
@@ -97,14 +95,13 @@ Public Class FormNPIDocMamagement
 
     Private Sub Btn_Add_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Add.Click
         Dim Sql As String
-        Dim cmd As New MySqlCommand()
 
         Me.Hide()
 
         If controlRight(Mid(Cob_TypeDoc.Text, 3, 1)) >= 2 Then
         FormSamples.Txt_FilePath.Text = Cob_TypeDoc.Text & "_" & Cob_NameDoc.Text
         Sql = "UPDATE npi_openissue  SET FilePath ='" & FormSamples.Txt_FilePath.Text & "' WHERE ID = '" & FormSamples.Txt_Index.Text & "'"
-        cmd = New MySqlCommand(Sql, MySqlconnection)
+        Dim cmd = New MySqlCommand(Sql, MySqlconnection)
         cmd.ExecuteNonQuery()
             '  Call FormSamples.issuefunction(0)
         MsgBox("Successfully uploaded file")
@@ -122,19 +119,4 @@ Public Class FormNPIDocMamagement
         FormSamples.Focus()
     End Sub
 
-    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
-
-    End Sub
-
-    Private Sub Cob_NameDoc_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Cob_NameDoc.SelectedIndexChanged
-
-    End Sub
-
-    Private Sub Cob_TypeDoc_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Cob_TypeDoc.SelectedIndexChanged
-
-    End Sub
-
-    Private Sub ListViewNPI_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListViewNPI.SelectedIndexChanged
-
-    End Sub
 End Class

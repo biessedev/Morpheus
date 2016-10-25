@@ -1,7 +1,6 @@
 ﻿Option Explicit On
 Option Compare Text
 Imports MySql.Data.MySqlClient
-Imports System.Globalization
 
 
 Public Class FormOpenIssue
@@ -136,7 +135,4 @@ Public Class FormOpenIssue
 
     End Sub
 
-    Private Sub ComboBoxGroup_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxGroup.SelectedIndexChanged
-
-    End Sub
 End Class

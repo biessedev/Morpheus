@@ -6,10 +6,10 @@ Imports System.Globalization
 Imports MySql.Data.MySqlClient
 Imports System.Net.Mail
 Imports System.Net
-Imports System.IO
 Imports System.Linq
 
 Public Class FormAdministration
+
     Dim closeform As Boolean
     Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
     Dim AdapterDocType As New MySqlDataAdapter("SELECT * FROM Doctype", MySqlconnection)
@@ -17,7 +17,7 @@ Public Class FormAdministration
     Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM product", MySqlconnection)
     Dim Adaptermail As New MySqlDataAdapter("SELECT * FROM mail", MySqlconnection)
     Dim dep As New List(Of String)
-    Dim CultureInfo_ja_JP As New System.Globalization.CultureInfo("ja-JP", False)
+    Dim CultureInfo_ja_JP As New CultureInfo("ja-JP", False)
     Dim MailSent As Boolean
     Dim tblDoc As DataTable, tblDocType As DataTable, tblEcr As DataTable, tblProd As DataTable, tblmail As DataTable
     Dim DsDoc As New DataSet, DsDocType As New DataSet, DsEcr As New DataSet, DsProd As New DataSet, Dsmail As New DataSet
@@ -70,9 +70,7 @@ Public Class FormAdministration
 
         FormStart.Hide()
         ParameterTableWrite("SYSTEM_SCHEDULE", "RUN")
-        Dim dt As New DateTime
 
-        'ECR
         If Now.DayOfWeek <> DayOfWeek.Saturday And Now.DayOfWeek <> DayOfWeek.Sunday Then
             'TimerECR.Stop()
             OpenConnectionMySql(FormCredentials.TextBoxhost.Text, FormCredentials.TextBoxDatabase.Text, "root", "bitron")
@@ -84,7 +82,7 @@ Public Class FormAdministration
             Application.DoEvents()
             ecrDocConfirm()
             Application.DoEvents()
-            ecrDocApprove()                                           'added by johnson
+            ecrDocApprove()
             Application.DoEvents()
             ecrDocSign()
             Application.DoEvents()
@@ -92,7 +90,6 @@ Public Class FormAdministration
             'TimerECR.Start()
         End If
 
-        ' TCR
         If Now.DayOfWeek <> DayOfWeek.Saturday And Now.DayOfWeek <> DayOfWeek.Sunday Then
             'TimerECR.Stop()
             OpenConnectionMySql(FormCredentials.TextBoxhost.Text, FormCredentials.TextBoxDatabase.Text, "root", "bitron")
@@ -151,7 +148,7 @@ Public Class FormAdministration
     Sub UpdateEcrTable()
 
         Dim RowEcr As DataRow(), pos As Integer
-        Dim EcrN As Integer, sql As String, filename As String, data As String
+        Dim EcrN As Integer, sql As String, filename As String
         Dim RowSearchDoc As DataRow()
 
         RowSearchDoc = tblDoc.Select("header = '" & ParameterTable("plant") & "R_PRO_ECR'")
@@ -169,7 +166,7 @@ Public Class FormAdministration
             If EcrN > 0 And RowEcr.Length = 0 And InStr(row("filename").ToString, "template", CompareMethod.Text) <= 0 Then
                 Try
                     filename = row("filename").ToString & "_" & row("rev").ToString & "." & row("extension").ToString
-                    data = Mid(row("editor").ToString, Len(row("editor").ToString) - 9, 9)
+                    'Dim data As String = Mid(row("editor").ToString, Len(row("editor").ToString) - 9, 9)
                     sql = "INSERT INTO `" & DBName & "`.`ecr` (`nnote` ,`number` ,`description` ,`date`,`Usign`,`nsign`,`Lsign`,`Asign`,`Qsign`,`Esign`,`Rsign`,`Psign`,`Bsign`,`DocInvalid`,`IdDoc`) VALUES (" &
                     Replace("'{\rtf1\fbidis\ansi\ansicpg1252\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}{\f1\fswiss\fprq2\fcharset0 Calibri;}}{\colortbl ;\red23\green54\blue93;}\viewkind4\uc1\pard\ltrpar\sl360\slmult1\cf1\lang1040\f0\fs22\par\par\par\par\ul\b\i\f1 Confirmation AREA\par\lang1033\ulnone\b0\i0 Time and First serial number / Fiche:\par\par\par\parOther Annotation:\f0\par\pard\ltrpar\cf0\lang1040\fs24\par\par\par\par}', ", "\", "\\") _
                     & EcrN & ", '" & filename & "', '" & "01/01/2000" & "', 'NOT CHECKED' , 'NOT CHECKED', 'NOT CHECKED', 'System[automatic]', 'NOT CHECKED', 'NOT CHECKED', 'NOT CHECKED', 'NOT CHECKED','NOT CHECKED', 'NO',  " & row("id").ToString & " );"
@@ -187,19 +184,17 @@ Public Class FormAdministration
 
     Sub EcrMailScheduler()
 
-        Dim RowSearchEcr As DataRow(), sql As String, us As String, dt As Date, refresh As Boolean = True
-        RowSearchEcr = tblEcr.Select("")
+        Dim refresh = True
+        Dim RowSearchEcr As DataRow() = tblEcr.Select("")
         For Each row In RowSearchEcr
-
 
             If readDocSign(row("iddoc").ToString, refresh) = "" Then
 
-                us = "R"
                 If row("ecrcheck").ToString <> "YES" Then
                     mailSender("ECR_" & "VerifyTo", "ECR_" & "VerifyCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please VERIFY the Ecr: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
                 End If
 
-                us = "R"
+                Dim us As Object = "R"
                 If ((row(us & "sign").ToString = "NOT CHECKED") And (row("ecrcheck").ToString = "YES")) Then
                     mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the Ecr: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
                 End If
@@ -286,7 +281,7 @@ Public Class FormAdministration
                     mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the Ecr: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
                 End If
 
-                dt = string_to_date((row("date").ToString))
+                Dim dt As Date = string_to_date((row("date").ToString))
 
                 If row("Rsign").ToString <> "NOT CHECKED" And
                 row("Lsign").ToString <> "NOT CHECKED" And
@@ -382,15 +377,15 @@ Public Class FormAdministration
     End Sub
 
     Sub ecrDocConfirm()
-        Dim RowSearchEcr As DataRow(), sql As String, refresh As Boolean = True
-        RowSearchEcr = tblEcr.Select("docInvalid = 'NO'", "number")
+
+        Dim sql As String, refresh = True
+        Dim RowSearchEcr As DataRow() = tblEcr.Select("docInvalid = 'NO'", "number")
 
         For Each row In RowSearchEcr
             If InStr(row("Rsign").ToString & row("Lsign").ToString & row("Usign").ToString & row("Bsign").ToString & row("Esign").ToString & row("Nsign").ToString & row("Psign").ToString & row("Qsign").ToString & row("Asign").ToString, "APPROVED", CompareMethod.Text) <= 0 And readDocSign(row("iddoc").ToString, refresh) <> "" And
                 row("confirm").ToString = "CONFIRMED" Then
 
-                Dim fileOpen As String = ""
-                fileOpen = downloadFileWinPath(ParameterTable("plant") & "R_PRO_ECR_" & row("DESCRIPTION").ToString, ParameterTable("plant") & "R/" & ParameterTable("plant") & "R_PRO_ECR/")
+                Dim fileOpen As String = downloadFileWinPath(ParameterTable("plant") & "R_PRO_ECR_" & row("DESCRIPTION").ToString, ParameterTable("plant") & "R/" & ParameterTable("plant") & "R_PRO_ECR/")
                 Try
                     If mailSender("Status_SignTo", "Status_SignCopy", "Automatic SrvDoc Message:" & vbCrLf &
                                vbCrLf & row("description").ToString & " -- > (Result: Confirmation of ECR Introduction) " & vbCrLf & vbCrLf &
@@ -417,17 +412,14 @@ Public Class FormAdministration
     End Sub
 
     Sub ecrDocApprove()
-        Dim RowSearchEcr As DataRow(), sql As String, refresh As Boolean = True
-        RowSearchEcr = tblEcr.Select("docInvalid = 'NO'", "number")
+        Dim RowSearchEcr As DataRow() = tblEcr.Select("docInvalid = 'NO'", "number")
         For Each row In RowSearchEcr
             Dim i As Integer
             i = Int(row("number").ToString)
 
             If InStr(row("Rsign").ToString & row("Lsign").ToString & row("Usign").ToString & row("Bsign").ToString & row("Esign").ToString & row("Nsign").ToString & row("Psign").ToString & row("Qsign").ToString & row("Asign").ToString, "CHECKED", CompareMethod.Text) <= 0 And row("approve").ToString = "" Then
                 Try
-
-                    Dim fileOpen As String = ""
-                    fileOpen = downloadFileWinPath(ParameterTable("plant") & "R_PRO_ECR_" & row("DESCRIPTION").ToString, ParameterTable("plant") & "R/" & ParameterTable("plant") & "R_PRO_ECR/")
+                    Dim fileOpen As Object = downloadFileWinPath(ParameterTable("plant") & "R_PRO_ECR_" & row("DESCRIPTION").ToString, ParameterTable("plant") & "R/" & ParameterTable("plant") & "R_PRO_ECR/")
                     If mailSender("ECR_SignTo", "ECR_SignCopy", "Automatic SrvDoc Message:" & vbCrLf &
                                vbCrLf & row("description").ToString & " -- > (Result: Approved) " &
                                vbCrLf & "Approval Data : " & row("date").ToString & "( yyyy/mm/dd )" & vbCrLf &
@@ -441,7 +433,7 @@ Public Class FormAdministration
                                vbCrLf & "Time & Methods Note: " & rtfTrans(row("qnote").ToString) & vbCrLf &
                                vbCrLf & "Admin Note: " & rtfTrans(row("anote").ToString) & vbCrLf &
                                vbCrLf & "For all details please download ECR from server SrvDoc. ", "ECR APPROVAL Notification:   " & " " & row("description").ToString, "SS" & row("number").ToString, False, fileOpen) Then
-                        sql = "UPDATE `" & DBName & "`.`ecr` SET `approve` = '" & "System" & "[" & date_to_string(Now) & "]" & "' WHERE `ecr`.`approve` ='' and `ecr`.`number` = '" & i & "' ;"
+                        Dim sql As String = "UPDATE `" & DBName & "`.`ecr` SET `approve` = '" & "System" & "[" & date_to_string(Now) & "]" & "' WHERE `ecr`.`approve` ='' and `ecr`.`number` = '" & i & "' ;"
                         cmd = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
                     Else
@@ -453,21 +445,19 @@ Public Class FormAdministration
                 End Try
             End If
             Application.DoEvents()
-            refresh = False
         Next
     End Sub
 
     Sub ecrDocSign()
-        Dim RowSearchEcr As DataRow(), sql As String, refresh As Boolean = True
-        RowSearchEcr = tblEcr.Select("docInvalid = 'NO'", "number")
+        Dim refresh = True
+        Dim RowSearchEcr As DataRow() = tblEcr.Select("docInvalid = 'NO'", "number")
         For Each row In RowSearchEcr
             Dim i As Integer
             i = Int(row("number").ToString)
 
             If row("sign").ToString = "" And InStr(row("Rsign").ToString & row("Lsign").ToString & row("Usign").ToString & row("Bsign").ToString & row("Esign").ToString & row("Nsign").ToString & row("Psign").ToString & row("Qsign").ToString & row("asign").ToString, "APPROVED", CompareMethod.Text) <= 0 And InStr(row("Rsign").ToString & row("Lsign").ToString & row("Usign").ToString & row("Bsign").ToString & row("Esign").ToString & row("Nsign").ToString & row("Psign").ToString & row("Qsign").ToString & row("asign").ToString, "CHECKED", CompareMethod.Text) <= 0 And readDocSign(Int(row("iddoc").ToString), refresh) = "" Then
                 Try
-                    Dim fileOpen As String = ""
-                    fileOpen = downloadFileWinPath(ParameterTable("plant") & "R_PRO_ECR_" & row("DESCRIPTION").ToString, ParameterTable("plant") & "R/" & ParameterTable("plant") & "R_PRO_ECR/")
+                    Dim fileOpen As Object = downloadFileWinPath(ParameterTable("plant") & "R_PRO_ECR_" & row("DESCRIPTION").ToString, ParameterTable("plant") & "R/" & ParameterTable("plant") & "R_PRO_ECR/")
                     If mailSender("ECR_SignTo", "ECR_SignCopy", "Automatic SrvDoc Message:" & vbCrLf &
                                vbCrLf & row("description").ToString & " -- > (Result: Signed, Released & Implemented) " &
                                vbCrLf & "Closed Data : " & row("date").ToString & "( yyyy/mm/dd )" & vbCrLf &
@@ -481,7 +471,7 @@ Public Class FormAdministration
                                vbCrLf & "Time & Methods Note: " & rtfTrans(row("qnote").ToString) & vbCrLf &
                                vbCrLf & "Administration Note: " & rtfTrans(row("anote").ToString) & vbCrLf &
                                vbCrLf & "For all details please download ECR from server SrvDoc. ", "ECR Sign Notification:   " & " " & row("description").ToString, "SS" & row("number").ToString, False, fileOpen) Then
-                        sql = "UPDATE `" & DBName & "`.`ecr` SET `sign` = '" & "System" & "[" & date_to_string(Now) & "]" & "' WHERE `ecr`.`sign` ='' and `ecr`.`number` = '" & i & "' ;"
+                        Dim sql As String = "UPDATE `" & DBName & "`.`ecr` SET `sign` = '" & "System" & "[" & date_to_string(Now) & "]" & "' WHERE `ecr`.`sign` ='' and `ecr`.`number` = '" & i & "' ;"
                         cmd = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
                         sql = "UPDATE `" & DBName & "`.`doc` SET `sign` = '" & "System" & "[" & date_to_string(Now) & "]" & "' WHERE `doc`.`sign` ='' and `doc`.`id` = '" & row("iddoc").ToString & "' ;"
@@ -501,25 +491,19 @@ Public Class FormAdministration
     End Sub
 
     Sub TCRMailScheduler()
-        Dim oi As String
         tblDoc.Clear()
         DsDoc.Clear()
-
         AdapterDoc.Fill(DsDoc, "doc")
         tblDoc = DsDoc.Tables("doc")
-
-        Dim RowSearchDoc As DataRow(), sql As String
-        RowSearchDoc = tblDoc.Select("sign = '' and HEADER='" & ParameterTable("plant") & "R_PRO_TCR'")
+        Dim RowSearchDoc As DataRow() = tblDoc.Select("sign = '' and HEADER='" & ParameterTable("plant") & "R_PRO_TCR'")
         For Each row In RowSearchDoc
-
-            oi = Trim(Mid(row("filename").ToString, 1, InStr(row("filename").ToString, "-") - 1))
-            Dim fileOpen As String = ""
-            fileOpen = downloadFileWinPath(ParameterTable("plant") & "R_PRO_TCR_" & row("filename").ToString & "_" & row("rev").ToString & "." & row("extension").ToString, ParameterTable("plant") & "R/" & ParameterTable("plant") & "R_PRO_TCR/")
+            Dim oi As String = Trim(Mid(row("filename").ToString, 1, InStr(row("filename").ToString, "-") - 1))
+            Dim fileOpen As Object = downloadFileWinPath(ParameterTable("plant") & "R_PRO_TCR_" & row("filename").ToString & "_" & row("rev").ToString & "." & row("extension").ToString, ParameterTable("plant") & "R/" & ParameterTable("plant") & "R_PRO_TCR/")
             Try
                 If mailSender("STATUS" & "_SignTo", "STATUS" & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf &
                                "Please CHECK the TCR : " & " " & row("filename").ToString & " " & vbCrLf & vbCrLf & "Best Regard", "TCR Sign Notification  " & " " &
                                row("filename").ToString, "T_" & oi, False, fileOpen) Then
-                    sql = "UPDATE `" & DBName & "`.`doc` SET `sign` = 'System[" & date_to_string(Now) & "]' WHERE `doc`.`id` = " & row("id").ToString & " ;"
+                    Dim sql As String = "UPDATE `" & DBName & "`.`doc` SET `sign` = 'System[" & date_to_string(Now) & "]' WHERE `doc`.`id` = " & row("id").ToString & " ;"
                     cmd = New MySqlCommand(sql, MySqlconnection)
                     cmd.ExecuteNonQuery()
                 Else
@@ -533,7 +517,7 @@ Public Class FormAdministration
     End Sub
 
     Sub DocMailScheduler()
-        Dim listFile As String = ""
+        Dim listFile = ""
         tblDoc.Clear()
         DsDoc.Clear()
         'AdapterDoc As New MySqlDataAdapter("SELECT *, DATEDIFF(CURDATE(),STR_TO_DATE(MID(editor, INSTR(editor,'[') + 1, INSTR(editor,']') - INSTR(editor,'[') - 1), '%d/%m/%Y')) DiffInDays FROM doc ", MySqlconnection)
@@ -543,8 +527,8 @@ Public Class FormAdministration
 
         Dim sql As String
         Dim RowSearchDoc = From p In tblDoc.Rows
-                      Where (p("header") <> (ParameterTable("plant") & "R_PRO_ECR")) And ((p("notification") = "" And p("sign") = "") Or (p("notification") = "" And p("sign") = "SENT" And (DateTime.Now.Date - DateTime.ParseExact(p("editor").Substring(p("editor").IndexOf("[") + 1, p("editor").LastIndexOf("]") - p("editor").IndexOf("[") - 1), "d/M/yyyy", CultureInfo.CurrentCulture).Date).TotalDays > 2))
-                      Select p
+                           Where (p("header") <> (ParameterTable("plant") & "R_PRO_ECR")) And ((p("notification") = "" And p("sign") = "") Or (p("notification") = "" And p("sign") = "SENT" And (DateTime.Now.Date - DateTime.ParseExact(p("editor").Substring(p("editor").IndexOf("[") + 1, p("editor").LastIndexOf("]") - p("editor").IndexOf("[") - 1), "d/M/yyyy", CultureInfo.CurrentCulture).Date).TotalDays > 2))
+                           Select p
         'RowSearchDoc = tblDoc.Select("notification = '' and sign = '' and HEADER <>'" & ParameterTable("plant") & "R_PRO_ECR'")
         For Each row In RowSearchDoc
             listFile = listFile & " " & vbCrLf & row("header").ToString & "_" & row("FileName").ToString & "_" & row("rev").ToString & "." & row("Extension").ToString & " " & vbCrLf
@@ -575,7 +559,6 @@ Public Class FormAdministration
     End Sub
 
     Function readDocSign(ByVal docId As Long, ByVal refresh As Boolean) As String
-        Dim Res As DataRow()
         Static Dim tblDoc As DataTable
         Static Dim DsDoc As New DataSet
 
@@ -585,7 +568,7 @@ Public Class FormAdministration
             tblDoc = DsDoc.Tables("doc")
         End If
 
-        Res = tblDoc.Select("id = " & docId)
+        Dim Res As DataRow() = tblDoc.Select("id = " & docId)
         If Res.Length > 0 Then
             readDocSign = Res(0).Item("sign").ToString
         Else
@@ -595,7 +578,6 @@ Public Class FormAdministration
     End Function
 
     Sub StatusMailScheduler()
-        Dim oi As String
         tblProd.Clear()
         DsProd.Clear()
 
@@ -605,7 +587,7 @@ Public Class FormAdministration
         Dim RowSearchProduct As DataRow(), sql As String
         RowSearchProduct = tblProd.Select("")
         For Each row In RowSearchProduct
-            oi = Replace(row("openissue").ToString, "];", "]" & vbCrLf)
+            Dim oi As String = Replace(row("openissue").ToString, "];", "]" & vbCrLf)
             If oi = "" Then oi = "No Open Issue"
 
             If (row("Status").ToString = "MPA_APPROVED" Or row("Status").ToString = "MPA_STOPPED") And row("mail").ToString <> "SENT" Then
@@ -666,9 +648,8 @@ Public Class FormAdministration
     End Function
 
     Function mailSender(ByVal AddlistTo As String, ByVal AddlistCopy As String, ByVal bodyText As String, ByVal SubText As String, ByVal Necr As String, Optional ByVal freq As Boolean = True, Optional ByVal ATTACH As String = "") As Boolean
-        mailSender = False
-        Dim dt As New DateTime, freqTo As String = "", freqcc As String = ""
-        dt = Now
+        Dim freqTo = ""
+        Dim dt As Date = Now
         tblmail.Clear()
         Dsmail.Clear()
         mailSender = False
@@ -681,9 +662,8 @@ Public Class FormAdministration
         client.Credentials = New NetworkCredential(ParameterTable("MAIL_SENDER_CREDENTIAL_USER"), ParameterTable("MAIL_SENDER_CREDENTIAL_PSW"))
 
         Dim msg As New MailMessage(ParameterTable("MAIL_SENDER_CREDENTIAL_MAIL"), ParameterTable("MAIL_SENDER_CREDENTIAL_MAIL"))
-        Dim RowSearchMail As DataRow()
 
-        RowSearchMail = tblmail.Select("list = '" & AddlistTo & "'")
+        Dim RowSearchMail As DataRow() = tblmail.Select("list = '" & AddlistTo & "'")
         msg.To.Clear()
         msg.CC.Clear()
 
@@ -695,7 +675,6 @@ Public Class FormAdministration
         RowSearchMail = tblmail.Select("list = '" & AddlistCopy & "'")
         For Each row In RowSearchMail
             msg.CC.Add(row("name").ToString)
-            freqcc = row("freq").ToString
         Next
 
         If ATTACH <> "" Then
@@ -713,7 +692,6 @@ Public Class FormAdministration
         msg.Subject = SubText
 
         If freq = False Then
-            freqcc = ""
             freqTo = ""
         End If
 
@@ -746,9 +724,8 @@ Public Class FormAdministration
     End Function
 
     Sub WriteField(ByVal field As String, ByVal v As String, ByVal list As String)
-        Dim SQL As String
         Try
-            SQL = "UPDATE `" & DBName & "`.`mail` SET `" & field & "` = '" & v & "' WHERE `mail`.`id` = " & list & " ;"
+            Dim SQL As String = "UPDATE `" & DBName & "`.`mail` SET `" & field & "` = '" & v & "' WHERE `mail`.`id` = " & list & " ;"
             cmd = New MySqlCommand(SQL, MySqlconnection)
             cmd.ExecuteNonQuery()
         Catch ex As Exception
@@ -757,11 +734,7 @@ Public Class FormAdministration
     End Sub
 
     Private Sub ButtonCompare_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonCompare.Click
-        Dim RowSearch As DataRow()
-        Dim objFtp As ftp = New ftp(), i As Long, sql As String
-        Dim strPathFtp As String, strListDir As String
-        Dim strRes As String
-
+        Dim objFtp = New ftp()
         objFtp.UserName = strFtpServerUser
         objFtp.Password = strFtpServerPsw
         objFtp.Host = strFtpServerAdd
@@ -773,22 +746,18 @@ Public Class FormAdministration
         AdapterDoc.Fill(DsDoc, "doc")
         tblDoc = DsDoc.Tables("doc")
 
-        RowSearch = tblDoc.Select("filename like '*'")
-        i = 0
+        Dim RowSearch As DataRow() = tblDoc.Select("filename like '*'")
+        Dim i As Long = 0
         For Each row In RowSearch
             Try
 
-                strPathFtp = (Mid(row("header").ToString, 1, 3) & "/" & row("header").ToString)
+                Dim strPathFtp As String = (Mid(row("header").ToString, 1, 3) & "/" & row("header").ToString)
                 Application.DoEvents()
 
-                strListDir = row("header").ToString & "_" & row("filename").ToString _
-                    & "_" & row("rev").ToString & "." & row("extension").ToString
+                Dim strListDir As String = row("header").ToString & "_" & row("filename").ToString _
+                                           & "_" & row("rev").ToString & "." & row("extension").ToString
 
-                strRes = objFtp.ListDirectory(strPathFtp & "/", strListDir)
-
-                If strRes <> "5000" Then
-                    strRes = objFtp.ListDirectory(strPathFtp & "/", strListDir)
-                End If
+                Dim strRes As String = objFtp.ListDirectory(strPathFtp & "/", strListDir)
 
                 If strRes <> "5000" Then
                     strRes = objFtp.ListDirectory(strPathFtp & "/", strListDir)
@@ -806,6 +775,9 @@ Public Class FormAdministration
                     strRes = objFtp.ListDirectory(strPathFtp & "/", strListDir)
                 End If
 
+                If strRes <> "5000" Then
+                    strRes = objFtp.ListDirectory(strPathFtp & "/", strListDir)
+                End If
 
                 If strRes <> "5000" Then
 
@@ -814,7 +786,7 @@ Public Class FormAdministration
 
                             If MsgBox("Do you want to delete the record: " & row("header").ToString & "_" & row("filename").ToString &
                             "_" & row("rev").ToString & "." & row("extension").ToString, MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                                sql = "DELETE FROM `" & DBName & "`.`doc` WHERE `doc`.`id` = " & row("id").ToString
+                                Dim sql As String = "DELETE FROM `" & DBName & "`.`doc` WHERE `doc`.`id` = " & row("id").ToString
                                 cmd = New MySqlCommand(sql, MySqlconnection)
                                 cmd.ExecuteNonQuery()
                                 ComunicationLog("5074") ' record deleted
@@ -856,12 +828,12 @@ Public Class FormAdministration
         AdapterDoc.Fill(DsDoc, "doc")
         tblDoc = DsDoc.Tables("doc")
 
-        Dim returnValue As DataRow(), returnsel As DataRow(), sql As String, First As Integer, i As Long
-        returnValue = tblDoc.Select("header like '*'")
+        Dim returnsel As DataRow(), sql As String, i As Long
+        Dim returnValue As DataRow() = tblDoc.Select("header like '*'")
         For Each row In returnValue
             returnsel = tblDoc.Select("header='" & row("header").ToString & "' and FileName='" & row("FileName").ToString & "' and Extension='" & row("Extension").ToString & "' and rev ='" & row("rev").ToString & "'", "rev DESC")
             If returnsel.Length > 1 Then
-                First = 1
+                Dim First As Integer = 1
                 For Each rows In returnsel
                     If First = 0 Then
                         Try
@@ -905,21 +877,17 @@ Public Class FormAdministration
     End Function
 
     Sub ExploreFile(ByVal strDir As String)
-
-        Dim objFtp As ftp = New ftp()
-        Dim strList As String, posI As Long, posL As Long, strRes As String, strRec As String
-        Dim RowSearch As DataRow()
+        Dim objFtp = New ftp()
         objFtp.UserName = strFtpServerUser
         objFtp.Password = strFtpServerPsw
         objFtp.Host = strFtpServerAdd
-        Dim strSlash As String = "/"
-        strList = "*.*"
-        strRes = objFtp.ListDirectory(strDir, strList)
-        posI = 0
-        posL = InStr(1, strList, vbCrLf, CompareMethod.Text)
+        Dim strList As String = "*.*"
+        Dim strRes As String = objFtp.ListDirectory(strDir, strList)
+        Dim posI As Long = 0
+        Dim posL As Long = InStr(1, strList, vbCrLf, CompareMethod.Text)
         While posL > 0 And strRes = "5000"
             ' discover all directories present in the department directory
-            strRec = Mid(strList, posI + 1, posL - posI)
+            Dim strRec As String = Mid(strList, posI + 1, posL - posI)
             If Mid(strRec, 1, 1) = "d" Then ' directory
                 Dim folder = strRec.Split(" ").Last()
                 If strDir = "/" Then
@@ -948,10 +916,10 @@ Public Class FormAdministration
                 FileName = FileName.Replace(header, "")
                 FileName = FileName.Substring(1, FileName.Length - 1)
 
-                RowSearch = tblDoc.Select("header='" & header &
-                "' and FileName='" & FileName &
-                "' and rev=" & rev &
-                " and Extension='" & Extension & "' ")
+                Dim RowSearch As DataRow() = tblDoc.Select("header='" & header &
+                                                           "' and FileName='" & FileName &
+                                                           "' and rev=" & rev &
+                                                           " and Extension='" & Extension & "' ")
 
                 If RowSearch.Length = 1 Then
 
@@ -980,18 +948,17 @@ Public Class FormAdministration
     End Sub
 
     Function downloadFileWinPath(ByVal fileName As String, ByVal strPathFtp As String) As String
-        Dim objFtp As ftp = New ftp()
+        Dim objFtp = New ftp()
         objFtp.UserName = strFtpServerUser
         objFtp.Password = strFtpServerPsw
         objFtp.Host = strFtpServerAdd
         downloadFileWinPath = ""
 
-        Dim cmd As New MySqlCommand()
         If fileName <> "" Then
             Try
 
-                ComunicationLog(objFtp.DownloadFile(strPathFtp, System.IO.Path.GetTempPath, fileName)) ' download successfull
-                downloadFileWinPath = System.IO.Path.GetTempPath & fileName
+                ComunicationLog(objFtp.DownloadFile(strPathFtp, IO.Path.GetTempPath, fileName)) ' download successfull
+                downloadFileWinPath = IO.Path.GetTempPath & fileName
             Catch ex As Exception
                 ComunicationLog("0049") ' Error in ecr Download
             End Try
@@ -1000,10 +967,10 @@ Public Class FormAdministration
         End If
 
     End Function
+
     Function RemotePresence(ByVal link As String, ByVal header As String, ByVal FileName As String, ByVal Extension As String, ByVal rev As Integer) As String
 
         Try
-
             My.Computer.Network.DownloadFile(link, "C:\DocumentsTMP\" & header & "_" & FileName & "_" & rev & "." & Extension, "", "", True, 3000, True, FileIO.UICancelOption.DoNothing)
             Application.DoEvents()
             RemotePresence = "OK"
@@ -1023,10 +990,8 @@ Public Class FormAdministration
 
     Function LocalRevision(ByVal header As String, ByVal FileName As String, ByVal Extension As String) As Integer
 
-        Dim returnValue As DataRow()
         Try
-
-            returnValue = tblDoc.Select("header='" & header & "' and FileName='" & FileName & "' and Extension='" & Extension & "' ", "rev DESC")
+            Dim returnValue As DataRow() = tblDoc.Select("header='" & header & "' and FileName='" & FileName & "' and Extension='" & Extension & "' ", "rev DESC")
             If returnValue.Length >= 1 Then
                 LocalRevision = returnValue(0).Item("rev").ToString
             ElseIf returnValue.Length = 0 Then ' no file in DB
@@ -1071,7 +1036,7 @@ Public Class FormAdministration
         End If
     End Sub
 
-    Private Sub NotifyIcon1_MouseDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles NotifyIcon1.MouseDoubleClick
+    Private Sub NotifyIcon1_MouseDoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles NotifyIcon1.MouseDoubleClick
 
         Try
             Me.Show()
@@ -1104,11 +1069,4 @@ Public Class FormAdministration
 
     End Sub
 
-    Private Sub TextBoxEcr_TextChanged(sender As Object, e As EventArgs) Handles TextBoxEcr.TextChanged
-
-    End Sub
-
-    Private Sub TextBoxService_TextChanged(sender As Object, e As EventArgs) Handles TextBoxService.TextChanged
-
-    End Sub
 End Class

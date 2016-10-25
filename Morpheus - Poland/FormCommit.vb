@@ -2,12 +2,8 @@
 Option Explicit On
 Option Compare Text
 Imports MySql.Data.MySqlClient
-Imports System.IO
-Imports System.Data.SqlClient
 Imports System
 Imports Microsoft.VisualBasic
-Imports System.Runtime.InteropServices
-Imports System.Globalization
 
 
 Public Class FormCommit
@@ -20,7 +16,6 @@ Public Class FormCommit
 
 
     Private Sub Commit_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
-        Dim d As Date
         AdapterCommitList.Fill(DsCommitList, "Commit_List")
         tblCommitList = DsCommitList.Tables("Commit_List")
 
@@ -32,7 +27,7 @@ Public Class FormCommit
 
         DateTimePicker1.Value = Today
         DateTimePickerEnd.Text = ""
-        d = string_to_date(DateTimePicker1.Text)
+        Dim d As Date = string_to_date(DateTimePicker1.Text)
         LabelDay.Text = d.ToString("dddd")
         FillcomboUser()
         If controlRight("R") >= 3 Then
@@ -55,30 +50,27 @@ Public Class FormCommit
     Private Sub DateTimePicker1_Validated(ByVal sender As Object, ByVal e As EventArgs) Handles DateTimePicker1.Validated
         ' aggiorna lista
         UpdateTreecommit()
-        Dim d As Date
         TextBoxMontly.Text = MonthHour(string_to_date(DateTimePicker1.Text))
         TextBoxNote.Text = ""
-        d = string_to_date(DateTimePicker1.Text)
+        Dim d As Date = string_to_date(DateTimePicker1.Text)
         LabelDay.Text = d.ToString("dddd")
     End Sub
 
 
     Private Sub ButtonNewBom_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonNewBom.Click
-        Dim sql As String
-        Dim cmd As New MySqlCommand()
         If TextBoxOpen.Text <> "" Then
             If DateDiff("d", string_to_date(DateTimePicker1.Text), string_to_date(TextBoxOpen.Text)) <= 0 Then
                 If TextBoxClosed.Text = "" Then
                     If ComboBoxCommit.Text <> "" And IsNumeric(TextBoxHour.Text) And ((Val(TextBoxHour.Text) + Val(TextBoxDay.Text)) <= 24) Then
                         Try
-                            sql = "INSERT INTO `" & DBName & "`.`commit` (`hour` ,`commit` ,`note` ,`date` ,`name`) VALUES ('" & _
-                            TextBoxHour.Text & "', '" & _
-                            ComboBoxCommit.Text & "', '" & _
-                            TextBoxNote.Text & "', '" & _
-                            date_to_string(DateTimePicker1.Text) & "', '" & _
-                            ComboBoxUser.Text & "');"
+                            Dim sql As String = "INSERT INTO `" & DBName & "`.`commit` (`hour` ,`commit` ,`note` ,`date` ,`name`) VALUES ('" & _
+                                                TextBoxHour.Text & "', '" & _
+                                                ComboBoxCommit.Text & "', '" & _
+                                                TextBoxNote.Text & "', '" & _
+                                                date_to_string(DateTimePicker1.Text) & "', '" & _
+                                                ComboBoxUser.Text & "');"
 
-                            cmd = New MySqlCommand(sql, MySqlconnection)
+                            Dim cmd = New MySqlCommand(sql, MySqlconnection)
                             cmd.ExecuteNonQuery()
                         Catch ex As Exception
                             MsgBox("Insert Error !!")
@@ -101,15 +93,13 @@ Public Class FormCommit
     End Sub
 
     Private Sub ButtonBomRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBomRemove.Click
-        Dim cmd As New MySqlCommand()
-        Dim sql As String
         If Not IsNothing(TreeViewBomList.SelectedNode) Then
             If controlRight("R") >= 2 And user(Trim(Mid(TreeViewBomList.SelectedNode.Text, 1, InStr(TreeViewBomList.SelectedNode.Text, "-") - 1))) = ComboBoxUser.Text Then
 
                 If MsgBox("Want you delete this Record?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
                     Try
-                        sql = "DELETE FROM `" & DBName & "`.`commit` WHERE `commit`.`id` = '" & Trim(Mid(TreeViewBomList.SelectedNode.Text, 1, InStr(TreeViewBomList.SelectedNode.Text, "-") - 1)) & "'"
-                        cmd = New MySqlCommand(sql, MySqlconnection)
+                        Dim sql As String = "DELETE FROM `" & DBName & "`.`commit` WHERE `commit`.`id` = '" & Trim(Mid(TreeViewBomList.SelectedNode.Text, 1, InStr(TreeViewBomList.SelectedNode.Text, "-") - 1)) & "'"
+                        Dim cmd = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
                     Catch ex As Exception
                         MsgBox("Mysql delete error ")
@@ -128,15 +118,13 @@ Public Class FormCommit
         TextBoxNote.Text = ""
     End Sub
 
-    Private Sub TreeViewBomList_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeViewBomList.AfterSelect
-        Dim id As Integer
-        id = Val(Trim(Mid(TreeViewBomList.SelectedNode.Text, 1, InStr(TreeViewBomList.SelectedNode.Text, "-") - 1)))
-        Dim rowShow As DataRow()
+    Private Sub TreeViewBomList_AfterSelect(ByVal sender As Object, ByVal e As TreeViewEventArgs) Handles TreeViewBomList.AfterSelect
+        Dim id As Integer = Val(Trim(Mid(TreeViewBomList.SelectedNode.Text, 1, InStr(TreeViewBomList.SelectedNode.Text, "-") - 1)))
         DsCommit.Clear()
         tblCommit.Clear()
         AdapterCommit.Fill(DsCommit, "Commit")
         tblCommit = DsCommit.Tables("Commit")
-        rowShow = tblCommit.Select("id=" & id, "name")
+        Dim rowShow As DataRow() = tblCommit.Select("id=" & id, "name")
         If rowShow.Length > 0 Then
             TextBoxNote.Text = rowShow(0).Item("note").ToString()
         End If
@@ -144,12 +132,11 @@ Public Class FormCommit
     End Sub
 
     Private Sub ComboBoxCommit_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxCommit.SelectedIndexChanged
-        Dim rowResults As DataRow()
         DsCommitList.Clear()
         tblCommitList.Clear()
         AdapterCommitList.Fill(DsCommitList, "Commit_List")
         tblCommitList = DsCommitList.Tables("Commit_List")
-        rowResults = tblCommitList.Select("name = '" & ComboBoxCommit.Text & "'", "name")
+        Dim rowResults As DataRow() = tblCommitList.Select("name = '" & ComboBoxCommit.Text & "'", "name")
         If rowResults.Length > 0 Then
             TextBoxDescription.Text = rowResults(0).Item("description").ToString
             TextBoxOpen.Text = rowResults(0).Item("open").ToString
@@ -176,12 +163,10 @@ Public Class FormCommit
     End Sub
 
     Private Sub DateTimePickerEnd_ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles DateTimePickerEnd.ValueChanged
-        Dim sql As String
-        Dim cmd As New MySqlCommand()
         TextBoxClosed.Text = DateTimePickerEnd.Text
         Try
-            sql = "UPDATE `" & DBName & "`.`commit_list` SET `closed` = '" & DateTimePickerEnd.Text & "' WHERE `commit_list`.`name` = '" & ComboBoxCommit.Text & "' ;"
-            cmd = New MySqlCommand(sql, MySqlconnection)
+            Dim sql As String = "UPDATE `" & DBName & "`.`commit_list` SET `closed` = '" & DateTimePickerEnd.Text & "' WHERE `commit_list`.`name` = '" & ComboBoxCommit.Text & "' ;"
+            Dim cmd As MySqlCommand = New MySqlCommand(sql, MySqlconnection)
             cmd.ExecuteNonQuery()
         Catch ex As Exception
             MsgBox("sql Error !!")
@@ -203,9 +188,8 @@ Public Class FormCommit
 
     ' show the montth viewer.
     Private Sub CheckBoxMonthView_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBoxMonthView.CheckedChanged, CheckBoxCommit.TextChanged, TextBoxWindows.TextChanged
-        Dim d As Date
         If DateTimePicker1.Text <> "" Then
-            d = string_to_date(DateTimePicker1.Text)
+            Dim d As Date = string_to_date(DateTimePicker1.Text)
             If CheckBoxMonthView.Checked = True Then
                 ButtonBomRemove.Enabled = False
                 ButtonNewBom.Enabled = False
@@ -250,15 +234,11 @@ Public Class FormCommit
     End Sub
 
     Private Sub ButtonRemoveCommit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRemoveCommit.Click
-
-        Dim cmd As New MySqlCommand()
-        Dim sql As String
-
         If Not CommitmentJob(ComboBoxCommit.Text) Then
             If ComboBoxCommit.Text <> "" Then
                 Try
-                    sql = "DELETE FROM `" & DBName & "`.`commit_list` WHERE `commit_list`.`name` = '" & ComboBoxCommit.Text & "'"
-                    cmd = New MySqlCommand(sql, MySqlconnection)
+                    Dim sql As String = "DELETE FROM `" & DBName & "`.`commit_list` WHERE `commit_list`.`name` = '" & ComboBoxCommit.Text & "'"
+                    Dim cmd = New MySqlCommand(sql, MySqlconnection)
                     cmd.ExecuteNonQuery()
                 Catch ex As Exception
                     MsgBox("Mysql delete error " & ex.Message)
@@ -276,16 +256,13 @@ Public Class FormCommit
     End Sub
 
     Private Sub ButtonNewCommit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonNewCommit.Click
-        Dim sql As String
-        Dim cmd As New MySqlCommand()
-
         If ComboBoxCommit.Text <> "HOLIDAY" And ComboBoxCommit.Text <> "UN_COMMIT" And ComboBoxCommit.Text <> "" And TextBoxDescription.Text <> "" And TextBoxOpen.Text <> "" Then
             Try
-                sql = "INSERT INTO `" & DBName & "`.`commit_list` (`name` ,`description` ,`open`) VALUES ('" & _
-                UCase(ComboBoxCommit.Text) & "', '" & _
-                TextBoxDescription.Text & "', '" & _
-                TextBoxOpen.Text & "');"
-                cmd = New MySqlCommand(sql, MySqlconnection)
+                Dim sql As String = "INSERT INTO `" & DBName & "`.`commit_list` (`name` ,`description` ,`open`) VALUES ('" & _
+                                    UCase(ComboBoxCommit.Text) & "', '" & _
+                                    TextBoxDescription.Text & "', '" & _
+                                    TextBoxOpen.Text & "');"
+                Dim cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
             Catch ex As Exception
                 MsgBox("Insert Error !!")
@@ -300,13 +277,12 @@ Public Class FormCommit
     ' return the total hour for selected day
     Function dayHour(ByVal d As String) As Integer
 
-        Dim rowShow As DataRow()
         DsCommit.Clear()
         tblCommit.Clear()
         AdapterCommit.Fill(DsCommit, "Commit")
         tblCommit = DsCommit.Tables("Commit")
-        rowShow = tblCommit.Select("date= '" & d & IIf(CheckBoxUser.Checked, "' and name='" & ComboBoxUser.Text & "'", "'") & _
-        IIf(CheckBoxCommit.Checked, " and commit='" & ComboBoxCommit.Text & "'", ""), "name")
+        Dim rowShow As DataRow() = tblCommit.Select("date= '" & d & IIf(CheckBoxUser.Checked, "' and name='" & ComboBoxUser.Text & "'", "'") & _
+                                                    IIf(CheckBoxCommit.Checked, " and commit='" & ComboBoxCommit.Text & "'", ""), "name")
         dayHour = 0
         For Each row In rowShow
             dayHour = dayHour + Val(row("hour"))
@@ -316,15 +292,13 @@ Public Class FormCommit
     ' return the commit name if for all day. if more commit in the same day return mixed
     Function dayCommit(ByVal d As String) As String
 
-        Dim total As Integer
-        Dim rowShow As DataRow()
         DsCommit.Clear()
         tblCommit.Clear()
         AdapterCommit.Fill(DsCommit, "Commit")
         tblCommit = DsCommit.Tables("Commit")
-        rowShow = tblCommit.Select("date= '" & d & IIf(CheckBoxUser.Checked, "' and name='" & ComboBoxUser.Text & "'", "'") & _
-        IIf(CheckBoxCommit.Checked, " and commit='" & ComboBoxCommit.Text & "'", ""), "name")
-        total = 0
+        Dim rowShow As DataRow() = tblCommit.Select("date= '" & d & IIf(CheckBoxUser.Checked, "' and name='" & ComboBoxUser.Text & "'", "'") & _
+                                                    IIf(CheckBoxCommit.Checked, " and commit='" & ComboBoxCommit.Text & "'", ""), "name")
+        Dim total As Integer = 0
         dayCommit = ""
         For Each row In rowShow
             If dayCommit = "" Then
@@ -341,12 +315,11 @@ Public Class FormCommit
     ' is true if there is job with this commit
     Function CommitmentJob(ByVal commit As String) As Boolean
 
-        Dim rowShow As DataRow()
         DsCommit.Clear()
         tblCommit.Clear()
         AdapterCommit.Fill(DsCommit, "Commit")
         tblCommit = DsCommit.Tables("Commit")
-        rowShow = tblCommit.Select("commit='" & commit & "'", "name")
+        Dim rowShow As DataRow() = tblCommit.Select("commit='" & commit & "'", "name")
         If rowShow.Length > 0 Then
             CommitmentJob = True
         Else
@@ -357,13 +330,12 @@ Public Class FormCommit
     ' total hour in one month based on selection
     Function MonthHour(ByVal QueryDate As Date) As Integer
 
-        Dim rowShow As DataRow()
         DsCommit.Clear()
         tblCommit.Clear()
         AdapterCommit.Fill(DsCommit, "Commit")
         tblCommit = DsCommit.Tables("Commit")
-        rowShow = tblCommit.Select("date like '" & Mid(date_to_string(QueryDate), 1, 7) & "*'  " & IIf(CheckBoxUser.Checked, " and name='" & ComboBoxUser.Text & "'", "") & _
-                  IIf(CheckBoxCommit.Checked, " and commit='" & ComboBoxCommit.Text & "'", ""), "name")
+        Dim rowShow As DataRow() = tblCommit.Select("date like '" & Mid(date_to_string(QueryDate), 1, 7) & "*'  " & IIf(CheckBoxUser.Checked, " and name='" & ComboBoxUser.Text & "'", "") & _
+                                                    IIf(CheckBoxCommit.Checked, " and commit='" & ComboBoxCommit.Text & "'", ""), "name")
         MonthHour = 0
         For Each row In rowShow
             MonthHour = MonthHour + Val(row("hour"))
@@ -374,7 +346,6 @@ Public Class FormCommit
     ' update the table bom offer from the data table offfer
     ' ask to delete bom offer that arent item in offer table
     Sub FillcomboCommit()
-        Dim rowResults As DataRow()
         ComboBoxCommit.Items.Clear()
         ComboBoxCommit.Items.Add("")
         ComboBoxCommit.Items.Add("UN_COMMIT")
@@ -383,7 +354,7 @@ Public Class FormCommit
         tblCommitList.Clear()
         AdapterCommitList.Fill(DsCommitList, "Commit_List")
         tblCommitList = DsCommitList.Tables("Commit_List")
-        rowResults = tblCommitList.Select("name like '*'", "name")
+        Dim rowResults As DataRow() = tblCommitList.Select("name like '*'", "name")
         For Each row In rowResults
             ComboBoxCommit.Items.Add(row("name").ToString)
         Next
@@ -392,12 +363,12 @@ Public Class FormCommit
 
     ' carico tuti gli user
     Sub FillcomboUser()
-        Dim rowResults As DataRow(), commit As String = "", exist As Boolean
+        Dim commit = "", exist As Boolean
         DsCommit.Clear()
         tblCommit.Clear()
         AdapterCommit.Fill(DsCommit, "Commit")
         tblCommit = DsCommit.Tables("Commit")
-        rowResults = tblCommit.Select("name like '*'", "name")
+        Dim rowResults As DataRow() = tblCommit.Select("name like '*'", "name")
 
         For Each row In rowResults
             If commit <> row("name").ToString Then ComboBoxUser.Items.Add(row("name").ToString)
@@ -412,20 +383,17 @@ Public Class FormCommit
     ' update the tree viewer
     Sub UpdateTreecommit()
         If CheckBoxMonthView.Checked = False Then
-            Dim total As Integer
             TreeViewBomList.Nodes.Clear()
-            Dim rootNode As TreeNode
-            Dim rowShow As DataRow()
             DsCommit.Clear()
             tblCommit.Clear()
             AdapterCommit.Fill(DsCommit, "Commit")
             tblCommit = DsCommit.Tables("Commit")
-            rowShow = tblCommit.Select("date= '" & DateTimePicker1.Text & IIf(CheckBoxUser.Checked, "' and name='" & ComboBoxUser.Text & "'", "' ") & _
-            IIf(CheckBoxCommit.Checked, " and commit='" & ComboBoxCommit.Text & "'", ""), "name")
-            total = 0
+            Dim rowShow As DataRow() = tblCommit.Select("date= '" & DateTimePicker1.Text & IIf(CheckBoxUser.Checked, "' and name='" & ComboBoxUser.Text & "'", "' ") & _
+                                                        IIf(CheckBoxCommit.Checked, " and commit='" & ComboBoxCommit.Text & "'", ""), "name")
+            Dim total As Integer = 0
             For Each row In rowShow
                 total = total + Val(row("hour"))
-                rootNode = New TreeNode(row("id") & " - " & " Hour/s " & row("hour") & "  " & row("commit") & " -- " & row("name"))
+                Dim rootNode As TreeNode = New TreeNode(row("id") & " - " & " Hour/s " & row("hour") & "  " & row("commit") & " -- " & row("name"))
                 TreeViewBomList.Nodes.Add(rootNode)
             Next
             TextBoxDay.Text = total
@@ -442,12 +410,9 @@ Public Class FormCommit
 
     Private Sub ButtonReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonReset.Click
         TextBoxClosed.Text = ""
-        Dim sql As String
-        Dim cmd As New MySqlCommand()
-
         Try
-            sql = "UPDATE `" & DBName & "`.`commit_list` SET `closed` = '" & TextBoxClosed.Text & "' WHERE `commit_list`.`name` = '" & ComboBoxCommit.Text & "' ;"
-            cmd = New MySqlCommand(sql, MySqlconnection)
+            Dim sql As String = "UPDATE `" & DBName & "`.`commit_list` SET `closed` = '" & TextBoxClosed.Text & "' WHERE `commit_list`.`name` = '" & ComboBoxCommit.Text & "' ;"
+            Dim cmd = New MySqlCommand(sql, MySqlconnection)
             cmd.ExecuteNonQuery()
         Catch ex As Exception
             MsgBox("sql Error !!")
@@ -455,12 +420,11 @@ Public Class FormCommit
     End Sub
 
     Function user(ByVal id As Long)
-        Dim rowShow As DataRow()
         DsCommit.Clear()
         tblCommit.Clear()
         AdapterCommit.Fill(DsCommit, "Commit")
         tblCommit = DsCommit.Tables("Commit")
-        rowShow = tblCommit.Select("id='" & id & "'", "name")
+        Dim rowShow As DataRow() = tblCommit.Select("id='" & id & "'", "name")
         If rowShow.Length > 0 Then
             user = rowShow(0).Item("name")
         Else
@@ -478,4 +442,5 @@ Public Class FormCommit
         Catch ex As Exception
         End Try
     End Sub
+
 End Class
