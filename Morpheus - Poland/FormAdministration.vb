@@ -55,7 +55,6 @@ Public Class FormAdministration
         dep.Add("F")
         dep.Add("B")
 
-        DocMailScheduler()
     End Sub
 
     Private Sub ButtonSchedule_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSchedule.Click

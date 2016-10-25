@@ -150,4 +150,3 @@ D:\Morpheus-Poland\Morpheus - Poland\bin\Debug\mysql.data.dll
 D:\Morpheus-Poland\Morpheus - Poland\obj\Debug\MORPHEUS.TrustInfo.xml
 D:\Morpheus-Poland\Morpheus - Poland\obj\Debug\MORPHEUS.exe.manifest
 D:\Morpheus-Poland\Morpheus - Poland\obj\Debug\MORPHEUS.application
-D:\Morpheus-Poland\Morpheus - Poland\obj\Debug\SrvDoc.vbprojResolveAssemblyReference.cache

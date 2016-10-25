@@ -32,7 +32,7 @@ Public Class FormOpenIssue
             i = InStr(OpenIssue, "[", CompareMethod.Text)
             j = InStr(OpenIssue, "]", CompareMethod.Text)
             While j > 0
-                str(0) = Mid(OpenIssue, k, i - k)
+                str(0) = Mid(OpenIssue, K, i - K)
                 str(1) = Mid(OpenIssue, i + 1, j - 1 - i)
 
                 Dim ii As New ListViewItem(str)
@@ -42,6 +42,10 @@ Public Class FormOpenIssue
                 j = InStr(j + 1, OpenIssue, "]", CompareMethod.Text)
             End While
         End If
+        'Dim column As ColumnHeader
+        'For Each ( column In ListViewGRU.Columns)
+        'column.Width = -2;
+        '        End For
     End Sub
 
     Private Sub FormGroup_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
@@ -83,7 +87,7 @@ Public Class FormOpenIssue
         End Try
 
     End Sub
-  
+
     Private Sub ButtonAddMch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAdd.Click
 
         Dim sql As String, cmd As MySqlCommand
@@ -91,7 +95,7 @@ Public Class FormOpenIssue
             OpenIssue = Replace(OpenIssue, ComboBoxGroup.Text & "[" & ComboBoxName.Text & "];", "")
             OpenIssue = OpenIssue & ComboBoxGroup.Text & "[" & Now.Day & "/" & Now.Month & "/" & Now.Year & "(d/m/y) ; " & ComboBoxName.Text & "];"
             Try
-                sql = "UPDATE `" & DBName & "`.`product` SET `OpenIssue` = '" & UCase(OpenIssue) & _
+                sql = "UPDATE `" & DBName & "`.`product` SET `OpenIssue` = '" & UCase(OpenIssue) &
                 "' WHERE `product`.`BitronPN` = '" & Replace(Replace(Trim(FormProduct.TextBoxProduct.Text), ";", ","), "R&D", "R & D") & "' ;"
                 cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
@@ -116,7 +120,7 @@ Public Class FormOpenIssue
 
             OpenIssue = Replace(OpenIssue, ListViewGRU.SelectedItems.Item(0).SubItems(0).Text & "[" & ListViewGRU.SelectedItems.Item(0).SubItems(1).Text & "];", "", , , CompareMethod.Text)
             Try
-                sql = "UPDATE `" & DBName & "`.`product` SET `OpenIssue` = '" & OpenIssue & _
+                sql = "UPDATE `" & DBName & "`.`product` SET `OpenIssue` = '" & OpenIssue &
                 "' WHERE `product`.`BitronPN` = '" & Trim(FormProduct.TextBoxProduct.Text) & "' ;"
                 cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
