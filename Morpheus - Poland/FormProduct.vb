@@ -589,34 +589,27 @@ Public Class FormProduct
     End Sub
 
     Private Sub ButtonGroup_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonGroup.Click
-        DsProd.Clear()
+              DsProd.Clear()
         tblProd.Clear()
         AdapterProd.Fill(DsProd, "product")
         tblProd = DsProd.Tables("product")
 
-        Dim i As Integer
+        Dim i As Integer, result As DataRow()
         GroupList = ""
-        If TextBoxProduct.Text <> "" Then
-
-            Dim result As DataRow() = tblProd.Select("BitronPN = '" & TextBoxProduct.Text & "'")
-            If result.Length > 0 Then
-                GroupList = result(0).Item("groupList").ToString
-
-                result = tbltype.Select("id > 0", "header")
-                FormGroup.ComboBoxGroup.Items.Clear()
-                For i = 0 To result.Length - 1
-                    If controlRight(Mid(result(i).Item("header").ToString, 3, 1)) >= 2 Then
-                        FormGroup.ComboBoxGroup.Items.Add(result(i).Item("header").ToString & " --> " _
-                        & result(i).Item("firstType").ToString & " --> " _
-                        & result(i).Item("secondType").ToString & " --> " _
-                        & result(i).Item("thirdtype").ToString)
-                    End If
-                Next
-                If FormGroup.ComboBoxGroup.Items.Count > 0 Then FormGroup.ComboBoxGroup.Text = FormGroup.ComboBoxGroup.Items(FormGroup.ComboBoxGroup.Items.Count - 1)
-                FormGroup.Show()
-            End If
-        End If
-
+        FormGroup.ComboBoxGroup.Items.Clear()
+            result = tbltype.Select("id > 0")
+            FormGroup.ComboBoxGroup.Items.Clear()
+            For i = 0 To result.Length - 1
+                If controlRight(Mid(result(i).Item("header").ToString, 3, 1)) >= 2 Then
+                    FormGroup.ComboBoxGroup.Items.Add(result(i).Item("header").ToString & " --> " _
+                                        & result(i).Item("firstType").ToString & " --> " _
+                                        & result(i).Item("secondType").ToString & " --> " _
+                                       & result(i).Item("thirdtype").ToString)
+                End If
+            Next
+            If FormGroup.ComboBoxGroup.Items.Count > 0 Then FormGroup.ComboBoxGroup.Text = FormGroup.ComboBoxGroup.Items(FormGroup.ComboBoxGroup.Items.Count - 1)
+            FormGroup.ComboBoxGroup.Text = FormGroup.ComboBoxGroup.Items(FormGroup.ComboBoxGroup.Items.Count - 1)
+            FormGroup.Show()
     End Sub
 
     Private Sub ButtonOpenIssue_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonOpenIssue.Click
