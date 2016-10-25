@@ -5,7 +5,6 @@ Imports MySql.Data.MySqlClient
 
 Public Class FormOpenIssue
 
-
     Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", MySqlconnection)
     Dim tblProd As DataTable
     Dim DsProd As New DataSet
@@ -42,10 +41,12 @@ Public Class FormOpenIssue
                 j = InStr(j + 1, OpenIssue, "]", CompareMethod.Text)
             End While
         End If
-        'Dim column As ColumnHeader
-        'For Each ( column In ListViewGRU.Columns)
-        'column.Width = -2;
-        '        End For
+
+        Dim column As ColumnHeader
+        For Each column In ListViewGRU.Columns
+            column.Width = -2
+        Next
+
     End Sub
 
     Private Sub FormGroup_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
@@ -104,7 +105,12 @@ Public Class FormOpenIssue
         End If
         fillList()
         ComboBoxGroup_TextChanged(Me, e)
+        Dim column As ColumnHeader
+        For Each column In ListViewGRU.Columns
+            column.Width = -2
+        Next
     End Sub
+
 
     Private Sub ButtonRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRemove.Click
 
@@ -136,7 +142,10 @@ Public Class FormOpenIssue
         If Len(oldOpenIssue) <> Len(OpenIssue) Then
             MsgBox("Deleted Issue : " & dept & "[" & opi & "]")
         End If
-
+        Dim column As ColumnHeader
+        For Each column In ListViewGRU.Columns
+            column.Width = -2
+        Next
     End Sub
 
 End Class
