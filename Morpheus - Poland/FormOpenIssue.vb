@@ -11,7 +11,6 @@ Public Class FormOpenIssue
 
     Sub fillList()
 
-        Dim i As Integer, j As Integer, K As Integer
         ListViewGRU.Clear()
         Dim h As New ColumnHeader
         Dim h2 As New ColumnHeader
@@ -22,18 +21,16 @@ Public Class FormOpenIssue
         ListViewGRU.Columns.Clear()
         ListViewGRU.Columns.Add(h)
         ListViewGRU.Columns.Add(h2)
-
         ListViewGRU.Items.Clear()
 
         If OpenIssue <> "" Then
             Dim str(2) As String
-            K = 1
-            i = InStr(OpenIssue, "[", CompareMethod.Text)
-            j = InStr(OpenIssue, "]", CompareMethod.Text)
+            Dim K = 1
+            Dim i As Integer = InStr(OpenIssue, "[", CompareMethod.Text)
+            Dim j As Integer = InStr(OpenIssue, "]", CompareMethod.Text)
             While j > 0
                 str(0) = Mid(OpenIssue, K, i - K)
                 str(1) = Mid(OpenIssue, i + 1, j - 1 - i)
-
                 Dim ii As New ListViewItem(str)
                 ListViewGRU.Items.Add(ii)
                 K = j + 2
@@ -58,7 +55,7 @@ Public Class FormOpenIssue
 
     Private Sub ComboBoxGroup_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxGroup.TextChanged
 
-        Dim i As Integer, result As DataRow(), k As Integer, n As Integer, j As Integer
+        Dim i As Integer
         tblProd.Clear()
         DsProd.Clear()
         AdapterProd.Fill(DsProd, "product")
@@ -67,15 +64,15 @@ Public Class FormOpenIssue
         Try
 
             ComboBoxName.Text = ""
-            result = tblProd.Select("bitronpn = '" & ProdOpenIssue & "'")
+            Dim result As DataRow() = tblProd.Select("bitronpn = '" & ProdOpenIssue & "'")
             ComboBoxName.Items.Clear()
 
             If result.Length > 0 Then
-                k = InStr(1, result(i).Item("OpenIssue").ToString, ComboBoxGroup.Text)
+                Dim k As Integer = InStr(1, result(i).Item("OpenIssue").ToString, ComboBoxGroup.Text)
                 While k > 0
                     If k > 0 Then
-                        n = InStr(k + 1, result(i).Item("OpenIssue").ToString, "]")
-                        j = InStr(k + 1, result(i).Item("OpenIssue").ToString, "[")
+                        Dim n As Integer = InStr(k + 1, result(i).Item("OpenIssue").ToString, "]")
+                        Dim j As Integer = InStr(k + 1, result(i).Item("OpenIssue").ToString, "[")
                         ComboBoxName.Items.Add(Mid(result(i).Item("OpenIssue").ToString, j + 1, n - j - 1))
                     End If
                     k = InStr(k + 1, result(i).Item("OpenIssue").ToString, ComboBoxGroup.Text)
@@ -91,14 +88,13 @@ Public Class FormOpenIssue
 
     Private Sub ButtonAddMch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAdd.Click
 
-        Dim sql As String, cmd As MySqlCommand
+        Dim sql As String
         If ComboBoxName.Text <> "" And ComboBoxGroup.Text <> "" Then
             OpenIssue = Replace(OpenIssue, ComboBoxGroup.Text & "[" & ComboBoxName.Text & "];", "")
             OpenIssue = OpenIssue & ComboBoxGroup.Text & "[" & Now.Day & "/" & Now.Month & "/" & Now.Year & "(d/m/y) ; " & ComboBoxName.Text & "];"
             Try
-                sql = "UPDATE `" & DBName & "`.`product` SET `OpenIssue` = '" & UCase(OpenIssue) &
-                "' WHERE `product`.`BitronPN` = '" & Replace(Replace(Trim(FormProduct.TextBoxProduct.Text), ";", ","), "R&D", "R & D") & "' ;"
-                cmd = New MySqlCommand(sql, MySqlconnection)
+                sql = "UPDATE `" & DBName & "`.`product` SET `OpenIssue` = '" & UCase(OpenIssue) & "' WHERE `product`.`BitronPN` = '" & Replace(Replace(Trim(FormProduct.TextBoxProduct.Text), ";", ","), "R&D", "R & D") & "' ;"
+                Dim cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
             Catch ex As Exception
             End Try
@@ -114,10 +110,10 @@ Public Class FormOpenIssue
 
     Private Sub ButtonRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRemove.Click
 
-        Dim sql As String, cmd As MySqlCommand, oldOpenIssue As String, dept As String, opi As String
-        oldOpenIssue = OpenIssue
-        dept = ""
-        opi = ""
+        Dim sql As String
+        Dim oldOpenIssue As String = OpenIssue
+        Dim dept = ""
+        Dim opi = ""
 
         If ListViewGRU.SelectedItems.Count = 1 Then
 
@@ -128,7 +124,7 @@ Public Class FormOpenIssue
             Try
                 sql = "UPDATE `" & DBName & "`.`product` SET `OpenIssue` = '" & OpenIssue &
                 "' WHERE `product`.`BitronPN` = '" & Trim(FormProduct.TextBoxProduct.Text) & "' ;"
-                cmd = New MySqlCommand(sql, MySqlconnection)
+                Dim cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
             Catch ex As Exception
                 MsgBox("Deletion failed!")
