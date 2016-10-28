@@ -1,4 +1,6 @@
-﻿Public Class FormStart
+﻿Imports System.Linq
+
+Public Class FormStart
 
     Private Sub ButtonLoadDoc_Click_1(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonLoadDoc.Click
         FormLoadDoc.Show()
@@ -125,5 +127,44 @@
         FormCoding.Show()
         FormCoding.Focus()
         FormCoding.Text = "Signature Crypt " & " <>  Welcome : " & CreAccount.strUserName
+    End Sub
+
+        Private Sub ButtonHelp_Click(sender As Object, e As EventArgs) Handles ButtonHelp.Click
+        Dim strPathFtp As String
+        Dim objFtp As ftp = New ftp()
+        objFtp.UserName = strFtpServerUser
+        objFtp.Password = strFtpServerPsw
+        objFtp.Host = strFtpServerAdd
+        Dim downloadFileWinPath = ""
+        Try
+            strPathFtp = "62R/62R_GEN_PRC/"
+            Dim str = ""
+            objFtp.ListDirectory(strPathFtp, str)
+            Dim strings() As String = str.Split(New String() {Environment.NewLine}, StringSplitOptions.None)
+            Dim docName = "62R_GEN_PRC_User_Manual_for_Morpheus"
+            Dim number = (From foundString In strings Where foundString.Contains(docName) Select Int32.Parse(Mid(foundString, InStr(foundString, docName) + docName.Length + 1, foundString.Length - (InStr(foundString, docName) + docName.Length + 5)))).Concat(New Integer() {0}).Max()
+            If number <> 0 Then
+                ComunicationLog(objFtp.DownloadFile(strPathFtp, System.IO.Path.GetTempPath, docName & "_" & number & ".docx")) ' download successfull
+                downloadFileWinPath = System.IO.Path.GetTempPath & docName & "_" & number & ".docx"
+                Process.Start(downloadFileWinPath)
+            Else
+                MessageBox.Show("The Help document can not be found", "Document not found")
+            End If
+        Catch ex As Exception
+            ComunicationLog("0049") ' Error in ecr Download
+        End Try
+    End Sub
+
+
+    Sub ComunicationLog(ByVal ComCode As String)
+
+        Dim rsResult As DataRow()
+        rsResult = tblError.Select("code='" & ComCode & "'")
+        If rsResult.Length = 0 Then
+            ComCode = "0051"
+            rsResult = tblError.Select("code='" & ComCode & "'")
+        End If
+        WriteFile(ComCode & " -> " & rsResult(0).Item("en").ToString & vbCrLf, True)
+
     End Sub
 End Class
