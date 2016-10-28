@@ -251,7 +251,7 @@ Public Class FormSamples
         End If
         rowShow = tblProd.Select(IIf(CheckBoxOpenProduct.Checked, "((status='SOP_SAMPLE') or (statusActivity='OPEN')) ", "status LIKE '*'") &
                   IIf(ComboBoxActivityID.Text <> "", " AND idactivity = " & activity, "") &
-                  IIf(ComboBoxActivityStatus.Text <> "", " AND (statusActivity='" & ComboBoxActivityStatus.Text & "') ", IIf(CheckBoxClosed.Checked, " AND statusActivity LIKE '*'", " AND statusActivity <> 'CLOSED'")),
+                  IIf(ComboBoxActivityStatus.Text <> "", " AND (statusActivity='" & ComboBoxActivityStatus.Text & "') ", IIf(CheckBoxClosed.Checked, " AND statusActivity LIKE 'CLOSED'", " AND statusActivity LIKE '*'")),
                   IIf(CheckBoxOrderByDate.Checked, " etd desc, customer, idActivity ", IIf(CheckBoxCustomer.Checked = True, "customer, idActivity ,etd", "idActivity,customer  ,etd")))
         customer = ""
         activity = -1
@@ -1786,6 +1786,9 @@ Public Class FormSamples
 
     Private Sub CheckBoxClosed_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBoxClosed.CheckedChanged
         UpdateActivityID()
+        If CheckBoxClosed.Checked = True Then
+            CheckBoxOpenProduct.Checked = False
+        End If
     End Sub
 
     Public Sub Import_Order()
@@ -2635,6 +2638,12 @@ Public Class FormSamples
 
     Private Sub Txt_TempCorrectAction_TextChanged(sender As Object, e As EventArgs) Handles Txt_TempCorrectAction.TextChanged
 
+    End Sub
+
+    Private Sub CheckBoxOpenProduct_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxOpenProduct.CheckedChanged
+        If CheckBoxOpenProduct.Checked = True Then
+            CheckBoxClosed.Checked = False
+        End If
     End Sub
 
     Private Sub Txt_IssueDescription_TextChanged(sender As Object, e As EventArgs) Handles Txt_IssueDescription.TextChanged
