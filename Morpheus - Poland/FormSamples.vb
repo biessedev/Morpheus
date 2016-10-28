@@ -247,7 +247,7 @@ Public Class FormSamples
         End If
         Dim rowShow As DataRow() = tblProd.Select(IIf(CheckBoxOpenProduct.Checked, "((status='SOP_SAMPLE') or (statusActivity='OPEN')) ", "status LIKE '*'") &
                                                   IIf(ComboBoxActivityID.Text <> "", " AND idactivity = " & activity, "") &
-                                                  IIf(ComboBoxActivityStatus.Text <> "", " AND (statusActivity='" & ComboBoxActivityStatus.Text & "') ", IIf(CheckBoxClosed.Checked, " AND statusActivity LIKE 'CLOSED'", " AND statusActivity LIKE '*'")),
+                                                  IIf(ComboBoxActivityStatus.Text <> "", " AND (statusActivity='" & ComboBoxActivityStatus.Text & "') ", IIf(CheckBoxClosed.Checked, " AND statusActivity LIKE '*'", " AND statusActivity <> 'CLOSED'")),
                                                   IIf(CheckBoxOrderByDate.Checked, " etd desc, customer, idActivity ", IIf(CheckBoxCustomer.Checked = True, "customer, idActivity ,etd", "idActivity,customer  ,etd")))
         Dim customer As String = ""
         activity = -1
@@ -1573,9 +1573,6 @@ Public Class FormSamples
 
     Private Sub CheckBoxClosed_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBoxClosed.CheckedChanged
         UpdateActivityID()
-        If CheckBoxClosed.Checked = True Then
-            CheckBoxOpenProduct.Checked = False
-        End If
     End Sub
 
     Public Sub Import_Order()
@@ -2204,12 +2201,6 @@ Public Class FormSamples
         'MessageBox.Show(DateStart)
 
 
-    End Sub
-
-    Private Sub CheckBoxOpenProduct_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxOpenProduct.CheckedChanged
-        If CheckBoxOpenProduct.Checked = True Then
-            CheckBoxClosed.Checked = False
-        End If
     End Sub
 
     Private Sub DTP_PlanCloseDate_ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles DTP_PlanCloseDate.ValueChanged
