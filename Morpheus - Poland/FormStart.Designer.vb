@@ -43,6 +43,7 @@ Partial Class FormStart
         Me.ButtonRunning = New System.Windows.Forms.Button()
         Me.ButtonBom = New System.Windows.Forms.Button()
         Me.ButtonCrypted = New System.Windows.Forms.Button()
+        Me.ButtonChangePassword = New System.Windows.Forms.Button()
         CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).BeginInit
         Me.TableLayoutPanel1.SuspendLayout
         Me.SuspendLayout
@@ -299,6 +300,7 @@ Partial Class FormStart
         Me.TableLayoutPanel1.Controls.Add(Me.ButtonHelp, 3, 8)
         Me.TableLayoutPanel1.Controls.Add(Me.ButtonBom, 3, 7)
         Me.TableLayoutPanel1.Controls.Add(Me.ButtonCrypted, 1, 9)
+        Me.TableLayoutPanel1.Controls.Add(Me.ButtonChangePassword, 3, 9)
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(27, 25)
         Me.TableLayoutPanel1.Margin = New System.Windows.Forms.Padding(2)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
@@ -390,6 +392,21 @@ Partial Class FormStart
         Me.ButtonCrypted.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.ButtonCrypted.UseVisualStyleBackColor = false
         '
+        'ButtonChangePassword
+        '
+        Me.ButtonChangePassword.BackColor = System.Drawing.Color.Transparent
+        Me.ButtonChangePassword.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.ButtonChangePassword.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ButtonChangePassword.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.ButtonChangePassword.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ButtonChangePassword.Location = New System.Drawing.Point(353, 417)
+        Me.ButtonChangePassword.Name = "ButtonChangePassword"
+        Me.ButtonChangePassword.Size = New System.Drawing.Size(242, 39)
+        Me.ButtonChangePassword.TabIndex = 242
+        Me.ButtonChangePassword.Text = "Change Password"
+        Me.ButtonChangePassword.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.ButtonChangePassword.UseVisualStyleBackColor = false
+        '
         'FormStart
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
@@ -427,4 +444,5 @@ End Sub
     Friend WithEvents ButtonTiming As System.Windows.Forms.Button
     Friend WithEvents ButtonBom As System.Windows.Forms.Button
     Friend WithEvents ButtonCrypted As System.Windows.Forms.Button
+    Friend WithEvents ButtonChangePassword As Button
 End Class

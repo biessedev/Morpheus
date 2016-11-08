@@ -60,6 +60,11 @@ Public Class FormStart
         ButtonRunning.BackColor = Color.Green
         If DateDiff("d", string_to_date(ParameterTable("LAST_AUTOMATIC_SCHEDULER")), Today) > 1 Then ButtonRunning.BackColor = Color.Red
 
+        If(controlRight("R") >= 3) Then 
+             ButtonChangePassword.Text = "Manage Users Accounts"
+        End If
+        ButtonChangePassword.Enabled = true
+
     End Sub
 
     Private Sub ButtonSystem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSystem.Click
@@ -167,4 +172,17 @@ Public Class FormStart
         WriteFile(ComCode & " -> " & rsResult(0).Item("en").ToString & vbCrLf, True)
 
     End Sub
+
+    Private Sub ButtonChangePassword_Click(sender As Object, e As EventArgs) Handles ButtonChangePassword.Click
+         If controlRight("Z") = 3 Then
+            FormManageAccounts.show()
+            FormManageAccounts.Focus()
+         Else
+            FormChangePassword.Show()
+            FormChangePassword.Focus()
+         End If
+         
+
+    End Sub
+
 End Class
