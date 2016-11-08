@@ -51,5 +51,6 @@ Class ListViewItemComparerAscDesc
         End If
 
         Return returnVal
+
     End Function
 End Class
