@@ -135,16 +135,20 @@ Public Class FormProduct
         If controlRight("W") = 3 Then
             If ComboBoxCustomer.Text <> "" And TextBoxProduct.Text <> "" And TextBoxDescription.Text <> "" Then
                 Try
-                    Dim sql As String = "INSERT INTO `" & DBName & "`.`product` (`BitronPN` ,`Name` ,`Customer` ,`Status` ,`DocFlag` ,`pcbCode`,`PiastraCode`,`StatusUpdateDate`,`MchElement`) VALUES ('" &
-                                        Trim(TextBoxProduct.Text) & "', '" & Trim(UCase(TextBoxDescription.Text)) & "', '" & Trim(ComboBoxCustomer.Text) & "', '" &
-                                        "" & "', '" & strControl() & "', '" & Trim(TextBoxPcb.Text) & "', '" &
-                                        Trim(TextBoxPiastra.Text) & "', 'INSERT[" & date_to_string(Today) & "]','" &
-                                        mch & "'" & ");"
+                    If (TextBoxDAI.Text = "" Or TextBoxDAI.Text = "NO_DAI" Or (Regex.IsMatch(TextBoxDAI.Text, "^K[0-9]+")) And Len(TextBoxDAI.Text) = 8) then
+                        Dim sql As String = "INSERT INTO `" & DBName & "`.`product` (`BitronPN` ,`Name` ,`Customer` ,`Status` ,`DocFlag` ,`pcbCode`,`PiastraCode`,`StatusUpdateDate`,`MchElement`, `DAI`,`SOP`,`Vol`,`pac`,`GroupList`,`OpenIssue`,`SIGIP`,`ECR`,`bom_val`,`bom_Ratio`,`mail`,`nPieces`,`IDActivity`,`ETD`,`StatusActivity`,`sop_task`,`NameActivity`,`sessiontime`,`sessionuser`,`delay`,`BomLocation`, `ls_rmb`) VALUES ('" &
+                                            Trim(TextBoxProduct.Text) & "', '" & Trim(UCase(TextBoxDescription.Text)) & "', '" & Trim(ComboBoxCustomer.Text) & "', '" & ComboBoxStatus.Text &
+                                            "" & "', '" & strControl() & "', '" & Trim(TextBoxPcb.Text) & "', '" &
+                                            Trim(TextBoxPiastra.Text) & "', 'INSERT[" & date_to_string(Today) & "]','" &
+                                            mch & "'" & ",'" & TextBoxDAI.Text & "','', '', '', '', '', '', '', '', '',  '', 0, 0, '', '', '', '', '', '', '', '', '"& TextBoxLS.Text &"');"
 
-                    Dim cmd As MySqlCommand = New MySqlCommand(sql, MySqlconnection)
-                    cmd.ExecuteNonQuery()
+                        Dim cmd As MySqlCommand = New MySqlCommand(sql, MySqlconnection)
+                        cmd.ExecuteNonQuery()
 
-                    ComunicationLog("5041") ' 
+                        ComunicationLog("5041") ' 
+                    Else
+                        MsgBox("DAI Number is not valid!")
+                    End If
                 Catch ex As Exception
                     ComunicationLog("5050") ' Mysql update query error, check if bitron p/n is already in db
                 End Try
