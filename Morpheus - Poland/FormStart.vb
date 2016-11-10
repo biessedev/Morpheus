@@ -27,12 +27,7 @@ Public Class FormStart
     End Sub
 
     Private Sub ButtonECR_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonECR.Click
-        Try
-            FormECR.Show()
-        Catch ex As Exception
-
-        End Try
-        
+        FormECR.Show()
         FormECR.Focus()
         FormECR.Text = FormECR.Text & " <>  Welcome : " & CreAccount.strUserName
     End Sub
@@ -65,10 +60,10 @@ Public Class FormStart
         ButtonRunning.BackColor = Color.Green
         If DateDiff("d", string_to_date(ParameterTable("LAST_AUTOMATIC_SCHEDULER")), Today) > 1 Then ButtonRunning.BackColor = Color.Red
 
-        If(controlRight("R") >= 3) Then 
-             ButtonChangePassword.Text = "Manage Users Accounts"
+        If (controlRight("R") >= 3) Then
+            ButtonChangePassword.Text = "Manage Users Accounts"
         End If
-        ButtonChangePassword.Enabled = true
+        ButtonChangePassword.Enabled = True
 
     End Sub
 
@@ -139,7 +134,7 @@ Public Class FormStart
         FormCoding.Text = "Signature Crypt " & " <>  Welcome : " & CreAccount.strUserName
     End Sub
 
-      Private Sub ButtonHelp_Click(sender As Object, e As EventArgs) Handles ButtonHelp.Click
+    Private Sub ButtonHelp_Click(sender As Object, e As EventArgs) Handles ButtonHelp.Click
         Dim strPathFtp As String
         Dim objFtp As ftp = New ftp()
         objFtp.UserName = strFtpServerUser
@@ -179,14 +174,14 @@ Public Class FormStart
     End Sub
 
     Private Sub ButtonChangePassword_Click(sender As Object, e As EventArgs) Handles ButtonChangePassword.Click
-         If controlRight("Z") = 3 Then
-            FormManageAccounts.show()
+        If controlRight("Z") = 3 Then
+            FormManageAccounts.Show()
             FormManageAccounts.Focus()
-         Else
+        Else
             FormChangePassword.Show()
             FormChangePassword.Focus()
-         End If
-         
+        End If
+
 
     End Sub
 

@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class FormECR
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,9 +20,9 @@ Partial Class FormECR
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("")
+        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("")
         Me.ButtonR = New System.Windows.Forms.Button()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
@@ -86,37 +86,37 @@ Partial Class FormECR
         Me.ButtonBL = New System.Windows.Forms.Button()
         Me.DateTimePickerB = New System.Windows.Forms.DateTimePicker()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.SuspendLayout()
+        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.SuspendLayout
         '
         'ButtonR
         '
         Me.ButtonR.BackColor = System.Drawing.Color.LightGray
-        Me.ButtonR.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonR.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonR.Location = New System.Drawing.Point(118, 136)
         Me.ButtonR.Name = "ButtonR"
         Me.ButtonR.Size = New System.Drawing.Size(89, 31)
         Me.ButtonR.TabIndex = 175
         Me.ButtonR.Text = "NOT CHECKED"
-        Me.ButtonR.UseVisualStyleBackColor = False
+        Me.ButtonR.UseVisualStyleBackColor = false
         '
         'Label13
         '
-        Me.Label13.AutoSize = True
+        Me.Label13.AutoSize = true
         Me.Label13.BackColor = System.Drawing.Color.Transparent
-        Me.Label13.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label13.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label13.Location = New System.Drawing.Point(266, 223)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(106, 13)
         Me.Label13.TabIndex = 0
         Me.Label13.Text = "Step cost PLN \Year"
-        Me.Label13.Visible = False
+        Me.Label13.Visible = false
         '
         'Label4
         '
-        Me.Label4.AutoSize = True
+        Me.Label4.AutoSize = true
         Me.Label4.BackColor = System.Drawing.Color.Transparent
-        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label4.Location = New System.Drawing.Point(687, 238)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(63, 13)
@@ -125,19 +125,19 @@ Partial Class FormECR
         '
         'TextBoxStepCost
         '
-        Me.TextBoxStepCost.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxStepCost.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.TextBoxStepCost.Location = New System.Drawing.Point(266, 244)
         Me.TextBoxStepCost.Name = "TextBoxStepCost"
         Me.TextBoxStepCost.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.TextBoxStepCost.Size = New System.Drawing.Size(111, 20)
         Me.TextBoxStepCost.TabIndex = 1
-        Me.TextBoxStepCost.Visible = False
+        Me.TextBoxStepCost.Visible = false
         '
         'Label2
         '
-        Me.Label2.AutoSize = True
+        Me.Label2.AutoSize = true
         Me.Label2.BackColor = System.Drawing.Color.Transparent
-        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label2.Location = New System.Drawing.Point(138, 120)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(23, 13)
@@ -146,7 +146,7 @@ Partial Class FormECR
         '
         'RichTextBoxStep
         '
-        Me.RichTextBoxStep.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.RichTextBoxStep.Font = New System.Drawing.Font("Microsoft Sans Serif", 10!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.RichTextBoxStep.ImeMode = System.Windows.Forms.ImeMode.[On]
         Me.RichTextBoxStep.Location = New System.Drawing.Point(13, 285)
         Me.RichTextBoxStep.Name = "RichTextBoxStep"
@@ -156,32 +156,32 @@ Partial Class FormECR
         '
         'TextBoxTotalCost
         '
-        Me.TextBoxTotalCost.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxTotalCost.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.TextBoxTotalCost.Location = New System.Drawing.Point(13, 243)
         Me.TextBoxTotalCost.Name = "TextBoxTotalCost"
-        Me.TextBoxTotalCost.ReadOnly = True
+        Me.TextBoxTotalCost.ReadOnly = true
         Me.TextBoxTotalCost.Size = New System.Drawing.Size(107, 20)
         Me.TextBoxTotalCost.TabIndex = 191
         Me.TextBoxTotalCost.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.TextBoxTotalCost.Visible = False
+        Me.TextBoxTotalCost.Visible = false
         '
         'Label8
         '
-        Me.Label8.AutoSize = True
+        Me.Label8.AutoSize = true
         Me.Label8.BackColor = System.Drawing.Color.Transparent
-        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label8.Location = New System.Drawing.Point(10, 228)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(80, 13)
         Me.Label8.TabIndex = 173
         Me.Label8.Text = "Total cost/PLN"
-        Me.Label8.Visible = False
+        Me.Label8.Visible = false
         '
         'Label10
         '
-        Me.Label10.AutoSize = True
+        Me.Label10.AutoSize = true
         Me.Label10.BackColor = System.Drawing.Color.Transparent
-        Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label10.Location = New System.Drawing.Point(589, 120)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(101, 13)
@@ -191,9 +191,9 @@ Partial Class FormECR
         '
         'Label9
         '
-        Me.Label9.AutoSize = True
+        Me.Label9.AutoSize = true
         Me.Label9.BackColor = System.Drawing.Color.Transparent
-        Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label9.Location = New System.Drawing.Point(846, 120)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(58, 13)
@@ -202,19 +202,19 @@ Partial Class FormECR
         '
         'ButtonOpen
         '
-        Me.ButtonOpen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonOpen.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonOpen.Location = New System.Drawing.Point(478, 46)
         Me.ButtonOpen.Name = "ButtonOpen"
         Me.ButtonOpen.Size = New System.Drawing.Size(91, 27)
         Me.ButtonOpen.TabIndex = 176
         Me.ButtonOpen.Text = "Open ECR File"
-        Me.ButtonOpen.UseVisualStyleBackColor = True
+        Me.ButtonOpen.UseVisualStyleBackColor = true
         '
         'Label7
         '
-        Me.Label7.AutoSize = True
+        Me.Label7.AutoSize = true
         Me.Label7.BackColor = System.Drawing.Color.Transparent
-        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label7.Location = New System.Drawing.Point(735, 120)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(39, 13)
@@ -223,9 +223,9 @@ Partial Class FormECR
         '
         'Label3
         '
-        Me.Label3.AutoSize = True
+        Me.Label3.AutoSize = true
         Me.Label3.BackColor = System.Drawing.Color.Transparent
-        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label3.Location = New System.Drawing.Point(584, 11)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(65, 13)
@@ -234,9 +234,9 @@ Partial Class FormECR
         '
         'Label6
         '
-        Me.Label6.AutoSize = True
+        Me.Label6.AutoSize = true
         Me.Label6.BackColor = System.Drawing.Color.Transparent
-        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label6.Location = New System.Drawing.Point(248, 120)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(43, 13)
@@ -246,8 +246,8 @@ Partial Class FormECR
         'ComboBoxEcr
         '
         Me.ComboBoxEcr.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBoxEcr.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.07692!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ComboBoxEcr.FormattingEnabled = True
+        Me.ComboBoxEcr.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.07692!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ComboBoxEcr.FormattingEnabled = true
         Me.ComboBoxEcr.Location = New System.Drawing.Point(16, 46)
         Me.ComboBoxEcr.Name = "ComboBoxEcr"
         Me.ComboBoxEcr.Size = New System.Drawing.Size(456, 26)
@@ -255,9 +255,9 @@ Partial Class FormECR
         '
         'Label5
         '
-        Me.Label5.AutoSize = True
+        Me.Label5.AutoSize = true
         Me.Label5.BackColor = System.Drawing.Color.Transparent
-        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label5.Location = New System.Drawing.Point(359, 120)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(60, 13)
@@ -266,9 +266,9 @@ Partial Class FormECR
         '
         'Label1
         '
-        Me.Label1.AutoSize = True
+        Me.Label1.AutoSize = true
         Me.Label1.BackColor = System.Drawing.Color.Transparent
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label1.Location = New System.Drawing.Point(13, 27)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(107, 13)
@@ -278,96 +278,96 @@ Partial Class FormECR
         'ButtonU
         '
         Me.ButtonU.BackColor = System.Drawing.Color.LightGray
-        Me.ButtonU.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonU.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonU.Location = New System.Drawing.Point(346, 136)
         Me.ButtonU.Name = "ButtonU"
         Me.ButtonU.Size = New System.Drawing.Size(89, 31)
         Me.ButtonU.TabIndex = 180
-        Me.ButtonU.UseVisualStyleBackColor = False
+        Me.ButtonU.UseVisualStyleBackColor = false
         '
         'ButtonL
         '
         Me.ButtonL.BackColor = System.Drawing.Color.LightGray
-        Me.ButtonL.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonL.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonL.Location = New System.Drawing.Point(229, 136)
         Me.ButtonL.Name = "ButtonL"
         Me.ButtonL.Size = New System.Drawing.Size(90, 31)
         Me.ButtonL.TabIndex = 184
-        Me.ButtonL.UseVisualStyleBackColor = False
+        Me.ButtonL.UseVisualStyleBackColor = false
         '
         'ButtonP
         '
         Me.ButtonP.BackColor = System.Drawing.Color.LightGray
-        Me.ButtonP.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonP.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonP.Location = New System.Drawing.Point(834, 136)
         Me.ButtonP.Name = "ButtonP"
         Me.ButtonP.Size = New System.Drawing.Size(89, 31)
         Me.ButtonP.TabIndex = 181
-        Me.ButtonP.UseVisualStyleBackColor = False
+        Me.ButtonP.UseVisualStyleBackColor = false
         '
         'ButtonQ
         '
         Me.ButtonQ.BackColor = System.Drawing.Color.LightGray
-        Me.ButtonQ.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonQ.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonQ.Location = New System.Drawing.Point(944, 136)
         Me.ButtonQ.Name = "ButtonQ"
         Me.ButtonQ.Size = New System.Drawing.Size(90, 31)
         Me.ButtonQ.TabIndex = 183
-        Me.ButtonQ.UseVisualStyleBackColor = False
+        Me.ButtonQ.UseVisualStyleBackColor = false
         '
         'ButtonE
         '
         Me.ButtonE.BackColor = System.Drawing.Color.LightGray
-        Me.ButtonE.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonE.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonE.Location = New System.Drawing.Point(589, 136)
         Me.ButtonE.Name = "ButtonE"
         Me.ButtonE.Size = New System.Drawing.Size(89, 31)
         Me.ButtonE.TabIndex = 182
-        Me.ButtonE.UseVisualStyleBackColor = False
+        Me.ButtonE.UseVisualStyleBackColor = false
         '
         'Label12
         '
-        Me.Label12.AutoSize = True
+        Me.Label12.AutoSize = true
         Me.Label12.BackColor = System.Drawing.Color.Transparent
-        Me.Label12.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label12.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label12.Location = New System.Drawing.Point(128, 222)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(95, 13)
         Me.Label12.TabIndex = 194
         Me.Label12.Text = "Customer Payment"
-        Me.Label12.Visible = False
+        Me.Label12.Visible = false
         '
         'ComboBoxPay
         '
-        Me.ComboBoxPay.Enabled = False
-        Me.ComboBoxPay.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ComboBoxPay.FormattingEnabled = True
+        Me.ComboBoxPay.Enabled = false
+        Me.ComboBoxPay.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ComboBoxPay.FormattingEnabled = true
         Me.ComboBoxPay.Items.AddRange(New Object() {"PAY", "NOT PAY"})
         Me.ComboBoxPay.Location = New System.Drawing.Point(128, 243)
         Me.ComboBoxPay.Name = "ComboBoxPay"
         Me.ComboBoxPay.Size = New System.Drawing.Size(111, 21)
         Me.ComboBoxPay.TabIndex = 195
-        Me.ComboBoxPay.Visible = False
+        Me.ComboBoxPay.Visible = false
         '
         'ListViewProd
         '
-        Me.ListViewProd.CheckBoxes = True
-        Me.ListViewProd.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ListViewProd.GridLines = True
-        ListViewItem1.StateImageIndex = 0
-        Me.ListViewProd.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
+        Me.ListViewProd.CheckBoxes = true
+        Me.ListViewProd.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ListViewProd.GridLines = true
+        ListViewItem2.StateImageIndex = 0
+        Me.ListViewProd.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
         Me.ListViewProd.Location = New System.Drawing.Point(689, 308)
-        Me.ListViewProd.MultiSelect = False
+        Me.ListViewProd.MultiSelect = false
         Me.ListViewProd.Name = "ListViewProd"
         Me.ListViewProd.Size = New System.Drawing.Size(342, 245)
         Me.ListViewProd.TabIndex = 196
-        Me.ListViewProd.UseCompatibleStateImageBehavior = False
+        Me.ListViewProd.UseCompatibleStateImageBehavior = false
         Me.ListViewProd.View = System.Windows.Forms.View.Details
         '
         'ListBoxLog
         '
-        Me.ListBoxLog.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ListBoxLog.FormattingEnabled = True
+        Me.ListBoxLog.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ListBoxLog.FormattingEnabled = true
         Me.ListBoxLog.Location = New System.Drawing.Point(18, 480)
         Me.ListBoxLog.Name = "ListBoxLog"
         Me.ListBoxLog.SelectionMode = System.Windows.Forms.SelectionMode.None
@@ -376,9 +376,9 @@ Partial Class FormECR
         '
         'Label14
         '
-        Me.Label14.AutoSize = True
+        Me.Label14.AutoSize = true
         Me.Label14.BackColor = System.Drawing.Color.Transparent
-        Me.Label14.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label14.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label14.Location = New System.Drawing.Point(13, 463)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(56, 13)
@@ -387,9 +387,9 @@ Partial Class FormECR
         '
         'LabelStep
         '
-        Me.LabelStep.AutoSize = True
+        Me.LabelStep.AutoSize = true
         Me.LabelStep.BackColor = System.Drawing.Color.Transparent
-        Me.LabelStep.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelStep.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.LabelStep.Location = New System.Drawing.Point(12, 267)
         Me.LabelStep.Name = "LabelStep"
         Me.LabelStep.Size = New System.Drawing.Size(55, 13)
@@ -399,79 +399,79 @@ Partial Class FormECR
         'ButtonPL
         '
         Me.ButtonPL.BackColor = System.Drawing.Color.LightGray
-        Me.ButtonPL.Enabled = False
+        Me.ButtonPL.Enabled = false
         Me.ButtonPL.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ButtonPL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonPL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonPL.Location = New System.Drawing.Point(834, 179)
         Me.ButtonPL.Name = "ButtonPL"
         Me.ButtonPL.Size = New System.Drawing.Size(89, 22)
         Me.ButtonPL.TabIndex = 202
-        Me.ButtonPL.UseVisualStyleBackColor = False
+        Me.ButtonPL.UseVisualStyleBackColor = false
         '
         'ButtonRL
         '
         Me.ButtonRL.BackColor = System.Drawing.Color.LightGray
-        Me.ButtonRL.Enabled = False
+        Me.ButtonRL.Enabled = false
         Me.ButtonRL.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ButtonRL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonRL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonRL.Location = New System.Drawing.Point(118, 182)
         Me.ButtonRL.Name = "ButtonRL"
         Me.ButtonRL.Size = New System.Drawing.Size(89, 22)
         Me.ButtonRL.TabIndex = 203
-        Me.ButtonRL.UseVisualStyleBackColor = False
+        Me.ButtonRL.UseVisualStyleBackColor = false
         '
         'ButtonUL
         '
         Me.ButtonUL.BackColor = System.Drawing.Color.LightGray
-        Me.ButtonUL.Enabled = False
+        Me.ButtonUL.Enabled = false
         Me.ButtonUL.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ButtonUL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonUL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonUL.Location = New System.Drawing.Point(346, 182)
         Me.ButtonUL.Name = "ButtonUL"
         Me.ButtonUL.Size = New System.Drawing.Size(89, 22)
         Me.ButtonUL.TabIndex = 204
-        Me.ButtonUL.UseVisualStyleBackColor = False
+        Me.ButtonUL.UseVisualStyleBackColor = false
         '
         'ButtonLL
         '
         Me.ButtonLL.BackColor = System.Drawing.Color.LightGray
-        Me.ButtonLL.Enabled = False
+        Me.ButtonLL.Enabled = false
         Me.ButtonLL.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ButtonLL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonLL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonLL.Location = New System.Drawing.Point(229, 182)
         Me.ButtonLL.Name = "ButtonLL"
         Me.ButtonLL.Size = New System.Drawing.Size(89, 22)
         Me.ButtonLL.TabIndex = 205
-        Me.ButtonLL.UseVisualStyleBackColor = False
+        Me.ButtonLL.UseVisualStyleBackColor = false
         '
         'ButtonQL
         '
         Me.ButtonQL.BackColor = System.Drawing.Color.LightGray
-        Me.ButtonQL.Enabled = False
+        Me.ButtonQL.Enabled = false
         Me.ButtonQL.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ButtonQL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonQL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonQL.Location = New System.Drawing.Point(944, 178)
         Me.ButtonQL.Name = "ButtonQL"
         Me.ButtonQL.Size = New System.Drawing.Size(89, 22)
         Me.ButtonQL.TabIndex = 206
-        Me.ButtonQL.UseVisualStyleBackColor = False
+        Me.ButtonQL.UseVisualStyleBackColor = false
         '
         'ButtonEL
         '
         Me.ButtonEL.BackColor = System.Drawing.Color.LightGray
-        Me.ButtonEL.Enabled = False
+        Me.ButtonEL.Enabled = false
         Me.ButtonEL.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ButtonEL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonEL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonEL.Location = New System.Drawing.Point(589, 180)
         Me.ButtonEL.Name = "ButtonEL"
         Me.ButtonEL.Size = New System.Drawing.Size(89, 22)
         Me.ButtonEL.TabIndex = 207
-        Me.ButtonEL.UseVisualStyleBackColor = False
+        Me.ButtonEL.UseVisualStyleBackColor = false
         '
         'ComboBoxProd
         '
-        Me.ComboBoxProd.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ComboBoxProd.FormattingEnabled = True
+        Me.ComboBoxProd.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ComboBoxProd.FormattingEnabled = true
         Me.ComboBoxProd.Location = New System.Drawing.Point(689, 254)
         Me.ComboBoxProd.Name = "ComboBoxProd"
         Me.ComboBoxProd.Size = New System.Drawing.Size(342, 21)
@@ -479,115 +479,115 @@ Partial Class FormECR
         '
         'ButtonAdd
         '
-        Me.ButtonAdd.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonAdd.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonAdd.Location = New System.Drawing.Point(966, 280)
         Me.ButtonAdd.Name = "ButtonAdd"
         Me.ButtonAdd.Size = New System.Drawing.Size(64, 21)
         Me.ButtonAdd.TabIndex = 209
         Me.ButtonAdd.Text = "Add"
-        Me.ButtonAdd.UseVisualStyleBackColor = True
+        Me.ButtonAdd.UseVisualStyleBackColor = true
         '
         'ButtonRemove
         '
-        Me.ButtonRemove.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonRemove.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonRemove.Location = New System.Drawing.Point(689, 280)
         Me.ButtonRemove.Name = "ButtonRemove"
         Me.ButtonRemove.Size = New System.Drawing.Size(60, 21)
         Me.ButtonRemove.TabIndex = 210
         Me.ButtonRemove.Text = "Remove"
-        Me.ButtonRemove.UseVisualStyleBackColor = True
+        Me.ButtonRemove.UseVisualStyleBackColor = true
         '
         'DateTimePickerQ
         '
         Me.DateTimePickerQ.CustomFormat = "yyyy/MM/dd"
-        Me.DateTimePickerQ.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DateTimePickerQ.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.DateTimePickerQ.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.DateTimePickerQ.Location = New System.Drawing.Point(1013, 206)
         Me.DateTimePickerQ.Name = "DateTimePickerQ"
         Me.DateTimePickerQ.Size = New System.Drawing.Size(20, 21)
         Me.DateTimePickerQ.TabIndex = 211
-        Me.DateTimePickerQ.Visible = False
+        Me.DateTimePickerQ.Visible = false
         '
         'DateTimePickerE
         '
         Me.DateTimePickerE.CustomFormat = "yyyy/MM/dd"
-        Me.DateTimePickerE.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DateTimePickerE.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.DateTimePickerE.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.DateTimePickerE.Location = New System.Drawing.Point(658, 206)
         Me.DateTimePickerE.Name = "DateTimePickerE"
         Me.DateTimePickerE.Size = New System.Drawing.Size(20, 21)
         Me.DateTimePickerE.TabIndex = 212
-        Me.DateTimePickerE.Visible = False
+        Me.DateTimePickerE.Visible = false
         '
         'DateTimePickerL
         '
         Me.DateTimePickerL.CustomFormat = "yyyy/MM/dd"
-        Me.DateTimePickerL.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DateTimePickerL.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.DateTimePickerL.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.DateTimePickerL.Location = New System.Drawing.Point(298, 206)
         Me.DateTimePickerL.Name = "DateTimePickerL"
         Me.DateTimePickerL.Size = New System.Drawing.Size(20, 21)
         Me.DateTimePickerL.TabIndex = 213
-        Me.DateTimePickerL.Visible = False
+        Me.DateTimePickerL.Visible = false
         '
         'DateTimePickerU
         '
         Me.DateTimePickerU.CustomFormat = "yyyy/MM/dd"
-        Me.DateTimePickerU.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DateTimePickerU.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.DateTimePickerU.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.DateTimePickerU.Location = New System.Drawing.Point(415, 209)
         Me.DateTimePickerU.Name = "DateTimePickerU"
         Me.DateTimePickerU.Size = New System.Drawing.Size(20, 21)
         Me.DateTimePickerU.TabIndex = 214
-        Me.DateTimePickerU.Visible = False
+        Me.DateTimePickerU.Visible = false
         '
         'DateTimePickerR
         '
         Me.DateTimePickerR.CustomFormat = "yyyy/MM/dd"
-        Me.DateTimePickerR.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DateTimePickerR.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.DateTimePickerR.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.DateTimePickerR.Location = New System.Drawing.Point(173, 206)
         Me.DateTimePickerR.Name = "DateTimePickerR"
         Me.DateTimePickerR.Size = New System.Drawing.Size(20, 21)
         Me.DateTimePickerR.TabIndex = 215
-        Me.DateTimePickerR.Visible = False
+        Me.DateTimePickerR.Visible = false
         '
         'ButtonA
         '
         Me.ButtonA.BackColor = System.Drawing.Color.LightGray
-        Me.ButtonA.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonA.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonA.Location = New System.Drawing.Point(928, 73)
         Me.ButtonA.Name = "ButtonA"
         Me.ButtonA.Size = New System.Drawing.Size(90, 31)
         Me.ButtonA.TabIndex = 216
-        Me.ButtonA.UseVisualStyleBackColor = False
-        Me.ButtonA.Visible = False
+        Me.ButtonA.UseVisualStyleBackColor = false
+        Me.ButtonA.Visible = false
         '
         'Label11
         '
-        Me.Label11.AutoSize = True
+        Me.Label11.AutoSize = true
         Me.Label11.BackColor = System.Drawing.Color.Transparent
-        Me.Label11.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label11.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label11.Location = New System.Drawing.Point(931, 57)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(72, 13)
         Me.Label11.TabIndex = 217
         Me.Label11.Text = "Administration"
-        Me.Label11.Visible = False
+        Me.Label11.Visible = false
         '
         'ButtonData
         '
-        Me.ButtonData.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonData.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonData.Location = New System.Drawing.Point(586, 28)
         Me.ButtonData.Name = "ButtonData"
         Me.ButtonData.Size = New System.Drawing.Size(201, 27)
         Me.ButtonData.TabIndex = 219
-        Me.ButtonData.UseVisualStyleBackColor = True
+        Me.ButtonData.UseVisualStyleBackColor = true
         '
         'DateTimePickerp
         '
         Me.DateTimePickerp.CustomFormat = "yyyy/MM/dd"
-        Me.DateTimePickerp.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DateTimePickerp.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.DateTimePickerp.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.DateTimePickerp.Location = New System.Drawing.Point(903, 206)
         Me.DateTimePickerp.Margin = New System.Windows.Forms.Padding(0)
@@ -596,7 +596,7 @@ Partial Class FormECR
         Me.DateTimePickerp.Size = New System.Drawing.Size(20, 21)
         Me.DateTimePickerp.TabIndex = 220
         Me.DateTimePickerp.Value = New Date(2010, 12, 7, 0, 0, 0, 0)
-        Me.DateTimePickerp.Visible = False
+        Me.DateTimePickerp.Visible = false
         '
         'ButtonCalc
         '
@@ -605,23 +605,23 @@ Partial Class FormECR
         Me.ButtonCalc.Size = New System.Drawing.Size(36, 21)
         Me.ButtonCalc.TabIndex = 221
         Me.ButtonCalc.Text = "Calc"
-        Me.ButtonCalc.UseVisualStyleBackColor = True
-        Me.ButtonCalc.Visible = False
+        Me.ButtonCalc.UseVisualStyleBackColor = true
+        Me.ButtonCalc.Visible = false
         '
         'ButtonSave
         '
-        Me.ButtonSave.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonSave.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonSave.Location = New System.Drawing.Point(620, 244)
         Me.ButtonSave.Name = "ButtonSave"
         Me.ButtonSave.Size = New System.Drawing.Size(49, 41)
         Me.ButtonSave.TabIndex = 222
         Me.ButtonSave.Text = "Save"
-        Me.ButtonSave.UseVisualStyleBackColor = True
+        Me.ButtonSave.UseVisualStyleBackColor = true
         '
         'DateTimePickern
         '
         Me.DateTimePickern.CustomFormat = "yyyy/MM/dd"
-        Me.DateTimePickern.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DateTimePickern.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.DateTimePickern.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.DateTimePickern.Location = New System.Drawing.Point(782, 204)
         Me.DateTimePickern.Margin = New System.Windows.Forms.Padding(0)
@@ -630,35 +630,35 @@ Partial Class FormECR
         Me.DateTimePickern.Size = New System.Drawing.Size(20, 21)
         Me.DateTimePickern.TabIndex = 225
         Me.DateTimePickern.Value = New Date(2011, 4, 15, 0, 0, 0, 0)
-        Me.DateTimePickern.Visible = False
+        Me.DateTimePickern.Visible = false
         '
         'ButtonNL
         '
         Me.ButtonNL.BackColor = System.Drawing.Color.LightGray
-        Me.ButtonNL.Enabled = False
+        Me.ButtonNL.Enabled = false
         Me.ButtonNL.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ButtonNL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonNL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonNL.Location = New System.Drawing.Point(713, 179)
         Me.ButtonNL.Name = "ButtonNL"
         Me.ButtonNL.Size = New System.Drawing.Size(89, 22)
         Me.ButtonNL.TabIndex = 224
-        Me.ButtonNL.UseVisualStyleBackColor = False
+        Me.ButtonNL.UseVisualStyleBackColor = false
         '
         'ButtonN
         '
         Me.ButtonN.BackColor = System.Drawing.Color.LightGray
-        Me.ButtonN.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonN.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonN.Location = New System.Drawing.Point(713, 136)
         Me.ButtonN.Name = "ButtonN"
         Me.ButtonN.Size = New System.Drawing.Size(89, 31)
         Me.ButtonN.TabIndex = 223
-        Me.ButtonN.UseVisualStyleBackColor = False
+        Me.ButtonN.UseVisualStyleBackColor = false
         '
         'Label15
         '
-        Me.Label15.AutoSize = True
+        Me.Label15.AutoSize = true
         Me.Label15.BackColor = System.Drawing.Color.Transparent
-        Me.Label15.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label15.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label15.Location = New System.Drawing.Point(941, 120)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(95, 13)
@@ -667,21 +667,21 @@ Partial Class FormECR
         '
         'CheckConfirm
         '
-        Me.CheckConfirm.AutoSize = True
+        Me.CheckConfirm.AutoSize = true
         Me.CheckConfirm.BackColor = System.Drawing.Color.Transparent
-        Me.CheckConfirm.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic), System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckConfirm.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic),System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.CheckConfirm.Location = New System.Drawing.Point(586, 97)
         Me.CheckConfirm.Name = "CheckConfirm"
         Me.CheckConfirm.Size = New System.Drawing.Size(201, 20)
         Me.CheckConfirm.TabIndex = 227
-        Me.CheckConfirm.Text = "Confirm as Effective Date" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
-        Me.CheckConfirm.UseVisualStyleBackColor = False
+        Me.CheckConfirm.Text = "Confirm as Effective Date"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)
+        Me.CheckConfirm.UseVisualStyleBackColor = false
         '
         'LabelConfirm
         '
-        Me.LabelConfirm.AutoSize = True
+        Me.LabelConfirm.AutoSize = true
         Me.LabelConfirm.BackColor = System.Drawing.Color.Transparent
-        Me.LabelConfirm.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic), System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelConfirm.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic),System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.LabelConfirm.Location = New System.Drawing.Point(582, 92)
         Me.LabelConfirm.Name = "LabelConfirm"
         Me.LabelConfirm.Size = New System.Drawing.Size(152, 24)
@@ -690,9 +690,9 @@ Partial Class FormECR
         '
         'LabelApproved
         '
-        Me.LabelApproved.AutoSize = True
+        Me.LabelApproved.AutoSize = true
         Me.LabelApproved.BackColor = System.Drawing.Color.Transparent
-        Me.LabelApproved.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic), System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelApproved.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic),System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.LabelApproved.ForeColor = System.Drawing.Color.Green
         Me.LabelApproved.Location = New System.Drawing.Point(582, 58)
         Me.LabelApproved.Name = "LabelApproved"
@@ -702,22 +702,20 @@ Partial Class FormECR
         '
         'CheckBoxOpen
         '
-        Me.CheckBoxOpen.AutoSize = True
+        Me.CheckBoxOpen.AutoSize = true
         Me.CheckBoxOpen.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBoxOpen.Checked = True
-        Me.CheckBoxOpen.CheckState = System.Windows.Forms.CheckState.Checked
         Me.CheckBoxOpen.Location = New System.Drawing.Point(400, 11)
         Me.CheckBoxOpen.Name = "CheckBoxOpen"
         Me.CheckBoxOpen.Size = New System.Drawing.Size(73, 17)
         Me.CheckBoxOpen.TabIndex = 230
         Me.CheckBoxOpen.Text = "OnlyOpen"
-        Me.CheckBoxOpen.UseVisualStyleBackColor = False
+        Me.CheckBoxOpen.UseVisualStyleBackColor = false
         '
         'Label16
         '
-        Me.Label16.AutoSize = True
+        Me.Label16.AutoSize = true
         Me.Label16.BackColor = System.Drawing.Color.Transparent
-        Me.Label16.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label16.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label16.Location = New System.Drawing.Point(763, 287)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(192, 15)
@@ -727,19 +725,19 @@ Partial Class FormECR
         'ButtonEcrCheck
         '
         Me.ButtonEcrCheck.BackColor = System.Drawing.Color.Red
-        Me.ButtonEcrCheck.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic), System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonEcrCheck.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic),System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonEcrCheck.Location = New System.Drawing.Point(12, 125)
         Me.ButtonEcrCheck.Name = "ButtonEcrCheck"
         Me.ButtonEcrCheck.Size = New System.Drawing.Size(90, 85)
         Me.ButtonEcrCheck.TabIndex = 233
         Me.ButtonEcrCheck.Text = "Customer Doc To Bitron ECR Alignment    ---> "
-        Me.ButtonEcrCheck.UseVisualStyleBackColor = False
+        Me.ButtonEcrCheck.UseVisualStyleBackColor = false
         '
         'Label17
         '
-        Me.Label17.AutoSize = True
+        Me.Label17.AutoSize = true
         Me.Label17.BackColor = System.Drawing.Color.Transparent
-        Me.Label17.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label17.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label17.Location = New System.Drawing.Point(463, 120)
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(104, 13)
@@ -749,35 +747,35 @@ Partial Class FormECR
         'ButtonB
         '
         Me.ButtonB.BackColor = System.Drawing.Color.LightGray
-        Me.ButtonB.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonB.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonB.Location = New System.Drawing.Point(466, 136)
         Me.ButtonB.Name = "ButtonB"
         Me.ButtonB.Size = New System.Drawing.Size(89, 31)
         Me.ButtonB.TabIndex = 181
-        Me.ButtonB.UseVisualStyleBackColor = False
+        Me.ButtonB.UseVisualStyleBackColor = false
         '
         'ButtonBL
         '
         Me.ButtonBL.BackColor = System.Drawing.Color.LightGray
-        Me.ButtonBL.Enabled = False
+        Me.ButtonBL.Enabled = false
         Me.ButtonBL.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ButtonBL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonBL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonBL.Location = New System.Drawing.Point(466, 181)
         Me.ButtonBL.Name = "ButtonBL"
         Me.ButtonBL.Size = New System.Drawing.Size(89, 22)
         Me.ButtonBL.TabIndex = 206
-        Me.ButtonBL.UseVisualStyleBackColor = False
+        Me.ButtonBL.UseVisualStyleBackColor = false
         '
         'DateTimePickerB
         '
         Me.DateTimePickerB.CustomFormat = "yyyy/MM/dd"
-        Me.DateTimePickerB.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DateTimePickerB.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.DateTimePickerB.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.DateTimePickerB.Location = New System.Drawing.Point(535, 209)
         Me.DateTimePickerB.Name = "DateTimePickerB"
         Me.DateTimePickerB.Size = New System.Drawing.Size(20, 21)
         Me.DateTimePickerB.TabIndex = 211
-        Me.DateTimePickerB.Visible = False
+        Me.DateTimePickerB.Visible = false
         '
         'PictureBox1
         '
@@ -788,11 +786,11 @@ Partial Class FormECR
         Me.PictureBox1.Size = New System.Drawing.Size(101, 32)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox1.TabIndex = 231
-        Me.PictureBox1.TabStop = False
+        Me.PictureBox1.TabStop = false
         '
         'FormECR
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.DarkGray
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
@@ -860,14 +858,14 @@ Partial Class FormECR
         Me.Controls.Add(Me.ButtonP)
         Me.Controls.Add(Me.ButtonQ)
         Me.Controls.Add(Me.ButtonE)
-        Me.MaximizeBox = False
+        Me.MaximizeBox = false
         Me.Name = "FormECR"
         Me.Text = "SrvDoc - Engineering Change Request - Management System"
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.ResumeLayout(False)
-        Me.PerformLayout()
+        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).EndInit
+        Me.ResumeLayout(false)
+        Me.PerformLayout
 
-    End Sub
+End Sub
     Friend WithEvents ButtonR As System.Windows.Forms.Button
     Friend WithEvents Label13 As System.Windows.Forms.Label
     Friend WithEvents Label4 As System.Windows.Forms.Label

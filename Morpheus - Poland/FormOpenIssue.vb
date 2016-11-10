@@ -53,7 +53,7 @@ Public Class FormOpenIssue
         fillList()
     End Sub
 
-    Private Sub ComboBoxGroup_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxGroup.TextChanged
+    Private Sub ComboBoxGroup_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxGroup.SelectedIndexChanged
 
         Dim i As Integer
         tblProd.Clear()
@@ -62,7 +62,7 @@ Public Class FormOpenIssue
         tblProd = DsProd.Tables("product")
 
         Try
-            If ListViewGRU.SelectedItems.Count = 0 then 
+            If ListViewGRU.SelectedItems.Count = 0 Then
                 ComboBoxName.Text = ""
                 Dim result As DataRow() = tblProd.Select("bitronpn = '" & ProdOpenIssue & "'")
                 ComboBoxName.Items.Clear()
@@ -79,7 +79,7 @@ Public Class FormOpenIssue
                     End While
                 End If
                 ComboBoxName.Text = ""
-            end if
+            End If
         Catch ex As Exception
             MsgBox("ERROR TO INTERPRET THE STRING")
         End Try
@@ -107,16 +107,16 @@ Public Class FormOpenIssue
         Next
     End Sub
 
-    Dim dateFromDescription as String
+    Dim dateFromDescription As String
 
-     Private Sub ListViewGRU_ItemSelectionChanged(sender As Object, e As ListViewItemSelectionChangedEventArgs) Handles ListViewGRU.ItemSelectionChanged
-        Dim description As String  
-        If ListViewGRU.SelectedItems.Count = 1
+    Private Sub ListViewGRU_ItemSelectionChanged(sender As Object, e As ListViewItemSelectionChangedEventArgs) Handles ListViewGRU.ItemSelectionChanged
+        Dim description As String
+        If ListViewGRU.SelectedItems.Count = 1 Then
             description = ListViewGRU.SelectedItems.Item(0).SubItems(1).Text.ToString()
-            dateFromDescription = description.Substring(0,InStr(1, description, ";" ) + 1)
-            ComboBoxGroup.Text = ListViewGRU.SelectedItems.Item(0).SubItems(0).Text.ToString()            
-            ComboBoxName.Text = description.Substring(InStr(1, description, ";" ) + 1)
-        else
+            dateFromDescription = description.Substring(0, InStr(1, description, ";") + 1)
+            ComboBoxGroup.Text = ListViewGRU.SelectedItems.Item(0).SubItems(0).Text.ToString()
+            ComboBoxName.Text = description.Substring(InStr(1, description, ";") + 1)
+        Else
             dateFromDescription = ""
             ComboBoxName.Text = ""
         End If
@@ -171,7 +171,7 @@ Public Class FormOpenIssue
             dept = ComboBoxGroup.Text
             opi = dateFromDescription & ComboBoxName.Text
 
-            OpenIssue = Replace(OpenIssue, ListViewGRU.SelectedItems.Item(0).SubItems(0).Text & "[" & ListViewGRU.SelectedItems.Item(0).SubItems(1).Text & "];" , dept & "[" & opi & "];", , , CompareMethod.Text)
+            OpenIssue = Replace(OpenIssue, ListViewGRU.SelectedItems.Item(0).SubItems(0).Text & "[" & ListViewGRU.SelectedItems.Item(0).SubItems(1).Text & "];", dept & "[" & opi & "];", , , CompareMethod.Text)
             Try
                 sql = "UPDATE `" & DBName & "`.`product` SET `OpenIssue` = '" & OpenIssue &
                 "' WHERE `product`.`BitronPN` = '" & Trim(FormProduct.TextBoxProduct.Text) & "' ;"
@@ -193,6 +193,6 @@ Public Class FormOpenIssue
         For Each column In ListViewGRU.Columns
             column.Width = -2
         Next
-        
+
     End Sub
 End Class

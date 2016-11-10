@@ -155,10 +155,10 @@ Partial Class FormOpenIssue
 End Sub
     Friend WithEvents ButtonRemove As System.Windows.Forms.Button
     Friend WithEvents ButtonAdd As System.Windows.Forms.Button
-    Friend WithEvents ComboBoxGroup As System.Windows.Forms.ComboBox
     Friend WithEvents Label10 As System.Windows.Forms.Label
     Friend WithEvents ComboBoxName As System.Windows.Forms.ComboBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents ListViewGRU As System.Windows.Forms.ListView
     Friend WithEvents ButtonUpdate As Button
+    Friend WithEvents ComboBoxGroup As ComboBox
 End Class

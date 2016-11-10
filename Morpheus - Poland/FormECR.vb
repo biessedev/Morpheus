@@ -21,10 +21,12 @@ Public Class FormECR
     Private Sub FormECR_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
         checkSave()
 
+
         FormStart.Show()
+
     End Sub
 
-    Private Function GetUserDepartaments() as String
+    Private Function GetUserDepartaments() As String
         Dim rightDep As String
         rightDep = ""
         If controlRight("E") = 3 Then rightDep += "E"
@@ -64,12 +66,12 @@ Public Class FormECR
         If userDepartament3.Contains("A") = False And userDepartament3 <> "" Then
             For Each item As String In userDepartament3
                 Try
-                     Me.Controls("Button" & item & "L").Enabled = True
+                    Me.Controls("Button" & item & "L").Enabled = True
                 Catch ex As Exception
                     'MsgBox(ex.Message)
                 End Try
-               
-            Next            
+
+            Next
         End If
 
         If userDepartament3.Contains("R") And Not AllSign() Then
@@ -278,33 +280,33 @@ Public Class FormECR
                 'If userDep3 <> "A" Then Me.Controls("DateTimePicker" & userDep3).Visible = True
                 If userDepartament3.Contains("A") = False Then
                     For Each item As String In userDepartament3
-                    Try     
+                        Try
                             Me.Controls("Button" & item & "L").Enabled = True
-                    Catch ex As Exception
-                        'MsgBox(ex.Message)
-                    End Try               
-                    Next                     
+                        Catch ex As Exception
+                            'MsgBox(ex.Message)
+                        End Try
+                    Next
                 End If
 
             Else
                 ComboBoxPay.Enabled = False
                 If userDepartament3.Contains("A") = False Then
                     For Each item As String In userDepartament3
-                    Try     
+                        Try
                             Me.Controls("DateTimePicker" & item).Visible = False
-                    Catch ex As Exception
-                        'MsgBox(ex.Message)
-                    End Try               
-                    Next   
+                        Catch ex As Exception
+                            'MsgBox(ex.Message)
+                        End Try
+                    Next
                 End If
                 If userDepartament3.Contains("A") = False Then
                     For Each item As String In userDepartament3
-                    Try     
+                        Try
                             Me.Controls("Button" & item & "L").Enabled = False
-                    Catch ex As Exception
-                        'MsgBox(ex.Message)
-                    End Try               
-                    Next 
+                        Catch ex As Exception
+                            'MsgBox(ex.Message)
+                        End Try
+                    Next
                 End If
             End If
         Catch ex As Exception
