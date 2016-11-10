@@ -27,7 +27,12 @@ Public Class FormStart
     End Sub
 
     Private Sub ButtonECR_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonECR.Click
-        FormECR.Show()
+        Try
+            FormECR.Show()
+        Catch ex As Exception
+
+        End Try
+        
         FormECR.Focus()
         FormECR.Text = FormECR.Text & " <>  Welcome : " & CreAccount.strUserName
     End Sub

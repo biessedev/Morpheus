@@ -12,7 +12,8 @@ Public Class FormECR
     Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM product", MySqlconnection)
     Dim tblDoc As DataTable, tblDocType As DataTable, tblEcr As DataTable, tblProd As DataTable
     Dim DsDoc As New DataSet, DsDocType As New DataSet, DsEcr As New DataSet, DsProd As New DataSet
-    Dim userDep3 As String
+    Dim userDepartament3 As String
+    'Dim userDep3 As String
     Dim cmd As New MySqlCommand
     Dim CultureInfo_ja_JP As New CultureInfo("ja-JP", False)
     Dim needSave As Boolean = False
@@ -22,6 +23,23 @@ Public Class FormECR
 
         FormStart.Show()
     End Sub
+
+    Private Function GetUserDepartaments() as String
+        Dim rightDep As String
+        rightDep = ""
+        If controlRight("E") = 3 Then rightDep += "E"
+        If controlRight("L") = 3 Then rightDep += "L"
+        If controlRight("P") = 3 Then rightDep += "P"
+        If controlRight("Q") = 3 Then rightDep += "Q"
+        If controlRight("R") = 3 Then rightDep += "R"
+        If controlRight("U") = 3 Then rightDep += "U"
+        If controlRight("A") = 3 Then rightDep += "A"
+        If controlRight("N") = 3 Then rightDep += "N"
+        If controlRight("C") = 3 Then rightDep += "C"
+        If controlRight("F") = 3 Then rightDep += "F"
+        If controlRight("B") = 3 Then rightDep += "B"
+        Return rightDep
+    End Function
 
     Private Sub FormECR_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         FormStart.Hide()
@@ -38,13 +56,23 @@ Public Class FormECR
         tblProd = DsProd.Tables("product")
 
         ComboProductFill()
-        userDep3 = user()
+        'userDep3 = user()
+        userDepartament3 = GetUserDepartaments()
 
         'If userDep3 <> "A" And userDep3 <> "" Then Me.Controls("DateTimePicker" & userDep3).Visible = True        ‘edited by johnson
 
-        If userDep3 <> "A" And userDep3 <> "" Then Me.Controls("Button" & userDep3 & "L").Enabled = True
+        If userDepartament3.Contains("A") = False And userDepartament3 <> "" Then
+            For Each item As String In userDepartament3
+                Try
+                     Me.Controls("Button" & item & "L").Enabled = True
+                Catch ex As Exception
+                    'MsgBox(ex.Message)
+                End Try
+               
+            Next            
+        End If
 
-        If userDep3 = "R" And Not AllSign() Then
+        If userDepartament3.Contains("R") And Not AllSign() Then
             ComboBoxPay.Enabled = True
         Else
             ComboBoxPay.Enabled = False
@@ -63,10 +91,10 @@ Public Class FormECR
         fillEcrComboTable()
         If ComboBoxEcr.Items.Count > 0 Then ComboBoxEcr.Text = ComboBoxEcr.Items(ComboBoxEcr.Items.Count - 1) 'Si aspetta sempre almeno una ECR
 
-        ColorButton(userDep3)
+        ColorButton(userDepartament3)
         UpdateField()
         ButtonSave.BackColor = Color.Green
-        If userDep3 = "" Then
+        If userDepartament3 = "" Then
             ButtonR_Click(Me, e)
         End If
 
@@ -159,24 +187,24 @@ Public Class FormECR
             ButtonN.Text = Result(0).Item("Nsign")
             ButtonB.Text = Result(0).Item("Bsign")
 
-            If userDep3 = "E" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Enote")
-            If userDep3 = "L" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Lnote")
-            If userDep3 = "P" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Pnote")
-            If userDep3 = "Q" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Qnote")
-            If userDep3 = "R" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Rnote")
-            If userDep3 = "U" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Unote")
-            If userDep3 = "A" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Anote")
-            If userDep3 = "N" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("nnote")
-            If userDep3 = "B" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Bnote")
+            If userDepartament3.Contains("E") Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Enote")
+            If userDepartament3.Contains("L") Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Lnote")
+            If userDepartament3.Contains("P") Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Pnote")
+            If userDepartament3.Contains("Q") Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Qnote")
+            If userDepartament3.Contains("R") Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Rnote")
+            If userDepartament3.Contains("U") Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Unote")
+            If userDepartament3.Contains("A") Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Anote")
+            If userDepartament3.Contains("N") Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("nnote")
+            If userDepartament3.Contains("B") Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Bnote")
 
-            If userDep3 = "E" Then TextBoxStepCost.Text = Result(0).Item("ECost")
-            If userDep3 = "L" Then TextBoxStepCost.Text = Result(0).Item("LCost")
-            If userDep3 = "P" Then TextBoxStepCost.Text = Result(0).Item("PCost")
-            If userDep3 = "Q" Then TextBoxStepCost.Text = Result(0).Item("QCost")
-            If userDep3 = "R" Then TextBoxStepCost.Text = Result(0).Item("RCost")
-            If userDep3 = "U" Then TextBoxStepCost.Text = Result(0).Item("UCost")
-            If userDep3 = "N" Then TextBoxStepCost.Text = Result(0).Item("NCost")
-            If userDep3 = "B" Then TextBoxStepCost.Text = Result(0).Item("BCost")
+            If userDepartament3.Contains("E") Then TextBoxStepCost.Text = Result(0).Item("ECost")
+            If userDepartament3.Contains("L") Then TextBoxStepCost.Text = Result(0).Item("LCost")
+            If userDepartament3.Contains("P") Then TextBoxStepCost.Text = Result(0).Item("PCost")
+            If userDepartament3.Contains("Q") Then TextBoxStepCost.Text = Result(0).Item("QCost")
+            If userDepartament3.Contains("R") Then TextBoxStepCost.Text = Result(0).Item("RCost")
+            If userDepartament3.Contains("U") Then TextBoxStepCost.Text = Result(0).Item("UCost")
+            If userDepartament3.Contains("N") Then TextBoxStepCost.Text = Result(0).Item("NCost")
+            If userDepartament3.Contains("B") Then TextBoxStepCost.Text = Result(0).Item("BCost")
 
             If Result(0).Item("EcrCheck").ToString = "YES" Then
 
@@ -216,7 +244,7 @@ Public Class FormECR
                 LabelConfirm.Text = Replace(Result(0).Item("confirm").ToString, "SENT_", "")
             Else
 
-                If userDep3 = "N" Then
+                If userDepartament3.Contains("N") Then
                     CheckConfirm.Visible = True
                     CheckConfirm.Enabled = True
                     LabelConfirm.Visible = False
@@ -248,12 +276,36 @@ Public Class FormECR
 
                 ComboBoxPay.Enabled = True
                 'If userDep3 <> "A" Then Me.Controls("DateTimePicker" & userDep3).Visible = True
-                If userDep3 <> "A" Then Me.Controls("Button" & userDep3 & "L").Enabled = True
+                If userDepartament3.Contains("A") = False Then
+                    For Each item As String In userDepartament3
+                    Try     
+                            Me.Controls("Button" & item & "L").Enabled = True
+                    Catch ex As Exception
+                        'MsgBox(ex.Message)
+                    End Try               
+                    Next                     
+                End If
 
             Else
                 ComboBoxPay.Enabled = False
-                If userDep3 <> "A" Then Me.Controls("DateTimePicker" & userDep3).Visible = False
-                If userDep3 <> "A" Then Me.Controls("Button" & userDep3 & "L").Enabled = False
+                If userDepartament3.Contains("A") = False Then
+                    For Each item As String In userDepartament3
+                    Try     
+                            Me.Controls("DateTimePicker" & item).Visible = False
+                    Catch ex As Exception
+                        'MsgBox(ex.Message)
+                    End Try               
+                    Next   
+                End If
+                If userDepartament3.Contains("A") = False Then
+                    For Each item As String In userDepartament3
+                    Try     
+                            Me.Controls("Button" & item & "L").Enabled = False
+                    Catch ex As Exception
+                        'MsgBox(ex.Message)
+                    End Try               
+                    Next 
+                End If
             End If
         Catch ex As Exception
 
@@ -276,7 +328,7 @@ Public Class FormECR
             LabelApproved.ForeColor = Color.Green
             LabelApproved.Text = "APPROVED"
         End If
-        If userDep3 = "A" Then
+        If userDepartament3.Contains("A") Then
             TextBoxStepCost.ReadOnly = True
             ButtonCalc.Enabled = False
         End If
@@ -344,24 +396,24 @@ Public Class FormECR
 
         ResetColorButton()
 
-        If US = "E" Then ButtonE.BackColor = Color.LightGreen
-        If US = "L" Then ButtonL.BackColor = Color.LightGreen
-        If US = "P" Then ButtonP.BackColor = Color.LightGreen
-        If US = "Q" Then ButtonQ.BackColor = Color.LightGreen
-        If US = "R" Then ButtonR.BackColor = Color.LightGreen
-        If US = "U" Then ButtonU.BackColor = Color.LightGreen
-        If US = "A" Then ButtonA.BackColor = Color.LightGreen
-        If US = "N" Then ButtonN.BackColor = Color.LightGreen
-        If US = "B" Then ButtonB.BackColor = Color.LightGreen
+        If US.Contains("E") Then ButtonE.BackColor = Color.LightGreen
+        If US.Contains("L") Then ButtonL.BackColor = Color.LightGreen
+        If US.Contains("P") Then ButtonP.BackColor = Color.LightGreen
+        If US.Contains("Q") Then ButtonQ.BackColor = Color.LightGreen
+        If US.Contains("R") Then ButtonR.BackColor = Color.LightGreen
+        If US.Contains("U") Then ButtonU.BackColor = Color.LightGreen
+        If US.Contains("A") Then ButtonA.BackColor = Color.LightGreen
+        If US.Contains("N") Then ButtonN.BackColor = Color.LightGreen
+        If US.Contains("B") Then ButtonB.BackColor = Color.LightGreen
 
-        If userDep3 = "E" Then ButtonEL.BackColor = Color.LightGreen
-        If userDep3 = "L" Then ButtonLL.BackColor = Color.LightGreen
-        If userDep3 = "P" Then ButtonPL.BackColor = Color.LightGreen
-        If userDep3 = "Q" Then ButtonQL.BackColor = Color.LightGreen
-        If userDep3 = "R" Then ButtonRL.BackColor = Color.LightGreen
-        If userDep3 = "U" Then ButtonUL.BackColor = Color.LightGreen
-        If userDep3 = "N" Then ButtonNL.BackColor = Color.LightGreen
-        If userDep3 = "B" Then ButtonBL.BackColor = Color.LightGreen
+        If userDepartament3.Contains("E") Then ButtonEL.BackColor = Color.LightGreen
+        If userDepartament3.Contains("L") Then ButtonLL.BackColor = Color.LightGreen
+        If userDepartament3.Contains("P") Then ButtonPL.BackColor = Color.LightGreen
+        If userDepartament3.Contains("Q") Then ButtonQL.BackColor = Color.LightGreen
+        If userDepartament3.Contains("R") Then ButtonRL.BackColor = Color.LightGreen
+        If userDepartament3.Contains("U") Then ButtonUL.BackColor = Color.LightGreen
+        If userDepartament3.Contains("N") Then ButtonNL.BackColor = Color.LightGreen
+        If userDepartament3.Contains("B") Then ButtonBL.BackColor = Color.LightGreen
 
         If controlRight("R") = 3 And controlRight("J") = 3 Then
             ButtonRemove.Enabled = True
@@ -465,15 +517,15 @@ Public Class FormECR
 
         Dim datepresence As Boolean
         checkSave()
-        If userDep3 = but Then
+        If userDepartament3.Contains(but) Then
             ButtonSave.Visible = True
         Else
             ButtonSave.Visible = False
         End If
-        If userDep3 = "" Then
+        If userDepartament3 = "" Then
         Else
 
-            If userDep3 = but And Me.Controls("Button" & userDep3).BackColor = Color.LightGreen Then
+            If userDepartament3.Contains(but) And Me.Controls("Button" & but).BackColor = Color.LightGreen Then
                 ButtonSave.Enabled = True
                 If Me.Controls("Button" & but).Text = "APPROVED" Then
                     If MsgBox("Do you want to sign this ECR?", MsgBoxStyle.YesNo, "ECR Question") = MsgBoxResult.Yes Then
@@ -584,7 +636,7 @@ Public Class FormECR
 
             End If
 
-            If userDep3 = but And Not AllSign() Then
+            If userDepartament3.Contains(but) And Not AllSign() Then
                 RichTextBoxStep.ReadOnly = False
                 TextBoxStepCost.ReadOnly = False
                 ButtonCalc.Enabled = True
@@ -593,13 +645,13 @@ Public Class FormECR
                 TextBoxStepCost.ReadOnly = True
 
             End If
-            If userDep3 = "A" Then
+            If userDepartament3.Contains("A") Then
                 TextBoxStepCost.ReadOnly = True
                 ButtonCalc.Enabled = False
             End If
 
 
-            If userDep3 = "N" Then
+            If userDepartament3.Contains("N") Then
                 TextBoxStepCost.ReadOnly = False
                 RichTextBoxStep.ReadOnly = False
             End If
@@ -994,8 +1046,8 @@ Public Class FormECR
     End Sub
 
     Private Sub ButtonSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSave.Click
-        WriteField(userDep3 & "cost", TextBoxStepCost.Text)
-        WriteField(userDep3 & "note", Replace(Replace(RichTextBoxStep.Rtf, "\", "\\"), "'", ""))
+        WriteField(userDepartament3 & "cost", TextBoxStepCost.Text)
+        WriteField(userDepartament3 & "note", Replace(Replace(RichTextBoxStep.Rtf, "\", "\\"), "'", ""))
 
         needSave = False
         ButtonSave.BackColor = Color.Green

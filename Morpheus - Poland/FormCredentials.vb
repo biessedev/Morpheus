@@ -3,28 +3,43 @@ Option Strict Off
 Option Compare Text
 Imports MySql.Data.MySqlClient
 Imports System
+Imports System.Configuration
+Imports System.Data.SqlClient
 
 Public Class FormCredentials
 
     Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
 
         If TextBoxPassword.Text <> "" And TextBoxUserName.Text <> "" Then
-            OpenConnectionMySql(TextBoxhost.Text, TextBoxDatabase.Text, "root", "bitron")
+            'OpenConnectionMySql(TextBoxhost.Text, TextBoxDatabase.Text, "root", "bitron")
+            Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings("MorpheusPoland").ConnectionString
+            OpenConnectionMySql(builder("host"), builder("database") , builder("username"), builder("password"))
+
+            
+            
+
 
             If MySqlconnection.State = ConnectionState.Open Then
 
                 strFtpServerUser = ParameterTable("MorpheusFtpUser")
                 strFtpServerPsw = ParameterTable("MorpheusFtpPsw")
 
+
                 Dim Adapter As New MySqlDataAdapter("SELECT * FROM credentials where username='" & TextBoxUserName.Text & "' and password='" & TextBoxPassword.Text & "'", MySqlconnection)
                 Dim ds As New DataSet
+                
+
                 Adapter.Fill(ds)
                 Dim tblCredentials As DataTable = ds.Tables(0)
                 If tblCredentials.Rows.Count = 1 Then
+                    Dim  connStr As  New Common.DbConnectionStringBuilder()
+                    connStr.ConnectionString = ConfigurationManager.ConnectionStrings("MorpheusPoland").ConnectionString
+
                     CreAccount.strUserName = LCase(TextBoxUserName.Text)
-                    CreAccount.strPassword = LCase(TextBoxPassword.Text)
-                    CreAccount.strHost = TextBoxhost.Text
-                    CreAccount.strDatabase = TextBoxDatabase.Text
+                    CreAccount.strPassword = LCase(TextBoxPassword.Text)                    
+                    CreAccount.strHost = connStr("host")
+                    CreAccount.strDatabase = connStr("database")
                     CreAccount.strSign = tblCredentials.Rows(0)("sign")
                     CreAccount.intId = tblCredentials.Rows(0)("id")
                     tblCredentials.Dispose()
@@ -36,7 +51,7 @@ Public Class FormCredentials
                     Me.Hide()
                     FormStart.Show()
                     FormStart.Focus()
-                    DBName = UCase(TextBoxDatabase.Text)
+                    DBName = UCase(connStr("database"))
                     strFtpServerAdd = ParameterTable("PathDocument") & DBName & "/"
                 Else
                     MsgBox("Database account error, check password and username")
@@ -55,7 +70,7 @@ Public Class FormCredentials
     Private Sub FormCredentials_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
 
         TextBoxUserName.Text = ""
-        TextBoxhost.Text = "10.140.13.164"
+        'TextBoxhost.Text = "10.140.13.164"
         TextBoxPassword.Text = ""
 
     End Sub
@@ -66,10 +81,10 @@ Public Class FormCredentials
         End If
     End Sub
 
-    Private Sub TextBoxUserName_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxUserName.TextChanged
-        If TextBoxUserName.Text = "demo" Then
-            TextBoxDatabase.Text = "demo"
-        End If
-    End Sub
+    'Private Sub TextBoxUserName_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxUserName.TextChanged
+    '    If TextBoxUserName.Text = "demo" Then
+    '        TextBoxDatabase.Text = "demo"
+    '    End If
+    'End Sub
 
 End Class

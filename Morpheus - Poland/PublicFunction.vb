@@ -73,6 +73,8 @@ Module PublicFunction
         End Try
     End Sub
 
+    
+
     Sub CloseConnectionMySql()
         Try
             If MySqlconnection.State = ConnectionState.Open Then

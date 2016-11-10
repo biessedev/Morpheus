@@ -7,6 +7,7 @@ Imports MySql.Data.MySqlClient
 Imports System.Net.Mail
 Imports System.Net
 Imports System.Linq
+Imports System.Configuration
 
 Public Class FormAdministration
 
@@ -72,7 +73,12 @@ Public Class FormAdministration
 
         If Now.DayOfWeek <> DayOfWeek.Saturday And Now.DayOfWeek <> DayOfWeek.Sunday Then
             'TimerECR.Stop()
-            OpenConnectionMySql(FormCredentials.TextBoxhost.Text, FormCredentials.TextBoxDatabase.Text, "root", "bitron")
+            'OpenConnectionMySql(FormCredentials.TextBoxhost.Text, FormCredentials.TextBoxDatabase.Text, "root", "bitron")
+
+            Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings("MorpheusPoland").ConnectionString
+            OpenConnectionMySql(builder("host"), builder("database") , builder("username"), builder("password"))
+
             TextBoxEcr.Text = date_to_string(Now) & " Start ECR"
             Application.DoEvents()
             UpdateEcrTable()
@@ -91,7 +97,11 @@ Public Class FormAdministration
 
         If Now.DayOfWeek <> DayOfWeek.Saturday And Now.DayOfWeek <> DayOfWeek.Sunday Then
             'TimerECR.Stop()
-            OpenConnectionMySql(FormCredentials.TextBoxhost.Text, FormCredentials.TextBoxDatabase.Text, "root", "bitron")
+            'OpenConnectionMySql(FormCredentials.TextBoxhost.Text, FormCredentials.TextBoxDatabase.Text, "root", "bitron")
+            Dim builder As New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings("MorpheusPoland").ConnectionString
+            OpenConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+
             TextBoxEcr.Text = date_to_string(Now) & " Start TCR"
             Application.DoEvents()
             TCRMailScheduler()
@@ -102,7 +112,11 @@ Public Class FormAdministration
 
         ' DOC
         If Now.DayOfWeek <> DayOfWeek.Saturday And Now.DayOfWeek <> DayOfWeek.Sunday Then
-            OpenConnectionMySql(FormCredentials.TextBoxhost.Text, FormCredentials.TextBoxDatabase.Text, "root", "bitron")
+            'OpenConnectionMySql(FormCredentials.TextBoxhost.Text, FormCredentials.TextBoxDatabase.Text, "root", "bitron")
+            Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings("MorpheusPoland").ConnectionString
+            OpenConnectionMySql(builder("host"), builder("database") , builder("username"), builder("password"))
+
             TextBoxEcr.Text = date_to_string(Now) & " Start Doc Changes"
             Application.DoEvents()
             DocMailScheduler()
@@ -113,7 +127,11 @@ Public Class FormAdministration
         ' Status
         If Now.DayOfWeek <> DayOfWeek.Saturday And Now.DayOfWeek <> DayOfWeek.Sunday Then
             'TimerECR.Stop()
-            OpenConnectionMySql(FormCredentials.TextBoxhost.Text, FormCredentials.TextBoxDatabase.Text, "root", "bitron")
+            'OpenConnectionMySql(FormCredentials.TextBoxhost.Text, FormCredentials.TextBoxDatabase.Text, "root", "bitron")
+            Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings("MorpheusPoland").ConnectionString
+            OpenConnectionMySql(builder("host"), builder("database") , builder("username"), builder("password"))
+
             TextBoxEcr.Text = date_to_string(Now) & " Start Satus Product"
             Application.DoEvents()
             StatusMailScheduler()
@@ -698,7 +716,25 @@ Public Class FormAdministration
             If DayOfWeek.Saturday <> dt.DayOfWeek And DayOfWeek.Sunday <> dt.DayOfWeek And (dt.Hour > 8 And dt.Hour < 20) Then
                 'If (InStr(freqTo, "[" & Necr & "]", CompareMethod.Text) <= 0) And Necr <> "DAILY" Or ((dt.Hour = 9) And (dt.Minute() >= 0 And dt.Minute() < 59)) Then
                 'If (InStr(freqTo, "[" & Necr & "]", CompareMethod.Text) <= 0) And Necr <> "DAILY" And (dt.Hour > 8 And dt.Hour < 20) Then
-                If (InStr(freqTo, "[" & Necr & "]", CompareMethod.Text) <= 0) Then
+
+                Dim rowEcr As DataRow() = tblEcr.Select("number = '" & Necr & "'")
+                Dim parsedDate
+                Dim dateList As  New List(Of DateTime)
+                dateList.Add(IF(DateTime.TryParse(rowEcr(0).Item("date"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                dateList.Add(IF(DateTime.TryParse(rowEcr(0).Item("dateR"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                dateList.Add(IF(DateTime.TryParse(rowEcr(0).Item("dateU"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                dateList.Add(IF(DateTime.TryParse(rowEcr(0).Item("dateL"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                dateList.Add(IF(DateTime.TryParse(rowEcr(0).Item("dateB"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                dateList.Add(IF(DateTime.TryParse(rowEcr(0).Item("dateE"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                dateList.Add(IF(DateTime.TryParse(rowEcr(0).Item("dateN"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                dateList.Add(IF(DateTime.TryParse(rowEcr(0).Item("dateQ"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                dateList.Add(IF(DateTime.TryParse(rowEcr(0).Item("dateP"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                dateList.Sort()
+                dateList.Reverse()
+                
+                'If (InStr(freqTo, "[" & Necr & "]", CompareMethod.Text) <= 0) Then
+                If(InStr(freqTo, "[" & Necr & "]", CompareMethod.Text) <= 0) Or _
+                  ((InStr(freqTo, "[" & Necr & "]", CompareMethod.Text) > 0) And ( DateDiff(DateInterval.Day, dateList.ElementAt(0), DateTime.Now) >= 3 )) Then
                     client.Send(msg)
                     MailSent = True
                     ListBoxLog.Items.Add("E mail sent: " & SubText & "  " & Mid(msg.To.Item(0).ToString, 1, 45) & " ....")

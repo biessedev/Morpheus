@@ -62,24 +62,24 @@ Public Class FormOpenIssue
         tblProd = DsProd.Tables("product")
 
         Try
+            If ListViewGRU.SelectedItems.Count = 0 then 
+                ComboBoxName.Text = ""
+                Dim result As DataRow() = tblProd.Select("bitronpn = '" & ProdOpenIssue & "'")
+                ComboBoxName.Items.Clear()
 
-            ComboBoxName.Text = ""
-            Dim result As DataRow() = tblProd.Select("bitronpn = '" & ProdOpenIssue & "'")
-            ComboBoxName.Items.Clear()
-
-            If result.Length > 0 Then
-                Dim k As Integer = InStr(1, result(i).Item("OpenIssue").ToString, ComboBoxGroup.Text)
-                While k > 0
-                    If k > 0 Then
-                        Dim n As Integer = InStr(k + 1, result(i).Item("OpenIssue").ToString, "]")
-                        Dim j As Integer = InStr(k + 1, result(i).Item("OpenIssue").ToString, "[")
-                        ComboBoxName.Items.Add(Mid(result(i).Item("OpenIssue").ToString, j + 1, n - j - 1))
-                    End If
-                    k = InStr(k + 1, result(i).Item("OpenIssue").ToString, ComboBoxGroup.Text)
-                End While
-            End If
-
-            ComboBoxName.Text = ""
+                If result.Length > 0 Then
+                    Dim k As Integer = InStr(1, result(i).Item("OpenIssue").ToString, ComboBoxGroup.Text)
+                    While k > 0
+                        If k > 0 Then
+                            Dim n As Integer = InStr(k + 1, result(i).Item("OpenIssue").ToString, "]")
+                            Dim j As Integer = InStr(k + 1, result(i).Item("OpenIssue").ToString, "[")
+                            ComboBoxName.Items.Add(Mid(result(i).Item("OpenIssue").ToString, j + 1, n - j - 1))
+                        End If
+                        k = InStr(k + 1, result(i).Item("OpenIssue").ToString, ComboBoxGroup.Text)
+                    End While
+                End If
+                ComboBoxName.Text = ""
+            end if
         Catch ex As Exception
             MsgBox("ERROR TO INTERPRET THE STRING")
         End Try
@@ -107,6 +107,21 @@ Public Class FormOpenIssue
         Next
     End Sub
 
+    Dim dateFromDescription as String
+
+     Private Sub ListViewGRU_ItemSelectionChanged(sender As Object, e As ListViewItemSelectionChangedEventArgs) Handles ListViewGRU.ItemSelectionChanged
+        Dim description As String  
+        If ListViewGRU.SelectedItems.Count = 1
+            description = ListViewGRU.SelectedItems.Item(0).SubItems(1).Text.ToString()
+            dateFromDescription = description.Substring(0,InStr(1, description, ";" ) + 1)
+            ComboBoxGroup.Text = ListViewGRU.SelectedItems.Item(0).SubItems(0).Text.ToString()            
+            ComboBoxName.Text = description.Substring(InStr(1, description, ";" ) + 1)
+        else
+            dateFromDescription = ""
+            ComboBoxName.Text = ""
+        End If
+    End Sub
+
 
     Private Sub ButtonRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRemove.Click
 
@@ -126,6 +141,7 @@ Public Class FormOpenIssue
                 "' WHERE `product`.`BitronPN` = '" & Trim(FormProduct.TextBoxProduct.Text) & "' ;"
                 Dim cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
+                ComboBoxName.Text = ""
             Catch ex As Exception
                 MsgBox("Deletion failed!")
             End Try
@@ -144,4 +160,39 @@ Public Class FormOpenIssue
         Next
     End Sub
 
+    Private Sub ButtonUpdate_Click(sender As Object, e As EventArgs) Handles ButtonUpdate.Click
+        Dim sql As String
+        Dim oldOpenIssue As String = OpenIssue
+        Dim dept = ""
+        Dim opi = ""
+
+        If ListViewGRU.SelectedItems.Count = 1 Then
+
+            dept = ComboBoxGroup.Text
+            opi = dateFromDescription & ComboBoxName.Text
+
+            OpenIssue = Replace(OpenIssue, ListViewGRU.SelectedItems.Item(0).SubItems(0).Text & "[" & ListViewGRU.SelectedItems.Item(0).SubItems(1).Text & "];" , dept & "[" & opi & "];", , , CompareMethod.Text)
+            Try
+                sql = "UPDATE `" & DBName & "`.`product` SET `OpenIssue` = '" & OpenIssue &
+                "' WHERE `product`.`BitronPN` = '" & Trim(FormProduct.TextBoxProduct.Text) & "' ;"
+                Dim cmd = New MySqlCommand(sql, MySqlconnection)
+                cmd.ExecuteNonQuery()
+            Catch ex As Exception
+                MsgBox("Update failed!")
+            End Try
+        Else
+            MsgBox("Select an Open Issue!")
+        End If
+
+        fillList()
+
+        If Len(oldOpenIssue) <> Len(OpenIssue) Then
+            MsgBox("Updated Issue : " & dept & "[" & opi & "]")
+        End If
+        Dim column As ColumnHeader
+        For Each column In ListViewGRU.Columns
+            column.Width = -2
+        Next
+        
+    End Sub
 End Class

@@ -18,7 +18,7 @@ Public Class FormProduct
     Dim Adaptertype As New MySqlDataAdapter("SELECT * FROM doctype", MySqlconnection)
     Dim tbltype As DataTable
     Dim Dstype As New DataSet
-    Dim User3 As String
+    'Dim User3 As String
     Dim AdapterSigip As New MySqlDataAdapter("SELECT * FROM sigip", MySqlconnection)
     Dim tblSigip As DataTable
     Dim DsSigip As New DataSet
@@ -618,7 +618,7 @@ Public Class FormProduct
         tblProd.Clear()
         AdapterProd.Fill(DsProd, "product")
         tblProd = DsProd.Tables("product")
-        User3 = user()
+        'User3 = user()
 
         OpenIssue = ""
         If TextBoxProduct.Text <> "" Then
@@ -650,8 +650,9 @@ Public Class FormProduct
     End Sub
 
     Private Sub ButtonStatusUP_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonStatusUP.Click
-
-        User3 = user()
+        Dim isStatusUpdated = false
+        'User3 = user()
+        Dim statusApproved As List(Of String) = New List(Of String)
         If controlRight("W") >= 3 Then
             If TextBoxProduct.Text <> "" Then
 
@@ -663,95 +664,131 @@ Public Class FormProduct
                             If (ComboBoxStatus.Text = "OBSOLETE" Or ComboBoxStatus.Text = "" Or ComboBoxStatus.Text = "SOP_SAMPLE" Or ComboBoxStatus.Text = "R&D_APPROVED") _
                                 And (currentStatus = "MPA_APPROVED" And ComboBoxStatus.Text = "OBSOLETE" Or currentStatus = "OBSOLETE" Or currentStatus = "" Or currentStatus = "SOP_SAMPLE" Or currentStatus = "R&D_APPROVED") Then
                                 StatusUpdate(result(0).Item("StatusUpdateDate").ToString)
+                                isStatusUpdated  = True
                             Else
-                                MsgBox("You can update only the product in status """"; ""OBSOLETE"" ; ""SOP_SAMPLE""; ""R&D_APPROVED""; ")
+                                statusApproved.Add("")
+                                If statusApproved.Contains("OBSOLETE") =  false then statusApproved.Add("OBSOLETE")
+                                If statusApproved.Contains("SOP_SAMPLE") =  false then statusApproved.Add("SOP_SAMPLE")    
+                                If statusApproved.Contains("R&D_APPROVED") =  false then statusApproved.Add("R&D_APPROVED")                             
+                                'MsgBox("You can update only the product in status """"; ""OBSOLETE"" ; ""SOP_SAMPLE""; ""R&D_APPROVED""; ")
                             End If
                         End If
 
-                        If User3 = "L" Then
+                        If controlRight("L") = 3 'User3 = "L" Then
                             If (ComboBoxStatus.Text = "R&D_APPROVED" Or ComboBoxStatus.Text = "LOGISTIC_APPROVED") _
                             And (currentStatus = "R&D_APPROVED" Or currentStatus = "LOGISTIC_APPROVED") Then
                                 StatusUpdate(result(0).Item("StatusUpdateDate").ToString)
+                                isStatusUpdated  = True
                             Else
-                                MsgBox("You can update only the product in status ""R&D_APPROVED""; ""LOGISTIC_APPROVED"" ")
+                                If statusApproved.Contains("R&D_APPROVED") =  false then statusApproved.Add("R&D_APPROVED")
+                                If statusApproved.Contains("LOGISTIC_APPROVED") =  false then statusApproved.Add("LOGISTIC_APPROVED")
+                                'MsgBox("You can update only the product in status ""R&D_APPROVED""; ""LOGISTIC_APPROVED"" ")
                             End If
                         End If
 
-                        If User3 = "C" Then
+                        If controlRight("C") = 3 'User3 = "C" Then
                             If (ComboBoxStatus.Text = "CUSTOMER_APPROVED" Or ComboBoxStatus.Text = "LOGISTIC_APPROVED") _
                             And (currentStatus = "CUSTOMER_APPROVED" Or currentStatus = "LOGISTIC_APPROVED") Then
                                 StatusUpdate(result(0).Item("StatusUpdateDate").ToString)
+                                isStatusUpdated  = True
                             Else
-                                MsgBox("You can update only the product in status ""CUSTOMER_APPROVED""; ""LOGISTIC_APPROVED"" ")
+                                If statusApproved.Contains("CUSTOMER_APPROVED") =  false then statusApproved.Add("CUSTOMER_APPROVED")
+                                If statusApproved.Contains("LOGISTIC_APPROVED") =  false then statusApproved.Add("LOGISTIC_APPROVED")
+                                'MsgBox("You can update only the product in status ""CUSTOMER_APPROVED""; ""LOGISTIC_APPROVED"" ")
                             End If
                         End If
 
-                        If User3 = "U" Then
+                        If controlRight("U") = 3 'User3 = "U" Then
                             If (ComboBoxStatus.Text = "PURCHASING_APPROVED" Or ComboBoxStatus.Text = "CUSTOMER_APPROVED") _
                                 And (currentStatus = "PURCHASING_APPROVED" Or currentStatus = "CUSTOMER_APPROVED") Then
                                 StatusUpdate(result(0).Item("StatusUpdateDate").ToString)
+                                isStatusUpdated  = True
                             Else
-                                MsgBox("You can update only the product in status ""PURCHASING_APPROVED""; ""CUSTOMER_APPROVED"";")
+                                If statusApproved.Contains("PURCHASING_APPROVED") =  false then statusApproved.Add("PURCHASING_APPROVED")
+                                If statusApproved.Contains("CUSTOMER_APPROVED") =  false then statusApproved.Add("CUSTOMER_APPROVED")
+                                'MsgBox("You can update only the product in status ""PURCHASING_APPROVED""; ""CUSTOMER_APPROVED"";")
                             End If
                         End If
 
 
-                        If User3 = "P" Then
+                        If controlRight("P") = 3 'User3 = "P" Then
                             If (ComboBoxStatus.Text = "PRODUCTION_APPROVED" Or ComboBoxStatus.Text = "PURCHASING_APPROVED") _
                                 And (currentStatus = "PRODUCTION_APPROVED" Or currentStatus = "PURCHASING_APPROVED") Then
                                 StatusUpdate(result(0).Item("StatusUpdateDate").ToString)
+                                isStatusUpdated  = True
                             Else
-                                MsgBox("You can update only the product in status ""PRODUCTION_APPROVED""; ""PURCHASING_APPROVED"" ")
+                                If statusApproved.Contains("PRODUCTION_APPROVED") =  false then statusApproved.Add("PRODUCTION_APPROVED")
+                                If statusApproved.Contains("PURCHASING_APPROVED") =  false then statusApproved.Add("PURCHASING_APPROVED")
+                                'MsgBox("You can update only the product in status ""PRODUCTION_APPROVED""; ""PURCHASING_APPROVED"" ")
                             End If
                         End If
 
-                        If User3 = "Q" Then
+                        If controlRight("Q") = 3 'User3 = "Q" Then
                             If (ComboBoxStatus.Text = "TIME&MOTION_APPROVED" Or ComboBoxStatus.Text = "PRODUCTION_APPROVED") _
                                 And (currentStatus = "TIME&MOTION_APPROVED" Or currentStatus = "PRODUCTION_APPROVED") Then
                                 StatusUpdate(result(0).Item("StatusUpdateDate").ToString)
+                                isStatusUpdated  = True
                             Else
-                                MsgBox("You can update only the product in status ""TIME&MOTION_APPROVED""; ""PRODUCTION_APPROVED"" ")
+                                If statusApproved.Contains("TIME&MOTION_APPROVED") =  false then statusApproved.Add("TIME&MOTION_APPROVED")
+                                If statusApproved.Contains("PRODUCTION_APPROVED") =  false then statusApproved.Add("PRODUCTION_APPROVED")
+                                'MsgBox("You can update only the product in status ""TIME&MOTION_APPROVED""; ""PRODUCTION_APPROVED"" ")
                             End If
                         End If
 
-                        If User3 = "E" Then
+                        If controlRight("E") = 3 'User3 = "E" Then
                             If (ComboBoxStatus.Text = "TESTING_ENG_APPROVED" Or ComboBoxStatus.Text = "TIME&MOTION_APPROVED") _
                                 And (currentStatus = "TESTING_ENG_APPROVED" Or currentStatus = "TIME&MOTION_APPROVED") Then
                                 StatusUpdate(result(0).Item("StatusUpdateDate").ToString)
+                                isStatusUpdated  = True
                             Else
-                                MsgBox("You can update only the product in status ""TIME&MOTION_APPROVED""; ""TESTING_ENG_APPROVED"" ")
+                                If statusApproved.Contains("TIME&MOTION_APPROVED") =  false then statusApproved.Add("TIME&MOTION_APPROVED")
+                                If statusApproved.Contains("TESTING_ENG_APPROVED") =  false then statusApproved.Add("TESTING_ENG_APPROVED")
+                                'MsgBox("You can update only the product in status ""TIME&MOTION_APPROVED""; ""TESTING_ENG_APPROVED"" ")
                             End If
                         End If
 
-                        If User3 = "B" Then
+                        If controlRight("B") = 3 'User3 = "B" Then
                             If (ComboBoxStatus.Text = "PROCESS_ENG_APPROVED" Or ComboBoxStatus.Text = "TESTING_ENG_APPROVED") _
                                 And (currentStatus = "TESTING_ENG_APPROVED" Or currentStatus = "PROCESS_ENG_APPROVED") Then
                                 StatusUpdate(result(0).Item("StatusUpdateDate").ToString)
+                                isStatusUpdated  = True
                             Else
-                                MsgBox("You can update only the product in status ""PROCESS_ENG_APPROVED""; ""TESTING_ENG_APPROVED"" ")
+                                If statusApproved.Contains("PROCESS_ENG_APPROVED") =  false then statusApproved.Add("PROCESS_ENG_APPROVED")
+                                If statusApproved.Contains("TESTING_ENG_APPROVED") =  false then statusApproved.Add("TESTING_ENG_APPROVED")
+                                'MsgBox("You can update only the product in status ""PROCESS_ENG_APPROVED""; ""TESTING_ENG_APPROVED"" ")
                             End If
                         End If
 
 
-                        If User3 = "F" Then
+                        If controlRight("F") = 3 'User3 = "F" Then
                             If (ComboBoxStatus.Text = "FINANCIAL_APPROVED" Or ComboBoxStatus.Text = "PROCESS_ENG_APPROVED") _
                                 And (currentStatus = "PROCESS_ENG_APPROVED" Or currentStatus = "FINANCIAL_APPROVED") Then
                                 StatusUpdate(result(0).Item("StatusUpdateDate").ToString)
+                                isStatusUpdated  = True
                             Else
-                                MsgBox("You can update only the product in status ""PROCESS_ENG_APPROVED""; ""FINANCIAL_APPROVED"" ")
+                                If statusApproved.Contains("PROCESS_ENG_APPROVED") =  false then statusApproved.Add("PROCESS_ENG_APPROVED")
+                                If statusApproved.Contains("FINANCIAL_APPROVED") =  false then statusApproved.Add("FINANCIAL_APPROVED")
+                                'MsgBox("You can update only the product in status ""PROCESS_ENG_APPROVED""; ""FINANCIAL_APPROVED"" ")
                             End If
                         End If
 
-                        If User3 = "N" Then
+                        If controlRight("N") = 3 'User3 = "N" Then
                             If (ComboBoxStatus.Text = "MPA_APPROVED" Or ComboBoxStatus.Text = "MPA_STOPPED" Or ComboBoxStatus.Text = "MPA_STOPPED") _
                                 And (currentStatus = "FINANCIAL_APPROVED" Or currentStatus = "MPA_APPROVED" Or currentStatus = "MPA_STOPPED") Then
                                 StatusUpdate(result(0).Item("StatusUpdateDate").ToString)
+                                isStatusUpdated  = True
                             Else
-                                MsgBox("You can update only the product in status ""FINANCIAL_APPROVED"" or ""MPA_APPROVED"" ""MPA_STOP"" ")
+                                If statusApproved.Contains("FINANCIAL_APPROVED") =  false then statusApproved.Add("FINANCIAL_APPROVED")
+                                If statusApproved.Contains("MPA_APPROVED") =  false then statusApproved.Add("MPA_APPROVED")
+                                If statusApproved.Contains("MPA_STOP") =  false then statusApproved.Add("MPA_STOP")
+                                'MsgBox("You can update only the product in status ""FINANCIAL_APPROVED"" or ""MPA_APPROVED"" ""MPA_STOP"" ")
                             End If
                         End If
-
-                    ElseIf User3 = "N" And (result(0).Item("status").ToString = "MPA_APPROVED" Or result(0).Item("status").ToString = "MPA_STOPPED") And result(0).Item("mail").ToString = "SENT" And (ComboBoxStatus.Text = "MPA_APPROVED" Or ComboBoxStatus.Text = "MPA_STOPPED") Then
+                        If isStatusUpdated  = False then
+                            MsgBox("You can update only the product in status """ & String.Join("""; """, statusApproved.ToArray()) & """")
+                        End If
+                           'User3 = "N" And
+                    ElseIf controlRight("N") = 3  And (result(0).Item("status").ToString = "MPA_APPROVED" Or result(0).Item("status").ToString = "MPA_STOPPED") And result(0).Item("mail").ToString = "SENT" And (ComboBoxStatus.Text = "MPA_APPROVED" Or ComboBoxStatus.Text = "MPA_STOPPED") Then
                         StatusUpdate(result(0).Item("StatusUpdateDate").ToString)
                     Else
                         MsgBox("Product already with MPA SENT, only the Quality Dept. can change status in MPA_STOPPED")
@@ -796,7 +833,7 @@ Public Class FormProduct
         tblProd.Clear()
         AdapterProd.Fill(DsProd, "product")
         tblProd = DsProd.Tables("product")
-        User3 = user()
+        'User3 = user()
         WriteFile("", False)
         Dim i As Integer, result As DataRow(), k As Integer, j As Integer
         OpenIssue = ""

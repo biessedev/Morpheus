@@ -30,6 +30,7 @@ Partial Class FormOpenIssue
         Me.ComboBoxName = New System.Windows.Forms.ComboBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.ListViewGRU = New System.Windows.Forms.ListView()
+        Me.ButtonUpdate = New System.Windows.Forms.Button()
         Me.SuspendLayout
         '
         'ButtonRemove
@@ -47,7 +48,7 @@ Partial Class FormOpenIssue
         '
         Me.ButtonAdd.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.ButtonAdd.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.ButtonAdd.Location = New System.Drawing.Point(777, 386)
+        Me.ButtonAdd.Location = New System.Drawing.Point(777, 392)
         Me.ButtonAdd.Name = "ButtonAdd"
         Me.ButtonAdd.Size = New System.Drawing.Size(82, 22)
         Me.ButtonAdd.TabIndex = 221
@@ -111,6 +112,7 @@ Partial Class FormOpenIssue
         Me.ListViewGRU.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ListViewGRU.FullRowSelect = true
         Me.ListViewGRU.GridLines = true
+        Me.ListViewGRU.HideSelection = false
         ListViewItem1.StateImageIndex = 0
         Me.ListViewGRU.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.ListViewGRU.Location = New System.Drawing.Point(12, 122)
@@ -121,11 +123,23 @@ Partial Class FormOpenIssue
         Me.ListViewGRU.UseCompatibleStateImageBehavior = false
         Me.ListViewGRU.View = System.Windows.Forms.View.Details
         '
+        'ButtonUpdate
+        '
+        Me.ButtonUpdate.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.ButtonUpdate.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ButtonUpdate.Location = New System.Drawing.Point(131, 392)
+        Me.ButtonUpdate.Name = "ButtonUpdate"
+        Me.ButtonUpdate.Size = New System.Drawing.Size(82, 22)
+        Me.ButtonUpdate.TabIndex = 226
+        Me.ButtonUpdate.Text = "Update"
+        Me.ButtonUpdate.UseVisualStyleBackColor = true
+        '
         'FormOpenIssue
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(879, 417)
+        Me.Controls.Add(Me.ButtonUpdate)
         Me.Controls.Add(Me.ListViewGRU)
         Me.Controls.Add(Me.ComboBoxName)
         Me.Controls.Add(Me.Label1)
@@ -146,4 +160,5 @@ End Sub
     Friend WithEvents ComboBoxName As System.Windows.Forms.ComboBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents ListViewGRU As System.Windows.Forms.ListView
+    Friend WithEvents ButtonUpdate As Button
 End Class

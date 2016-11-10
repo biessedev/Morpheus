@@ -31,8 +31,8 @@ Partial Class FormNPIDocMamagement
         Me.Cob_TypeDoc = New System.Windows.Forms.ComboBox()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.ListViewNPI = New System.Windows.Forms.ListView()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.SuspendLayout()
+        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.SuspendLayout
         '
         'PictureBox1
         '
@@ -43,13 +43,13 @@ Partial Class FormNPIDocMamagement
         Me.PictureBox1.Size = New System.Drawing.Size(101, 32)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox1.TabIndex = 240
-        Me.PictureBox1.TabStop = False
+        Me.PictureBox1.TabStop = false
         '
         'Cob_NameDoc
         '
         Me.Cob_NameDoc.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Cob_NameDoc.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Cob_NameDoc.FormattingEnabled = True
+        Me.Cob_NameDoc.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.Cob_NameDoc.FormattingEnabled = true
         Me.Cob_NameDoc.Location = New System.Drawing.Point(23, 80)
         Me.Cob_NameDoc.Name = "Cob_NameDoc"
         Me.Cob_NameDoc.Size = New System.Drawing.Size(690, 21)
@@ -58,9 +58,9 @@ Partial Class FormNPIDocMamagement
         'Label1
         '
         Me.Label1.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Label1.AutoSize = True
+        Me.Label1.AutoSize = true
         Me.Label1.BackColor = System.Drawing.Color.Transparent
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label1.Location = New System.Drawing.Point(20, 63)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(54, 13)
@@ -70,32 +70,32 @@ Partial Class FormNPIDocMamagement
         'Btn_Cancel
         '
         Me.Btn_Cancel.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Btn_Cancel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Btn_Cancel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Btn_Cancel.Location = New System.Drawing.Point(22, 296)
         Me.Btn_Cancel.Name = "Btn_Cancel"
         Me.Btn_Cancel.Size = New System.Drawing.Size(92, 22)
         Me.Btn_Cancel.TabIndex = 236
         Me.Btn_Cancel.Text = "Delete"
-        Me.Btn_Cancel.UseVisualStyleBackColor = True
-        Me.Btn_Cancel.Visible = False
+        Me.Btn_Cancel.UseVisualStyleBackColor = true
+        Me.Btn_Cancel.Visible = false
         '
         'Btn_Add
         '
         Me.Btn_Add.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Btn_Add.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Btn_Add.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Btn_Add.Location = New System.Drawing.Point(630, 296)
         Me.Btn_Add.Name = "Btn_Add"
         Me.Btn_Add.Size = New System.Drawing.Size(82, 22)
         Me.Btn_Add.TabIndex = 235
         Me.Btn_Add.Text = "Link"
-        Me.Btn_Add.UseVisualStyleBackColor = True
+        Me.Btn_Add.UseVisualStyleBackColor = true
         '
         'Cob_TypeDoc
         '
         Me.Cob_TypeDoc.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Cob_TypeDoc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.Cob_TypeDoc.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Cob_TypeDoc.FormattingEnabled = True
+        Me.Cob_TypeDoc.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.Cob_TypeDoc.FormattingEnabled = true
         Me.Cob_TypeDoc.Location = New System.Drawing.Point(23, 28)
         Me.Cob_TypeDoc.Name = "Cob_TypeDoc"
         Me.Cob_TypeDoc.Size = New System.Drawing.Size(690, 21)
@@ -104,9 +104,9 @@ Partial Class FormNPIDocMamagement
         'Label10
         '
         Me.Label10.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Label10.AutoSize = True
+        Me.Label10.AutoSize = true
         Me.Label10.BackColor = System.Drawing.Color.Transparent
-        Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label10.Location = New System.Drawing.Point(20, 11)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(54, 13)
@@ -116,21 +116,21 @@ Partial Class FormNPIDocMamagement
         'ListViewNPI
         '
         Me.ListViewNPI.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.ListViewNPI.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ListViewNPI.GridLines = True
+        Me.ListViewNPI.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ListViewNPI.GridLines = true
         ListViewItem1.StateImageIndex = 0
         Me.ListViewNPI.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.ListViewNPI.Location = New System.Drawing.Point(22, 125)
-        Me.ListViewNPI.MultiSelect = False
+        Me.ListViewNPI.MultiSelect = false
         Me.ListViewNPI.Name = "ListViewNPI"
         Me.ListViewNPI.Size = New System.Drawing.Size(690, 165)
         Me.ListViewNPI.TabIndex = 241
-        Me.ListViewNPI.UseCompatibleStateImageBehavior = False
+        Me.ListViewNPI.UseCompatibleStateImageBehavior = false
         Me.ListViewNPI.View = System.Windows.Forms.View.Details
         '
         'FormNPIDocMamagement
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(866, 328)
         Me.Controls.Add(Me.ListViewNPI)
@@ -144,11 +144,11 @@ Partial Class FormNPIDocMamagement
         Me.Margin = New System.Windows.Forms.Padding(2)
         Me.Name = "FormNPIDocMamagement"
         Me.Text = "NPI Doc Mamagement"
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.ResumeLayout(False)
-        Me.PerformLayout()
+        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).EndInit
+        Me.ResumeLayout(false)
+        Me.PerformLayout
 
-    End Sub
+End Sub
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents Cob_NameDoc As System.Windows.Forms.ComboBox
     Friend WithEvents Label1 As System.Windows.Forms.Label

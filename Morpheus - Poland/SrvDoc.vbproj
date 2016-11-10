@@ -177,6 +177,7 @@
       <HintPath>.\mysql.data.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -199,6 +200,12 @@
       <DependentUpon>FormBomUtility.vb</DependentUpon>
     </Compile>
     <Compile Include="FormBomUtility.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormChangePassword.Designer.vb">
+      <DependentUpon>FormChangePassword.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormChangePassword.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormCoding.Designer.vb">
@@ -241,6 +248,12 @@
       <DependentUpon>FormInfoOffer.vb</DependentUpon>
     </Compile>
     <Compile Include="FormInfoOffer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormManageAccounts.Designer.vb">
+      <DependentUpon>FormManageAccounts.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormManageAccounts.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormMould.Designer.vb">
@@ -379,6 +392,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormEqItem.resx">
       <DependentUpon>FormEqItem.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FormEquipments.resx">
       <DependentUpon>FormEquipments.vb</DependentUpon>
@@ -392,6 +406,9 @@
     <EmbeddedResource Include="FormInfoOffer.resx">
       <DependentUpon>FormInfoOffer.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormManageAccounts.resx">
+      <DependentUpon>FormManageAccounts.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormMould.resx">
       <DependentUpon>FormMould.vb</DependentUpon>
