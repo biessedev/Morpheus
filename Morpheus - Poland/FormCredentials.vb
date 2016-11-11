@@ -13,7 +13,7 @@ Public Class FormCredentials
         If TextBoxPassword.Text <> "" And TextBoxUserName.Text <> "" Then
             'OpenConnectionMySql(TextBoxhost.Text, TextBoxDatabase.Text, "root", "bitron")
             Dim  builder As  New Common.DbConnectionStringBuilder()
-            builder.ConnectionString = ConfigurationManager.ConnectionStrings("MorpheusPoland").ConnectionString
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings("Morpheus").ConnectionString
             OpenConnectionMySql(builder("host"), builder("database") , builder("username"), builder("password"))
 
             
@@ -34,7 +34,7 @@ Public Class FormCredentials
                 Dim tblCredentials As DataTable = ds.Tables(0)
                 If tblCredentials.Rows.Count = 1 Then
                     Dim  connStr As  New Common.DbConnectionStringBuilder()
-                    connStr.ConnectionString = ConfigurationManager.ConnectionStrings("MorpheusPoland").ConnectionString
+                    connStr.ConnectionString = ConfigurationManager.ConnectionStrings("Morpheus").ConnectionString
 
                     CreAccount.strUserName = LCase(TextBoxUserName.Text)
                     CreAccount.strPassword = LCase(TextBoxPassword.Text)                    
@@ -68,17 +68,25 @@ Public Class FormCredentials
     End Sub
 
     Private Sub FormCredentials_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings("Morpheus").ConnectionString
 
         TextBoxUserName.Text = ""
         'TextBoxhost.Text = "10.140.13.164"
         TextBoxPassword.Text = ""
+        LabelHost.Text = "Host: " & builder("host")
 
     End Sub
 
+   
     Private Sub TextBoxPassword_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles TextBoxPassword.KeyPress
         If e.KeyChar = vbCr Then
             Button1_Click(Me, e)
         End If
+    End Sub
+
+    Private Sub TableLayoutPanel2_Paint(sender As Object, e As PaintEventArgs) Handles TableLayoutPanel2.Paint
+
     End Sub
 
     'Private Sub TextBoxUserName_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxUserName.TextChanged

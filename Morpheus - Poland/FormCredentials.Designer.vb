@@ -33,10 +33,13 @@ Partial Class FormCredentials
         Me.Label4 = New System.Windows.Forms.Label()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.Label5 = New System.Windows.Forms.Label()
+        Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
+        Me.LabelHost = New System.Windows.Forms.Label()
         CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).BeginInit
         Me.TableLayoutPanel1.SuspendLayout
         CType(Me.PictureBox2,System.ComponentModel.ISupportInitialize).BeginInit
         Me.TableLayoutPanel2.SuspendLayout
+        Me.TableLayoutPanel3.SuspendLayout
         Me.SuspendLayout
         '
         'PictureBox1
@@ -55,7 +58,7 @@ Partial Class FormCredentials
         Me.TextBoxUserName.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.TextBoxUserName.BackColor = System.Drawing.Color.LightGray
         Me.TextBoxUserName.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.TextBoxUserName.Location = New System.Drawing.Point(31, 68)
+        Me.TextBoxUserName.Location = New System.Drawing.Point(31, 49)
         Me.TextBoxUserName.Name = "TextBoxUserName"
         Me.TextBoxUserName.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.TextBoxUserName.Size = New System.Drawing.Size(231, 26)
@@ -66,7 +69,7 @@ Partial Class FormCredentials
         Me.TextBoxPassword.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.TextBoxPassword.BackColor = System.Drawing.Color.LightGray
         Me.TextBoxPassword.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.TextBoxPassword.Location = New System.Drawing.Point(324, 68)
+        Me.TextBoxPassword.Location = New System.Drawing.Point(324, 49)
         Me.TextBoxPassword.Name = "TextBoxPassword"
         Me.TextBoxPassword.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.TextBoxPassword.Size = New System.Drawing.Size(231, 26)
@@ -78,7 +81,7 @@ Partial Class FormCredentials
         Me.Button1.BackgroundImage = CType(resources.GetObject("Button1.BackgroundImage"),System.Drawing.Image)
         Me.Button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.Button1.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.Button1.Location = New System.Drawing.Point(324, 137)
+        Me.Button1.Location = New System.Drawing.Point(324, 102)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(231, 29)
         Me.Button1.TabIndex = 25
@@ -99,8 +102,8 @@ Partial Class FormCredentials
         Me.TableLayoutPanel1.Controls.Add(Me.Label3, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Label4, 1, 0)
         Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(2, 34)
-        Me.TableLayoutPanel1.Margin = New System.Windows.Forms.Padding(2)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(2, 79)
+        Me.TableLayoutPanel1.Margin = New System.Windows.Forms.Padding(2, 0, 2, 2)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 3
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30.05742!))
@@ -108,14 +111,14 @@ Partial Class FormCredentials
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 49.02518!))
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(586, 201)
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(586, 156)
         Me.TableLayoutPanel1.TabIndex = 236
         '
         'PictureBox2
         '
         Me.PictureBox2.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.PictureBox2.Image = Global.MORPHEUS.My.Resources.Resources.BitronPoland
-        Me.PictureBox2.Location = New System.Drawing.Point(30, 121)
+        Me.PictureBox2.Location = New System.Drawing.Point(30, 86)
         Me.PictureBox2.Margin = New System.Windows.Forms.Padding(2)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(232, 61)
@@ -128,7 +131,7 @@ Partial Class FormCredentials
         Me.Label3.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.Label3.AutoSize = true
         Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.84615!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.Label3.Location = New System.Drawing.Point(89, 36)
+        Me.Label3.Location = New System.Drawing.Point(89, 22)
         Me.Label3.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(114, 24)
@@ -140,7 +143,7 @@ Partial Class FormCredentials
         Me.Label4.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.Label4.AutoSize = true
         Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.84615!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.Label4.Location = New System.Drawing.Point(389, 36)
+        Me.Label4.Location = New System.Drawing.Point(389, 22)
         Me.Label4.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(100, 24)
@@ -151,16 +154,19 @@ Partial Class FormCredentials
         '
         Me.TableLayoutPanel2.BackColor = System.Drawing.Color.LightBlue
         Me.TableLayoutPanel2.ColumnCount = 1
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
-        Me.TableLayoutPanel2.Controls.Add(Me.TableLayoutPanel1, 0, 1)
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
+        Me.TableLayoutPanel2.Controls.Add(Me.TableLayoutPanel1, 0, 2)
         Me.TableLayoutPanel2.Controls.Add(Me.Label5, 0, 0)
+        Me.TableLayoutPanel2.Controls.Add(Me.TableLayoutPanel3, 0, 1)
         Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel2.Location = New System.Drawing.Point(0, 0)
         Me.TableLayoutPanel2.Margin = New System.Windows.Forms.Padding(2)
         Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
-        Me.TableLayoutPanel2.RowCount = 2
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13.85542!))
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 86.14458!))
+        Me.TableLayoutPanel2.RowCount = 3
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13.85618!))
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.00019!))
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 66.14363!))
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.TableLayoutPanel2.Size = New System.Drawing.Size(590, 237)
         Me.TableLayoutPanel2.TabIndex = 237
         '
@@ -175,6 +181,33 @@ Partial Class FormCredentials
         Me.Label5.Size = New System.Drawing.Size(543, 24)
         Me.Label5.TabIndex = 237
         Me.Label5.Text = "   MORPHEUS 1.0 - Office advanced productivity software"
+        '
+        'TableLayoutPanel3
+        '
+        Me.TableLayoutPanel3.BackColor = System.Drawing.Color.LightSlateGray
+        Me.TableLayoutPanel3.ColumnCount = 1
+        Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
+        Me.TableLayoutPanel3.Controls.Add(Me.LabelHost, 0, 0)
+        Me.TableLayoutPanel3.Location = New System.Drawing.Point(2, 34)
+        Me.TableLayoutPanel3.Margin = New System.Windows.Forms.Padding(2, 2, 2, 0)
+        Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
+        Me.TableLayoutPanel3.RowCount = 1
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel3.Size = New System.Drawing.Size(586, 45)
+        Me.TableLayoutPanel3.TabIndex = 238
+        '
+        'LabelHost
+        '
+        Me.LabelHost.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.LabelHost.AutoSize = true
+        Me.LabelHost.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.84615!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.LabelHost.Location = New System.Drawing.Point(267, 21)
+        Me.LabelHost.Margin = New System.Windows.Forms.Padding(0, 0, 0, 0)
+        Me.LabelHost.Name = "LabelHost"
+        Me.LabelHost.Size = New System.Drawing.Size(52, 24)
+        Me.LabelHost.TabIndex = 241
+        Me.LabelHost.Text = "Host"
         '
         'FormCredentials
         '
@@ -193,6 +226,8 @@ Partial Class FormCredentials
         CType(Me.PictureBox2,System.ComponentModel.ISupportInitialize).EndInit
         Me.TableLayoutPanel2.ResumeLayout(false)
         Me.TableLayoutPanel2.PerformLayout
+        Me.TableLayoutPanel3.ResumeLayout(false)
+        Me.TableLayoutPanel3.PerformLayout
         Me.ResumeLayout(false)
 
 End Sub
@@ -206,4 +241,6 @@ End Sub
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents TableLayoutPanel3 As TableLayoutPanel
+    Friend WithEvents LabelHost As Label
 End Class

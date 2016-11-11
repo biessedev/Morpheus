@@ -22,7 +22,7 @@ Partial Class FormECR
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("")
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("")
         Me.ButtonR = New System.Windows.Forms.Button()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
@@ -86,6 +86,7 @@ Partial Class FormECR
         Me.ButtonBL = New System.Windows.Forms.Button()
         Me.DateTimePickerB = New System.Windows.Forms.DateTimePicker()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.ButtonSaveSend = New System.Windows.Forms.Button()
         CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
         '
@@ -354,8 +355,8 @@ Partial Class FormECR
         Me.ListViewProd.CheckBoxes = true
         Me.ListViewProd.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ListViewProd.GridLines = true
-        ListViewItem2.StateImageIndex = 0
-        Me.ListViewProd.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
+        ListViewItem1.StateImageIndex = 0
+        Me.ListViewProd.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.ListViewProd.Location = New System.Drawing.Point(689, 308)
         Me.ListViewProd.MultiSelect = false
         Me.ListViewProd.Name = "ListViewProd"
@@ -611,7 +612,7 @@ Partial Class FormECR
         'ButtonSave
         '
         Me.ButtonSave.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.ButtonSave.Location = New System.Drawing.Point(620, 244)
+        Me.ButtonSave.Location = New System.Drawing.Point(506, 243)
         Me.ButtonSave.Name = "ButtonSave"
         Me.ButtonSave.Size = New System.Drawing.Size(49, 41)
         Me.ButtonSave.TabIndex = 222
@@ -788,6 +789,16 @@ Partial Class FormECR
         Me.PictureBox1.TabIndex = 231
         Me.PictureBox1.TabStop = false
         '
+        'ButtonSaveSend
+        '
+        Me.ButtonSaveSend.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ButtonSaveSend.Location = New System.Drawing.Point(561, 243)
+        Me.ButtonSaveSend.Name = "ButtonSaveSend"
+        Me.ButtonSaveSend.Size = New System.Drawing.Size(109, 41)
+        Me.ButtonSaveSend.TabIndex = 234
+        Me.ButtonSaveSend.Text = "Save && Send"
+        Me.ButtonSaveSend.UseVisualStyleBackColor = true
+        '
         'FormECR
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
@@ -795,6 +806,7 @@ Partial Class FormECR
         Me.BackColor = System.Drawing.Color.DarkGray
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ClientSize = New System.Drawing.Size(1083, 568)
+        Me.Controls.Add(Me.ButtonSaveSend)
         Me.Controls.Add(Me.ButtonEcrCheck)
         Me.Controls.Add(Me.Label16)
         Me.Controls.Add(Me.PictureBox1)
@@ -929,4 +941,5 @@ End Sub
     Friend WithEvents ButtonB As System.Windows.Forms.Button
     Friend WithEvents ButtonBL As System.Windows.Forms.Button
     Friend WithEvents DateTimePickerB As System.Windows.Forms.DateTimePicker
+    Friend WithEvents ButtonSaveSend As Button
 End Class
