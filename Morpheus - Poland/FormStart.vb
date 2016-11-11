@@ -174,14 +174,13 @@ Public Class FormStart
     End Sub
 
     Private Sub ButtonChangePassword_Click(sender As Object, e As EventArgs) Handles ButtonChangePassword.Click
-        If controlRight("Z") = 3 Then
+        If controlRight("A") = 3 Then
             FormManageAccounts.Show()
             FormManageAccounts.Focus()
         Else
             FormChangePassword.Show()
             FormChangePassword.Focus()
         End If
-
 
     End Sub
 

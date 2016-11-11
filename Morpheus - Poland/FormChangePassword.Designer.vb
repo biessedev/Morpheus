@@ -44,10 +44,10 @@ Partial Class FormChangePassword
         '
         'TextBoxOldPass
         '
-        Me.TextBoxOldPass.Location = New System.Drawing.Point(141, 48)
+        Me.TextBoxOldPass.Location = New System.Drawing.Point(140, 48)
         Me.TextBoxOldPass.Name = "TextBoxOldPass"
         Me.TextBoxOldPass.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
-        Me.TextBoxOldPass.Size = New System.Drawing.Size(153, 20)
+        Me.TextBoxOldPass.Size = New System.Drawing.Size(163, 20)
         Me.TextBoxOldPass.TabIndex = 1
         '
         'Label2
@@ -70,23 +70,23 @@ Partial Class FormChangePassword
         '
         'TextBoxNewPass
         '
-        Me.TextBoxNewPass.Location = New System.Drawing.Point(141, 83)
+        Me.TextBoxNewPass.Location = New System.Drawing.Point(140, 83)
         Me.TextBoxNewPass.Name = "TextBoxNewPass"
         Me.TextBoxNewPass.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
-        Me.TextBoxNewPass.Size = New System.Drawing.Size(153, 20)
+        Me.TextBoxNewPass.Size = New System.Drawing.Size(163, 20)
         Me.TextBoxNewPass.TabIndex = 4
         '
         'TextBoxPassCheck
         '
-        Me.TextBoxPassCheck.Location = New System.Drawing.Point(141, 117)
+        Me.TextBoxPassCheck.Location = New System.Drawing.Point(140, 117)
         Me.TextBoxPassCheck.Name = "TextBoxPassCheck"
         Me.TextBoxPassCheck.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
-        Me.TextBoxPassCheck.Size = New System.Drawing.Size(153, 20)
+        Me.TextBoxPassCheck.Size = New System.Drawing.Size(163, 20)
         Me.TextBoxPassCheck.TabIndex = 5
         '
         'ButtonCancel
         '
-        Me.ButtonCancel.Location = New System.Drawing.Point(254, 168)
+        Me.ButtonCancel.Location = New System.Drawing.Point(237, 156)
         Me.ButtonCancel.Name = "ButtonCancel"
         Me.ButtonCancel.Size = New System.Drawing.Size(66, 23)
         Me.ButtonCancel.TabIndex = 6
@@ -95,7 +95,7 @@ Partial Class FormChangePassword
         '
         'ButtonSave
         '
-        Me.ButtonSave.Location = New System.Drawing.Point(162, 168)
+        Me.ButtonSave.Location = New System.Drawing.Point(139, 156)
         Me.ButtonSave.Name = "ButtonSave"
         Me.ButtonSave.Size = New System.Drawing.Size(68, 23)
         Me.ButtonSave.TabIndex = 7
@@ -116,7 +116,7 @@ Partial Class FormChangePassword
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(332, 203)
+        Me.ClientSize = New System.Drawing.Size(324, 191)
         Me.Controls.Add(Me.LabelForValidation)
         Me.Controls.Add(Me.ButtonSave)
         Me.Controls.Add(Me.ButtonCancel)
