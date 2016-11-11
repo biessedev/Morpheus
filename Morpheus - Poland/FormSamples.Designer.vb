@@ -24,13 +24,13 @@ Partial Class FormSamples
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormSamples))
-        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("ETD 2012/01/01 - 50 PCS - 30412020 CENT.ELETT.CHALLANGER FEKA 1.1 ")
-        Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("User new digit", New System.Windows.Forms.TreeNode() {TreeNode9})
-        Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Node2")
-        Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Electrolux", New System.Windows.Forms.TreeNode() {TreeNode10, TreeNode11})
-        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("ETD 2012/01/01 - 50 PCS - 30412020 CENT.ELETT.CHALLANGER FEKA 1.1 ")
+        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("User new digit", New System.Windows.Forms.TreeNode() {TreeNode1})
+        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Node2")
+        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Electrolux", New System.Windows.Forms.TreeNode() {TreeNode2, TreeNode3})
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.TabControlNPI = New System.Windows.Forms.TabControl()
         Me.TabPageActivity = New System.Windows.Forms.TabPage()
         Me.ButtonUpdateMagBox = New System.Windows.Forms.Button()
@@ -544,15 +544,15 @@ Partial Class FormSamples
         Me.TreeViewActivity.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.TreeViewActivity.Location = New System.Drawing.Point(10, 31)
         Me.TreeViewActivity.Name = "TreeViewActivity"
-        TreeNode9.Name = "Node3"
-        TreeNode9.Text = "ETD 2012/01/01 - 50 PCS - 30412020 CENT.ELETT.CHALLANGER FEKA 1.1 "
-        TreeNode10.Name = "Node1"
-        TreeNode10.Text = "User new digit"
-        TreeNode11.Name = "Node2"
-        TreeNode11.Text = "Node2"
-        TreeNode12.Name = "Node0"
-        TreeNode12.Text = "Electrolux"
-        Me.TreeViewActivity.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode12})
+        TreeNode1.Name = "Node3"
+        TreeNode1.Text = "ETD 2012/01/01 - 50 PCS - 30412020 CENT.ELETT.CHALLANGER FEKA 1.1 "
+        TreeNode2.Name = "Node1"
+        TreeNode2.Text = "User new digit"
+        TreeNode3.Name = "Node2"
+        TreeNode3.Text = "Node2"
+        TreeNode4.Name = "Node0"
+        TreeNode4.Text = "Electrolux"
+        Me.TreeViewActivity.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode4})
         Me.TreeViewActivity.Size = New System.Drawing.Size(922, 386)
         Me.TreeViewActivity.TabIndex = 104
         '
@@ -1067,8 +1067,8 @@ Partial Class FormSamples
         'BS
         '
         Me.BS.DataPropertyName = "BS"
-        DataGridViewCellStyle7.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.BS.DefaultCellStyle = DataGridViewCellStyle7
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.BS.DefaultCellStyle = DataGridViewCellStyle1
         Me.BS.HeaderText = "Description"
         Me.BS.Name = "BS"
         Me.BS.Width = 120
@@ -1089,8 +1089,9 @@ Partial Class FormSamples
         'Area
         '
         Me.Area.DataPropertyName = "Area"
-        Me.Area.HeaderText = "Process"
+        Me.Area.HeaderText = "Responsible Area"
         Me.Area.Name = "Area"
+        Me.Area.Width = 110
         '
         'Owner
         '
@@ -1101,8 +1102,8 @@ Partial Class FormSamples
         'StartDate
         '
         Me.StartDate.DataPropertyName = "DATE"
-        DataGridViewCellStyle8.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.StartDate.DefaultCellStyle = DataGridViewCellStyle8
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.StartDate.DefaultCellStyle = DataGridViewCellStyle2
         Me.StartDate.HeaderText = "StartDate"
         Me.StartDate.Name = "StartDate"
         Me.StartDate.Width = 120
@@ -1130,8 +1131,8 @@ Partial Class FormSamples
         'Status
         '
         Me.Status.DataPropertyName = "Status"
-        DataGridViewCellStyle9.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.Status.DefaultCellStyle = DataGridViewCellStyle9
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.Status.DefaultCellStyle = DataGridViewCellStyle3
         Me.Status.HeaderText = "Status"
         Me.Status.Name = "Status"
         '
@@ -1286,10 +1287,10 @@ Partial Class FormSamples
         '
         Me.DTP_PlanCloseDate.AccessibleRole = System.Windows.Forms.AccessibleRole.None
         Me.DTP_PlanCloseDate.CustomFormat = "yyyy-MM-dd"
-        Me.DTP_PlanCloseDate.Location = New System.Drawing.Point(441, 72)
+        Me.DTP_PlanCloseDate.Location = New System.Drawing.Point(436, 72)
         Me.DTP_PlanCloseDate.Margin = New System.Windows.Forms.Padding(2)
         Me.DTP_PlanCloseDate.Name = "DTP_PlanCloseDate"
-        Me.DTP_PlanCloseDate.Size = New System.Drawing.Size(140, 23)
+        Me.DTP_PlanCloseDate.Size = New System.Drawing.Size(146, 23)
         Me.DTP_PlanCloseDate.TabIndex = 2
         Me.DTP_PlanCloseDate.TabStop = false
         '
@@ -1338,7 +1339,7 @@ Partial Class FormSamples
         Me.Txt_FinalCorrectAction.Multiline = true
         Me.Txt_FinalCorrectAction.Name = "Txt_FinalCorrectAction"
         Me.Txt_FinalCorrectAction.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.Txt_FinalCorrectAction.Size = New System.Drawing.Size(289, 47)
+        Me.Txt_FinalCorrectAction.Size = New System.Drawing.Size(290, 47)
         Me.Txt_FinalCorrectAction.TabIndex = 1
         '
         'Label22
@@ -1367,12 +1368,12 @@ Partial Class FormSamples
         '
         Me.Label23.AutoSize = true
         Me.Label23.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.Label23.Location = New System.Drawing.Point(439, 55)
+        Me.Label23.Location = New System.Drawing.Point(433, 55)
         Me.Label23.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(133, 17)
+        Me.Label23.Size = New System.Drawing.Size(156, 17)
         Me.Label23.TabIndex = 0
-        Me.Label23.Text = "Planed Closed Date"
+        Me.Label23.Text = "Scheduled Closed Date"
         '
         'Label24
         '
@@ -1622,17 +1623,17 @@ End Sub
     Friend WithEvents Cob_FilterOwner As System.Windows.Forms.ComboBox
     Friend WithEvents Txt_description As System.Windows.Forms.TextBox
     Friend WithEvents Label16 As System.Windows.Forms.Label
-    Friend WithEvents Id As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents BS As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents BitronPN As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents IssueDescription As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Area As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Owner As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents StartDate As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents TEMPCorrectAction As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents FinalCorrectAction As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents PlanedClosedDate As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Status As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents FilePath As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Txt_Area As ComboBox
+    Friend WithEvents Id As DataGridViewTextBoxColumn
+    Friend WithEvents BS As DataGridViewTextBoxColumn
+    Friend WithEvents BitronPN As DataGridViewTextBoxColumn
+    Friend WithEvents IssueDescription As DataGridViewTextBoxColumn
+    Friend WithEvents Area As DataGridViewTextBoxColumn
+    Friend WithEvents Owner As DataGridViewTextBoxColumn
+    Friend WithEvents StartDate As DataGridViewTextBoxColumn
+    Friend WithEvents TEMPCorrectAction As DataGridViewTextBoxColumn
+    Friend WithEvents FinalCorrectAction As DataGridViewTextBoxColumn
+    Friend WithEvents PlanedClosedDate As DataGridViewTextBoxColumn
+    Friend WithEvents Status As DataGridViewTextBoxColumn
+    Friend WithEvents FilePath As DataGridViewTextBoxColumn
 End Class

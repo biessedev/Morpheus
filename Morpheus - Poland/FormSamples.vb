@@ -212,9 +212,11 @@ Public Class FormSamples
 
         Me.DTP_Date.CustomFormat = "yyyy-MM-dd"
         DTP_Date.Format = DateTimePickerFormat.Custom
+        Me.DTP_Date.Value = DateTime.Now
 
         Me.DTP_PlanCloseDate.CustomFormat = "yyyy-MM-dd"
         DTP_PlanCloseDate.Format = DateTimePickerFormat.Custom
+        Me.DTP_PlanCloseDate.Value = DateTime.Now
         Try
 
             Call issuefunction(0)
