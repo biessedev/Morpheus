@@ -51,6 +51,9 @@ Public Class FormOpenIssue
         AdapterProd.Fill(DsProd, "product")
         tblProd = DsProd.Tables("product")
         fillList()
+        ComboBoxName.Text = ""
+        ComboBoxGroup.SelectedIndex = 0
+        ButtonUpdate.Enabled = False
     End Sub
 
     Private Sub ComboBoxGroup_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxGroup.SelectedIndexChanged
@@ -99,6 +102,9 @@ Public Class FormOpenIssue
             Catch ex As Exception
             End Try
         End If
+        ComboBoxName.Text = ""
+        ComboBoxGroup.SelectedIndex = 0
+        ButtonUpdate.Enabled = False
         fillList()
         ComboBoxGroup_TextChanged(Me, e)
         Dim column As ColumnHeader
@@ -116,9 +122,13 @@ Public Class FormOpenIssue
             dateFromDescription = description.Substring(0, InStr(1, description, ";") + 1)
             ComboBoxGroup.Text = ListViewGRU.SelectedItems.Item(0).SubItems(0).Text.ToString()
             ComboBoxName.Text = description.Substring(InStr(1, description, ";") + 1)
+            ButtonUpdate.Enabled = True
+
         Else
             dateFromDescription = ""
             ComboBoxName.Text = ""
+            ComboBoxGroup.SelectedIndex = 0
+            ButtonUpdate.Enabled = False
         End If
     End Sub
 
@@ -141,17 +151,18 @@ Public Class FormOpenIssue
                 "' WHERE `product`.`BitronPN` = '" & Trim(FormProduct.TextBoxProduct.Text) & "' ;"
                 Dim cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
-                ComboBoxName.Text = ""
             Catch ex As Exception
                 MsgBox("Deletion failed!")
             End Try
         Else
             MsgBox("Select an Open Issue!")
         End If
-
+        ComboBoxName.Text = ""
+        ComboBoxGroup.SelectedIndex = 0
+        ButtonUpdate.Enabled = False
         fillList()
 
-        If Len(oldOpenIssue) <> Len(OpenIssue) Then
+        If oldOpenIssue <> OpenIssue Then
             MsgBox("Deleted Issue : " & dept & "[" & opi & "]")
         End If
         Dim column As ColumnHeader
@@ -177,6 +188,9 @@ Public Class FormOpenIssue
                 "' WHERE `product`.`BitronPN` = '" & Trim(FormProduct.TextBoxProduct.Text) & "' ;"
                 Dim cmd = New MySqlCommand(sql, MySqlconnection)
                 cmd.ExecuteNonQuery()
+                ComboBoxName.Text = ""
+                ComboBoxGroup.SelectedIndex = 0
+                ButtonUpdate.Enabled = False
             Catch ex As Exception
                 MsgBox("Update failed!")
             End Try
