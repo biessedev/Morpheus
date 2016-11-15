@@ -3,6 +3,9 @@ Option Compare Text
 Imports MySql.Data.MySqlClient
 Imports System.Data.SqlClient
 Imports System.Text.RegularExpressions
+Imports System.IO
+Imports System.Data.OleDb
+Imports Microsoft.VisualBasic.FileIO
 
 Public Class FormProduct
     Dim index As Long = 1
@@ -135,12 +138,12 @@ Public Class FormProduct
         If controlRight("W") = 3 Then
             If ComboBoxCustomer.Text <> "" And TextBoxProduct.Text <> "" And TextBoxDescription.Text <> "" Then
                 Try
-                    If (TextBoxDAI.Text = "" Or TextBoxDAI.Text = "NO_DAI" Or (Regex.IsMatch(TextBoxDAI.Text, "^K[0-9]+")) And Len(TextBoxDAI.Text) = 8) then
+                    If (TextBoxDAI.Text = "" Or TextBoxDAI.Text = "NO_DAI" Or (Regex.IsMatch(TextBoxDAI.Text, "^K[0-9]+")) And Len(TextBoxDAI.Text) = 8) Then
                         Dim sql As String = "INSERT INTO `" & DBName & "`.`product` (`BitronPN` ,`Name` ,`Customer` ,`Status` ,`DocFlag` ,`pcbCode`,`PiastraCode`,`StatusUpdateDate`,`MchElement`, `DAI`,`SOP`,`Vol`,`pac`,`GroupList`,`OpenIssue`,`SIGIP`,`ECR`,`bom_val`,`bom_Ratio`,`mail`,`nPieces`,`IDActivity`,`ETD`,`StatusActivity`,`sop_task`,`NameActivity`,`sessiontime`,`sessionuser`,`delay`,`BomLocation`, `ls_rmb`) VALUES ('" &
                                             Trim(TextBoxProduct.Text) & "', '" & Trim(UCase(TextBoxDescription.Text)) & "', '" & Trim(ComboBoxCustomer.Text) & "', '" & ComboBoxStatus.Text &
                                             "" & "', '" & strControl() & "', '" & Trim(TextBoxPcb.Text) & "', '" &
                                             Trim(TextBoxPiastra.Text) & "', 'INSERT[" & date_to_string(Today) & "]','" &
-                                            mch & "'" & ",'" & TextBoxDAI.Text & "','', '', '', '', '', '', '', '', '',  '', 0, 0, '', '', '', '', '', '', '', '', '"& TextBoxLS.Text &"');"
+                                            mch & "'" & ",'" & TextBoxDAI.Text & "','', '', '', '', '', '', '', '', '',  '', 0, 0, '', '', '', '', '', '', '', '', '" & TextBoxLS.Text & "');"
 
                         Dim cmd As MySqlCommand = New MySqlCommand(sql, MySqlconnection)
                         cmd.ExecuteNonQuery()
@@ -593,7 +596,7 @@ Public Class FormProduct
     End Sub
 
     Private Sub ButtonGroup_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonGroup.Click
-              DsProd.Clear()
+        DsProd.Clear()
         tblProd.Clear()
         AdapterProd.Fill(DsProd, "product")
         tblProd = DsProd.Tables("product")
@@ -601,19 +604,19 @@ Public Class FormProduct
         Dim i As Integer, result As DataRow()
         GroupList = ""
         FormGroup.ComboBoxGroup.Items.Clear()
-            result = tbltype.Select("id > 0")
-            FormGroup.ComboBoxGroup.Items.Clear()
-            For i = 0 To result.Length - 1
-                If controlRight(Mid(result(i).Item("header").ToString, 3, 1)) >= 2 Then
-                    FormGroup.ComboBoxGroup.Items.Add(result(i).Item("header").ToString & " --> " _
-                                        & result(i).Item("firstType").ToString & " --> " _
-                                        & result(i).Item("secondType").ToString & " --> " _
-                                       & result(i).Item("thirdtype").ToString)
-                End If
-            Next
-            If FormGroup.ComboBoxGroup.Items.Count > 0 Then FormGroup.ComboBoxGroup.Text = FormGroup.ComboBoxGroup.Items(FormGroup.ComboBoxGroup.Items.Count - 1)
-            FormGroup.ComboBoxGroup.Text = FormGroup.ComboBoxGroup.Items(FormGroup.ComboBoxGroup.Items.Count - 1)
-            FormGroup.Show()
+        result = tbltype.Select("id > 0")
+        FormGroup.ComboBoxGroup.Items.Clear()
+        For i = 0 To result.Length - 1
+            If controlRight(Mid(result(i).Item("header").ToString, 3, 1)) >= 2 Then
+                FormGroup.ComboBoxGroup.Items.Add(result(i).Item("header").ToString & " --> " _
+                                    & result(i).Item("firstType").ToString & " --> " _
+                                    & result(i).Item("secondType").ToString & " --> " _
+                                   & result(i).Item("thirdtype").ToString)
+            End If
+        Next
+        If FormGroup.ComboBoxGroup.Items.Count > 0 Then FormGroup.ComboBoxGroup.Text = FormGroup.ComboBoxGroup.Items(FormGroup.ComboBoxGroup.Items.Count - 1)
+        FormGroup.ComboBoxGroup.Text = FormGroup.ComboBoxGroup.Items(FormGroup.ComboBoxGroup.Items.Count - 1)
+        FormGroup.Show()
     End Sub
 
     Private Sub ButtonOpenIssue_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonOpenIssue.Click
@@ -653,7 +656,7 @@ Public Class FormProduct
 
     End Sub
 
-	Private Sub ButtonStatusUP_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonStatusUP.Click
+    Private Sub ButtonStatusUP_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonStatusUP.Click
         User3 = user()
         If controlRight("W") >= 3 Then
             If TextBoxProduct.Text <> "" Then
@@ -839,69 +842,81 @@ Public Class FormProduct
             If InStr(ParameterTable("LAST_SIGIP_BOM_UPDATE"), "DONE", CompareMethod.Text) > 0 Then
 
                 ParameterTableWrite("LAST_SIGIP_BOM_UPDATE", "START - " & CreAccount.strUserName & " " & Today)
-                FolderBrowserDialog1.SelectedPath = ParameterTable("PathMorpheus") & ParameterTable("PathNPI") & ParameterTable("SIGIP_BOM_FOLDER")
-                FolderBrowserDialog1.Description = "Please select SIGIP BOM folder"
-                If vbOK = FolderBrowserDialog1.ShowDialog() Then
-                    Try
-                        DsSigip.Clear()
-                        tblSigip.Clear()
-                    Catch ex As Exception
+                Dim selectedPath As String = ParameterTable("PathMorpheus") & ParameterTable("PathNPI") & ParameterTable("SIGIP_BOM_FOLDER")
+                'selectedPath = "D:\Sigip\MORPHEUS_NPI\SigipData\SigipBom"
+                'FolderBrowserDialog1.Description = "Please select SIGIP BOM folder"
+                'If vbOK = FolderBrowserDialog1.ShowDialog() Then
+                Try
+                    DsSigip.Clear()
+                    tblSigip.Clear()
+                Catch ex As Exception
 
-                    End Try
+                End Try
 
-                    AdapterSigip.Fill(DsSigip, "sigip")
-                    tblSigip = DsSigip.Tables("sigip")
-                    Try
-                        Dim sql As String = "DELETE FROM `" & DBName & "`.`sigip` "
-                        Dim cmd = New MySqlCommand(sql, MySqlconnection)
-                        cmd.ExecuteNonQuery()
-                        reset()
-                    Catch ex As Exception
-                        ComunicationLog("5050") ' Mysql delete error 
-                    End Try
+                AdapterSigip.Fill(DsSigip, "sigip")
+                tblSigip = DsSigip.Tables("sigip")
+                Try
+                    Dim sql As String = "DELETE FROM `" & DBName & "`.`sigip` "
+                    Dim cmd = New MySqlCommand(sql, MySqlconnection)
+                    cmd.ExecuteNonQuery()
+                    reset()
+                Catch ex As Exception
+                    ComunicationLog("5050") ' Mysql delete error 
+                End Try
 
-                    index = 1
-                    Dim FileContenuti() As IO.FileInfo = New IO.DirectoryInfo(FolderBrowserDialog1.SelectedPath).GetFiles()
-                    Dim i As Integer
-                    For i = 0 To FileContenuti.Length - 1
-                        If Mid(FileContenuti(i).ToString, Len(FileContenuti(i).ToString) - 2, 3) = "xls" Then
-
-                            InsertSigipBomXLS(FolderBrowserDialog1.SelectedPath & "\" & FileContenuti(i).ToString)
-
-                        Else
-                            MsgBox("File should be xls!")
-                        End If
-                    Next i
-
-                    ListBoxLog.Items.Add("Update product list...")
-                    updateSigipMark()
-
-                    ListBoxLog.Items.Add("Update product cost...")
-                    UpdateBomCost()
-                    Dim OrcadDBAds = ParameterTable("OrcadDBAdr")
-                    Dim OrcadDBName = ParameterTable("OrcadDBName")
-                    Dim OrcadDBUserName = ParameterTable("OrcadDBUser")
-                    Dim OrcadDBPwd = ParameterTable("OrcadDBPwd")
-
-                    Try
-                        OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
-                    Catch ex As Exception
-                        CloseConnectionSqlOrcad()
-                        OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
-                    End Try
-
-                    If SqlconnectionOrcad.State = ConnectionState.Open Then
-                        ListBoxLog.Items.Add("Update Component Doc...")
-                        updateSigipBomOrcadDoc()
-                        ParameterTableWrite("LAST_SIGIP_BOM_UPDATE", "DONE - " & CreAccount.strUserName & " " & Today & " - All OK")
+                Try
+                    Dim fileName As String() = Directory.GetFiles(selectedPath & "\", "PELE15PT-BITUSR12-" & Date.Now.Year & Date.Now.Month & Date.Now.Day & ".csv")
+                    If fileName.Length = 0 Then
+                        MsgBox("The filename " & "PELE15PT-BITUSR12-" & Date.Now.Year & Date.Now.Month & Date.Now.Day & ".csv" & " does not exist in " & selectedPath & " directory")
                     Else
-                        MsgBox("Orcad connection problem, HC not filled")
-                        ParameterTableWrite("LAST_SIGIP_BOM_UPDATE", "DONE - " & CreAccount.strUserName & " " & Today & " " & " Orcad Error")
+                        InsertSigipBomCSV(fileName(0))
                     End If
 
+                Catch ex As Exception
 
+                End Try
+                'index = 1
+                'Dim FileContenuti() As IO.FileInfo = New IO.DirectoryInfo(FolderBrowserDialog1.SelectedPath).GetFiles()
+                'Dim i As Integer
+                'For i = 0 To FileContenuti.Length - 1
+                '    If Mid(FileContenuti(i).ToString, Len(FileContenuti(i).ToString) - 2, 3) = "xls" Then
 
+                '        InsertSigipBomXLS(FolderBrowserDialog1.SelectedPath & "\" & FileContenuti(i).ToString)
+
+                '    Else
+                '        MsgBox("File should be xls!")
+                '    End If
+                'Next i
+
+                ListBoxLog.Items.Add("Update product list...")
+                updateSigipMark()
+
+                ListBoxLog.Items.Add("Update product cost...")
+                UpdateBomCost()
+                Dim OrcadDBAds = ParameterTable("OrcadDBAdr")
+                Dim OrcadDBName = ParameterTable("OrcadDBName")
+                Dim OrcadDBUserName = ParameterTable("OrcadDBUser")
+                Dim OrcadDBPwd = ParameterTable("OrcadDBPwd")
+
+                Try
+                    OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
+                Catch ex As Exception
+                    CloseConnectionSqlOrcad()
+                    OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
+                End Try
+
+                If SqlconnectionOrcad.State = ConnectionState.Open Then
+                    ListBoxLog.Items.Add("Update Component Doc...")
+                    updateSigipBomOrcadDoc()
+                    ParameterTableWrite("LAST_SIGIP_BOM_UPDATE", "DONE - " & CreAccount.strUserName & " " & Today & " - All OK")
+                Else
+                    MsgBox("Orcad connection problem, HC not filled")
+                    ParameterTableWrite("LAST_SIGIP_BOM_UPDATE", "DONE - " & CreAccount.strUserName & " " & Today & " " & " Orcad Error")
                 End If
+
+
+
+                'End If
                 ButtonQuery_Click(Me, e)
                 ListBoxLog.Items.Add("Process END")
                 ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
@@ -918,48 +933,141 @@ Public Class FormProduct
     End Sub
 
     ' CO18 in BitronPoland
-    Sub InsertSigipBomXLS(ByVal sfilename As String)
-        Dim excelApp As Object = CreateObject("Excel.Application")
+    'Sub InsertSigipBomXLS(ByVal sfilename As String)
+    '    Dim excelApp As Object = CreateObject("Excel.Application")
+    '    Try
+    '        Dim excelWorkbook As Object = excelApp.Workbooks.Open(sfilename)
+    '        excelWorkbook.Activate()
+    '        Dim excelSheet As Object = excelWorkbook.Worksheets("Foglio 1")
+    '        excelSheet.Activate()
+
+    '        Dim bom As String = Mid(sfilename, Len(sfilename) - 11, 8)
+    '        Dim sql = ""
+    '        Dim des = ""
+    '        Dim mdi_t = ""
+    '        Dim mdo_t = ""
+    '        Dim amm_t = ""
+    '        Dim spe_t = ""
+
+    '        ListBoxLog.Items.Add("Process BOM: " & bom)
+    '        Application.DoEvents()
+    '        ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
+    '        ListBoxLog.ScrollAlwaysVisible = True
+
+    '        Dim xlsRow = 2
+    '        While excelSheet.Cells(xlsRow, 1).text <> ""
+
+    '            If excelSheet.Cells(xlsRow, 3).text <> "" Then 'Non considera le righe contenenti il nome del fornitore
+
+    '                Dim nr As String = excelSheet.Cells(xlsRow, 6).Text
+    '                Dim qt As String = Replace(excelSheet.Cells(xlsRow, 7).Text, ",", ".")
+    '                Dim price As String = Replace(excelSheet.Cells(xlsRow, 18).Text, ",", ".")
+    '                Dim currency = ""
+    '                Dim liv As String = excelSheet.Cells(xlsRow, 1).Text
+    '                Dim acq_fab As String = excelSheet.Cells(xlsRow, 5).Text
+    '                Dim bitron_pn As String = excelSheet.Cells(xlsRow, 2).Text
+    '                Dim despn As String = excelSheet.Cells(xlsRow, 3).Text
+    '                Dim mdi As String = Replace(excelSheet.Cells(xlsRow, 13).Text, ",", ".")
+    '                Dim mdo As String = Replace(excelSheet.Cells(xlsRow, 12).Text, ",", ".")
+    '                Dim amm As String = Replace(excelSheet.Cells(xlsRow, 14).Text, ",", ".")
+    '                Dim spe As String = Replace(excelSheet.Cells(xlsRow, 15).Text, ",", ".")
+
+    '                sql = "(" & index & "," &
+    '                "'" & bom & "'," &
+    '                "'" & Replace(des, "'", "") & "'," &
+    '                "'" & nr & "'," &
+    '                "'" & (qt) & "'," &
+    '                "'" & (price) & "'," &
+    '                "'" & currency & "'," &
+    '                "'" & liv & "'," &
+    '                "'" & acq_fab & "'," &
+    '                "'" & Replace(ReplaceChar(bitron_pn), "-", "") & "'," &
+    '                "'" & ReplaceChar(despn) & "'," &
+    '                "'" & mdi & "'," &
+    '                "'" & mdo & "'," &
+    '                "'" & amm & "'," &
+    '                "'" & spe & "'," &
+    '                "'" & mdi_t & "'," &
+    '                "'" & mdo_t & "'," &
+    '                "'" & amm_t & "'," &
+    '                "'" & spe_t & "'" &
+    '                 ")," & sql
+
+    '            End If
+    '            xlsRow = xlsRow + 1
+    '            index = index + 1
+    '        End While
+
+    '        Try
+    '            Dim sqlCommand As String = Mid(sql, 1, Len(sql) - 1)
+    '            sqlCommand = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`) VALUES " & sqlCommand & ";"
+    '            Dim cmd = New MySqlCommand(sqlCommand, MySqlconnection)
+    '            cmd.ExecuteNonQuery()
+    '            sqlCommand = ""
+    '            sql = ""
+    '        Catch ex As Exception
+    '            MsgBox("Sigip update error! " & ex.Message)
+    '        End Try
+
+    '        excelWorkbook.Close(True)
+    '        excelApp.Quit()
+    '    Catch ex As Exception
+    '        MsgBox(ex.Message)
+    '    End Try
+
+    'End Sub
+
+    Function GetDataTabletFromCSVFile(csv_file_path As String) As DataTable
+        Dim csvData As DataTable = New DataTable()
         Try
-            Dim excelWorkbook As Object = excelApp.Workbooks.Open(sfilename)
-            excelWorkbook.Activate()
-            Dim excelSheet As Object = excelWorkbook.Worksheets("Foglio 1")
-            excelSheet.Activate()
+            Dim csvReader As TextFieldParser = New TextFieldParser(csv_file_path)
+            csvReader.SetDelimiters(New String() {";"})
+            csvReader.HasFieldsEnclosedInQuotes = True
+            Dim colFields As String() = csvReader.ReadFields()
+            Dim dublicateColumn As Integer = 0
+            For Each column In colFields
+                Dim datecolumn As DataColumn = New DataColumn(if(column(column.Length - 1) = ",", column.Remove(column.Length - 1), column))
+                datecolumn.AllowDBNull = True
+                Dim columnExist = csvData.Columns.Contains(datecolumn.ToString())
+                csvData.Columns.Add(If(columnExist, New DataColumn(datecolumn.ToString() & "1"), datecolumn))
+            Next
+            While Not csvReader.EndOfData
+                Dim fieldData As String() = csvReader.ReadFields()
+                If String.Join("", fieldData) <> "," And String.Join("", fieldData) <> "" Then
+                    Dim lastCell As String
+                    lastCell = fieldData(fieldData.Length - 1)
+                    lastCell = if(lastCell(lastCell.Length - 1) = ",", lastCell.Remove(lastCell.Length - 1), lastCell)
+                    fieldData(fieldData.Length - 1) = lastCell
+                    csvData.Rows.Add(fieldData)
+                End If
+            End While
 
-            Dim bom As String = Mid(sfilename, Len(sfilename) - 11, 8)
-            Dim sql = ""
-            Dim des = ""
-            Dim mdi_t = ""
-            Dim mdo_t = ""
-            Dim amm_t = ""
-            Dim spe_t = ""
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+        Return csvData
+      End Function
 
-            ListBoxLog.Items.Add("Process BOM: " & bom)
-            Application.DoEvents()
-            ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
-            ListBoxLog.ScrollAlwaysVisible = True
-
-            Dim xlsRow = 2
-            While excelSheet.Cells(xlsRow, 1).text <> ""
-
-                If excelSheet.Cells(xlsRow, 3).text <> "" Then 'Non considera le righe contenenti il nome del fornitore
-
-                    Dim nr As String = excelSheet.Cells(xlsRow, 6).Text
-                    Dim qt As String = Replace(excelSheet.Cells(xlsRow, 7).Text, ",", ".")
-                    Dim price As String = Replace(excelSheet.Cells(xlsRow, 18).Text, ",", ".")
-                    Dim currency = ""
-                    Dim liv As String = excelSheet.Cells(xlsRow, 1).Text
-                    Dim acq_fab As String = excelSheet.Cells(xlsRow, 5).Text
-                    Dim bitron_pn As String = excelSheet.Cells(xlsRow, 2).Text
-                    Dim despn As String = excelSheet.Cells(xlsRow, 3).Text
-                    Dim mdi As String = Replace(excelSheet.Cells(xlsRow, 13).Text, ",", ".")
-                    Dim mdo As String = Replace(excelSheet.Cells(xlsRow, 12).Text, ",", ".")
-                    Dim amm As String = Replace(excelSheet.Cells(xlsRow, 14).Text, ",", ".")
-                    Dim spe As String = Replace(excelSheet.Cells(xlsRow, 15).Text, ",", ".")
-
-                    sql = "(" & index & "," &
-                    "'" & bom & "'," &
-                    "'" & Replace(des, "'", "") & "'," &
+    Sub InsertSigipBomCSV(ByVal sfilename As String)
+        Dim dt As DataTable = GetDataTabletFromCSVFile(sfilename)
+        Try
+            Dim sqlValues As String = ""
+            Dim index As Integer = 1
+            Dim price As String = "", currency As String = "", liv As String = "", mdi As String = "", mdo As String = "", amm As String = ""
+            Dim mdo_t As String = "", amm_t As String = "", spe_t As String = "", spe As String = "", mdi_t As String = ""
+            Dim active As String = "" , doc As String = "", orcadSupplier As String = ""
+            Dim bom As String , des_bom As String, nr As String, qt As String, acq_fab As String, bitron_pn As String, des_pn As String
+            For Each row In dt.Rows
+                bom = if(Dt.Columns.Contains("Assieme"), row("Assieme"), "")
+                des_bom = if(Dt.Columns.Contains("Descrizione"), row("Descrizione"), "")
+                nr = if(Dt.Columns.Contains("UM"), row("UM"), "")
+                qt = if(Dt.Columns.Contains("Coeff.Impiego"), row("Coeff.Impiego"), "")
+                acq_fab = if(Dt.Columns.Contains("Prov"), row("Prov"), "") 
+                bitron_pn = if(Dt.Columns.Contains("Componente"), row("Componente"), "")
+                des_pn = if(Dt.Columns.Contains("Descrizione Comp"), row("Descrizione Comp"), "")
+                sqlValues = "(" & index & "," &
+                    "'" & Replace(bom, "'", "") & "'," &
+                    "'" & Replace(des_bom, "'", "") & "'," &
                     "'" & nr & "'," &
                     "'" & (qt) & "'," &
                     "'" & (price) & "'," &
@@ -967,7 +1075,7 @@ Public Class FormProduct
                     "'" & liv & "'," &
                     "'" & acq_fab & "'," &
                     "'" & Replace(ReplaceChar(bitron_pn), "-", "") & "'," &
-                    "'" & ReplaceChar(despn) & "'," &
+                    "'" & ReplaceChar(des_pn) & "'," &
                     "'" & mdi & "'," &
                     "'" & mdo & "'," &
                     "'" & amm & "'," &
@@ -975,29 +1083,21 @@ Public Class FormProduct
                     "'" & mdi_t & "'," &
                     "'" & mdo_t & "'," &
                     "'" & amm_t & "'," &
-                    "'" & spe_t & "'" &
-                     ")," & sql
-
-                End If
-                xlsRow = xlsRow + 1
+                    "'" & spe_t & "'," &
+                    "'" & active & "'," &
+                    "'" & doc & "'," &
+                    "'" & orcadSupplier & "'" &
+                     ")," & sqlValues
                 index = index + 1
-            End While
-
-            Try
-                Dim sqlCommand As String = Mid(sql, 1, Len(sql) - 1)
-                sqlCommand = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`) VALUES " & sqlCommand & ";"
-                Dim cmd = New MySqlCommand(sqlCommand, MySqlconnection)
-                cmd.ExecuteNonQuery()
-                sqlCommand = ""
-                sql = ""
-            Catch ex As Exception
-                MsgBox("Sigip update error! " & ex.Message)
-            End Try
-
-            excelWorkbook.Close(True)
-            excelApp.Quit()
+            Next
+            Dim sqlCommand As String = Mid(sqlValues, 1, Len(sqlValues) - 1)
+            sqlCommand = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`, `active`, `doc`, `OrcadSupplier`) VALUES " & sqlCommand & ";"
+            Dim cmd = New MySqlCommand(sqlCommand, MySqlconnection)
+            cmd.ExecuteNonQuery()
+            sqlCommand = ""
+            sqlValues = ""
         Catch ex As Exception
-            MsgBox(ex.Message)
+            MsgBox("Sigip update error! " & ex.Message)
         End Try
 
     End Sub
