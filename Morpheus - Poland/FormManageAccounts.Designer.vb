@@ -46,9 +46,6 @@ Partial Class FormManageAccounts
         '
         'ListViewForUsers
         '
-        Me.ListViewForUsers.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.ListViewForUsers.BackColor = System.Drawing.Color.Gainsboro
         Me.ListViewForUsers.FullRowSelect = true
         Me.ListViewForUsers.GridLines = true
@@ -145,6 +142,8 @@ Partial Class FormManageAccounts
         Me.Controls.Add(Me.TextBoxForUsername)
         Me.Controls.Add(Me.ListViewForUsers)
         Me.Controls.Add(Me.ButtonSave)
+        Me.MaximizeBox = false
+        Me.MinimizeBox = false
         Me.Name = "FormManageAccounts"
         Me.Text = "Manage Accounts"
         Me.ResumeLayout(false)
