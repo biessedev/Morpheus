@@ -23,7 +23,7 @@ Partial Class FormProduct
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormProduct))
-        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {""}, -1, System.Drawing.Color.Empty, System.Drawing.Color.Empty, New System.Drawing.Font("Times New Roman", 23.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte)))
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {""}, -1, System.Drawing.Color.Empty, System.Drawing.Color.Empty, New System.Drawing.Font("Times New Roman", 23!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte)))
         Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("")
         Me.ButtonAddProduct = New System.Windows.Forms.Button()
         Me.ButtonQuery = New System.Windows.Forms.Button()
@@ -77,18 +77,17 @@ Partial Class FormProduct
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.TextBoxDAI = New System.Windows.Forms.TextBox()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.SuspendLayout()
+        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.SuspendLayout
         '
         'ButtonAddProduct
         '
-        Me.ButtonAddProduct.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ButtonAddProduct.BackColor = System.Drawing.Color.Transparent
         Me.ButtonAddProduct.FlatAppearance.BorderColor = System.Drawing.Color.Black
         Me.ButtonAddProduct.FlatAppearance.BorderSize = 0
         Me.ButtonAddProduct.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ButtonAddProduct.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ButtonAddProduct.Image = CType(resources.GetObject("ButtonAddProduct.Image"), System.Drawing.Image)
+        Me.ButtonAddProduct.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ButtonAddProduct.Image = CType(resources.GetObject("ButtonAddProduct.Image"),System.Drawing.Image)
         Me.ButtonAddProduct.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.ButtonAddProduct.Location = New System.Drawing.Point(379, 236)
         Me.ButtonAddProduct.Name = "ButtonAddProduct"
@@ -96,16 +95,15 @@ Partial Class FormProduct
         Me.ButtonAddProduct.TabIndex = 1
         Me.ButtonAddProduct.Text = "Product Add"
         Me.ButtonAddProduct.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonAddProduct.UseVisualStyleBackColor = False
+        Me.ButtonAddProduct.UseVisualStyleBackColor = false
         '
         'ButtonQuery
         '
-        Me.ButtonQuery.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ButtonQuery.BackColor = System.Drawing.Color.Transparent
         Me.ButtonQuery.FlatAppearance.BorderSize = 0
         Me.ButtonQuery.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ButtonQuery.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ButtonQuery.Image = CType(resources.GetObject("ButtonQuery.Image"), System.Drawing.Image)
+        Me.ButtonQuery.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ButtonQuery.Image = CType(resources.GetObject("ButtonQuery.Image"),System.Drawing.Image)
         Me.ButtonQuery.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.ButtonQuery.Location = New System.Drawing.Point(884, 321)
         Me.ButtonQuery.Name = "ButtonQuery"
@@ -113,16 +111,15 @@ Partial Class FormProduct
         Me.ButtonQuery.TabIndex = 2
         Me.ButtonQuery.Text = "Query"
         Me.ButtonQuery.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonQuery.UseVisualStyleBackColor = False
+        Me.ButtonQuery.UseVisualStyleBackColor = false
         '
         'ButtonDelete
         '
-        Me.ButtonDelete.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ButtonDelete.BackColor = System.Drawing.Color.Transparent
         Me.ButtonDelete.FlatAppearance.BorderSize = 0
         Me.ButtonDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ButtonDelete.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ButtonDelete.Image = CType(resources.GetObject("ButtonDelete.Image"), System.Drawing.Image)
+        Me.ButtonDelete.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ButtonDelete.Image = CType(resources.GetObject("ButtonDelete.Image"),System.Drawing.Image)
         Me.ButtonDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.ButtonDelete.Location = New System.Drawing.Point(379, 300)
         Me.ButtonDelete.Name = "ButtonDelete"
@@ -130,14 +127,13 @@ Partial Class FormProduct
         Me.ButtonDelete.TabIndex = 3
         Me.ButtonDelete.Text = "Product Delete "
         Me.ButtonDelete.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonDelete.UseVisualStyleBackColor = False
+        Me.ButtonDelete.UseVisualStyleBackColor = false
         '
         'ComboBoxCustomer
         '
-        Me.ComboBoxCustomer.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ComboBoxCustomer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBoxCustomer.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ComboBoxCustomer.FormattingEnabled = True
+        Me.ComboBoxCustomer.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ComboBoxCustomer.FormattingEnabled = true
         Me.ComboBoxCustomer.Location = New System.Drawing.Point(640, 51)
         Me.ComboBoxCustomer.Name = "ComboBoxCustomer"
         Me.ComboBoxCustomer.Size = New System.Drawing.Size(155, 21)
@@ -145,8 +141,7 @@ Partial Class FormProduct
         '
         'TextBoxDescription
         '
-        Me.TextBoxDescription.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.TextBoxDescription.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxDescription.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.TextBoxDescription.Location = New System.Drawing.Point(201, 52)
         Me.TextBoxDescription.Name = "TextBoxDescription"
         Me.TextBoxDescription.Size = New System.Drawing.Size(419, 20)
@@ -154,8 +149,7 @@ Partial Class FormProduct
         '
         'TextBoxProduct
         '
-        Me.TextBoxProduct.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.TextBoxProduct.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxProduct.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.TextBoxProduct.Location = New System.Drawing.Point(43, 52)
         Me.TextBoxProduct.Name = "TextBoxProduct"
         Me.TextBoxProduct.Size = New System.Drawing.Size(134, 20)
@@ -163,9 +157,8 @@ Partial Class FormProduct
         '
         'ListBoxLog
         '
-        Me.ListBoxLog.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.ListBoxLog.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ListBoxLog.FormattingEnabled = True
+        Me.ListBoxLog.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ListBoxLog.FormattingEnabled = true
         Me.ListBoxLog.Location = New System.Drawing.Point(43, 216)
         Me.ListBoxLog.Name = "ListBoxLog"
         Me.ListBoxLog.Size = New System.Drawing.Size(311, 95)
@@ -173,10 +166,9 @@ Partial Class FormProduct
         '
         'Label2
         '
-        Me.Label2.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Label2.AutoSize = True
+        Me.Label2.AutoSize = true
         Me.Label2.BackColor = System.Drawing.Color.Transparent
-        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label2.Location = New System.Drawing.Point(40, 200)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(56, 13)
@@ -185,10 +177,9 @@ Partial Class FormProduct
         '
         'Label3
         '
-        Me.Label3.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Label3.AutoSize = True
+        Me.Label3.AutoSize = true
         Me.Label3.BackColor = System.Drawing.Color.Transparent
-        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label3.Location = New System.Drawing.Point(198, 33)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(60, 13)
@@ -197,10 +188,9 @@ Partial Class FormProduct
         '
         'Label4
         '
-        Me.Label4.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Label4.AutoSize = True
+        Me.Label4.AutoSize = true
         Me.Label4.BackColor = System.Drawing.Color.Transparent
-        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label4.Location = New System.Drawing.Point(42, 33)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(97, 13)
@@ -209,10 +199,9 @@ Partial Class FormProduct
         '
         'Label1
         '
-        Me.Label1.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Label1.AutoSize = True
+        Me.Label1.AutoSize = true
         Me.Label1.BackColor = System.Drawing.Color.Transparent
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label1.Location = New System.Drawing.Point(638, 36)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(51, 13)
@@ -221,105 +210,97 @@ Partial Class FormProduct
         '
         'CheckBoxCa
         '
-        Me.CheckBoxCa.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.CheckBoxCa.AutoSize = True
+        Me.CheckBoxCa.AutoSize = true
         Me.CheckBoxCa.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBoxCa.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxCa.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.CheckBoxCa.Location = New System.Drawing.Point(828, 101)
         Me.CheckBoxCa.Name = "CheckBoxCa"
         Me.CheckBoxCa.Size = New System.Drawing.Size(116, 17)
         Me.CheckBoxCa.TabIndex = 124
         Me.CheckBoxCa.Text = "A --> SMD Process"
-        Me.CheckBoxCa.UseVisualStyleBackColor = False
+        Me.CheckBoxCa.UseVisualStyleBackColor = false
         '
         'CheckBoxCe
         '
-        Me.CheckBoxCe.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.CheckBoxCe.AutoSize = True
+        Me.CheckBoxCe.AutoSize = true
         Me.CheckBoxCe.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBoxCe.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxCe.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.CheckBoxCe.Location = New System.Drawing.Point(828, 51)
         Me.CheckBoxCe.Name = "CheckBoxCe"
         Me.CheckBoxCe.Size = New System.Drawing.Size(79, 17)
         Me.CheckBoxCe.TabIndex = 125
         Me.CheckBoxCe.Text = "E --> ENEL"
-        Me.CheckBoxCe.UseVisualStyleBackColor = False
+        Me.CheckBoxCe.UseVisualStyleBackColor = false
         '
         'CheckBoxCc
         '
-        Me.CheckBoxCc.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.CheckBoxCc.AutoSize = True
+        Me.CheckBoxCc.AutoSize = true
         Me.CheckBoxCc.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBoxCc.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxCc.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.CheckBoxCc.Location = New System.Drawing.Point(836, 12)
         Me.CheckBoxCc.Name = "CheckBoxCc"
         Me.CheckBoxCc.Size = New System.Drawing.Size(126, 17)
         Me.CheckBoxCc.TabIndex = 127
         Me.CheckBoxCc.Text = "C-->SMD Solder Past"
-        Me.CheckBoxCc.UseVisualStyleBackColor = False
-        Me.CheckBoxCc.Visible = False
+        Me.CheckBoxCc.UseVisualStyleBackColor = false
+        Me.CheckBoxCc.Visible = false
         '
         'CheckBoxCb
         '
-        Me.CheckBoxCb.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.CheckBoxCb.AutoSize = True
+        Me.CheckBoxCb.AutoSize = true
         Me.CheckBoxCb.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBoxCb.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxCb.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.CheckBoxCb.Location = New System.Drawing.Point(684, 12)
         Me.CheckBoxCb.Name = "CheckBoxCb"
         Me.CheckBoxCb.Size = New System.Drawing.Size(133, 17)
         Me.CheckBoxCb.TabIndex = 128
         Me.CheckBoxCb.Text = "B--> All part assembled"
-        Me.CheckBoxCb.UseVisualStyleBackColor = False
-        Me.CheckBoxCb.Visible = False
+        Me.CheckBoxCb.UseVisualStyleBackColor = false
+        Me.CheckBoxCb.Visible = false
         '
         'CheckBoxCd
         '
-        Me.CheckBoxCd.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.CheckBoxCd.AutoSize = True
+        Me.CheckBoxCd.AutoSize = true
         Me.CheckBoxCd.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBoxCd.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxCd.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.CheckBoxCd.Location = New System.Drawing.Point(828, 214)
         Me.CheckBoxCd.Name = "CheckBoxCd"
         Me.CheckBoxCd.Size = New System.Drawing.Size(87, 17)
         Me.CheckBoxCd.TabIndex = 129
         Me.CheckBoxCd.Text = "D --> Testing"
-        Me.CheckBoxCd.UseVisualStyleBackColor = False
+        Me.CheckBoxCd.UseVisualStyleBackColor = false
         '
         'CheckBoxCf
         '
-        Me.CheckBoxCf.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.CheckBoxCf.AutoSize = True
+        Me.CheckBoxCf.AutoSize = true
         Me.CheckBoxCf.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBoxCf.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxCf.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.CheckBoxCf.Location = New System.Drawing.Point(828, 169)
         Me.CheckBoxCf.Name = "CheckBoxCf"
         Me.CheckBoxCf.Size = New System.Drawing.Size(92, 17)
         Me.CheckBoxCf.TabIndex = 130
         Me.CheckBoxCf.Text = "F --> Software"
-        Me.CheckBoxCf.UseVisualStyleBackColor = False
+        Me.CheckBoxCf.UseVisualStyleBackColor = false
         '
         'CheckBoxCg
         '
-        Me.CheckBoxCg.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.CheckBoxCg.AutoSize = True
+        Me.CheckBoxCg.AutoSize = true
         Me.CheckBoxCg.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBoxCg.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxCg.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.CheckBoxCg.Location = New System.Drawing.Point(828, 236)
         Me.CheckBoxCg.Name = "CheckBoxCg"
         Me.CheckBoxCg.Size = New System.Drawing.Size(78, 17)
         Me.CheckBoxCg.TabIndex = 131
         Me.CheckBoxCg.Text = "G --> Label"
-        Me.CheckBoxCg.UseVisualStyleBackColor = False
+        Me.CheckBoxCg.UseVisualStyleBackColor = false
         '
         'ButtonCustomerAdd
         '
-        Me.ButtonCustomerAdd.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ButtonCustomerAdd.BackColor = System.Drawing.Color.Transparent
         Me.ButtonCustomerAdd.FlatAppearance.BorderSize = 0
         Me.ButtonCustomerAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ButtonCustomerAdd.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ButtonCustomerAdd.Image = CType(resources.GetObject("ButtonCustomerAdd.Image"), System.Drawing.Image)
+        Me.ButtonCustomerAdd.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ButtonCustomerAdd.Image = CType(resources.GetObject("ButtonCustomerAdd.Image"),System.Drawing.Image)
         Me.ButtonCustomerAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.ButtonCustomerAdd.Location = New System.Drawing.Point(684, 135)
         Me.ButtonCustomerAdd.Name = "ButtonCustomerAdd"
@@ -327,14 +308,13 @@ Partial Class FormProduct
         Me.ButtonCustomerAdd.TabIndex = 133
         Me.ButtonCustomerAdd.Text = "Customer Add"
         Me.ButtonCustomerAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonCustomerAdd.UseVisualStyleBackColor = False
+        Me.ButtonCustomerAdd.UseVisualStyleBackColor = false
         '
         'Label5
         '
-        Me.Label5.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Label5.AutoSize = True
+        Me.Label5.AutoSize = true
         Me.Label5.BackColor = System.Drawing.Color.Transparent
-        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label5.Location = New System.Drawing.Point(42, 130)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(37, 13)
@@ -343,10 +323,9 @@ Partial Class FormProduct
         '
         'ComboBoxStatus
         '
-        Me.ComboBoxStatus.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ComboBoxStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBoxStatus.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ComboBoxStatus.FormattingEnabled = True
+        Me.ComboBoxStatus.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ComboBoxStatus.FormattingEnabled = true
         Me.ComboBoxStatus.Location = New System.Drawing.Point(43, 149)
         Me.ComboBoxStatus.Name = "ComboBoxStatus"
         Me.ComboBoxStatus.Size = New System.Drawing.Size(226, 21)
@@ -354,12 +333,11 @@ Partial Class FormProduct
         '
         'ButtonUpdate
         '
-        Me.ButtonUpdate.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ButtonUpdate.BackColor = System.Drawing.Color.Transparent
         Me.ButtonUpdate.FlatAppearance.BorderSize = 0
         Me.ButtonUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ButtonUpdate.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ButtonUpdate.Image = CType(resources.GetObject("ButtonUpdate.Image"), System.Drawing.Image)
+        Me.ButtonUpdate.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ButtonUpdate.Image = CType(resources.GetObject("ButtonUpdate.Image"),System.Drawing.Image)
         Me.ButtonUpdate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.ButtonUpdate.Location = New System.Drawing.Point(379, 268)
         Me.ButtonUpdate.Name = "ButtonUpdate"
@@ -367,16 +345,15 @@ Partial Class FormProduct
         Me.ButtonUpdate.TabIndex = 138
         Me.ButtonUpdate.Text = "Product Update"
         Me.ButtonUpdate.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonUpdate.UseVisualStyleBackColor = False
+        Me.ButtonUpdate.UseVisualStyleBackColor = false
         '
         'ButtonReset
         '
-        Me.ButtonReset.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ButtonReset.BackColor = System.Drawing.Color.Transparent
         Me.ButtonReset.FlatAppearance.BorderSize = 0
         Me.ButtonReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ButtonReset.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ButtonReset.Image = CType(resources.GetObject("ButtonReset.Image"), System.Drawing.Image)
+        Me.ButtonReset.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ButtonReset.Image = CType(resources.GetObject("ButtonReset.Image"),System.Drawing.Image)
         Me.ButtonReset.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.ButtonReset.Location = New System.Drawing.Point(778, 324)
         Me.ButtonReset.Name = "ButtonReset"
@@ -384,16 +361,15 @@ Partial Class FormProduct
         Me.ButtonReset.TabIndex = 139
         Me.ButtonReset.Text = "Reset Field"
         Me.ButtonReset.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonReset.UseVisualStyleBackColor = False
+        Me.ButtonReset.UseVisualStyleBackColor = false
         '
         'ButtonDeleteCustomer
         '
-        Me.ButtonDeleteCustomer.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ButtonDeleteCustomer.BackColor = System.Drawing.Color.Transparent
         Me.ButtonDeleteCustomer.FlatAppearance.BorderSize = 0
         Me.ButtonDeleteCustomer.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ButtonDeleteCustomer.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ButtonDeleteCustomer.Image = CType(resources.GetObject("ButtonDeleteCustomer.Image"), System.Drawing.Image)
+        Me.ButtonDeleteCustomer.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ButtonDeleteCustomer.Image = CType(resources.GetObject("ButtonDeleteCustomer.Image"),System.Drawing.Image)
         Me.ButtonDeleteCustomer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.ButtonDeleteCustomer.Location = New System.Drawing.Point(684, 172)
         Me.ButtonDeleteCustomer.Name = "ButtonDeleteCustomer"
@@ -401,14 +377,13 @@ Partial Class FormProduct
         Me.ButtonDeleteCustomer.TabIndex = 140
         Me.ButtonDeleteCustomer.Text = "Customer Delete"
         Me.ButtonDeleteCustomer.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonDeleteCustomer.UseVisualStyleBackColor = False
+        Me.ButtonDeleteCustomer.UseVisualStyleBackColor = false
         '
         'Label6
         '
-        Me.Label6.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Label6.AutoSize = True
+        Me.Label6.AutoSize = true
         Me.Label6.BackColor = System.Drawing.Color.Transparent
-        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label6.Location = New System.Drawing.Point(377, 82)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(67, 13)
@@ -417,8 +392,7 @@ Partial Class FormProduct
         '
         'TextBoxPiastra
         '
-        Me.TextBoxPiastra.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.TextBoxPiastra.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxPiastra.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.TextBoxPiastra.Location = New System.Drawing.Point(380, 101)
         Me.TextBoxPiastra.Name = "TextBoxPiastra"
         Me.TextBoxPiastra.Size = New System.Drawing.Size(415, 20)
@@ -427,83 +401,78 @@ Partial Class FormProduct
         'ListView1
         '
         Me.ListView1.Activation = System.Windows.Forms.ItemActivation.OneClick
-        Me.ListView1.AllowColumnReorder = True
+        Me.ListView1.AllowColumnReorder = true
         Me.ListView1.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.ListView1.AutoArrange = False
+        Me.ListView1.AutoArrange = false
         Me.ListView1.Cursor = System.Windows.Forms.Cursors.Default
-        Me.ListView1.Font = New System.Drawing.Font("Courier New", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ListView1.FullRowSelect = True
-        Me.ListView1.GridLines = True
+        Me.ListView1.Font = New System.Drawing.Font("Courier New", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ListView1.FullRowSelect = true
+        Me.ListView1.GridLines = true
         ListViewItem1.StateImageIndex = 0
         Me.ListView1.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.ListView1.Location = New System.Drawing.Point(43, 359)
-        Me.ListView1.MultiSelect = False
+        Me.ListView1.MultiSelect = false
         Me.ListView1.Name = "ListView1"
         Me.ListView1.Size = New System.Drawing.Size(916, 301)
         Me.ListView1.TabIndex = 94
-        Me.ListView1.UseCompatibleStateImageBehavior = False
+        Me.ListView1.UseCompatibleStateImageBehavior = false
         Me.ListView1.View = System.Windows.Forms.View.Details
         '
         'CheckBoxCh
         '
-        Me.CheckBoxCh.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.CheckBoxCh.AutoSize = True
+        Me.CheckBoxCh.AutoSize = true
         Me.CheckBoxCh.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBoxCh.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxCh.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.CheckBoxCh.Location = New System.Drawing.Point(828, 124)
         Me.CheckBoxCh.Name = "CheckBoxCh"
         Me.CheckBoxCh.Size = New System.Drawing.Size(133, 17)
         Me.CheckBoxCh.TabIndex = 226
         Me.CheckBoxCh.Text = "H --> RX / AX Process"
-        Me.CheckBoxCh.UseVisualStyleBackColor = False
+        Me.CheckBoxCh.UseVisualStyleBackColor = false
         '
         'CheckBoxci
         '
-        Me.CheckBoxci.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.CheckBoxci.AutoSize = True
+        Me.CheckBoxci.AutoSize = true
         Me.CheckBoxci.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBoxci.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxci.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.CheckBoxci.Location = New System.Drawing.Point(828, 259)
         Me.CheckBoxci.Name = "CheckBoxci"
         Me.CheckBoxci.Size = New System.Drawing.Size(104, 17)
         Me.CheckBoxci.TabIndex = 225
         Me.CheckBoxci.Text = "I --> Laser Matrix"
-        Me.CheckBoxci.UseVisualStyleBackColor = False
+        Me.CheckBoxci.UseVisualStyleBackColor = false
         '
         'CheckBoxcl
         '
-        Me.CheckBoxcl.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.CheckBoxcl.AutoSize = True
+        Me.CheckBoxcl.AutoSize = true
         Me.CheckBoxcl.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBoxcl.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxcl.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.CheckBoxcl.Location = New System.Drawing.Point(828, 146)
         Me.CheckBoxcl.Name = "CheckBoxcl"
         Me.CheckBoxcl.Size = New System.Drawing.Size(120, 17)
         Me.CheckBoxcl.TabIndex = 224
         Me.CheckBoxcl.Text = "L --> Wave Process"
-        Me.CheckBoxcl.UseVisualStyleBackColor = False
+        Me.CheckBoxcl.UseVisualStyleBackColor = false
         '
         'CheckBoxcm
         '
-        Me.CheckBoxcm.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.CheckBoxcm.AutoSize = True
+        Me.CheckBoxcm.AutoSize = true
         Me.CheckBoxcm.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBoxcm.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxcm.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.CheckBoxcm.Location = New System.Drawing.Point(828, 191)
         Me.CheckBoxcm.Name = "CheckBoxcm"
         Me.CheckBoxcm.Size = New System.Drawing.Size(126, 17)
         Me.CheckBoxcm.TabIndex = 227
         Me.CheckBoxcm.Text = "M --> Varnish/Potting"
-        Me.CheckBoxcm.UseVisualStyleBackColor = False
+        Me.CheckBoxcm.UseVisualStyleBackColor = false
         '
         'ButtonGroup
         '
-        Me.ButtonGroup.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ButtonGroup.BackColor = System.Drawing.Color.Transparent
         Me.ButtonGroup.FlatAppearance.BorderSize = 0
         Me.ButtonGroup.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ButtonGroup.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ButtonGroup.Image = CType(resources.GetObject("ButtonGroup.Image"), System.Drawing.Image)
+        Me.ButtonGroup.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ButtonGroup.Image = CType(resources.GetObject("ButtonGroup.Image"),System.Drawing.Image)
         Me.ButtonGroup.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.ButtonGroup.Location = New System.Drawing.Point(562, 144)
         Me.ButtonGroup.Name = "ButtonGroup"
@@ -511,16 +480,15 @@ Partial Class FormProduct
         Me.ButtonGroup.TabIndex = 228
         Me.ButtonGroup.Text = "Group"
         Me.ButtonGroup.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonGroup.UseVisualStyleBackColor = False
+        Me.ButtonGroup.UseVisualStyleBackColor = false
         '
         'ButtonStatusUP
         '
-        Me.ButtonStatusUP.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ButtonStatusUP.BackColor = System.Drawing.Color.Transparent
         Me.ButtonStatusUP.FlatAppearance.BorderSize = 0
         Me.ButtonStatusUP.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ButtonStatusUP.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ButtonStatusUP.Image = CType(resources.GetObject("ButtonStatusUP.Image"), System.Drawing.Image)
+        Me.ButtonStatusUP.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ButtonStatusUP.Image = CType(resources.GetObject("ButtonStatusUP.Image"),System.Drawing.Image)
         Me.ButtonStatusUP.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.ButtonStatusUP.Location = New System.Drawing.Point(275, 149)
         Me.ButtonStatusUP.Name = "ButtonStatusUP"
@@ -528,16 +496,15 @@ Partial Class FormProduct
         Me.ButtonStatusUP.TabIndex = 229
         Me.ButtonStatusUP.Text = "Status UP"
         Me.ButtonStatusUP.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonStatusUP.UseVisualStyleBackColor = False
+        Me.ButtonStatusUP.UseVisualStyleBackColor = false
         '
         'ButtonOpenIssue
         '
-        Me.ButtonOpenIssue.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ButtonOpenIssue.BackColor = System.Drawing.Color.Transparent
         Me.ButtonOpenIssue.FlatAppearance.BorderSize = 0
         Me.ButtonOpenIssue.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ButtonOpenIssue.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ButtonOpenIssue.Image = CType(resources.GetObject("ButtonOpenIssue.Image"), System.Drawing.Image)
+        Me.ButtonOpenIssue.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ButtonOpenIssue.Image = CType(resources.GetObject("ButtonOpenIssue.Image"),System.Drawing.Image)
         Me.ButtonOpenIssue.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.ButtonOpenIssue.Location = New System.Drawing.Point(562, 175)
         Me.ButtonOpenIssue.Name = "ButtonOpenIssue"
@@ -545,16 +512,15 @@ Partial Class FormProduct
         Me.ButtonOpenIssue.TabIndex = 230
         Me.ButtonOpenIssue.Text = "Open Issue"
         Me.ButtonOpenIssue.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonOpenIssue.UseVisualStyleBackColor = False
+        Me.ButtonOpenIssue.UseVisualStyleBackColor = false
         '
         'ButtonOpenIssuePrint
         '
-        Me.ButtonOpenIssuePrint.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ButtonOpenIssuePrint.BackColor = System.Drawing.Color.Transparent
         Me.ButtonOpenIssuePrint.FlatAppearance.BorderSize = 0
         Me.ButtonOpenIssuePrint.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ButtonOpenIssuePrint.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ButtonOpenIssuePrint.Image = CType(resources.GetObject("ButtonOpenIssuePrint.Image"), System.Drawing.Image)
+        Me.ButtonOpenIssuePrint.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ButtonOpenIssuePrint.Image = CType(resources.GetObject("ButtonOpenIssuePrint.Image"),System.Drawing.Image)
         Me.ButtonOpenIssuePrint.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.ButtonOpenIssuePrint.Location = New System.Drawing.Point(562, 211)
         Me.ButtonOpenIssuePrint.Name = "ButtonOpenIssuePrint"
@@ -562,16 +528,15 @@ Partial Class FormProduct
         Me.ButtonOpenIssuePrint.TabIndex = 231
         Me.ButtonOpenIssuePrint.Text = "Print Open Issue"
         Me.ButtonOpenIssuePrint.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonOpenIssuePrint.UseVisualStyleBackColor = False
+        Me.ButtonOpenIssuePrint.UseVisualStyleBackColor = false
         '
         'ButtonSIGIP
         '
-        Me.ButtonSIGIP.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ButtonSIGIP.BackColor = System.Drawing.Color.Transparent
         Me.ButtonSIGIP.FlatAppearance.BorderSize = 0
         Me.ButtonSIGIP.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ButtonSIGIP.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ButtonSIGIP.Image = CType(resources.GetObject("ButtonSIGIP.Image"), System.Drawing.Image)
+        Me.ButtonSIGIP.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ButtonSIGIP.Image = CType(resources.GetObject("ButtonSIGIP.Image"),System.Drawing.Image)
         Me.ButtonSIGIP.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.ButtonSIGIP.Location = New System.Drawing.Point(562, 247)
         Me.ButtonSIGIP.Name = "ButtonSIGIP"
@@ -579,20 +544,19 @@ Partial Class FormProduct
         Me.ButtonSIGIP.TabIndex = 232
         Me.ButtonSIGIP.Text = "     Import Sigip BOM"
         Me.ButtonSIGIP.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonSIGIP.UseVisualStyleBackColor = False
-        Me.ButtonSIGIP.Visible = False
+        Me.ButtonSIGIP.UseVisualStyleBackColor = false
+        Me.ButtonSIGIP.Visible = false
         '
         'FolderBrowserDialog1
         '
-        Me.FolderBrowserDialog1.ShowNewFolderButton = False
+        Me.FolderBrowserDialog1.ShowNewFolderButton = false
         '
         'ButtonAddMch
         '
-        Me.ButtonAddMch.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ButtonAddMch.BackColor = System.Drawing.Color.Transparent
         Me.ButtonAddMch.FlatAppearance.BorderSize = 0
         Me.ButtonAddMch.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ButtonAddMch.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonAddMch.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonAddMch.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.ButtonAddMch.Location = New System.Drawing.Point(43, 330)
         Me.ButtonAddMch.Name = "ButtonAddMch"
@@ -600,16 +564,15 @@ Partial Class FormProduct
         Me.ButtonAddMch.TabIndex = 214
         Me.ButtonAddMch.Text = "Add"
         Me.ButtonAddMch.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonAddMch.UseVisualStyleBackColor = False
-        Me.ButtonAddMch.Visible = False
+        Me.ButtonAddMch.UseVisualStyleBackColor = false
+        Me.ButtonAddMch.Visible = false
         '
         'ButtonRemoveMch
         '
-        Me.ButtonRemoveMch.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ButtonRemoveMch.BackColor = System.Drawing.Color.Transparent
         Me.ButtonRemoveMch.FlatAppearance.BorderSize = 0
         Me.ButtonRemoveMch.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ButtonRemoveMch.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonRemoveMch.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonRemoveMch.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.ButtonRemoveMch.Location = New System.Drawing.Point(240, 330)
         Me.ButtonRemoveMch.Name = "ButtonRemoveMch"
@@ -617,15 +580,14 @@ Partial Class FormProduct
         Me.ButtonRemoveMch.TabIndex = 215
         Me.ButtonRemoveMch.Text = "Remove"
         Me.ButtonRemoveMch.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonRemoveMch.UseVisualStyleBackColor = False
-        Me.ButtonRemoveMch.Visible = False
+        Me.ButtonRemoveMch.UseVisualStyleBackColor = false
+        Me.ButtonRemoveMch.Visible = false
         '
         'Label7
         '
-        Me.Label7.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Label7.AutoSize = True
+        Me.Label7.AutoSize = true
         Me.Label7.BackColor = System.Drawing.Color.Transparent
-        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label7.Location = New System.Drawing.Point(42, 85)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(56, 13)
@@ -634,21 +596,19 @@ Partial Class FormProduct
         '
         'Label10
         '
-        Me.Label10.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Label10.AutoSize = True
+        Me.Label10.AutoSize = true
         Me.Label10.BackColor = System.Drawing.Color.Transparent
-        Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label10.Location = New System.Drawing.Point(237, 10)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(103, 13)
         Me.Label10.TabIndex = 211
         Me.Label10.Text = "Mechanical Element"
-        Me.Label10.Visible = False
+        Me.Label10.Visible = false
         '
         'TextBoxPcb
         '
-        Me.TextBoxPcb.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.TextBoxPcb.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxPcb.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.TextBoxPcb.Location = New System.Drawing.Point(43, 101)
         Me.TextBoxPcb.Name = "TextBoxPcb"
         Me.TextBoxPcb.Size = New System.Drawing.Size(331, 20)
@@ -656,38 +616,35 @@ Partial Class FormProduct
         '
         'ComboBoxMch
         '
-        Me.ComboBoxMch.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.ComboBoxMch.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ComboBoxMch.FormattingEnabled = True
+        Me.ComboBoxMch.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ComboBoxMch.FormattingEnabled = true
         Me.ComboBoxMch.Location = New System.Drawing.Point(367, 10)
         Me.ComboBoxMch.Name = "ComboBoxMch"
         Me.ComboBoxMch.Size = New System.Drawing.Size(312, 21)
         Me.ComboBoxMch.TabIndex = 213
-        Me.ComboBoxMch.Visible = False
+        Me.ComboBoxMch.Visible = false
         '
         'ListViewMch
         '
-        Me.ListViewMch.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.ListViewMch.CheckBoxes = True
-        Me.ListViewMch.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ListViewMch.GridLines = True
+        Me.ListViewMch.CheckBoxes = true
+        Me.ListViewMch.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ListViewMch.GridLines = true
         ListViewItem2.StateImageIndex = 0
         Me.ListViewMch.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
         Me.ListViewMch.Location = New System.Drawing.Point(43, 231)
-        Me.ListViewMch.MultiSelect = False
+        Me.ListViewMch.MultiSelect = false
         Me.ListViewMch.Name = "ListViewMch"
         Me.ListViewMch.Size = New System.Drawing.Size(312, 94)
         Me.ListViewMch.TabIndex = 212
-        Me.ListViewMch.UseCompatibleStateImageBehavior = False
+        Me.ListViewMch.UseCompatibleStateImageBehavior = false
         Me.ListViewMch.View = System.Windows.Forms.View.Details
-        Me.ListViewMch.Visible = False
+        Me.ListViewMch.Visible = false
         '
         'Label8
         '
-        Me.Label8.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Label8.AutoSize = True
+        Me.Label8.AutoSize = true
         Me.Label8.BackColor = System.Drawing.Color.Transparent
-        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label8.Location = New System.Drawing.Point(379, 137)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(20, 13)
@@ -696,8 +653,7 @@ Partial Class FormProduct
         '
         'TextBoxLS
         '
-        Me.TextBoxLS.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.TextBoxLS.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxLS.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.TextBoxLS.Location = New System.Drawing.Point(380, 153)
         Me.TextBoxLS.Name = "TextBoxLS"
         Me.TextBoxLS.Size = New System.Drawing.Size(156, 22)
@@ -705,12 +661,11 @@ Partial Class FormProduct
         '
         'ButtonExport
         '
-        Me.ButtonExport.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ButtonExport.BackColor = System.Drawing.Color.Transparent
         Me.ButtonExport.FlatAppearance.BorderSize = 0
         Me.ButtonExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ButtonExport.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ButtonExport.Image = CType(resources.GetObject("ButtonExport.Image"), System.Drawing.Image)
+        Me.ButtonExport.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ButtonExport.Image = CType(resources.GetObject("ButtonExport.Image"),System.Drawing.Image)
         Me.ButtonExport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.ButtonExport.Location = New System.Drawing.Point(562, 283)
         Me.ButtonExport.Name = "ButtonExport"
@@ -718,26 +673,25 @@ Partial Class FormProduct
         Me.ButtonExport.TabIndex = 236
         Me.ButtonExport.Text = "     Export List"
         Me.ButtonExport.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonExport.UseVisualStyleBackColor = False
+        Me.ButtonExport.UseVisualStyleBackColor = false
         '
         'CheckBoxVis
         '
-        Me.CheckBoxVis.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.CheckBoxVis.AutoSize = True
+        Me.CheckBoxVis.AutoSize = true
         Me.CheckBoxVis.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBoxVis.Checked = True
+        Me.CheckBoxVis.Checked = true
         Me.CheckBoxVis.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckBoxVis.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CheckBoxVis.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.CheckBoxVis.Location = New System.Drawing.Point(43, 337)
         Me.CheckBoxVis.Name = "CheckBoxVis"
         Me.CheckBoxVis.Size = New System.Drawing.Size(138, 17)
         Me.CheckBoxVis.TabIndex = 237
         Me.CheckBoxVis.Text = "Show Activity / Product"
-        Me.CheckBoxVis.UseVisualStyleBackColor = False
+        Me.CheckBoxVis.UseVisualStyleBackColor = false
         '
         'PictureBox1
         '
-        Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.PictureBox1.Image = Global.MORPHEUS.My.Resources.Resources.BitronPoland
         Me.PictureBox1.Location = New System.Drawing.Point(899, 666)
         Me.PictureBox1.Margin = New System.Windows.Forms.Padding(2)
@@ -745,14 +699,13 @@ Partial Class FormProduct
         Me.PictureBox1.Size = New System.Drawing.Size(101, 32)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox1.TabIndex = 238
-        Me.PictureBox1.TabStop = False
+        Me.PictureBox1.TabStop = false
         '
         'Label9
         '
-        Me.Label9.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Label9.AutoSize = True
+        Me.Label9.AutoSize = true
         Me.Label9.BackColor = System.Drawing.Color.Transparent
-        Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label9.Location = New System.Drawing.Point(379, 184)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(65, 13)
@@ -761,8 +714,7 @@ Partial Class FormProduct
         '
         'TextBoxDAI
         '
-        Me.TextBoxDAI.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.TextBoxDAI.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxDAI.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.TextBoxDAI.Location = New System.Drawing.Point(379, 199)
         Me.TextBoxDAI.Name = "TextBoxDAI"
         Me.TextBoxDAI.Size = New System.Drawing.Size(156, 22)
@@ -771,9 +723,9 @@ Partial Class FormProduct
         'FormProduct
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
-        Me.BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), System.Drawing.Image)
+        Me.BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"),System.Drawing.Image)
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ClientSize = New System.Drawing.Size(1011, 709)
+        Me.ClientSize = New System.Drawing.Size(1019, 721)
         Me.Controls.Add(Me.Label9)
         Me.Controls.Add(Me.TextBoxDAI)
         Me.Controls.Add(Me.PictureBox1)
@@ -827,11 +779,11 @@ Partial Class FormProduct
         Me.MinimumSize = New System.Drawing.Size(1027, 748)
         Me.Name = "FormProduct"
         Me.Text = "SrvDoc - Document Management System -> Product Form"
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.ResumeLayout(False)
-        Me.PerformLayout()
+        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).EndInit
+        Me.ResumeLayout(false)
+        Me.PerformLayout
 
-    End Sub
+End Sub
     Friend WithEvents ButtonAddProduct As System.Windows.Forms.Button
     Friend WithEvents ButtonQuery As System.Windows.Forms.Button
     Friend WithEvents ButtonDelete As System.Windows.Forms.Button

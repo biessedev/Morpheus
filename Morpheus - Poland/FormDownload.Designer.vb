@@ -23,7 +23,7 @@ Partial Class FormDownload
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {""}, -1, System.Drawing.Color.Empty, System.Drawing.Color.Empty, New System.Drawing.Font("Courier New", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte)))
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {""}, -1, System.Drawing.Color.Empty, System.Drawing.Color.Empty, New System.Drawing.Font("Courier New", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte)))
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormDownload))
         Me.ButtonReset = New System.Windows.Forms.Button()
         Me.ButtonDownload = New System.Windows.Forms.Button()
@@ -103,21 +103,21 @@ Partial Class FormDownload
         Me.FileSystemWatcher1 = New System.IO.FileSystemWatcher()
         Me.TableLayoutPanel4 = New System.Windows.Forms.TableLayoutPanel()
         Me.TimerCompLoading = New System.Windows.Forms.Timer(Me.components)
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.TableLayoutPanel1.SuspendLayout()
-        Me.FlowLayoutPanel4.SuspendLayout()
-        Me.FlowLayoutPanel2.SuspendLayout()
-        Me.FlowLayoutPanel3.SuspendLayout()
-        Me.TableLayoutPanel2.SuspendLayout()
-        Me.GroupBox2.SuspendLayout()
-        Me.TableLayoutPanel5.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
-        Me.GroupBox3.SuspendLayout()
-        Me.TableLayoutPanel3.SuspendLayout()
-        Me.FlowLayoutPanel1.SuspendLayout()
-        CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.TableLayoutPanel4.SuspendLayout()
-        Me.SuspendLayout()
+        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.TableLayoutPanel1.SuspendLayout
+        Me.FlowLayoutPanel4.SuspendLayout
+        Me.FlowLayoutPanel2.SuspendLayout
+        Me.FlowLayoutPanel3.SuspendLayout
+        Me.TableLayoutPanel2.SuspendLayout
+        Me.GroupBox2.SuspendLayout
+        Me.TableLayoutPanel5.SuspendLayout
+        Me.GroupBox1.SuspendLayout
+        Me.GroupBox3.SuspendLayout
+        Me.TableLayoutPanel3.SuspendLayout
+        Me.FlowLayoutPanel1.SuspendLayout
+        CType(Me.FileSystemWatcher1,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.TableLayoutPanel4.SuspendLayout
+        Me.SuspendLayout
         '
         'ButtonReset
         '
@@ -128,7 +128,7 @@ Partial Class FormDownload
         Me.ButtonReset.Size = New System.Drawing.Size(59, 30)
         Me.ButtonReset.TabIndex = 62
         Me.ButtonReset.Text = "Reset Type"
-        Me.ButtonReset.UseVisualStyleBackColor = True
+        Me.ButtonReset.UseVisualStyleBackColor = true
         '
         'ButtonDownload
         '
@@ -138,7 +138,7 @@ Partial Class FormDownload
         Me.ButtonDownload.Size = New System.Drawing.Size(95, 30)
         Me.ButtonDownload.TabIndex = 65
         Me.ButtonDownload.Text = "Download"
-        Me.ButtonDownload.UseVisualStyleBackColor = True
+        Me.ButtonDownload.UseVisualStyleBackColor = true
         '
         'ButtonBrowse
         '
@@ -149,12 +149,12 @@ Partial Class FormDownload
         Me.ButtonBrowse.Size = New System.Drawing.Size(95, 30)
         Me.ButtonBrowse.TabIndex = 78
         Me.ButtonBrowse.Text = "Browse"
-        Me.ButtonBrowse.UseVisualStyleBackColor = True
+        Me.ButtonBrowse.UseVisualStyleBackColor = true
         '
         'Label4
         '
-        Me.Label4.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label4.AutoSize = True
+        Me.Label4.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.Label4.AutoSize = true
         Me.Label4.BackColor = System.Drawing.Color.Transparent
         Me.Label4.Location = New System.Drawing.Point(4, 12)
         Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
@@ -172,7 +172,7 @@ Partial Class FormDownload
         Me.ButtonQuery.Size = New System.Drawing.Size(277, 78)
         Me.ButtonQuery.TabIndex = 85
         Me.ButtonQuery.Text = "QUERY"
-        Me.ButtonQuery.UseVisualStyleBackColor = True
+        Me.ButtonQuery.UseVisualStyleBackColor = true
         '
         'TextBoxFilePath
         '
@@ -183,17 +183,543 @@ Partial Class FormDownload
         Me.TextBoxFilePath.Size = New System.Drawing.Size(508, 20)
         Me.TextBoxFilePath.TabIndex = 79
         '
+        'CheckComp
+        '
+        Me.CheckComp.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.CheckComp.AutoSize = true
+        Me.CheckComp.BackColor = System.Drawing.Color.Transparent
+        Me.CheckComp.Checked = true
+        Me.CheckComp.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckComp.Enabled = false
+        Me.CheckComp.Location = New System.Drawing.Point(4, 45)
+        Me.CheckComp.Margin = New System.Windows.Forms.Padding(4)
+        Me.CheckComp.Name = "CheckComp"
+        Me.CheckComp.Size = New System.Drawing.Size(173, 17)
+        Me.CheckComp.TabIndex = 145
+        Me.CheckComp.Text = "HomologationCards \ Drawings"
+        Me.CheckComp.UseVisualStyleBackColor = false
+        '
+        'ButtonSign
+        '
+        Me.ButtonSign.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.ButtonSign.Location = New System.Drawing.Point(4, 80)
+        Me.ButtonSign.Margin = New System.Windows.Forms.Padding(4)
+        Me.ButtonSign.Name = "ButtonSign"
+        Me.ButtonSign.Size = New System.Drawing.Size(59, 30)
+        Me.ButtonSign.TabIndex = 89
+        Me.ButtonSign.Text = "Sign"
+        Me.ButtonSign.UseVisualStyleBackColor = true
+        '
+        'ButtonDelete
+        '
+        Me.ButtonDelete.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.ButtonDelete.Location = New System.Drawing.Point(4, 118)
+        Me.ButtonDelete.Margin = New System.Windows.Forms.Padding(4)
+        Me.ButtonDelete.Name = "ButtonDelete"
+        Me.ButtonDelete.Size = New System.Drawing.Size(59, 30)
+        Me.ButtonDelete.TabIndex = 92
+        Me.ButtonDelete.Text = "Delete"
+        Me.ButtonDelete.UseVisualStyleBackColor = true
+        '
+        'ListView1
+        '
+        Me.ListView1.AllowColumnReorder = true
+        Me.ListView1.CheckBoxes = true
+        Me.ListView1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ListView1.Font = New System.Drawing.Font("Courier New", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ListView1.FullRowSelect = true
+        Me.ListView1.GridLines = true
+        Me.ListView1.HideSelection = false
+        ListViewItem1.StateImageIndex = 0
+        Me.ListView1.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
+        Me.ListView1.Location = New System.Drawing.Point(4, 393)
+        Me.ListView1.Margin = New System.Windows.Forms.Padding(4)
+        Me.ListView1.MultiSelect = false
+        Me.ListView1.Name = "ListView1"
+        Me.ListView1.Size = New System.Drawing.Size(1105, 210)
+        Me.ListView1.TabIndex = 93
+        Me.ListView1.UseCompatibleStateImageBehavior = false
+        Me.ListView1.View = System.Windows.Forms.View.Details
+        '
+        'TextBoxCompPn
+        '
+        Me.TextBoxCompPn.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.TextBoxCompPn.Enabled = false
+        Me.TextBoxCompPn.Location = New System.Drawing.Point(4, 17)
+        Me.TextBoxCompPn.Margin = New System.Windows.Forms.Padding(4)
+        Me.TextBoxCompPn.Name = "TextBoxCompPn"
+        Me.TextBoxCompPn.Size = New System.Drawing.Size(187, 20)
+        Me.TextBoxCompPn.TabIndex = 119
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = true
+        Me.Label12.BackColor = System.Drawing.Color.Transparent
+        Me.Label12.Location = New System.Drawing.Point(4, 0)
+        Me.Label12.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(123, 13)
+        Me.Label12.TabIndex = 120
+        Me.Label12.Text = "Component Part Number"
+        '
+        'ListBoxLog
+        '
+        Me.ListBoxLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.ListBoxLog.FormattingEnabled = true
+        Me.ListBoxLog.Location = New System.Drawing.Point(4, 42)
+        Me.ListBoxLog.Margin = New System.Windows.Forms.Padding(4)
+        Me.ListBoxLog.Name = "ListBoxLog"
+        Me.ListBoxLog.Size = New System.Drawing.Size(274, 197)
+        Me.ListBoxLog.TabIndex = 120
+        '
+        'ButtonSel
+        '
+        Me.ButtonSel.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.ButtonSel.Location = New System.Drawing.Point(4, 4)
+        Me.ButtonSel.Margin = New System.Windows.Forms.Padding(4)
+        Me.ButtonSel.Name = "ButtonSel"
+        Me.ButtonSel.Size = New System.Drawing.Size(59, 30)
+        Me.ButtonSel.TabIndex = 124
+        Me.ButtonSel.Text = "Select All"
+        Me.ButtonSel.UseVisualStyleBackColor = true
+        '
+        'Timer1
+        '
+        Me.Timer1.Interval = 5000
+        '
+        'CheckBox1
+        '
+        Me.CheckBox1.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.CheckBox1.AutoSize = true
+        Me.CheckBox1.BackColor = System.Drawing.Color.Transparent
+        Me.CheckBox1.Checked = true
+        Me.CheckBox1.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox1.Location = New System.Drawing.Point(4, 4)
+        Me.CheckBox1.Margin = New System.Windows.Forms.Padding(4)
+        Me.CheckBox1.Name = "CheckBox1"
+        Me.CheckBox1.Size = New System.Drawing.Size(37, 17)
+        Me.CheckBox1.TabIndex = 131
+        Me.CheckBox1.Text = "ID"
+        Me.CheckBox1.UseVisualStyleBackColor = false
+        '
+        'CheckBox2
+        '
+        Me.CheckBox2.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.CheckBox2.AutoSize = true
+        Me.CheckBox2.BackColor = System.Drawing.Color.Transparent
+        Me.CheckBox2.Checked = true
+        Me.CheckBox2.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox2.Location = New System.Drawing.Point(49, 4)
+        Me.CheckBox2.Margin = New System.Windows.Forms.Padding(4)
+        Me.CheckBox2.Name = "CheckBox2"
+        Me.CheckBox2.Size = New System.Drawing.Size(61, 17)
+        Me.CheckBox2.TabIndex = 132
+        Me.CheckBox2.Text = "Header"
+        Me.CheckBox2.UseVisualStyleBackColor = false
+        '
+        'CheckBox3
+        '
+        Me.CheckBox3.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.CheckBox3.AutoSize = true
+        Me.CheckBox3.BackColor = System.Drawing.Color.Transparent
+        Me.CheckBox3.Checked = true
+        Me.CheckBox3.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox3.Location = New System.Drawing.Point(118, 4)
+        Me.CheckBox3.Margin = New System.Windows.Forms.Padding(4)
+        Me.CheckBox3.Name = "CheckBox3"
+        Me.CheckBox3.Size = New System.Drawing.Size(54, 17)
+        Me.CheckBox3.TabIndex = 133
+        Me.CheckBox3.Text = "Name"
+        Me.CheckBox3.UseVisualStyleBackColor = false
+        '
+        'CheckBox4
+        '
+        Me.CheckBox4.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.CheckBox4.AutoSize = true
+        Me.CheckBox4.BackColor = System.Drawing.Color.Transparent
+        Me.CheckBox4.Location = New System.Drawing.Point(267, 4)
+        Me.CheckBox4.Margin = New System.Windows.Forms.Padding(4)
+        Me.CheckBox4.Name = "CheckBox4"
+        Me.CheckBox4.Size = New System.Drawing.Size(46, 17)
+        Me.CheckBox4.TabIndex = 134
+        Me.CheckBox4.Text = "Rev"
+        Me.CheckBox4.UseVisualStyleBackColor = false
+        '
+        'CheckBox5
+        '
+        Me.CheckBox5.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.CheckBox5.AutoSize = true
+        Me.CheckBox5.BackColor = System.Drawing.Color.Transparent
+        Me.CheckBox5.Location = New System.Drawing.Point(398, 4)
+        Me.CheckBox5.Margin = New System.Windows.Forms.Padding(4)
+        Me.CheckBox5.Name = "CheckBox5"
+        Me.CheckBox5.Size = New System.Drawing.Size(41, 17)
+        Me.CheckBox5.TabIndex = 135
+        Me.CheckBox5.Text = "Ext"
+        Me.CheckBox5.UseVisualStyleBackColor = false
+        '
+        'CheckBox6
+        '
+        Me.CheckBox6.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.CheckBox6.AutoSize = true
+        Me.CheckBox6.BackColor = System.Drawing.Color.Transparent
+        Me.CheckBox6.Location = New System.Drawing.Point(321, 4)
+        Me.CheckBox6.Margin = New System.Windows.Forms.Padding(4)
+        Me.CheckBox6.Name = "CheckBox6"
+        Me.CheckBox6.Size = New System.Drawing.Size(69, 17)
+        Me.CheckBox6.TabIndex = 136
+        Me.CheckBox6.Text = "RevNote"
+        Me.CheckBox6.UseVisualStyleBackColor = false
+        '
+        'CheckBox7
+        '
+        Me.CheckBox7.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.CheckBox7.AutoSize = true
+        Me.CheckBox7.BackColor = System.Drawing.Color.Transparent
+        Me.CheckBox7.Location = New System.Drawing.Point(508, 4)
+        Me.CheckBox7.Margin = New System.Windows.Forms.Padding(4)
+        Me.CheckBox7.Name = "CheckBox7"
+        Me.CheckBox7.Size = New System.Drawing.Size(47, 17)
+        Me.CheckBox7.TabIndex = 137
+        Me.CheckBox7.Text = "Sign"
+        Me.CheckBox7.UseVisualStyleBackColor = false
+        '
+        'CheckBox8
+        '
+        Me.CheckBox8.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.CheckBox8.AutoSize = true
+        Me.CheckBox8.BackColor = System.Drawing.Color.Transparent
+        Me.CheckBox8.Location = New System.Drawing.Point(447, 4)
+        Me.CheckBox8.Margin = New System.Windows.Forms.Padding(4)
+        Me.CheckBox8.Name = "CheckBox8"
+        Me.CheckBox8.Size = New System.Drawing.Size(53, 17)
+        Me.CheckBox8.TabIndex = 138
+        Me.CheckBox8.Text = "Editor"
+        Me.CheckBox8.UseVisualStyleBackColor = false
+        '
+        'CheckBox9
+        '
+        Me.CheckBox9.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.CheckBox9.AutoSize = true
+        Me.CheckBox9.BackColor = System.Drawing.Color.Transparent
+        Me.CheckBox9.Location = New System.Drawing.Point(563, 4)
+        Me.CheckBox9.Margin = New System.Windows.Forms.Padding(4)
+        Me.CheckBox9.Name = "CheckBox9"
+        Me.CheckBox9.Size = New System.Drawing.Size(59, 17)
+        Me.CheckBox9.TabIndex = 139
+        Me.CheckBox9.Text = "Control"
+        Me.CheckBox9.UseVisualStyleBackColor = false
+        '
+        'CheckBox10
+        '
+        Me.CheckBox10.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.CheckBox10.AutoSize = true
+        Me.CheckBox10.BackColor = System.Drawing.Color.Transparent
+        Me.CheckBox10.Location = New System.Drawing.Point(630, 4)
+        Me.CheckBox10.Margin = New System.Windows.Forms.Padding(4)
+        Me.CheckBox10.Name = "CheckBox10"
+        Me.CheckBox10.Size = New System.Drawing.Size(81, 17)
+        Me.CheckBox10.TabIndex = 140
+        Me.CheckBox10.Text = "EcrPending"
+        Me.CheckBox10.UseVisualStyleBackColor = false
+        Me.CheckBox10.Visible = false
+        '
+        'CheckBox11
+        '
+        Me.CheckBox11.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.CheckBox11.AutoSize = true
+        Me.CheckBox11.BackColor = System.Drawing.Color.Transparent
+        Me.CheckBox11.Location = New System.Drawing.Point(719, 4)
+        Me.CheckBox11.Margin = New System.Windows.Forms.Padding(4)
+        Me.CheckBox11.Name = "CheckBox11"
+        Me.CheckBox11.Size = New System.Drawing.Size(60, 17)
+        Me.CheckBox11.TabIndex = 141
+        Me.CheckBox11.Text = "EcrNull"
+        Me.CheckBox11.UseVisualStyleBackColor = false
+        Me.CheckBox11.Visible = false
+        '
+        'CheckBox12
+        '
+        Me.CheckBox12.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.CheckBox12.AutoSize = true
+        Me.CheckBox12.BackColor = System.Drawing.Color.Transparent
+        Me.CheckBox12.Checked = true
+        Me.CheckBox12.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBox12.Location = New System.Drawing.Point(180, 4)
+        Me.CheckBox12.Margin = New System.Windows.Forms.Padding(4)
+        Me.CheckBox12.Name = "CheckBox12"
+        Me.CheckBox12.Size = New System.Drawing.Size(79, 17)
+        Me.CheckBox12.TabIndex = 142
+        Me.CheckBox12.Text = "Description"
+        Me.CheckBox12.UseVisualStyleBackColor = false
+        '
+        'CheckBoxSaveInfo
+        '
+        Me.CheckBoxSaveInfo.AutoSize = true
+        Me.CheckBoxSaveInfo.BackColor = System.Drawing.Color.Transparent
+        Me.CheckBoxSaveInfo.Location = New System.Drawing.Point(107, 4)
+        Me.CheckBoxSaveInfo.Margin = New System.Windows.Forms.Padding(4)
+        Me.CheckBoxSaveInfo.Name = "CheckBoxSaveInfo"
+        Me.CheckBoxSaveInfo.Size = New System.Drawing.Size(71, 17)
+        Me.CheckBoxSaveInfo.TabIndex = 144
+        Me.CheckBoxSaveInfo.Text = "Save info"
+        Me.CheckBoxSaveInfo.UseVisualStyleBackColor = false
+        '
+        'ButtonExport
+        '
+        Me.ButtonExport.Location = New System.Drawing.Point(4, 4)
+        Me.ButtonExport.Margin = New System.Windows.Forms.Padding(4)
+        Me.ButtonExport.Name = "ButtonExport"
+        Me.ButtonExport.Size = New System.Drawing.Size(95, 30)
+        Me.ButtonExport.TabIndex = 147
+        Me.ButtonExport.Text = "Export List"
+        Me.ButtonExport.UseVisualStyleBackColor = true
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"),System.Drawing.Image)
+        Me.PictureBox1.Location = New System.Drawing.Point(1161, 969)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(135, 39)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox1.TabIndex = 232
+        Me.PictureBox1.TabStop = false
+        '
+        'TableLayoutPanel1
+        '
+        Me.TableLayoutPanel1.BackColor = System.Drawing.Color.Transparent
+        Me.TableLayoutPanel1.ColumnCount = 4
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 256!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 73!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 493!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
+        Me.TableLayoutPanel1.Controls.Add(Me.ButtonConnection, 1, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.FlowLayoutPanel4, 3, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.FlowLayoutPanel2, 2, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.FlowLayoutPanel3, 0, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.TableLayoutPanel2, 1, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.ButtonQuery, 3, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.GroupBox2, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.TableLayoutPanel5, 2, 0)
+        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(3, 3)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 2
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 264!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(1107, 350)
+        Me.TableLayoutPanel1.TabIndex = 233
+        '
+        'ButtonConnection
+        '
+        Me.ButtonConnection.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.ButtonConnection.Location = New System.Drawing.Point(263, 268)
+        Me.ButtonConnection.Margin = New System.Windows.Forms.Padding(4)
+        Me.ButtonConnection.Name = "ButtonConnection"
+        Me.ButtonConnection.Size = New System.Drawing.Size(59, 69)
+        Me.ButtonConnection.TabIndex = 236
+        Me.ButtonConnection.Text = "  GRU                Conn"
+        Me.ButtonConnection.UseVisualStyleBackColor = true
+        '
+        'FlowLayoutPanel4
+        '
+        Me.FlowLayoutPanel4.Controls.Add(Me.ButtonExport)
+        Me.FlowLayoutPanel4.Controls.Add(Me.CheckBoxSaveInfo)
+        Me.FlowLayoutPanel4.Controls.Add(Me.ListBoxLog)
+        Me.FlowLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.FlowLayoutPanel4.Location = New System.Drawing.Point(825, 3)
+        Me.FlowLayoutPanel4.Name = "FlowLayoutPanel4"
+        Me.FlowLayoutPanel4.Size = New System.Drawing.Size(279, 258)
+        Me.FlowLayoutPanel4.TabIndex = 235
+        '
+        'FlowLayoutPanel2
+        '
+        Me.FlowLayoutPanel2.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.FlowLayoutPanel2.Controls.Add(Me.Label4)
+        Me.FlowLayoutPanel2.Controls.Add(Me.ButtonBrowse)
+        Me.FlowLayoutPanel2.Controls.Add(Me.ButtonDownload)
+        Me.FlowLayoutPanel2.Controls.Add(Me.TextBoxFilePath)
+        Me.FlowLayoutPanel2.Location = New System.Drawing.Point(332, 267)
+        Me.FlowLayoutPanel2.Name = "FlowLayoutPanel2"
+        Me.FlowLayoutPanel2.Size = New System.Drawing.Size(487, 80)
+        Me.FlowLayoutPanel2.TabIndex = 236
+        '
+        'FlowLayoutPanel3
+        '
+        Me.FlowLayoutPanel3.Controls.Add(Me.Label12)
+        Me.FlowLayoutPanel3.Controls.Add(Me.TextBoxCompPn)
+        Me.FlowLayoutPanel3.Controls.Add(Me.CheckComp)
+        Me.FlowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.FlowLayoutPanel3.Location = New System.Drawing.Point(3, 267)
+        Me.FlowLayoutPanel3.Name = "FlowLayoutPanel3"
+        Me.FlowLayoutPanel3.Size = New System.Drawing.Size(250, 80)
+        Me.FlowLayoutPanel3.TabIndex = 237
+        '
+        'TableLayoutPanel2
+        '
+        Me.TableLayoutPanel2.ColumnCount = 1
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
+        Me.TableLayoutPanel2.Controls.Add(Me.ButtonSel, 0, 0)
+        Me.TableLayoutPanel2.Controls.Add(Me.ButtonDelete, 0, 3)
+        Me.TableLayoutPanel2.Controls.Add(Me.ButtonSign, 0, 2)
+        Me.TableLayoutPanel2.Controls.Add(Me.ButtonReset, 0, 1)
+        Me.TableLayoutPanel2.Controls.Add(Me.ButtonOrcad, 0, 5)
+        Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel2.Location = New System.Drawing.Point(259, 3)
+        Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
+        Me.TableLayoutPanel2.RowCount = 6
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29!))
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 11!))
+        Me.TableLayoutPanel2.Size = New System.Drawing.Size(67, 258)
+        Me.TableLayoutPanel2.TabIndex = 125
+        '
+        'ButtonOrcad
+        '
+        Me.ButtonOrcad.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.ButtonOrcad.Location = New System.Drawing.Point(4, 185)
+        Me.ButtonOrcad.Margin = New System.Windows.Forms.Padding(4)
+        Me.ButtonOrcad.Name = "ButtonOrcad"
+        Me.ButtonOrcad.Size = New System.Drawing.Size(59, 69)
+        Me.ButtonOrcad.TabIndex = 237
+        Me.ButtonOrcad.Text = "  OrCAD                Conn"
+        Me.ButtonOrcad.UseVisualStyleBackColor = true
+        '
+        'GroupBox2
+        '
+        Me.GroupBox2.BackColor = System.Drawing.Color.Transparent
+        Me.GroupBox2.Controls.Add(Me.RadioButtonGeneralSearch)
+        Me.GroupBox2.Controls.Add(Me.ComboBoxThirdType)
+        Me.GroupBox2.Controls.Add(Me.TextBoxfileName)
+        Me.GroupBox2.Controls.Add(Me.Label2)
+        Me.GroupBox2.Controls.Add(Me.ComboBoxFirstType)
+        Me.GroupBox2.Controls.Add(Me.Label8)
+        Me.GroupBox2.Controls.Add(Me.ComboBoxSecondType)
+        Me.GroupBox2.Controls.Add(Me.Label6)
+        Me.GroupBox2.Controls.Add(Me.Label5)
+        Me.GroupBox2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.GroupBox2.Location = New System.Drawing.Point(4, 4)
+        Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Padding = New System.Windows.Forms.Padding(4)
+        Me.GroupBox2.Size = New System.Drawing.Size(248, 256)
+        Me.GroupBox2.TabIndex = 88
+        Me.GroupBox2.TabStop = false
+        Me.GroupBox2.Text = "         General Search"
+        '
+        'RadioButtonGeneralSearch
+        '
+        Me.RadioButtonGeneralSearch.AutoSize = true
+        Me.RadioButtonGeneralSearch.Location = New System.Drawing.Point(8, -1)
+        Me.RadioButtonGeneralSearch.Margin = New System.Windows.Forms.Padding(4)
+        Me.RadioButtonGeneralSearch.Name = "RadioButtonGeneralSearch"
+        Me.RadioButtonGeneralSearch.Size = New System.Drawing.Size(14, 13)
+        Me.RadioButtonGeneralSearch.TabIndex = 118
+        Me.RadioButtonGeneralSearch.TabStop = true
+        Me.RadioButtonGeneralSearch.UseVisualStyleBackColor = true
+        '
+        'ComboBoxThirdType
+        '
+        Me.ComboBoxThirdType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBoxThirdType.FormattingEnabled = true
+        Me.ComboBoxThirdType.Location = New System.Drawing.Point(8, 149)
+        Me.ComboBoxThirdType.Margin = New System.Windows.Forms.Padding(4)
+        Me.ComboBoxThirdType.MaxDropDownItems = 16
+        Me.ComboBoxThirdType.Name = "ComboBoxThirdType"
+        Me.ComboBoxThirdType.Size = New System.Drawing.Size(230, 21)
+        Me.ComboBoxThirdType.TabIndex = 73
+        '
+        'TextBoxfileName
+        '
+        Me.TextBoxfileName.Location = New System.Drawing.Point(8, 204)
+        Me.TextBoxfileName.Margin = New System.Windows.Forms.Padding(4)
+        Me.TextBoxfileName.Name = "TextBoxfileName"
+        Me.TextBoxfileName.Size = New System.Drawing.Size(229, 20)
+        Me.TextBoxfileName.TabIndex = 66
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = true
+        Me.Label2.BackColor = System.Drawing.Color.Transparent
+        Me.Label2.Location = New System.Drawing.Point(4, 181)
+        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(54, 13)
+        Me.Label2.TabIndex = 67
+        Me.Label2.Text = "File Name"
+        '
+        'ComboBoxFirstType
+        '
+        Me.ComboBoxFirstType.Cursor = System.Windows.Forms.Cursors.Default
+        Me.ComboBoxFirstType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBoxFirstType.ForeColor = System.Drawing.SystemColors.WindowText
+        Me.ComboBoxFirstType.FormattingEnabled = true
+        Me.ComboBoxFirstType.Location = New System.Drawing.Point(8, 42)
+        Me.ComboBoxFirstType.Margin = New System.Windows.Forms.Padding(4)
+        Me.ComboBoxFirstType.Name = "ComboBoxFirstType"
+        Me.ComboBoxFirstType.Size = New System.Drawing.Size(230, 21)
+        Me.ComboBoxFirstType.TabIndex = 75
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = true
+        Me.Label8.BackColor = System.Drawing.Color.Transparent
+        Me.Label8.Location = New System.Drawing.Point(4, 129)
+        Me.Label8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(58, 13)
+        Me.Label8.TabIndex = 84
+        Me.Label8.Text = "Third Type"
+        '
+        'ComboBoxSecondType
+        '
+        Me.ComboBoxSecondType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBoxSecondType.FormattingEnabled = true
+        Me.ComboBoxSecondType.Location = New System.Drawing.Point(8, 92)
+        Me.ComboBoxSecondType.Margin = New System.Windows.Forms.Padding(4)
+        Me.ComboBoxSecondType.Name = "ComboBoxSecondType"
+        Me.ComboBoxSecondType.Size = New System.Drawing.Size(230, 21)
+        Me.ComboBoxSecondType.TabIndex = 76
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = true
+        Me.Label6.BackColor = System.Drawing.Color.Transparent
+        Me.Label6.Location = New System.Drawing.Point(4, 22)
+        Me.Label6.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(53, 13)
+        Me.Label6.TabIndex = 82
+        Me.Label6.Text = "First Type"
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = true
+        Me.Label5.BackColor = System.Drawing.Color.Transparent
+        Me.Label5.Location = New System.Drawing.Point(4, 74)
+        Me.Label5.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(71, 13)
+        Me.Label5.TabIndex = 81
+        Me.Label5.Text = "Second Type"
+        '
         'TableLayoutPanel5
         '
         Me.TableLayoutPanel5.ColumnCount = 1
-        Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel5.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
         Me.TableLayoutPanel5.Controls.Add(Me.GroupBox1, 0, 0)
         Me.TableLayoutPanel5.Controls.Add(Me.GroupBox3, 0, 1)
         Me.TableLayoutPanel5.Location = New System.Drawing.Point(332, 3)
         Me.TableLayoutPanel5.Name = "TableLayoutPanel5"
         Me.TableLayoutPanel5.RowCount = 2
-        Me.TableLayoutPanel5.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel5.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 67.0!))
+        Me.TableLayoutPanel5.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.TableLayoutPanel5.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 67!))
         Me.TableLayoutPanel5.Size = New System.Drawing.Size(487, 258)
         Me.TableLayoutPanel5.TabIndex = 238
         '
@@ -223,13 +749,13 @@ Partial Class FormDownload
         Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Size = New System.Drawing.Size(479, 183)
         Me.GroupBox1.TabIndex = 88
-        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.TabStop = false
         Me.GroupBox1.Text = "         Product Document Search"
         '
         'LabelOrcad
         '
-        Me.LabelOrcad.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.LabelOrcad.AutoSize = True
+        Me.LabelOrcad.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.LabelOrcad.AutoSize = true
         Me.LabelOrcad.BackColor = System.Drawing.Color.Transparent
         Me.LabelOrcad.Location = New System.Drawing.Point(294, -24)
         Me.LabelOrcad.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
@@ -240,7 +766,7 @@ Partial Class FormDownload
         '
         'Label14
         '
-        Me.Label14.AutoSize = True
+        Me.Label14.AutoSize = true
         Me.Label14.BackColor = System.Drawing.Color.Transparent
         Me.Label14.Location = New System.Drawing.Point(239, 42)
         Me.Label14.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
@@ -252,8 +778,8 @@ Partial Class FormDownload
         'ComboBoxStatus
         '
         Me.ComboBoxStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBoxStatus.Enabled = False
-        Me.ComboBoxStatus.FormattingEnabled = True
+        Me.ComboBoxStatus.Enabled = false
+        Me.ComboBoxStatus.FormattingEnabled = true
         Me.ComboBoxStatus.Location = New System.Drawing.Point(242, 63)
         Me.ComboBoxStatus.Margin = New System.Windows.Forms.Padding(4)
         Me.ComboBoxStatus.Name = "ComboBoxStatus"
@@ -262,33 +788,33 @@ Partial Class FormDownload
         '
         'CheckBoxObsolete
         '
-        Me.CheckBoxObsolete.AutoSize = True
-        Me.CheckBoxObsolete.Enabled = False
+        Me.CheckBoxObsolete.AutoSize = true
+        Me.CheckBoxObsolete.Enabled = false
         Me.CheckBoxObsolete.Location = New System.Drawing.Point(330, 151)
         Me.CheckBoxObsolete.Margin = New System.Windows.Forms.Padding(4)
         Me.CheckBoxObsolete.Name = "CheckBoxObsolete"
         Me.CheckBoxObsolete.Size = New System.Drawing.Size(143, 17)
         Me.CheckBoxObsolete.TabIndex = 143
         Me.CheckBoxObsolete.Text = "Show Obsolete Products"
-        Me.CheckBoxObsolete.UseVisualStyleBackColor = True
+        Me.CheckBoxObsolete.UseVisualStyleBackColor = true
         '
         'CheckGru
         '
-        Me.CheckGru.AutoSize = True
-        Me.CheckGru.Checked = True
+        Me.CheckGru.AutoSize = true
+        Me.CheckGru.Checked = true
         Me.CheckGru.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckGru.Enabled = False
+        Me.CheckGru.Enabled = false
         Me.CheckGru.Location = New System.Drawing.Point(8, 148)
         Me.CheckGru.Margin = New System.Windows.Forms.Padding(4)
         Me.CheckGru.Name = "CheckGru"
         Me.CheckGru.Size = New System.Drawing.Size(141, 17)
         Me.CheckGru.TabIndex = 125
         Me.CheckGru.Text = "Grugliasco Intranet DOC"
-        Me.CheckGru.UseVisualStyleBackColor = True
+        Me.CheckGru.UseVisualStyleBackColor = true
         '
         'Label13
         '
-        Me.Label13.AutoSize = True
+        Me.Label13.AutoSize = true
         Me.Label13.BackColor = System.Drawing.Color.Transparent
         Me.Label13.Location = New System.Drawing.Point(8, 42)
         Me.Label13.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
@@ -300,8 +826,8 @@ Partial Class FormDownload
         'ComboBoxCustomer
         '
         Me.ComboBoxCustomer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBoxCustomer.Enabled = False
-        Me.ComboBoxCustomer.FormattingEnabled = True
+        Me.ComboBoxCustomer.Enabled = false
+        Me.ComboBoxCustomer.FormattingEnabled = true
         Me.ComboBoxCustomer.Location = New System.Drawing.Point(6, 63)
         Me.ComboBoxCustomer.Margin = New System.Windows.Forms.Padding(4)
         Me.ComboBoxCustomer.Name = "ComboBoxCustomer"
@@ -311,8 +837,8 @@ Partial Class FormDownload
         'ComboBoxProd
         '
         Me.ComboBoxProd.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBoxProd.Enabled = False
-        Me.ComboBoxProd.FormattingEnabled = True
+        Me.ComboBoxProd.Enabled = false
+        Me.ComboBoxProd.FormattingEnabled = true
         Me.ComboBoxProd.Location = New System.Drawing.Point(8, 116)
         Me.ComboBoxProd.Margin = New System.Windows.Forms.Padding(4)
         Me.ComboBoxProd.Name = "ComboBoxProd"
@@ -321,18 +847,18 @@ Partial Class FormDownload
         '
         'RadioButtonProductSearch
         '
-        Me.RadioButtonProductSearch.AutoSize = True
+        Me.RadioButtonProductSearch.AutoSize = true
         Me.RadioButtonProductSearch.Location = New System.Drawing.Point(8, 0)
         Me.RadioButtonProductSearch.Margin = New System.Windows.Forms.Padding(4)
         Me.RadioButtonProductSearch.Name = "RadioButtonProductSearch"
         Me.RadioButtonProductSearch.Size = New System.Drawing.Size(14, 13)
         Me.RadioButtonProductSearch.TabIndex = 119
-        Me.RadioButtonProductSearch.TabStop = True
-        Me.RadioButtonProductSearch.UseVisualStyleBackColor = True
+        Me.RadioButtonProductSearch.TabStop = true
+        Me.RadioButtonProductSearch.UseVisualStyleBackColor = true
         '
         'Label9
         '
-        Me.Label9.AutoSize = True
+        Me.Label9.AutoSize = true
         Me.Label9.BackColor = System.Drawing.Color.Transparent
         Me.Label9.Location = New System.Drawing.Point(8, 95)
         Me.Label9.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
@@ -343,8 +869,8 @@ Partial Class FormDownload
         '
         'Label1LastBomUpdate
         '
-        Me.Label1LastBomUpdate.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label1LastBomUpdate.AutoSize = True
+        Me.Label1LastBomUpdate.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.Label1LastBomUpdate.AutoSize = true
         Me.Label1LastBomUpdate.BackColor = System.Drawing.Color.Transparent
         Me.Label1LastBomUpdate.Location = New System.Drawing.Point(8, -16)
         Me.Label1LastBomUpdate.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
@@ -357,30 +883,30 @@ Partial Class FormDownload
         '
         Me.ComboBoxEcrNull.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.ComboBoxEcrNull.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBoxEcrNull.FormattingEnabled = True
+        Me.ComboBoxEcrNull.FormattingEnabled = true
         Me.ComboBoxEcrNull.Location = New System.Drawing.Point(313, 170)
         Me.ComboBoxEcrNull.Margin = New System.Windows.Forms.Padding(4)
         Me.ComboBoxEcrNull.Name = "ComboBoxEcrNull"
         Me.ComboBoxEcrNull.Size = New System.Drawing.Size(156, 21)
         Me.ComboBoxEcrNull.TabIndex = 126
-        Me.ComboBoxEcrNull.Visible = False
+        Me.ComboBoxEcrNull.Visible = false
         '
         'ComboBoxEcrPending
         '
         Me.ComboBoxEcrPending.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.ComboBoxEcrPending.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBoxEcrPending.FormattingEnabled = True
+        Me.ComboBoxEcrPending.FormattingEnabled = true
         Me.ComboBoxEcrPending.Location = New System.Drawing.Point(8, 175)
         Me.ComboBoxEcrPending.Margin = New System.Windows.Forms.Padding(4)
         Me.ComboBoxEcrPending.Name = "ComboBoxEcrPending"
         Me.ComboBoxEcrPending.Size = New System.Drawing.Size(156, 21)
         Me.ComboBoxEcrPending.TabIndex = 125
-        Me.ComboBoxEcrPending.Visible = False
+        Me.ComboBoxEcrPending.Visible = false
         '
         'Label1
         '
         Me.Label1.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.Label1.AutoSize = True
+        Me.Label1.AutoSize = true
         Me.Label1.BackColor = System.Drawing.Color.Transparent
         Me.Label1.Location = New System.Drawing.Point(193, 152)
         Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
@@ -388,12 +914,12 @@ Partial Class FormDownload
         Me.Label1.Size = New System.Drawing.Size(62, 13)
         Me.Label1.TabIndex = 127
         Me.Label1.Text = "EcrPending"
-        Me.Label1.Visible = False
+        Me.Label1.Visible = false
         '
         'Label7
         '
         Me.Label7.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.Label7.AutoSize = True
+        Me.Label7.AutoSize = true
         Me.Label7.BackColor = System.Drawing.Color.Transparent
         Me.Label7.Location = New System.Drawing.Point(263, 152)
         Me.Label7.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
@@ -401,7 +927,7 @@ Partial Class FormDownload
         Me.Label7.Size = New System.Drawing.Size(41, 13)
         Me.Label7.TabIndex = 128
         Me.Label7.Text = "EcrNull"
-        Me.Label7.Visible = False
+        Me.Label7.Visible = false
         '
         'ButtonEcr
         '
@@ -412,14 +938,14 @@ Partial Class FormDownload
         Me.ButtonEcr.Size = New System.Drawing.Size(108, 30)
         Me.ButtonEcr.TabIndex = 129
         Me.ButtonEcr.Text = "Null ECR"
-        Me.ButtonEcr.UseVisualStyleBackColor = True
-        Me.ButtonEcr.Visible = False
+        Me.ButtonEcr.UseVisualStyleBackColor = true
+        Me.ButtonEcr.Visible = false
         '
         'GroupBox3
         '
-        Me.GroupBox3.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox3.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.GroupBox3.Controls.Add(Me.ComboBoxRevision)
         Me.GroupBox3.Controls.Add(Me.ComboBoxSign)
         Me.GroupBox3.Controls.Add(Me.Label11)
@@ -429,13 +955,13 @@ Partial Class FormDownload
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(481, 61)
         Me.GroupBox3.TabIndex = 89
-        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.TabStop = false
         '
         'ComboBoxRevision
         '
         Me.ComboBoxRevision.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.ComboBoxRevision.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBoxRevision.FormattingEnabled = True
+        Me.ComboBoxRevision.FormattingEnabled = true
         Me.ComboBoxRevision.Location = New System.Drawing.Point(12, 33)
         Me.ComboBoxRevision.Margin = New System.Windows.Forms.Padding(4)
         Me.ComboBoxRevision.Name = "ComboBoxRevision"
@@ -446,7 +972,7 @@ Partial Class FormDownload
         '
         Me.ComboBoxSign.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.ComboBoxSign.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBoxSign.FormattingEnabled = True
+        Me.ComboBoxSign.FormattingEnabled = true
         Me.ComboBoxSign.Location = New System.Drawing.Point(190, 33)
         Me.ComboBoxSign.Margin = New System.Windows.Forms.Padding(4)
         Me.ComboBoxSign.Name = "ComboBoxSign"
@@ -456,7 +982,7 @@ Partial Class FormDownload
         'Label11
         '
         Me.Label11.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.Label11.AutoSize = True
+        Me.Label11.AutoSize = true
         Me.Label11.BackColor = System.Drawing.Color.Transparent
         Me.Label11.Location = New System.Drawing.Point(187, 14)
         Me.Label11.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
@@ -474,12 +1000,12 @@ Partial Class FormDownload
         Me.ButtonStop.Size = New System.Drawing.Size(108, 30)
         Me.ButtonStop.TabIndex = 130
         Me.ButtonStop.Text = "Stop"
-        Me.ButtonStop.UseVisualStyleBackColor = True
+        Me.ButtonStop.UseVisualStyleBackColor = true
         '
         'Label3
         '
         Me.Label3.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.Label3.AutoSize = True
+        Me.Label3.AutoSize = true
         Me.Label3.BackColor = System.Drawing.Color.Transparent
         Me.Label3.Location = New System.Drawing.Point(12, 16)
         Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
@@ -487,542 +1013,12 @@ Partial Class FormDownload
         Me.Label3.Size = New System.Drawing.Size(48, 13)
         Me.Label3.TabIndex = 70
         Me.Label3.Text = "Revision"
-        'CheckComp
-        '
-        Me.CheckComp.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.CheckComp.AutoSize = True
-        Me.CheckComp.BackColor = System.Drawing.Color.Transparent
-        Me.CheckComp.Checked = True
-        Me.CheckComp.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckComp.Enabled = False
-        Me.CheckComp.Location = New System.Drawing.Point(4, 45)
-        Me.CheckComp.Margin = New System.Windows.Forms.Padding(4)
-        Me.CheckComp.Name = "CheckComp"
-        Me.CheckComp.Size = New System.Drawing.Size(173, 17)
-        Me.CheckComp.TabIndex = 145
-        Me.CheckComp.Text = "HomologationCards \ Drawings"
-        Me.CheckComp.UseVisualStyleBackColor = False
-        '
-        'ButtonSign
-        '
-        Me.ButtonSign.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.ButtonSign.Location = New System.Drawing.Point(4, 80)
-        Me.ButtonSign.Margin = New System.Windows.Forms.Padding(4)
-        Me.ButtonSign.Name = "ButtonSign"
-        Me.ButtonSign.Size = New System.Drawing.Size(59, 30)
-        Me.ButtonSign.TabIndex = 89
-        Me.ButtonSign.Text = "Sign"
-        Me.ButtonSign.UseVisualStyleBackColor = True
-        '
-        'ButtonDelete
-        '
-        Me.ButtonDelete.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.ButtonDelete.Location = New System.Drawing.Point(4, 118)
-        Me.ButtonDelete.Margin = New System.Windows.Forms.Padding(4)
-        Me.ButtonDelete.Name = "ButtonDelete"
-        Me.ButtonDelete.Size = New System.Drawing.Size(59, 30)
-        Me.ButtonDelete.TabIndex = 92
-        Me.ButtonDelete.Text = "Delete"
-        Me.ButtonDelete.UseVisualStyleBackColor = True
-        '
-        'ListView1
-        '
-        Me.ListView1.AllowColumnReorder = True
-        Me.ListView1.CheckBoxes = True
-        Me.ListView1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ListView1.Font = New System.Drawing.Font("Courier New", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ListView1.FullRowSelect = True
-        Me.ListView1.GridLines = True
-        Me.ListView1.HideSelection = False
-        ListViewItem1.StateImageIndex = 0
-        Me.ListView1.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
-        Me.ListView1.Location = New System.Drawing.Point(4, 393)
-        Me.ListView1.Margin = New System.Windows.Forms.Padding(4)
-        Me.ListView1.MultiSelect = False
-        Me.ListView1.Name = "ListView1"
-        Me.ListView1.Size = New System.Drawing.Size(1105, 210)
-        Me.ListView1.TabIndex = 93
-        Me.ListView1.UseCompatibleStateImageBehavior = False
-        Me.ListView1.View = System.Windows.Forms.View.Details
-        '
-        'TextBoxCompPn
-        '
-        Me.TextBoxCompPn.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.TextBoxCompPn.Enabled = False
-        Me.TextBoxCompPn.Location = New System.Drawing.Point(4, 17)
-        Me.TextBoxCompPn.Margin = New System.Windows.Forms.Padding(4)
-        Me.TextBoxCompPn.Name = "TextBoxCompPn"
-        Me.TextBoxCompPn.Size = New System.Drawing.Size(187, 20)
-        Me.TextBoxCompPn.TabIndex = 119
-        '
-        'Label12
-        '
-        Me.Label12.AutoSize = True
-        Me.Label12.BackColor = System.Drawing.Color.Transparent
-        Me.Label12.Location = New System.Drawing.Point(4, 0)
-        Me.Label12.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(123, 13)
-        Me.Label12.TabIndex = 120
-        Me.Label12.Text = "Component Part Number"
-        '
-        'ListBoxLog
-        '
-        Me.ListBoxLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.ListBoxLog.FormattingEnabled = True
-        Me.ListBoxLog.Location = New System.Drawing.Point(4, 42)
-        Me.ListBoxLog.Margin = New System.Windows.Forms.Padding(4)
-        Me.ListBoxLog.Name = "ListBoxLog"
-        Me.ListBoxLog.Size = New System.Drawing.Size(274, 197)
-        Me.ListBoxLog.TabIndex = 120
-        '
-        'ButtonSel
-        '
-        Me.ButtonSel.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.ButtonSel.Location = New System.Drawing.Point(4, 4)
-        Me.ButtonSel.Margin = New System.Windows.Forms.Padding(4)
-        Me.ButtonSel.Name = "ButtonSel"
-        Me.ButtonSel.Size = New System.Drawing.Size(59, 30)
-        Me.ButtonSel.TabIndex = 124
-        Me.ButtonSel.Text = "Select All"
-        Me.ButtonSel.UseVisualStyleBackColor = True
-        '
-        'Timer1
-        '
-        Me.Timer1.Interval = 5000
-        '
-        'CheckBox1
-        '
-        Me.CheckBox1.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBox1.Checked = True
-        Me.CheckBox1.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckBox1.Location = New System.Drawing.Point(4, 4)
-        Me.CheckBox1.Margin = New System.Windows.Forms.Padding(4)
-        Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(37, 17)
-        Me.CheckBox1.TabIndex = 131
-        Me.CheckBox1.Text = "ID"
-        Me.CheckBox1.UseVisualStyleBackColor = False
-        '
-        'CheckBox2
-        '
-        Me.CheckBox2.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.CheckBox2.AutoSize = True
-        Me.CheckBox2.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBox2.Checked = True
-        Me.CheckBox2.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckBox2.Location = New System.Drawing.Point(49, 4)
-        Me.CheckBox2.Margin = New System.Windows.Forms.Padding(4)
-        Me.CheckBox2.Name = "CheckBox2"
-        Me.CheckBox2.Size = New System.Drawing.Size(61, 17)
-        Me.CheckBox2.TabIndex = 132
-        Me.CheckBox2.Text = "Header"
-        Me.CheckBox2.UseVisualStyleBackColor = False
-        '
-        'CheckBox3
-        '
-        Me.CheckBox3.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.CheckBox3.AutoSize = True
-        Me.CheckBox3.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBox3.Checked = True
-        Me.CheckBox3.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckBox3.Location = New System.Drawing.Point(118, 4)
-        Me.CheckBox3.Margin = New System.Windows.Forms.Padding(4)
-        Me.CheckBox3.Name = "CheckBox3"
-        Me.CheckBox3.Size = New System.Drawing.Size(54, 17)
-        Me.CheckBox3.TabIndex = 133
-        Me.CheckBox3.Text = "Name"
-        Me.CheckBox3.UseVisualStyleBackColor = False
-        '
-        'CheckBox4
-        '
-        Me.CheckBox4.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.CheckBox4.AutoSize = True
-        Me.CheckBox4.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBox4.Location = New System.Drawing.Point(267, 4)
-        Me.CheckBox4.Margin = New System.Windows.Forms.Padding(4)
-        Me.CheckBox4.Name = "CheckBox4"
-        Me.CheckBox4.Size = New System.Drawing.Size(46, 17)
-        Me.CheckBox4.TabIndex = 134
-        Me.CheckBox4.Text = "Rev"
-        Me.CheckBox4.UseVisualStyleBackColor = False
-        '
-        'CheckBox5
-        '
-        Me.CheckBox5.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.CheckBox5.AutoSize = True
-        Me.CheckBox5.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBox5.Location = New System.Drawing.Point(398, 4)
-        Me.CheckBox5.Margin = New System.Windows.Forms.Padding(4)
-        Me.CheckBox5.Name = "CheckBox5"
-        Me.CheckBox5.Size = New System.Drawing.Size(41, 17)
-        Me.CheckBox5.TabIndex = 135
-        Me.CheckBox5.Text = "Ext"
-        Me.CheckBox5.UseVisualStyleBackColor = False
-        '
-        'CheckBox6
-        '
-        Me.CheckBox6.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.CheckBox6.AutoSize = True
-        Me.CheckBox6.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBox6.Location = New System.Drawing.Point(321, 4)
-        Me.CheckBox6.Margin = New System.Windows.Forms.Padding(4)
-        Me.CheckBox6.Name = "CheckBox6"
-        Me.CheckBox6.Size = New System.Drawing.Size(69, 17)
-        Me.CheckBox6.TabIndex = 136
-        Me.CheckBox6.Text = "RevNote"
-        Me.CheckBox6.UseVisualStyleBackColor = False
-        '
-        'CheckBox7
-        '
-        Me.CheckBox7.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.CheckBox7.AutoSize = True
-        Me.CheckBox7.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBox7.Location = New System.Drawing.Point(508, 4)
-        Me.CheckBox7.Margin = New System.Windows.Forms.Padding(4)
-        Me.CheckBox7.Name = "CheckBox7"
-        Me.CheckBox7.Size = New System.Drawing.Size(47, 17)
-        Me.CheckBox7.TabIndex = 137
-        Me.CheckBox7.Text = "Sign"
-        Me.CheckBox7.UseVisualStyleBackColor = False
-        '
-        'CheckBox8
-        '
-        Me.CheckBox8.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.CheckBox8.AutoSize = True
-        Me.CheckBox8.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBox8.Location = New System.Drawing.Point(447, 4)
-        Me.CheckBox8.Margin = New System.Windows.Forms.Padding(4)
-        Me.CheckBox8.Name = "CheckBox8"
-        Me.CheckBox8.Size = New System.Drawing.Size(53, 17)
-        Me.CheckBox8.TabIndex = 138
-        Me.CheckBox8.Text = "Editor"
-        Me.CheckBox8.UseVisualStyleBackColor = False
-        '
-        'CheckBox9
-        '
-        Me.CheckBox9.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.CheckBox9.AutoSize = True
-        Me.CheckBox9.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBox9.Location = New System.Drawing.Point(563, 4)
-        Me.CheckBox9.Margin = New System.Windows.Forms.Padding(4)
-        Me.CheckBox9.Name = "CheckBox9"
-        Me.CheckBox9.Size = New System.Drawing.Size(59, 17)
-        Me.CheckBox9.TabIndex = 139
-        Me.CheckBox9.Text = "Control"
-        Me.CheckBox9.UseVisualStyleBackColor = False
-        '
-        'CheckBox10
-        '
-        Me.CheckBox10.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.CheckBox10.AutoSize = True
-        Me.CheckBox10.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBox10.Location = New System.Drawing.Point(630, 4)
-        Me.CheckBox10.Margin = New System.Windows.Forms.Padding(4)
-        Me.CheckBox10.Name = "CheckBox10"
-        Me.CheckBox10.Size = New System.Drawing.Size(81, 17)
-        Me.CheckBox10.TabIndex = 140
-        Me.CheckBox10.Text = "EcrPending"
-        Me.CheckBox10.UseVisualStyleBackColor = False
-        Me.CheckBox10.Visible = False
-        '
-        'CheckBox11
-        '
-        Me.CheckBox11.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.CheckBox11.AutoSize = True
-        Me.CheckBox11.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBox11.Location = New System.Drawing.Point(719, 4)
-        Me.CheckBox11.Margin = New System.Windows.Forms.Padding(4)
-        Me.CheckBox11.Name = "CheckBox11"
-        Me.CheckBox11.Size = New System.Drawing.Size(60, 17)
-        Me.CheckBox11.TabIndex = 141
-        Me.CheckBox11.Text = "EcrNull"
-        Me.CheckBox11.UseVisualStyleBackColor = False
-        Me.CheckBox11.Visible = False
-        '
-        'CheckBox12
-        '
-        Me.CheckBox12.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.CheckBox12.AutoSize = True
-        Me.CheckBox12.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBox12.Checked = True
-        Me.CheckBox12.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckBox12.Location = New System.Drawing.Point(180, 4)
-        Me.CheckBox12.Margin = New System.Windows.Forms.Padding(4)
-        Me.CheckBox12.Name = "CheckBox12"
-        Me.CheckBox12.Size = New System.Drawing.Size(79, 17)
-        Me.CheckBox12.TabIndex = 142
-        Me.CheckBox12.Text = "Description"
-        Me.CheckBox12.UseVisualStyleBackColor = False
-        '
-        'CheckBoxSaveInfo
-        '
-        Me.CheckBoxSaveInfo.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.CheckBoxSaveInfo.AutoSize = True
-        Me.CheckBoxSaveInfo.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBoxSaveInfo.Location = New System.Drawing.Point(107, 4)
-        Me.CheckBoxSaveInfo.Margin = New System.Windows.Forms.Padding(4)
-        Me.CheckBoxSaveInfo.Name = "CheckBoxSaveInfo"
-        Me.CheckBoxSaveInfo.Size = New System.Drawing.Size(71, 30)
-        Me.CheckBoxSaveInfo.TabIndex = 144
-        Me.CheckBoxSaveInfo.Text = "Save info"
-        Me.CheckBoxSaveInfo.UseVisualStyleBackColor = False
-        '
-        'ButtonExport
-        '
-        Me.ButtonExport.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.ButtonExport.Location = New System.Drawing.Point(4, 4)
-        Me.ButtonExport.Margin = New System.Windows.Forms.Padding(4)
-        Me.ButtonExport.Name = "ButtonExport"
-        Me.ButtonExport.Size = New System.Drawing.Size(95, 30)
-        Me.ButtonExport.TabIndex = 147
-        Me.ButtonExport.Text = "Export List"
-        Me.ButtonExport.UseVisualStyleBackColor = True
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(1161, 969)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(135, 39)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox1.TabIndex = 232
-        Me.PictureBox1.TabStop = False
-        '
-        'TableLayoutPanel1
-        '
-        Me.TableLayoutPanel1.BackColor = System.Drawing.Color.Transparent
-        Me.TableLayoutPanel1.ColumnCount = 4
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 256.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 73.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 493.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel1.Controls.Add(Me.ButtonConnection, 1, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.FlowLayoutPanel4, 3, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.FlowLayoutPanel2, 2, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.FlowLayoutPanel3, 0, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.TableLayoutPanel2, 1, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.ButtonQuery, 3, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.GroupBox2, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.TableLayoutPanel5, 2, 0)
-        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(3, 3)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 2
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 264.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(1107, 350)
-        Me.TableLayoutPanel1.TabIndex = 233
-        '
-        'ButtonConnection
-        '
-        Me.ButtonConnection.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.ButtonConnection.Location = New System.Drawing.Point(263, 268)
-        Me.ButtonConnection.Margin = New System.Windows.Forms.Padding(4)
-        Me.ButtonConnection.Name = "ButtonConnection"
-        Me.ButtonConnection.Size = New System.Drawing.Size(59, 69)
-        Me.ButtonConnection.TabIndex = 236
-        Me.ButtonConnection.Text = "  GRU                Conn"
-        Me.ButtonConnection.UseVisualStyleBackColor = True
-        '
-        'FlowLayoutPanel4
-        '
-        Me.FlowLayoutPanel4.Controls.Add(Me.ButtonExport)
-        Me.FlowLayoutPanel4.Controls.Add(Me.CheckBoxSaveInfo)
-        Me.FlowLayoutPanel4.Controls.Add(Me.ListBoxLog)
-        Me.FlowLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.FlowLayoutPanel4.Location = New System.Drawing.Point(825, 3)
-        Me.FlowLayoutPanel4.Name = "FlowLayoutPanel4"
-        Me.FlowLayoutPanel4.Size = New System.Drawing.Size(279, 258)
-        Me.FlowLayoutPanel4.TabIndex = 235
-        '
-        'FlowLayoutPanel2
-        '
-        Me.FlowLayoutPanel2.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.FlowLayoutPanel2.Controls.Add(Me.Label4)
-        Me.FlowLayoutPanel2.Controls.Add(Me.ButtonBrowse)
-        Me.FlowLayoutPanel2.Controls.Add(Me.ButtonDownload)
-        Me.FlowLayoutPanel2.Controls.Add(Me.TextBoxFilePath)
-        Me.FlowLayoutPanel2.Location = New System.Drawing.Point(332, 267)
-        Me.FlowLayoutPanel2.Name = "FlowLayoutPanel2"
-        Me.FlowLayoutPanel2.Size = New System.Drawing.Size(487, 80)
-        Me.FlowLayoutPanel2.TabIndex = 236
-        '
-        'FlowLayoutPanel3
-        '
-        Me.FlowLayoutPanel3.Controls.Add(Me.Label12)
-        Me.FlowLayoutPanel3.Controls.Add(Me.TextBoxCompPn)
-        Me.FlowLayoutPanel3.Controls.Add(Me.CheckComp)
-        Me.FlowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.FlowLayoutPanel3.Location = New System.Drawing.Point(3, 267)
-        Me.FlowLayoutPanel3.Name = "FlowLayoutPanel3"
-        Me.FlowLayoutPanel3.Size = New System.Drawing.Size(250, 80)
-        Me.FlowLayoutPanel3.TabIndex = 237
-        '
-        'TableLayoutPanel2
-        '
-        Me.TableLayoutPanel2.ColumnCount = 1
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel2.Controls.Add(Me.ButtonSel, 0, 0)
-        Me.TableLayoutPanel2.Controls.Add(Me.ButtonDelete, 0, 3)
-        Me.TableLayoutPanel2.Controls.Add(Me.ButtonSign, 0, 2)
-        Me.TableLayoutPanel2.Controls.Add(Me.ButtonReset, 0, 1)
-        Me.TableLayoutPanel2.Controls.Add(Me.ButtonOrcad, 0, 5)
-        Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel2.Location = New System.Drawing.Point(259, 3)
-        Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
-        Me.TableLayoutPanel2.RowCount = 6
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29.0!))
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 11.0!))
-        Me.TableLayoutPanel2.Size = New System.Drawing.Size(67, 258)
-        Me.TableLayoutPanel2.TabIndex = 125
-        '
-        'ButtonOrcad
-        '
-        Me.ButtonOrcad.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ButtonOrcad.Location = New System.Drawing.Point(4, 185)
-        Me.ButtonOrcad.Margin = New System.Windows.Forms.Padding(4)
-        Me.ButtonOrcad.Name = "ButtonOrcad"
-        Me.ButtonOrcad.Size = New System.Drawing.Size(59, 69)
-        Me.ButtonOrcad.TabIndex = 237
-        Me.ButtonOrcad.Text = "  OrCAD                Conn"
-        Me.ButtonOrcad.UseVisualStyleBackColor = True
-        '
-        'GroupBox2
-        '
-        Me.GroupBox2.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox2.Controls.Add(Me.RadioButtonGeneralSearch)
-        Me.GroupBox2.Controls.Add(Me.ComboBoxThirdType)
-        Me.GroupBox2.Controls.Add(Me.TextBoxfileName)
-        Me.GroupBox2.Controls.Add(Me.Label2)
-        Me.GroupBox2.Controls.Add(Me.ComboBoxFirstType)
-        Me.GroupBox2.Controls.Add(Me.Label8)
-        Me.GroupBox2.Controls.Add(Me.ComboBoxSecondType)
-        Me.GroupBox2.Controls.Add(Me.Label6)
-        Me.GroupBox2.Controls.Add(Me.Label5)
-        Me.GroupBox2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GroupBox2.Location = New System.Drawing.Point(4, 4)
-        Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4)
-        Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox2.Size = New System.Drawing.Size(248, 256)
-        Me.GroupBox2.TabIndex = 88
-        Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "         General Search"
-        '
-        'RadioButtonGeneralSearch
-        '
-        Me.RadioButtonGeneralSearch.AutoSize = True
-        Me.RadioButtonGeneralSearch.Location = New System.Drawing.Point(8, -1)
-        Me.RadioButtonGeneralSearch.Margin = New System.Windows.Forms.Padding(4)
-        Me.RadioButtonGeneralSearch.Name = "RadioButtonGeneralSearch"
-        Me.RadioButtonGeneralSearch.Size = New System.Drawing.Size(14, 13)
-        Me.RadioButtonGeneralSearch.TabIndex = 118
-        Me.RadioButtonGeneralSearch.TabStop = True
-        Me.RadioButtonGeneralSearch.UseVisualStyleBackColor = True
-        '
-        'ComboBoxThirdType
-        '
-        Me.ComboBoxThirdType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBoxThirdType.FormattingEnabled = True
-        Me.ComboBoxThirdType.Location = New System.Drawing.Point(8, 149)
-        Me.ComboBoxThirdType.Margin = New System.Windows.Forms.Padding(4)
-        Me.ComboBoxThirdType.MaxDropDownItems = 16
-        Me.ComboBoxThirdType.Name = "ComboBoxThirdType"
-        Me.ComboBoxThirdType.Size = New System.Drawing.Size(230, 21)
-        Me.ComboBoxThirdType.TabIndex = 73
-        '
-        'TextBoxfileName
-        '
-        Me.TextBoxfileName.Location = New System.Drawing.Point(8, 204)
-        Me.TextBoxfileName.Margin = New System.Windows.Forms.Padding(4)
-        Me.TextBoxfileName.Name = "TextBoxfileName"
-        Me.TextBoxfileName.Size = New System.Drawing.Size(229, 20)
-        Me.TextBoxfileName.TabIndex = 66
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.BackColor = System.Drawing.Color.Transparent
-        Me.Label2.Location = New System.Drawing.Point(4, 181)
-        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(54, 13)
-        Me.Label2.TabIndex = 67
-        Me.Label2.Text = "File Name"
-        '
-        'ComboBoxFirstType
-        '
-        Me.ComboBoxFirstType.Cursor = System.Windows.Forms.Cursors.Default
-        Me.ComboBoxFirstType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBoxFirstType.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.ComboBoxFirstType.FormattingEnabled = True
-        Me.ComboBoxFirstType.Location = New System.Drawing.Point(8, 42)
-        Me.ComboBoxFirstType.Margin = New System.Windows.Forms.Padding(4)
-        Me.ComboBoxFirstType.Name = "ComboBoxFirstType"
-        Me.ComboBoxFirstType.Size = New System.Drawing.Size(230, 21)
-        Me.ComboBoxFirstType.TabIndex = 75
-        '
-        'Label8
-        '
-        Me.Label8.AutoSize = True
-        Me.Label8.BackColor = System.Drawing.Color.Transparent
-        Me.Label8.Location = New System.Drawing.Point(4, 129)
-        Me.Label8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(58, 13)
-        Me.Label8.TabIndex = 84
-        Me.Label8.Text = "Third Type"
-        '
-        'ComboBoxSecondType
-        '
-        Me.ComboBoxSecondType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBoxSecondType.FormattingEnabled = True
-        Me.ComboBoxSecondType.Location = New System.Drawing.Point(8, 92)
-        Me.ComboBoxSecondType.Margin = New System.Windows.Forms.Padding(4)
-        Me.ComboBoxSecondType.Name = "ComboBoxSecondType"
-        Me.ComboBoxSecondType.Size = New System.Drawing.Size(230, 21)
-        Me.ComboBoxSecondType.TabIndex = 76
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.BackColor = System.Drawing.Color.Transparent
-        Me.Label6.Location = New System.Drawing.Point(4, 22)
-        Me.Label6.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(53, 13)
-        Me.Label6.TabIndex = 82
-        Me.Label6.Text = "First Type"
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.BackColor = System.Drawing.Color.Transparent
-        Me.Label5.Location = New System.Drawing.Point(4, 74)
-        Me.Label5.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(71, 13)
-        Me.Label5.TabIndex = 81
-        Me.Label5.Text = "Second Type"
-
         '
         'TableLayoutPanel3
         '
         Me.TableLayoutPanel3.BackColor = System.Drawing.Color.Transparent
         Me.TableLayoutPanel3.ColumnCount = 1
-        Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
         Me.TableLayoutPanel3.Controls.Add(Me.FlowLayoutPanel1, 0, 1)
         Me.TableLayoutPanel3.Controls.Add(Me.TableLayoutPanel1, 0, 0)
         Me.TableLayoutPanel3.Controls.Add(Me.ListView1, 0, 2)
@@ -1030,9 +1026,9 @@ Partial Class FormDownload
         Me.TableLayoutPanel3.Location = New System.Drawing.Point(3, 3)
         Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
         Me.TableLayoutPanel3.RowCount = 3
-        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 356.0!))
-        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 33.0!))
-        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70.0!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 356!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 33!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70!))
         Me.TableLayoutPanel3.Size = New System.Drawing.Size(1113, 607)
         Me.TableLayoutPanel3.TabIndex = 234
         '
@@ -1058,28 +1054,28 @@ Partial Class FormDownload
         '
         'FileSystemWatcher1
         '
-        Me.FileSystemWatcher1.EnableRaisingEvents = True
+        Me.FileSystemWatcher1.EnableRaisingEvents = true
         Me.FileSystemWatcher1.SynchronizingObject = Me
         '
         'TableLayoutPanel4
         '
         Me.TableLayoutPanel4.BackColor = System.Drawing.Color.DarkGray
         Me.TableLayoutPanel4.ColumnCount = 1
-        Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100!))
+        Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.TableLayoutPanel4.Controls.Add(Me.TableLayoutPanel3, 0, 0)
         Me.TableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel4.Location = New System.Drawing.Point(0, 0)
         Me.TableLayoutPanel4.Name = "TableLayoutPanel4"
         Me.TableLayoutPanel4.RowCount = 1
-        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100!))
+        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.TableLayoutPanel4.Size = New System.Drawing.Size(1119, 613)
         Me.TableLayoutPanel4.TabIndex = 235
         '
         'TimerCompLoading
         '
-        Me.TimerCompLoading.Enabled = True
+        Me.TimerCompLoading.Enabled = true
         Me.TimerCompLoading.Interval = 2000
         '
         'FormDownload
@@ -1089,34 +1085,34 @@ Partial Class FormDownload
         Me.ClientSize = New System.Drawing.Size(1119, 613)
         Me.Controls.Add(Me.TableLayoutPanel4)
         Me.Controls.Add(Me.PictureBox1)
-        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "FormDownload"
         Me.Text = "SrvDoc - Document Management System -> Search Form"
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.FlowLayoutPanel4.ResumeLayout(False)
-        Me.FlowLayoutPanel4.PerformLayout()
-        Me.FlowLayoutPanel2.ResumeLayout(False)
-        Me.FlowLayoutPanel2.PerformLayout()
-        Me.FlowLayoutPanel3.ResumeLayout(False)
-        Me.FlowLayoutPanel3.PerformLayout()
-        Me.TableLayoutPanel2.ResumeLayout(False)
-        Me.GroupBox2.ResumeLayout(False)
-        Me.GroupBox2.PerformLayout()
-        Me.TableLayoutPanel5.ResumeLayout(False)
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
-        Me.GroupBox3.ResumeLayout(False)
-        Me.GroupBox3.PerformLayout()
-        Me.TableLayoutPanel3.ResumeLayout(False)
-        Me.FlowLayoutPanel1.ResumeLayout(False)
-        Me.FlowLayoutPanel1.PerformLayout()
-        CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.TableLayoutPanel4.ResumeLayout(False)
-        Me.ResumeLayout(False)
+        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).EndInit
+        Me.TableLayoutPanel1.ResumeLayout(false)
+        Me.FlowLayoutPanel4.ResumeLayout(false)
+        Me.FlowLayoutPanel4.PerformLayout
+        Me.FlowLayoutPanel2.ResumeLayout(false)
+        Me.FlowLayoutPanel2.PerformLayout
+        Me.FlowLayoutPanel3.ResumeLayout(false)
+        Me.FlowLayoutPanel3.PerformLayout
+        Me.TableLayoutPanel2.ResumeLayout(false)
+        Me.GroupBox2.ResumeLayout(false)
+        Me.GroupBox2.PerformLayout
+        Me.TableLayoutPanel5.ResumeLayout(false)
+        Me.GroupBox1.ResumeLayout(false)
+        Me.GroupBox1.PerformLayout
+        Me.GroupBox3.ResumeLayout(false)
+        Me.GroupBox3.PerformLayout
+        Me.TableLayoutPanel3.ResumeLayout(false)
+        Me.FlowLayoutPanel1.ResumeLayout(false)
+        Me.FlowLayoutPanel1.PerformLayout
+        CType(Me.FileSystemWatcher1,System.ComponentModel.ISupportInitialize).EndInit
+        Me.TableLayoutPanel4.ResumeLayout(false)
+        Me.ResumeLayout(false)
 
-    End Sub
+End Sub
     Friend WithEvents ButtonReset As System.Windows.Forms.Button
     Friend WithEvents ButtonDownload As System.Windows.Forms.Button
     Friend WithEvents ButtonBrowse As System.Windows.Forms.Button

@@ -1127,6 +1127,12 @@ Public Class FormDownload
 
     End Function
 
+    Private Sub FlowLayoutPanel4_SizeChanged(sender As Object, e As EventArgs) Handles FlowLayoutPanel4.SizeChanged
+        ListBoxLog.Width  = Me.FlowLayoutPanel4.Width - 5
+        ListBoxLog.Height  = Me.FlowLayoutPanel4.Height - 61
+        ListBoxLog.Location =  new Point(4, 42)
+    End Sub
+
     Function NameFile(ByVal id As Long) As String
 
         Dim RowSearchDoc As DataRow()

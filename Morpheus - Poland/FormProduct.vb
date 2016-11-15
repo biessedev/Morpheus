@@ -1468,4 +1468,10 @@ Public Class FormProduct
 
     End Function
 
+    Private Sub FormProduct_SizeChanged(sender As Object, e As EventArgs) Handles MyBase.SizeChanged
+        'ListView1.Size.Width = Me.Width - 111
+        ListView1.Width  = Me.Width - 111
+        ListView1.Height  = Me.Height - 359 - 88
+        ListView1.Location =  new Point(43, 359)
+    End Sub
 End Class
