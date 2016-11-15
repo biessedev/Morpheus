@@ -16,10 +16,6 @@ Public Class FormCredentials
             builder.ConnectionString = ConfigurationManager.ConnectionStrings("Morpheus").ConnectionString
             OpenConnectionMySql(builder("host"), builder("database") , builder("username"), builder("password"))
 
-            
-            
-
-
             If MySqlconnection.State = ConnectionState.Open Then
 
                 strFtpServerUser = ParameterTable("MorpheusFtpUser")
@@ -84,15 +80,5 @@ Public Class FormCredentials
             Button1_Click(Me, e)
         End If
     End Sub
-
-    Private Sub TableLayoutPanel2_Paint(sender As Object, e As PaintEventArgs) Handles TableLayoutPanel2.Paint
-
-    End Sub
-
-    'Private Sub TextBoxUserName_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxUserName.TextChanged
-    '    If TextBoxUserName.Text = "demo" Then
-    '        TextBoxDatabase.Text = "demo"
-    '    End If
-    'End Sub
 
 End Class
