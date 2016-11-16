@@ -1929,6 +1929,7 @@ Public Class FormSamples
 
     End Sub
 
+
     Private Sub Btn_Add_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Add.Click
 
         If Trim(Txt_BitronPN.Text) <> "" Then
@@ -1954,7 +1955,7 @@ Public Class FormSamples
         ' Else
         ' MsgBox("No enough right to add this table")
         'End If
-
+        CobFilterBitronPNFill()
     End Sub
 
     Private Sub Btn_Del_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Del.Click
@@ -1978,7 +1979,7 @@ Public Class FormSamples
         'Else
         ' MsgBox("no enough right to delete this table")
         'End If
-
+        CobFilterBitronPNFill()
     End Sub
 
     Private Sub Btn_Save_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Save.Click
@@ -2013,7 +2014,7 @@ Public Class FormSamples
         'Else
         'MsgBox("No enough right to update this table")
         'End If
-
+        CobFilterBitronPNFill()
     End Sub
 
     Private Sub Btn_Search_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Search.Click
@@ -2171,6 +2172,8 @@ Public Class FormSamples
         Cob_FilterBitronPN.Items.Clear()
         Cob_FilterBitronPN.Items.Add("")
 
+        DsNPI.Clear()
+        tblNPI.Clear()        
         AdapterNPI.Fill(DsNPI, "NPI")
         tblNPI = DsNPI.Tables("NPI")
 
