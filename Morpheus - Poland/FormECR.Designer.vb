@@ -870,6 +870,7 @@ Partial Class FormECR
         Me.Controls.Add(Me.ButtonP)
         Me.Controls.Add(Me.ButtonQ)
         Me.Controls.Add(Me.ButtonE)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.MaximizeBox = false
         Me.Name = "FormECR"
         Me.Text = "SrvDoc - Engineering Change Request - Management System"

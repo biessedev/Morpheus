@@ -416,6 +416,7 @@ Partial Class FormStart
         Me.ClientSize = New System.Drawing.Size(761, 560)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.TableLayoutPanel1)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.MaximizeBox = false
         Me.Name = "FormStart"
         Me.Text = "3D PLM - Product Lifecycle Management"

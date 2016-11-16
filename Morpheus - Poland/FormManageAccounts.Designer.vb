@@ -142,6 +142,7 @@ Partial Class FormManageAccounts
         Me.Controls.Add(Me.TextBoxForUsername)
         Me.Controls.Add(Me.ListViewForUsers)
         Me.Controls.Add(Me.ButtonSave)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.MaximizeBox = false
         Me.MinimizeBox = false
         Me.Name = "FormManageAccounts"

@@ -40,12 +40,12 @@ Partial Class FormTypeAdmin
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TextBoxExtension = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.SuspendLayout()
+        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.SuspendLayout
         '
         'Label4
         '
-        Me.Label4.AutoSize = True
+        Me.Label4.AutoSize = true
         Me.Label4.BackColor = System.Drawing.Color.Transparent
         Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!)
         Me.Label4.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -57,7 +57,7 @@ Partial Class FormTypeAdmin
         '
         'ListBoxLog
         '
-        Me.ListBoxLog.FormattingEnabled = True
+        Me.ListBoxLog.FormattingEnabled = true
         Me.ListBoxLog.Location = New System.Drawing.Point(562, 40)
         Me.ListBoxLog.Name = "ListBoxLog"
         Me.ListBoxLog.SelectionMode = System.Windows.Forms.SelectionMode.None
@@ -67,7 +67,7 @@ Partial Class FormTypeAdmin
         'ButtonRefresh
         '
         Me.ButtonRefresh.BackColor = System.Drawing.Color.Transparent
-        Me.ButtonRefresh.BackgroundImage = CType(resources.GetObject("ButtonRefresh.BackgroundImage"), System.Drawing.Image)
+        Me.ButtonRefresh.BackgroundImage = CType(resources.GetObject("ButtonRefresh.BackgroundImage"),System.Drawing.Image)
         Me.ButtonRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ButtonRefresh.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!)
         Me.ButtonRefresh.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -76,11 +76,11 @@ Partial Class FormTypeAdmin
         Me.ButtonRefresh.Size = New System.Drawing.Size(131, 38)
         Me.ButtonRefresh.TabIndex = 132
         Me.ButtonRefresh.Text = "Search"
-        Me.ButtonRefresh.UseVisualStyleBackColor = False
+        Me.ButtonRefresh.UseVisualStyleBackColor = false
         '
         'Label6
         '
-        Me.Label6.AutoSize = True
+        Me.Label6.AutoSize = true
         Me.Label6.BackColor = System.Drawing.Color.Transparent
         Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!)
         Me.Label6.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -92,7 +92,7 @@ Partial Class FormTypeAdmin
         '
         'Label5
         '
-        Me.Label5.AutoSize = True
+        Me.Label5.AutoSize = true
         Me.Label5.BackColor = System.Drawing.Color.Transparent
         Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!)
         Me.Label5.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -105,7 +105,7 @@ Partial Class FormTypeAdmin
         'ComboBoxSecondType
         '
         Me.ComboBoxSecondType.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!)
-        Me.ComboBoxSecondType.FormattingEnabled = True
+        Me.ComboBoxSecondType.FormattingEnabled = true
         Me.ComboBoxSecondType.Location = New System.Drawing.Point(17, 101)
         Me.ComboBoxSecondType.Name = "ComboBoxSecondType"
         Me.ComboBoxSecondType.Size = New System.Drawing.Size(522, 24)
@@ -117,7 +117,7 @@ Partial Class FormTypeAdmin
         Me.ComboBoxFirstType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ComboBoxFirstType.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!)
         Me.ComboBoxFirstType.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.ComboBoxFirstType.FormattingEnabled = True
+        Me.ComboBoxFirstType.FormattingEnabled = true
         Me.ComboBoxFirstType.Location = New System.Drawing.Point(17, 44)
         Me.ComboBoxFirstType.Name = "ComboBoxFirstType"
         Me.ComboBoxFirstType.Size = New System.Drawing.Size(522, 24)
@@ -126,7 +126,7 @@ Partial Class FormTypeAdmin
         'ButtonTypeAdd
         '
         Me.ButtonTypeAdd.BackColor = System.Drawing.Color.Transparent
-        Me.ButtonTypeAdd.BackgroundImage = CType(resources.GetObject("ButtonTypeAdd.BackgroundImage"), System.Drawing.Image)
+        Me.ButtonTypeAdd.BackgroundImage = CType(resources.GetObject("ButtonTypeAdd.BackgroundImage"),System.Drawing.Image)
         Me.ButtonTypeAdd.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ButtonTypeAdd.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!)
         Me.ButtonTypeAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -136,11 +136,11 @@ Partial Class FormTypeAdmin
         Me.ButtonTypeAdd.Size = New System.Drawing.Size(131, 38)
         Me.ButtonTypeAdd.TabIndex = 115
         Me.ButtonTypeAdd.Text = "Add"
-        Me.ButtonTypeAdd.UseVisualStyleBackColor = False
+        Me.ButtonTypeAdd.UseVisualStyleBackColor = false
         '
         'Label8
         '
-        Me.Label8.AutoSize = True
+        Me.Label8.AutoSize = true
         Me.Label8.BackColor = System.Drawing.Color.Transparent
         Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!)
         Me.Label8.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -153,7 +153,7 @@ Partial Class FormTypeAdmin
         'ComboBoxThirdType
         '
         Me.ComboBoxThirdType.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!)
-        Me.ComboBoxThirdType.FormattingEnabled = True
+        Me.ComboBoxThirdType.FormattingEnabled = true
         Me.ComboBoxThirdType.Location = New System.Drawing.Point(17, 150)
         Me.ComboBoxThirdType.MaxDropDownItems = 16
         Me.ComboBoxThirdType.Name = "ComboBoxThirdType"
@@ -163,7 +163,7 @@ Partial Class FormTypeAdmin
         'ButtonDelete
         '
         Me.ButtonDelete.BackColor = System.Drawing.Color.Transparent
-        Me.ButtonDelete.BackgroundImage = CType(resources.GetObject("ButtonDelete.BackgroundImage"), System.Drawing.Image)
+        Me.ButtonDelete.BackgroundImage = CType(resources.GetObject("ButtonDelete.BackgroundImage"),System.Drawing.Image)
         Me.ButtonDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ButtonDelete.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!)
         Me.ButtonDelete.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -172,7 +172,7 @@ Partial Class FormTypeAdmin
         Me.ButtonDelete.Size = New System.Drawing.Size(132, 38)
         Me.ButtonDelete.TabIndex = 137
         Me.ButtonDelete.Text = "Delete"
-        Me.ButtonDelete.UseVisualStyleBackColor = False
+        Me.ButtonDelete.UseVisualStyleBackColor = false
         '
         'PictureBox1
         '
@@ -183,7 +183,7 @@ Partial Class FormTypeAdmin
         Me.PictureBox1.Size = New System.Drawing.Size(101, 32)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox1.TabIndex = 232
-        Me.PictureBox1.TabStop = False
+        Me.PictureBox1.TabStop = false
         '
         'Button1
         '
@@ -193,11 +193,11 @@ Partial Class FormTypeAdmin
         Me.Button1.Size = New System.Drawing.Size(92, 25)
         Me.Button1.TabIndex = 233
         Me.Button1.Text = "Help"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.Button1.UseVisualStyleBackColor = true
         '
         'TextBoxPropriety
         '
-        Me.TextBoxPropriety.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxPropriety.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.TextBoxPropriety.Location = New System.Drawing.Point(17, 206)
         Me.TextBoxPropriety.Margin = New System.Windows.Forms.Padding(2)
         Me.TextBoxPropriety.Name = "TextBoxPropriety"
@@ -206,7 +206,7 @@ Partial Class FormTypeAdmin
         '
         'Label1
         '
-        Me.Label1.AutoSize = True
+        Me.Label1.AutoSize = true
         Me.Label1.BackColor = System.Drawing.Color.Transparent
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!)
         Me.Label1.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -218,7 +218,7 @@ Partial Class FormTypeAdmin
         '
         'TextBoxExtension
         '
-        Me.TextBoxExtension.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBoxExtension.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.TextBoxExtension.Location = New System.Drawing.Point(191, 206)
         Me.TextBoxExtension.Margin = New System.Windows.Forms.Padding(2)
         Me.TextBoxExtension.Name = "TextBoxExtension"
@@ -227,7 +227,7 @@ Partial Class FormTypeAdmin
         '
         'Label2
         '
-        Me.Label2.AutoSize = True
+        Me.Label2.AutoSize = true
         Me.Label2.BackColor = System.Drawing.Color.Transparent
         Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!)
         Me.Label2.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -239,9 +239,9 @@ Partial Class FormTypeAdmin
         '
         'FormTypeAdmin
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), System.Drawing.Image)
+        Me.BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"),System.Drawing.Image)
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ClientSize = New System.Drawing.Size(988, 364)
         Me.Controls.Add(Me.Label2)
@@ -261,14 +261,15 @@ Partial Class FormTypeAdmin
         Me.Controls.Add(Me.ComboBoxSecondType)
         Me.Controls.Add(Me.ComboBoxFirstType)
         Me.Controls.Add(Me.ButtonTypeAdd)
-        Me.MaximizeBox = False
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
+        Me.MaximizeBox = false
         Me.Name = "FormTypeAdmin"
         Me.Text = "Doc Type"
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.ResumeLayout(False)
-        Me.PerformLayout()
+        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).EndInit
+        Me.ResumeLayout(false)
+        Me.PerformLayout
 
-    End Sub
+End Sub
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents ListBoxLog As System.Windows.Forms.ListBox
     Friend WithEvents ButtonRefresh As System.Windows.Forms.Button

@@ -382,6 +382,9 @@
       <DependentUpon>FormBomUtility.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormChangePassword.resx">
+      <DependentUpon>FormChangePassword.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormCoding.resx">
       <DependentUpon>FormCoding.vb</DependentUpon>
       <SubType>Designer</SubType>

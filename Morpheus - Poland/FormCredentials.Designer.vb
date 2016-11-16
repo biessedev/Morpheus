@@ -193,7 +193,7 @@ Partial Class FormCredentials
         Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
         Me.TableLayoutPanel3.RowCount = 1
         Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100!))
-        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45!))
         Me.TableLayoutPanel3.Size = New System.Drawing.Size(586, 45)
         Me.TableLayoutPanel3.TabIndex = 238
         '
@@ -203,7 +203,7 @@ Partial Class FormCredentials
         Me.LabelHost.AutoSize = true
         Me.LabelHost.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.84615!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.LabelHost.Location = New System.Drawing.Point(267, 21)
-        Me.LabelHost.Margin = New System.Windows.Forms.Padding(0, 0, 0, 0)
+        Me.LabelHost.Margin = New System.Windows.Forms.Padding(0)
         Me.LabelHost.Name = "LabelHost"
         Me.LabelHost.Size = New System.Drawing.Size(52, 24)
         Me.LabelHost.TabIndex = 241
@@ -218,6 +218,9 @@ Partial Class FormCredentials
         Me.ClientSize = New System.Drawing.Size(590, 237)
         Me.Controls.Add(Me.TableLayoutPanel2)
         Me.Controls.Add(Me.PictureBox1)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
+        Me.MaximizeBox = false
+        Me.MinimizeBox = false
         Me.Name = "FormCredentials"
         Me.Text = "Morpheus - Office advanced productivity software"
         CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).EndInit

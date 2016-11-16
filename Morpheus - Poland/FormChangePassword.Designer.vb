@@ -116,7 +116,7 @@ Partial Class FormChangePassword
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(324, 191)
+        Me.ClientSize = New System.Drawing.Size(332, 203)
         Me.Controls.Add(Me.LabelForValidation)
         Me.Controls.Add(Me.ButtonSave)
         Me.Controls.Add(Me.ButtonCancel)
@@ -126,6 +126,7 @@ Partial Class FormChangePassword
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.TextBoxOldPass)
         Me.Controls.Add(Me.Label1)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.MaximizeBox = false
         Me.MaximumSize = New System.Drawing.Size(340, 230)
         Me.MinimizeBox = false
