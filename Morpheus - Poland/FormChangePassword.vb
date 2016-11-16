@@ -11,11 +11,11 @@ Public Class FormChangePassword
     Dim tblCred As DataTable
     Dim DsCred As New DataSet
 
-    Private Sub ButtonCancel_Click(sender As Object, e As EventArgs) Handles ButtonCancel.Click
+    Private Sub ButtonCancel_Click(sender As Object, e As EventArgs) Handles ButtonCancel.Click 
         me.Close()
     End Sub
 
-    Private Sub FormChangePassword_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub FormChangePassword_Load(sender As Object, e As EventArgs) Handles MyBase.Load 
         CenterToParent()
         Me.ActiveControl = TextBoxOldPass
         Me.AcceptButton = ButtonSave
@@ -24,7 +24,7 @@ Public Class FormChangePassword
         tblCred = DsCred.Tables("credential")
     End Sub
 
-    Private Sub ButtonSave_Click(sender As Object, e As EventArgs) Handles ButtonSave.Click
+    Private Sub ButtonSave_Click(sender As Object, e As EventArgs) Handles ButtonSave.Click 
             
          dim users = tblCred.Select("username = '" & CreAccount.strUserName & "'")
         if users.Length <> 0
@@ -57,5 +57,19 @@ Public Class FormChangePassword
         End If
           
 
+    End Sub
+
+    
+
+    Private Sub CheckBoxShowPassword_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxShowPassword.CheckedChanged
+        If CheckBoxShowPassword.CheckState = CheckState.Checked Then
+            TextBoxNewPass.PasswordChar = ""
+            TextBoxPassCheck.PasswordChar = ""
+            TextBoxOldPass.PasswordChar = ""
+        Else
+            TextBoxNewPass.PasswordChar = "*"
+            TextBoxPassCheck.PasswordChar = "*"
+            TextBoxOldPass.PasswordChar = "*"
+        End If
     End Sub
 End Class

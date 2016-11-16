@@ -31,6 +31,7 @@ Partial Class FormChangePassword
         Me.ButtonCancel = New System.Windows.Forms.Button()
         Me.ButtonSave = New System.Windows.Forms.Button()
         Me.LabelForValidation = New System.Windows.Forms.Label()
+        Me.CheckBoxShowPassword = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout
         '
         'Label1
@@ -86,7 +87,7 @@ Partial Class FormChangePassword
         '
         'ButtonCancel
         '
-        Me.ButtonCancel.Location = New System.Drawing.Point(237, 156)
+        Me.ButtonCancel.Location = New System.Drawing.Point(237, 173)
         Me.ButtonCancel.Name = "ButtonCancel"
         Me.ButtonCancel.Size = New System.Drawing.Size(66, 23)
         Me.ButtonCancel.TabIndex = 6
@@ -95,7 +96,7 @@ Partial Class FormChangePassword
         '
         'ButtonSave
         '
-        Me.ButtonSave.Location = New System.Drawing.Point(139, 156)
+        Me.ButtonSave.Location = New System.Drawing.Point(140, 173)
         Me.ButtonSave.Name = "ButtonSave"
         Me.ButtonSave.Size = New System.Drawing.Size(68, 23)
         Me.ButtonSave.TabIndex = 7
@@ -112,11 +113,22 @@ Partial Class FormChangePassword
         Me.LabelForValidation.Size = New System.Drawing.Size(0, 13)
         Me.LabelForValidation.TabIndex = 8
         '
+        'CheckBoxShowPassword
+        '
+        Me.CheckBoxShowPassword.AutoSize = true
+        Me.CheckBoxShowPassword.Location = New System.Drawing.Point(140, 143)
+        Me.CheckBoxShowPassword.Name = "CheckBoxShowPassword"
+        Me.CheckBoxShowPassword.Size = New System.Drawing.Size(102, 17)
+        Me.CheckBoxShowPassword.TabIndex = 9
+        Me.CheckBoxShowPassword.Text = "Show Password"
+        Me.CheckBoxShowPassword.UseVisualStyleBackColor = true
+        '
         'FormChangePassword
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(332, 203)
+        Me.ClientSize = New System.Drawing.Size(334, 208)
+        Me.Controls.Add(Me.CheckBoxShowPassword)
         Me.Controls.Add(Me.LabelForValidation)
         Me.Controls.Add(Me.ButtonSave)
         Me.Controls.Add(Me.ButtonCancel)
@@ -147,4 +159,5 @@ End Sub
     Friend WithEvents ButtonCancel As Button
     Friend WithEvents ButtonSave As Button
     Friend WithEvents LabelForValidation As Label
+    Friend WithEvents CheckBoxShowPassword As CheckBox
 End Class
