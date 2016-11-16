@@ -220,6 +220,7 @@ Public Class FormSamples
         Try
 
             Call issuefunction(0)
+            DGV_NPI.Sort(DGV_NPI.Columns("PlanedClosedDate"), System.ComponentModel.ListSortDirection.Ascending)
 
         Catch ex As Exception
             MsgBox(ex.Message)
@@ -2044,7 +2045,7 @@ Public Class FormSamples
             Sql += "And Status='" & Cob_FilterStatus.Text & "'"
         End If
 
-        Sql += "order by ID"
+        Sql += "order by ID desc"
 
         Dim AdapterNPICob As New MySqlDataAdapter(Sql, MySqlconnection)
         Try
@@ -2055,6 +2056,7 @@ Public Class FormSamples
 
             DGV_NPI.DataSource = tblNPI
             Call DataBangding(0)
+            
 
         Catch ex As Exception
             MsgBox(ex.Message)
@@ -2070,12 +2072,12 @@ Public Class FormSamples
         tblNPI = DsNPI.Tables("NPI")
 
         DGV_NPI.DataSource = tblNPI
-
+        
         If tblNPI.Rows.Count > 0 And selectrowNo > -1 Then
 
             DGV_NPI.Rows(selectrowNo).Selected = True
             Call DataBangding(selectrowNo)
-
+            
         End If
 
     End Sub
