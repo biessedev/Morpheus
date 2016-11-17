@@ -60,7 +60,6 @@ Module PublicFunction
     Public CreFile As New FileRecord
 
     Sub OpenConnectionMySql(ByVal strHost As String, ByVal strDatabase As String, ByVal strUserName As String, ByVal strPassword As String)
-
         Try
             ConnectionString = "host=" & strHost & ";" & "username=" & strUserName & ";" & "password=" & strPassword & ";" & "database=" & strDatabase & ";Connect Timeout=120;allow zero datetime=true;charset=utf8; "
             MySqlconnection = New MySqlConnection(ConnectionString)
@@ -73,7 +72,17 @@ Module PublicFunction
         End Try
     End Sub
 
-    
+    Public Function NewConnectionMySql(ByVal strHost As String, ByVal strDatabase As String, ByVal strUserName As String, ByVal strPassword As String) As MySqlConnection
+        Dim conn = "host=" & strHost & ";" & "username=" & strUserName & ";" & "password=" & strPassword & ";" & "database=" & strDatabase & ";Connect Timeout=120;allow zero datetime=true;charset=utf8; "
+        Try
+            Dim mysqlconn = New MySqlConnection(conn)
+            mysqlconn.Open()
+            Return mysqlconn
+        Catch ae As MySqlException
+            MessageBox.Show(ae.Message.ToString())
+            Return New MySqlConnection()
+        End Try
+    End Function
 
     Sub CloseConnectionMySql()
         Try
@@ -128,7 +137,6 @@ Module PublicFunction
     End Sub
 
     Sub CloseConnectionMySqlGru()
-
         Try
             If MySqlconnectionGru.State = ConnectionState.Open Then
                 MySqlconnectionGru.Close()
@@ -139,7 +147,6 @@ Module PublicFunction
     End Sub
 
     Sub CloseConnectionSqlOrcad()
-
         Try
             If SQLconnectionOrcad.State = ConnectionState.Open Then
                 SQLconnectionOrcad.Close()

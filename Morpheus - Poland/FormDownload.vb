@@ -1,5 +1,7 @@
 ﻿Option Explicit On
 Option Compare Text
+
+Imports System.Configuration
 Imports MySql.Data.MySqlClient
 Imports System.Data.SqlClient
 Imports System.Text.RegularExpressions
@@ -8,11 +10,6 @@ Imports System.Threading
 
 Public Class FormDownload
     Public loadDoc As Boolean
-    Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
-    Dim AdapterDocType As New MySqlDataAdapter("SELECT * FROM Doctype", MySqlconnection)
-    Dim AdapterDocProd As New MySqlDataAdapter("SELECT * FROM Product", MySqlconnection)
-    Dim AdapterCust As New MySqlDataAdapter("SELECT * FROM customer", MySqlconnection)
-    Dim AdapterBom As New MySqlDataAdapter("SELECT * FROM sigip", MySqlconnection)
     Dim tblDoc As DataTable, tblDocType As DataTable, tblDocProd As DataTable, tblDocCust As DataTable, tlbDocGru As New DataTable, tlbDocGrutype As New DataTable
     Dim DsDoc As New DataSet, DsDocType As New DataSet, DsDocProd As New DataSet, DsDocCust As New DataSet, DsDocGru As New DataSet, DsDocGrutype As New DataSet
     Dim DsDocComp As New DataSet, DsBom As New DataSet
@@ -21,10 +18,10 @@ Public Class FormDownload
     Dim trd As Thread
     Dim Autoupdate As Boolean
     Dim trdFinish As Boolean = False
-    Dim OrcadDBAdr = ParameterTable("OrcadDBAdr")
-    Dim OrcadDBName = ParameterTable("OrcadDBName")
-    Dim OrcadDBUser = ParameterTable("OrcadDBUser")
-    Dim OrcadDBPwd = ParameterTable("OrcadDBPwd")
+    ReadOnly OrcadDBAdr = ParameterTable("OrcadDBAdr")
+    ReadOnly OrcadDBName = ParameterTable("OrcadDBName")
+    ReadOnly OrcadDBUser = ParameterTable("OrcadDBUser")
+    ReadOnly OrcadDBPwd = ParameterTable("OrcadDBPwd")
 
     Private Sub FormDownload_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
         FormStart.Show()
@@ -38,8 +35,9 @@ Public Class FormDownload
 
         Try
             OpenConnectionMySqlGru("10.10.10.15", "Gestdoc", "chinadoc", "china")
-            Dim AdapterDocGruProdType As New MySqlDataAdapter("SELECT * FROM tipodoc", MySqlconnectionGru)
-            AdapterDocGruProdType.Fill(DsDocGrutype, "tipodoc")
+            Using AdapterDocGruProdType As New MySqlDataAdapter("SELECT * FROM tipodoc", MySqlconnectionGru)
+                AdapterDocGruProdType.Fill(DsDocGrutype, "tipodoc")
+            End Using
             tlbDocGrutype = DsDocGrutype.Tables("tipodoc")
             ButtonConnection.BackColor = Color.Green
             Application.DoEvents()
@@ -60,21 +58,19 @@ Public Class FormDownload
         If trdFinish Then
 
             Try
-                Dim AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where not valido = 'no_valido'", SQLconnectionOrcad)
-
-                AdapterDocComp.Fill(DsDocComp, "orcadw.T_orcadcis")
-
+                Using AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where not valido = 'no_valido'", SQLconnectionOrcad)
+                    AdapterDocComp.Fill(DsDocComp, "orcadw.T_orcadcis")
+                End Using
                 tblDocComp = DsDocComp.Tables("orcadw.T_orcadcis")
             Catch ex As Exception
 
                 Try
                     CloseConnectionSqlOrcad()
-                    'OpenConnectionMySqlOrcad("10.10.10.36", "orcad1", "orcadw", "orcadw")
                     OpenConnectionMySqlOrcad(OrcadDBAdr, OrcadDBName, OrcadDBUser, OrcadDBPwd)
 
-                    Dim AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where not valido = 'no_valido'", SQLconnectionOrcad)
-
-                    AdapterDocComp.Fill(DsDocComp, "orcadw.T_orcadcis")
+                    Using AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where not valido = 'no_valido'", SQLconnectionOrcad)
+                        AdapterDocComp.Fill(DsDocComp, "orcadw.T_orcadcis")
+                    End Using
 
                     tblDocComp = DsDocComp.Tables("orcadw.T_orcadcis")
                 Catch
@@ -89,7 +85,13 @@ Public Class FormDownload
         If MySqlconnectionGru.State = ConnectionState.Closed Then CheckGru.Checked = False
 
         Dim RowSearchDoc As DataRow()
-        AdapterBom.Fill(DsBom, "sigip")
+        Dim builder As New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings("Morpheus").ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            Using AdapterBom As New MySqlDataAdapter("SELECT * FROM sigip", con)
+                AdapterBom.Fill(DsBom, "sigip")
+            End Using
+        End Using
         tblBom = DsBom.Tables("sigip")
         RowSearchDoc = tblBom.Select("doc=''")
         If RowSearchDoc.Length > 0 Then
@@ -112,21 +114,30 @@ Public Class FormDownload
         FillComboRevision()
 
         Label1LastBomUpdate.Text = "Last bom update " & ParameterTable("LAST_SIGIP_BOM_UPDATE")
-        AdapterDoc.Fill(DsDoc, "doc")
+        Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
+            AdapterDoc.Fill(DsDoc, "doc")
+        End Using
         tblDoc = DsDoc.Tables("doc")
 
-        AdapterDocType.Fill(DsDocType, "DocType")
-        tblDocType = DsDocType.Tables("DocType")
+        Using AdapterDocType As New MySqlDataAdapter("SELECT * FROM Doctype", MySqlconnection)
+            AdapterDocType.Fill(DsDocType, "DocType")
+            AdapterDocType.Dispose()
+        End Using
 
-        AdapterDocProd.Fill(DsDocProd, "Product")
+        tblDocType = DsDocType.Tables("DocType")
+        Using AdapterDocProd As New MySqlDataAdapter("SELECT * FROM Product", MySqlconnection)
+            AdapterDocProd.Fill(DsDocProd, "Product")
+        End Using
         tblDocProd = DsDocProd.Tables("Product")
 
-        AdapterCust.Fill(DsDocCust, "customer")
+        Using AdapterCust As New MySqlDataAdapter("SELECT * FROM customer", MySqlconnection)
+            AdapterCust.Fill(DsDocCust, "customer")
+        End Using
+
         tblDocCust = DsDocCust.Tables("customer")
 
         FillComboEcrNull()
         FillComboEcrPending()
-
         FillComboFirstType()
         BooAvvio = False
 
@@ -195,37 +206,29 @@ Public Class FormDownload
             ListView1.Clear()
             ListBoxLog.Items.Add("Query started.....")
             ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
-
-            AdapterBom = New MySqlDataAdapter("SELECT * FROM sigip ", MySqlconnection)
-            AdapterBom.Fill(DsBom, "sigip")
+            Using AdapterBom As New MySqlDataAdapter("SELECT * FROM sigip", MySqlconnection)
+                AdapterBom.Fill(DsBom, "sigip")
+            End Using
             tblBom = DsBom.Tables("sigip")
             tblBom.Clear()
             DsBom.Clear()
             If Not BooAvvio Then
+                Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
 
-                AdapterDoc.SelectCommand = New MySqlCommand("SELECT * FROM DOC;", MySqlconnection)
-                DsDoc.Clear()
-                tblDoc.Clear()
-                AdapterDoc.Fill(DsDoc, "doc")
+                    AdapterDoc.SelectCommand = New MySqlCommand("SELECT * FROM DOC;", MySqlconnection)
+                    DsDoc.Clear()
+                    tblDoc.Clear()
+                    AdapterDoc.Fill(DsDoc, "doc")
+                End Using
                 tblDoc = DsDoc.Tables("doc")
 
                 If RadioButtonGeneralSearch.Checked Then
-                    'Try
-
-                    'SQL = "(ecrNull like '*" & ComboBoxEcrNull.Text & "*') and  (ecrpending like '*" & ComboBoxEcrPending.Text & "*') and  (filename like '*" & TextBoxfileName.Text & "*') and ( header like '" & IIf(Mid(ComboBoxFirstType.Text, 1, 3) = "", "*", Mid(ComboBoxFirstType.Text, 1, 3) & "_") _
-                    '              & IIf(Mid(ComboBoxSecondType.Text, 1, 3) = "", "*", Mid(ComboBoxSecondType.Text, 1, 3) & "_") & IIf(Mid(ComboBoxThirdType.Text, 1, 3) = "", "*", Mid(ComboBoxThirdType.Text, 1, 3)) & "')"
-
                     Dim SQL As String = "(filename like '*" & TextBoxfileName.Text & "*') and ( header like '" & IIf(Mid(ComboBoxFirstType.Text, 1, 3) = "", "*", Mid(ComboBoxFirstType.Text, 1, 3) & "_") _
                                         & IIf(Mid(ComboBoxSecondType.Text, 1, 3) = "", "*", Mid(ComboBoxSecondType.Text, 1, 3) & "_") & IIf(Mid(ComboBoxThirdType.Text, 1, 3) = "", "*", Mid(ComboBoxThirdType.Text, 1, 3)) & "')"
 
                     RowSearch = tblDoc.Select(SQL, "id")
 
                     FillListView(RowSearch)
-
-                    'Catch ex As Exception
-                    '    MsgBox("Error in file name! Please change.")
-                    'End Try
-
                 Else
                     Dim ProdControl As String
                     ListView1.Clear()
@@ -255,14 +258,6 @@ Public Class FormDownload
                                         Dim AdapterDocGruProd As New MySqlDataAdapter("SELECT * FROM documento where codicepf = '" & prodDoc & "' or codicepf = '" & proddocAux & "'", MySqlconnectionGru)
                                         AdapterDocGruProd.Fill(DsDocGru, "documento")
                                     Catch ex As Exception
-                                        'ListBoxLog.Items.Add("Connection lost, need waithing 20 second...")
-                                        'CloseConnectionMySqlGru()
-                                        'OpenConnectionMySqlGru("10.10.10.15", "Gestdoc", "chinadoc", "china")
-                                        'If MySqlconnectionGru.State = ConnectionState.Open Then
-                                        '    ListBoxLog.Items.Add("Connection enstabilish...Done!")
-                                        '    Dim AdapterDocGruProd As New MySqlDataAdapter("SELECT * FROM documento where codicepf = '" & prodDoc & "' or codicepf = '" & proddocAux & "'", MySqlconnectionGru)
-                                        '    AdapterDocGruProd.Fill(DsDocGru, "documento")
-                                        'End If
                                     End Try
                                     If MySqlconnectionGru.State = ConnectionState.Open Then
                                         tlbDocGru = DsDocGru.Tables("documento")
@@ -323,11 +318,6 @@ Public Class FormDownload
                                             WriteFile(" --> Document not Find In Intranet!", True)
                                         End If
 
-                                        If Not dima Then
-                                            'ListBoxLog.Items.Add(rowPrdList("bitronpn").ToString & " - Dima PCB not Find!")
-                                            'WriteFile(" --> Dima PCB not Find!!", True)
-                                        End If
-
                                         If Presence("F", ProdControl) = "1" Then
                                             If Not sw Then ListBoxLog.Items.Add(rowPrdList("bitronpn").ToString & " - Software NOT found in Intranet!")
                                             If Not sw Then WriteFile(" --> Software NOT found in Intranet!", True)
@@ -341,8 +331,9 @@ Public Class FormDownload
                                     Dim prodDoc As String
                                     prodDoc = rowPrdList("bitronpn").ToString
 
-                                    AdapterBom = New MySqlDataAdapter("SELECT * FROM sigip where bom = '" & prodDoc & "' and ACQ_FAB like 'ACQ' ", MySqlconnection)
-                                    AdapterBom.Fill(DsBom, "sigip")
+                                    Using AdapterBom = New MySqlDataAdapter("SELECT * FROM sigip where bom = '" & prodDoc & "' and ACQ_FAB like 'ACQ' ", MySqlconnection)
+                                        AdapterBom.Fill(DsBom, "sigip")
+                                    End Using
                                     tblBom = DsBom.Tables("sigip")
                                 End If
                             End If
@@ -350,21 +341,9 @@ Public Class FormDownload
                             If Not stopEvent Then
 
                                 ProdControl = fControl(rowPrdList("bitronpn").ToString, strPcbCode, strPiastraCode)
-
-                                'RowSearch = tblDoc.Select("ecrPending like '*" & ComboBoxEcrPending.Text & "*' and ecrNull like '*" & _
-                                '            ComboBoxEcrNull.Text & "*' AND ( header like '" & IIf(Mid(ComboBoxFirstType.Text, 1, 3) = "", "*", Mid(ComboBoxFirstType.Text, 1, 3) & "_") & IIf(Mid(ComboBoxSecondType.Text, 1, 3) = "", "*", Mid(ComboBoxSecondType.Text, 1, 3) & "_") & IIf(Mid(ComboBoxThirdType.Text, 1, 3) = "", "*", Mid(ComboBoxThirdType.Text, 1, 3)) & "') AND (filename like '" & _
-                                '            ComboBoxProd.Text & "' or filename like '*" & rowPrdList("bitronpn").ToString & "*')", "rev DESC")
-
-
                                 RowSearch = tblDoc.Select("header like '" & IIf(Mid(ComboBoxFirstType.Text, 1, 3) = "", "*", Mid(ComboBoxFirstType.Text, 1, 3) & "_") & IIf(Mid(ComboBoxSecondType.Text, 1, 3) = "", "*", Mid(ComboBoxSecondType.Text, 1, 3) & "_") & IIf(Mid(ComboBoxThirdType.Text, 1, 3) = "", "*", Mid(ComboBoxThirdType.Text, 1, 3)) & "' AND (filename like '" &
                                             ComboBoxProd.Text & "' or filename like '*" & rowPrdList("bitronpn").ToString & "*')", "rev DESC")
-
-
-                                ' or filename like '" & rowPrdList("bitronpn").ToString & " 
                                 FillListView(RowSearch, True, rowPrdList("BITRONPN").ToString)
-                                'FillListView(RowSearch, True)
-
-                                ' IMMISSIONE GRUPPI
                                 GroupList = rowPrdList("GROUPLIST").ToString()
 
                                 If GroupList <> "" Then
@@ -399,14 +378,10 @@ Public Class FormDownload
                                                     Dim str(tblDoc.Columns.Count) As String
                                                     str(1) = row("header").ToString
                                                     str(2) = rowPrdList("BITRONPN").ToString & " -- File required But Missing!"
-                                                    ' If row("header").ToString = parametertable("plant") & "R_PRO_DNS" Then str(2) = rowPrdList("BITRONPN").ToString & " -- File recommended But Missing!"
-                                                    ' If row("header").ToString = parametertable("plant") & "R_PRO_ASR" Then str(2) = rowPrdList("BITRONPN").ToString & " -- File recommended But Missing!"
                                                     str(11) = FileNameDes(rowPrdList("bitronpn").ToString)
                                                     Dim ii As New ListViewItem(str)
                                                     ListView1.Items.Add(ii)
                                                     ListView1.Items(ListView1.Items.Count - 1).BackColor = Color.Yellow
-                                                    ' If row("header").ToString = parametertable("plant") & "R_PRO_DNS" Then ListView1.Items(ListView1.Items.Count - 1).BackColor = Color.YellowGreen
-                                                    ' If row("header").ToString = parametertable("plant") & "R_PRO_ASR" Then ListView1.Items(ListView1.Items.Count - 1).BackColor = Color.YellowGreen
                                                 End If
                                             End If
                                         End If
@@ -1128,18 +1103,21 @@ Public Class FormDownload
     End Function
 
     Private Sub FlowLayoutPanel4_SizeChanged(sender As Object, e As EventArgs) Handles FlowLayoutPanel4.SizeChanged
-        ListBoxLog.Width  = Me.FlowLayoutPanel4.Width - 5
-        ListBoxLog.Height  = Me.FlowLayoutPanel4.Height - 61
-        ListBoxLog.Location =  new Point(4, 42)
+        ListBoxLog.Width = Me.FlowLayoutPanel4.Width - 5
+        ListBoxLog.Height = Me.FlowLayoutPanel4.Height - 61
+        ListBoxLog.Location = New Point(4, 42)
     End Sub
 
     Function NameFile(ByVal id As Long) As String
 
         Dim RowSearchDoc As DataRow()
-        AdapterDoc.SelectCommand = New MySqlCommand("SELECT * FROM DOC;", MySqlconnection)
-        DsDoc.Clear()
-        tblDoc.Clear()
-        AdapterDoc.Fill(DsDoc, "doc")
+        Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
+
+            AdapterDoc.SelectCommand = New MySqlCommand("SELECT * FROM DOC;", MySqlconnection)
+            DsDoc.Clear()
+            tblDoc.Clear()
+            AdapterDoc.Fill(DsDoc, "doc")
+        End Using
         tblDoc = DsDoc.Tables("doc")
         RowSearchDoc = tblDoc.Select("id = " & id)
         NameFile = ""
