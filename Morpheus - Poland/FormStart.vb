@@ -142,11 +142,12 @@ Public Class FormStart
         objFtp.Host = strFtpServerAdd
         Dim downloadFileWinPath = ""
         Try
-            strPathFtp = "62R/62R_GEN_PRC/"
+            Dim paramTable As String = ParameterTable("plant")
+            strPathFtp = paramTable & "R/" & paramTable & "R_GEN_PRC/"
             Dim str = ""
             objFtp.ListDirectory(strPathFtp, str)
             Dim strings() As String = str.Split(New String() {Environment.NewLine}, StringSplitOptions.None)
-            Dim docName = "62R_GEN_PRC_User_Manual_for_Morpheus"
+            Dim docName = paramTable & "R_GEN_PRC_User_Manual_for_Morpheus"
             Dim number = (From foundString In strings Where foundString.Contains(docName) Select Int32.Parse(Mid(foundString, InStr(foundString, docName) + docName.Length + 1, foundString.Length - (InStr(foundString, docName) + docName.Length + 5)))).Concat(New Integer() {0}).Max()
             If number <> 0 Then
                 ComunicationLog(objFtp.DownloadFile(strPathFtp, System.IO.Path.GetTempPath, docName & "_" & number & ".docx")) ' download successfull
