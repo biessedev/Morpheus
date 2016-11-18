@@ -5,6 +5,7 @@ Imports System.IO
 Imports System.Data.SqlClient
 Imports System.Text.RegularExpressions
 Imports System.Globalization
+Imports System.Linq
 
 Public Class FormSamples
 
@@ -56,6 +57,7 @@ Public Class FormSamples
 
     Dim DateStart As New Date
     Dim DateClosed As New Date
+    Dim cSelectedID As String
 
     Private Sub FormSamples_FormClosing(ByVal sender As Object, ByVal e As FormClosingEventArgs) Handles Me.FormClosing
         If InStr(TabControlNPI.SelectedTab.Text, "Task") > 0 Then
@@ -107,7 +109,13 @@ Public Class FormSamples
 
         TreeViewTask.HideSelection = False
         TreeViewActivity.HideSelection = False
-
+        If IsNeedUpdate(cSelectedID) Then
+                Dim msgBoxResult As MsgBoxResult
+                msgBoxResult = MsgBox("Do you want to save the changes?", vbYesNo)
+                If msgBoxResult = MsgBoxResult.Yes Then
+                    SaveUpdates(cSelectedID)
+                End If
+        End If  
         FormNPIDocMamagement.Close()
 
     End Sub
@@ -221,7 +229,7 @@ Public Class FormSamples
 
             Call issuefunction(0)
             DGV_NPI.Sort(DGV_NPI.Columns("PlanedClosedDate"), System.ComponentModel.ListSortDirection.Ascending)
-
+            
         Catch ex As Exception
             MsgBox(ex.Message)
         End Try
@@ -2057,7 +2065,7 @@ Public Class FormSamples
 
             DGV_NPI.DataSource = tblNPI
             Call DataBangding(0)
-            
+
 
         Catch ex As Exception
             MsgBox(ex.Message)
@@ -2073,12 +2081,12 @@ Public Class FormSamples
         tblNPI = DsNPI.Tables("NPI")
 
         DGV_NPI.DataSource = tblNPI
-        
+
         If tblNPI.Rows.Count > 0 And selectrowNo > -1 Then
 
             DGV_NPI.Rows(selectrowNo).Selected = True
             Call DataBangding(selectrowNo)
-            
+
         End If
 
     End Sub
@@ -2144,7 +2152,7 @@ Public Class FormSamples
         Cob_Owner.Sorted = True
     End Sub
 
-   
+
     Function downloadFileWinPath(ByVal fileName As String) As String
         Dim objFtp = New ftp()
         objFtp.UserName = strFtpServerUser
@@ -2173,7 +2181,7 @@ Public Class FormSamples
         Cob_FilterBitronPN.Items.Add("")
 
         DsNPI.Clear()
-        tblNPI.Clear()        
+        tblNPI.Clear()
         AdapterNPI.Fill(DsNPI, "NPI")
         tblNPI = DsNPI.Tables("NPI")
 
@@ -2183,6 +2191,7 @@ Public Class FormSamples
         Next
 
         Cob_FilterBitronPN.Sorted = True
+       
 
     End Sub
     Private Sub CobFilterBSFill()
@@ -2219,10 +2228,123 @@ Public Class FormSamples
         End If
     End Sub
 
+
+   
+
+    Private Function IsNeedUpdate(ByVal id As String) As Boolean
+        Dim update As Boolean = false
+        Dim dt As DataTable 
+        Dim rowDB As DataRow
+        Dim rowId As Integer
+        Try
+            Dim Sql = "SELECT * FROM npi_openissue WHERE ID = " & id
+            Dim dtSet As new DataSet
+            Dim AdapterNPICob As New MySqlDataAdapter(Sql, MySqlconnection)
+            dtSet.Clear()
+            AdapterNPICob.Fill(dtSet, "NPI")
+            dt = dtSet.Tables("NPI")
+            rowDB  = dt.Select("id = " & id & "").FirstOrDefault()
+
+            For Each xRow As DataGridViewRow In DGV_NPI.Rows
+                If xRow.Cells("ID").Value = id Then
+                    rowId = xRow.Index
+                    Exit for
+                End If
+            Next
+            If DGV_NPI.Rows(rowId).Cells("ID").Value.ToString() = rowDB("ID").ToString() Then
+            If DGV_NPI.Rows(rowId).Cells("BS").Value = rowDB("BS").ToString() And _
+                DGV_NPI.Rows(rowId).Cells("StartDate").Value = rowDB("DATE") And _
+                DGV_NPI.Rows(rowId).Cells("IssueDescription").Value = rowDB("Issue_description").ToString() And _
+                DGV_NPI.Rows(rowId).Cells("BitronPN").Value = rowDB("Bitron_PN").ToString() And _
+                DGV_NPI.Rows(rowId).Cells("Area").Value = rowDB("Area").ToString() And _
+                DGV_NPI.Rows(rowId).Cells("Owner").Value = rowDB("Owner").ToString() And _
+                DGV_NPI.Rows(rowId).Cells("TEMPCorrectAction").Value = rowDB("Temp_corr_action").ToString() And _
+                DGV_NPI.Rows(rowId).Cells("FinalCorrectAction").Value = rowDB("Final_corr_action").ToString() And _
+                DGV_NPI.Rows(rowId).Cells("PlanedClosedDate").Value = rowDB("ETC") And _
+                DGV_NPI.Rows(rowId).Cells("Status").Value = rowDB("Status").ToString() And _
+                DGV_NPI.Rows(rowId).Cells("FilePath").Value = rowDB("FilePath").ToString()  then
+                    update = false
+             Else
+                    update = true
+            End If
+            End If
+        Catch ex As Exception
+
+        End Try
+        return update
+    End Function
+
+    
+    Sub SaveUpdates(ByVal cSelectedID As String) 
+        Dim rowId As Integer
+        For Each xRow As DataGridViewRow In DGV_NPI.Rows
+                If xRow.Cells("ID").Value = cSelectedID Then
+                    rowId = xRow.Index
+                    Exit for
+                End If
+        Next
+        If Trim(DGV_NPI.Rows(rowId).Cells("BitronPN").Value) <> "" Then
+            Try
+                Dim startDate = DGV_NPI.Rows(rowId).Cells("StartDate").Value
+                Dim etc  = DGV_NPI.Rows(rowId).Cells("PlanedClosedDate").Value
+                Dim sql As String = "UPDATE npi_openissue SET BS = '" & DGV_NPI.Rows(rowId).Cells("BS").Value & _
+                                    "',DATE = '" & startDate.Year & "-" & startDate.Month & "-" & startDate.Day & _
+                                    "',Issue_description ='" & DGV_NPI.Rows(rowId).Cells("IssueDescription").Value & _
+                                    "',Bitron_PN = '" & DGV_NPI.Rows(rowId).Cells("BitronPN").Value & _
+                                    "',Area = '" & DGV_NPI.Rows(rowId).Cells("Area").Value & _
+                                    "',Owner = '" & Cob_Owner.Text & _
+                                    "',Temp_corr_action = '" & DGV_NPI.Rows(rowId).Cells("TEMPCorrectAction").Value & _
+                                    "',Final_corr_action = '" & DGV_NPI.Rows(rowId).Cells("FinalCorrectAction").Value & _
+                                    "',ETC = '" &   etc.Year & "-" & etc.Month & "-" & etc.Day  & _
+                                    "',Status = '" & DGV_NPI.Rows(rowId).Cells("Status").Value & _
+                                    "',FilePath ='" & DGV_NPI.Rows(rowId).Cells("FilePath").Value & _
+                                    "' WHERE ID = '" & cSelectedID & "'"
+
+                Dim cmd = New MySqlCommand(sql, MySqlconnection)
+                cmd.ExecuteNonQuery()
+                MsgBox("Successful update")
+            Catch ex As Exception
+                MsgBox(ex.Message)
+            End Try
+        Else
+            MsgBox("Bitron Product Code can't be empty")
+        End If        
+        
+    End Sub
+
+    Dim saveUpdate As Boolean = true
+    Private Sub DGV_NPI_SelectionChanged(sender As Object, e As EventArgs) Handles DGV_NPI.SelectionChanged
+        Dim new_SelectRow As Integer
+        Dim newSelectedId As String
+        Try
+            If cSelectedID = Nothing then
+                cSelectedID = Me.DGV_NPI.Item(DGV_NPI.Columns("ID").Index, Me.DGV_NPI.CurrentRow.Index).Value.ToString()
+            End If     
+
+            new_SelectRow = Me.DGV_NPI.CurrentRow.Index
+            newSelectedId = Me.DGV_NPI.Item(DGV_NPI.Columns("ID").Index, new_SelectRow).Value
+
+            If newSelectedId <> cSelectedID And IsNeedUpdate(cSelectedID) Then
+                Dim msgBoxResult As MsgBoxResult
+                msgBoxResult = MsgBox("Do you want to save the changes?", vbYesNo)
+                If msgBoxResult = MsgBoxResult.Yes Then
+                    SaveUpdates(cSelectedID)
+                ElseIf msgBoxResult = MsgBoxResult.No
+                    CobFilterBitronPNFill()
+                    newSelectedId = Me.DGV_NPI.Item(DGV_NPI.Columns("ID").Index, Me.DGV_NPI.CurrentRow.Index).Value.ToString()
+                End If
+            End If
+            cSelectedID = newSelectedId       
+        Catch ex As Exception
+
+        End Try
+        
+    End Sub
+
     Private Sub DTP_PlanCloseDate_ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles DTP_PlanCloseDate.ValueChanged
 
         DateClosed = DTP_PlanCloseDate.Value.Date
 
     End Sub
- 
+
 End Class

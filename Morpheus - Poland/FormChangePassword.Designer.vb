@@ -87,7 +87,7 @@ Partial Class FormChangePassword
         '
         'ButtonCancel
         '
-        Me.ButtonCancel.Location = New System.Drawing.Point(237, 173)
+        Me.ButtonCancel.Location = New System.Drawing.Point(237, 166)
         Me.ButtonCancel.Name = "ButtonCancel"
         Me.ButtonCancel.Size = New System.Drawing.Size(66, 23)
         Me.ButtonCancel.TabIndex = 6
@@ -96,7 +96,7 @@ Partial Class FormChangePassword
         '
         'ButtonSave
         '
-        Me.ButtonSave.Location = New System.Drawing.Point(140, 173)
+        Me.ButtonSave.Location = New System.Drawing.Point(140, 166)
         Me.ButtonSave.Name = "ButtonSave"
         Me.ButtonSave.Size = New System.Drawing.Size(68, 23)
         Me.ButtonSave.TabIndex = 7
