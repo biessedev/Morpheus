@@ -7,7 +7,6 @@ Imports System.Data.SqlClient
 Imports System.Text.RegularExpressions
 Imports System.Threading
 
-
 Public Class FormDownload
     Public loadDoc As Boolean
     Dim tblDoc As DataTable, tblDocType As DataTable, tblDocProd As DataTable, tblDocCust As DataTable, tlbDocGru As New DataTable, tlbDocGrutype As New DataTable
@@ -41,10 +40,8 @@ Public Class FormDownload
             tlbDocGrutype = DsDocGrutype.Tables("tipodoc")
             ButtonConnection.BackColor = Color.Green
             Application.DoEvents()
-
         Catch ex As Exception
             MsgBox("Database Account error, server Grugliasco open procedure")
-
         End Try
 
         Try
@@ -99,8 +96,8 @@ Public Class FormDownload
         End If
 
         trdFinish = True
-
     End Sub
+
     Private Sub FormDownload_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Autoupdate = True
         trd = New Thread(AddressOf ThreadTask)
@@ -162,6 +159,7 @@ Public Class FormDownload
         ListView1.Columns.Clear()
         Autoupdate = False
     End Sub
+
     Private Sub ComboBoxFirstType_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxFirstType.TextChanged
         Dim strOld = ""
         ComboBoxSecondType.Items.Clear()
@@ -178,6 +176,7 @@ Public Class FormDownload
         ComboBoxSecondType.Text = ""
         ComboBoxThirdType.Text = ""
     End Sub
+
     Private Sub ComboBoxSecondType_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxSecondType.TextChanged
         Dim returnValue As DataRow()
         ComboBoxThirdType.Items.Clear()
@@ -235,7 +234,8 @@ Public Class FormDownload
                     If ComboBoxProd.Text <> "" Then
 
                         Dim resultProdList As DataRow() = tblDocProd.Select(IIf(CheckBoxObsolete.Checked = True, "(status like '*') ", " (not status = 'OBSOLETE') ") &
-                                                                            " AND (status " & IIf(ComboBoxStatus.Text = "ALL - STATUS", "like '*')", "like '" & ComboBoxStatus.Text & "')") & "  and bitronpn LIKE '" & IIf(Mid(ComboBoxProd.Text, 1, 3) = "ALL", "*", Trim(Mid(ComboBoxProd.Text, 1, InStr(1, ComboBoxProd.Text, "-", CompareMethod.Text) - 1))) &
+                                                                            " AND (status " & IIf(ComboBoxStatus.Text = "ALL - STATUS", "like '*')", "like '" & ComboBoxStatus.Text & "')") &
+                                                                            "  and bitronpn LIKE '" & IIf(Mid(ComboBoxProd.Text, 1, 3) = "ALL", "*", Trim(Mid(ComboBoxProd.Text, 1, InStr(1, ComboBoxProd.Text, "-", CompareMethod.Text) - 1))) &
                                                                             "' and customer like '" & IIf(ComboBoxCustomer.Text = "ALL - CUSTOMER", "*", ComboBoxCustomer.Text) & "'")
                         For Each rowPrdList In resultProdList
                             Application.DoEvents()
@@ -303,9 +303,7 @@ Public Class FormDownload
                                                         End Try
                                                     End If
                                                 Next
-
                                             End If
-
                                         Next
                                         dima = True
 
@@ -387,12 +385,8 @@ Public Class FormDownload
                                         End If
                                     Next
 
-                                    ' Find mech element
-
                                     Dim ResultDoc As DataRow(), ResultProd As DataRow(), mchElement As String
-
                                     ResultProd = tblDocProd.Select("bitronpn = '" & rowPrdList("BITRONPN").ToString & "'")
-
                                     If ParameterTable("plant") & "R_PRO_MED" = Mid(ComboBoxFirstType.Text, 1, 3) & "_" & Mid(ComboBoxSecondType.Text, 1, 3) & "_" & Mid(ComboBoxThirdType.Text, 1, 3) Or
                                     ParameterTable("plant") & "R_PRO_" = Mid(ComboBoxFirstType.Text, 1, 3) & "_" & Mid(ComboBoxSecondType.Text, 1, 3) & "_" & Mid(ComboBoxThirdType.Text, 1, 3) Or
                                     ParameterTable("plant") & "R__" = Mid(ComboBoxFirstType.Text, 1, 3) & "_" & Mid(ComboBoxSecondType.Text, 1, 3) & "_" & Mid(ComboBoxThirdType.Text, 1, 3) Or
@@ -417,12 +411,10 @@ Public Class FormDownload
                                     End If
                                 Else
                                     ComunicationLog("5063") ' Product not found in product list
-
                                 End If
                                 LastRowList = ListView1.Items.Count
                             End If
                         Next
-
                     Else
                         ComunicationLog("0012")
                     End If
@@ -445,18 +437,15 @@ Public Class FormDownload
                             Else
                                 ssr(0) = "MISS"
                             End If
-
                             ssr(1) = row("acq_fab").ToString
                             ssr(2) = row("bitron_pn").ToString & " - " & row("des_pn").ToString
                             ssr(11) = "Documentation: " & row("doc").ToString
                             Dim kk As New ListViewItem(ssr)
                             ListView1.Items.Add(kk)
                             If row("doc").ToString = "NO" And row("acq_fab").ToString = "ACQ" Then ListView1.Items(ListView1.Items.Count - 1).BackColor = Color.Yellow
-
                         End If
                     End If
                     oldBitronPn = row("bitron_pn").ToString
-
                 Next
             End If
 
@@ -496,8 +485,8 @@ Public Class FormDownload
     Private Sub ButtonReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonReset.Click
         FillComboFirstType()
     End Sub
+
     Private Sub ButtonDelete_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDelete.Click
-        Dim strRes As String
         Dim strPathFtp As String
         Dim objFtp = New ftp()
         objFtp.UserName = strFtpServerUser
@@ -514,12 +503,12 @@ Public Class FormDownload
                         Try
                             Try
                                 strPathFtp = (Mid(ListView1.CheckedItems(0).SubItems(1).Text, 1, 3) & "/" & ListView1.CheckedItems(0).SubItems(1).Text)
-                                strRes = objFtp.DeleteFile(strPathFtp & "/", ListView1.CheckedItems(0).SubItems(1).Text & "_" & ListView1.CheckedItems(0).SubItems(2).Text() & "_" & ListView1.CheckedItems(0).SubItems(3).Text() & "." & ListView1.CheckedItems(0).SubItems(4).Text())
+                                objFtp.DeleteFile(strPathFtp & "/", ListView1.CheckedItems(0).SubItems(1).Text & "_" & ListView1.CheckedItems(0).SubItems(2).Text() & "_" & ListView1.CheckedItems(0).SubItems(3).Text() & "." & ListView1.CheckedItems(0).SubItems(4).Text())
                             Catch ex As Exception
                                 ComunicationLog("0056") ' ftp operation error
                             End Try
                             strPathFtp = ("/" & Mid(ListView1.CheckedItems(0).SubItems(1).Text, 1, 3) & "/" & ListView1.CheckedItems(0).SubItems(1).Text)
-                            strRes = objFtp.ListDirectory(strPathFtp & "/", ListView1.CheckedItems(0).SubItems(1).Text & "_" & ListView1.CheckedItems(0).SubItems(2).Text() & "_" & ListView1.CheckedItems(0).SubItems(3).Text() & "." & ListView1.CheckedItems(0).SubItems(4).Text())
+                            objFtp.ListDirectory(strPathFtp & "/", ListView1.CheckedItems(0).SubItems(1).Text & "_" & ListView1.CheckedItems(0).SubItems(2).Text() & "_" & ListView1.CheckedItems(0).SubItems(3).Text() & "." & ListView1.CheckedItems(0).SubItems(4).Text())
 
                             sql = "DELETE FROM `" & DBName & "`.`doc` WHERE `doc`.`id` = " & ListView1.CheckedItems(0).SubItems(0).Text & ""
                             cmd = New MySqlCommand(sql, MySqlconnection)
@@ -677,26 +666,6 @@ Public Class FormDownload
         Application.DoEvents()
     End Sub
 
-    Private Sub CheckGru_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        'ButtonQuery.Enabled = False
-        'If loadDoc = False And CheckGru.Checked = True Then
-        '    If loadDoc = False Then loadDoc = True
-        '    ComunicationLog("5077")
-        '    Application.DoEvents()
-        '    Try
-        '        OpenConnectionMySqlGru("10.10.10.15", "Gestdoc", "chinadoc", "china")
-        '        Dim AdapterDocGruProdType As New MySqlDataAdapter("SELECT * FROM tipodoc", MySqlconnectionGru)
-        '        AdapterDocGruProdType.Fill(DsDocGrutype, "tipodoc")
-        '        tlbDocGrutype = DsDocGrutype.Tables("tipodoc")
-
-        '        ComunicationLog("5080")
-        '    Catch ex As Exception
-        '        MsgBox("Database Account error, server Grugliasco open procedure")
-        '        Me.Close()
-        '    End Try
-        'End If
-        'ButtonQuery.Enabled = True
-    End Sub
     Function RevisionExtract(ByRef rev As Integer, ByVal header As String, ByVal Filename As String, ByVal Extension As String) As String
 
         Dim returnValue As DataRow()
@@ -718,6 +687,7 @@ Public Class FormDownload
         End Try
 
     End Function
+
     Function fControl(ByVal bitronPn As String, ByRef pcbCode As String, ByRef piastracode As String) As String
 
         Dim rsResult As DataRow()
@@ -735,12 +705,14 @@ Public Class FormDownload
             fControl = ""
         End If
     End Function
+
     Function Presence(ByVal strFlag As String, ByVal strControl As String) As String
         Presence = ""
         If InStr(1, strControl, strFlag) > 0 Then Presence = Mid(strControl, InStr(1, strControl, strFlag) + 1, 1)
         If strFlag = "1" Then Presence = "1"
         If strFlag = "0" Then Presence = "0"
     End Function
+
     Function TranslateIntranetName(ByVal h As String, ByVal f As String, ByVal r As Integer, ByVal e As String) As String
         TranslateIntranetName = ""
         If h = ParameterTable("plant") & "R_PRO_GPN" Then TranslateIntranetName = f & "_" & IIf(r > 10, r, "0" & r) & "." & e
@@ -787,17 +759,14 @@ Public Class FormDownload
                         For Each row In groupResult
                             FileNameDes = FileNameDes & row("name").ToString & ";"
                         Next
-
                     Else
                         rsResult = tblDocProd.Select("bitronpn LIKE '*'")
                         For Each row In rsResult
                             pos = InStr(filename, row("bitronpn").ToString, CompareMethod.Text)
-                            '.Select("header='" & Mid(FILENAME, 11, 11) & "' and FileName='" & Mid(FILENAME, 23, InStrRev(FILENAME, "_") - 23) & "' and Extension='" & Mid(FILENAME, InStrRev(FILENAME, ".") + 1) & "' "
                             If pos > 0 Then
                                 FileNameDes = row("name").ToString
                             End If
                         Next
-
                     End If
                 End If
             End If
@@ -834,7 +803,6 @@ Public Class FormDownload
                 i = 0
                 For Each c In tblDoc.Columns
 
-                    'adding names of columns as Listview columns				
                     Dim h As New ColumnHeader
                     If c.ColumnName = "notification" Then
                         h.Text = "Description"
@@ -846,15 +814,12 @@ Public Class FormDownload
                     ListView1.Columns.Add(h)
                     i = i + 1
                 Next
-                'ListView1.Columns.Add("Description")
-                'ListView1.Columns.Item(11).Name = "Description"
 
                 If CheckBox12.Checked Then ListView1.Columns.Item(11).Width = 400 Else ListView1.Columns.Item(11).Width = 0
 
             End If
 
             Dim str(tblDoc.Columns.Count) As String, rev As Integer
-            'adding Datarows as listview Grids
 
             For i = 0 To rowShow.Length - 1
                 For col = 0 To tblDoc.Columns.Count - 1
@@ -882,13 +847,12 @@ Public Class FormDownload
                         End If
                     End If
                 End If
-
             Next
-
         Else
             ComunicationLog("5072")
         End If
     End Sub
+
     Sub ComunicationLog(ByVal ComCode As String)
 
         Dim rsResult As DataRow()
@@ -907,12 +871,14 @@ Public Class FormDownload
             ListBoxLog.BackColor = Color.OrangeRed
         End If
     End Sub
+
     Sub FillComboRevision()
         ComboBoxRevision.Items.Add("LAST")
         ComboBoxRevision.Items.Add("ALL")
         ComboBoxRevision.Sorted = True
         ComboBoxRevision.Text = ("LAST")
     End Sub
+
     Sub FillComboProd()
         ComboBoxProd.Items.Clear()
         ComboBoxProd.Items.Add("ALL - PRODUCT")
@@ -922,6 +888,7 @@ Public Class FormDownload
             ComboBoxProd.Items.Add(row("bitronpn").ToString & " - " & row("name").ToString)
         Next
     End Sub
+
     Sub FillComboCust()
         ComboBoxCustomer.Items.Clear()
         ComboBoxCustomer.Items.Add("ALL - CUSTOMER")
@@ -931,6 +898,7 @@ Public Class FormDownload
             ComboBoxCustomer.Items.Add(row("name").ToString)
         Next
     End Sub
+
     Sub FillComboFirstType()
         ComboBoxFirstType.Items.Clear()
         Dim strOld = ""
@@ -953,6 +921,7 @@ Public Class FormDownload
         TextBoxfileName.Text = ""
         TextBoxCompPn.Text = ""
     End Sub
+
     Sub FillComboEcrNull()
         ComboBoxEcrNull.Items.Clear()
         ComboBoxEcrPending.Items.Clear()
@@ -969,6 +938,7 @@ Public Class FormDownload
         Next
         ComboBoxEcrNull.Sorted = True
     End Sub
+
     Sub FillComboEcrPending()
         ComboBoxEcrPending.Items.Clear()
         Dim strOld = ""
@@ -984,12 +954,14 @@ Public Class FormDownload
         Next
         ComboBoxEcrPending.Sorted = True
     End Sub
+
     Sub FillComboSign()
         ComboBoxSign.Items.Add("SIGNED")
         If InStr(1, CreAccount.strSign, "2", CompareMethod.Text) > 0 Or InStr(1, CreAccount.strSign, "3", CompareMethod.Text) > 0 Then ComboBoxSign.Items.Add("UNSIGNED")
         ComboBoxSign.Sorted = True
         ComboBoxSign.Text = "SIGNED"
     End Sub
+
     Function tipodoc(ByVal idtipo As Integer) As String
         Dim rsResult As DataRow()
         rsResult = tlbDocGrutype.Select("coddoc='" & idtipo & "'")
@@ -1033,8 +1005,6 @@ Public Class FormDownload
             ElseIf ListView1.SelectedItems.Item(0).SubItems(0).Text = "HC" Then
                 Process.Start("IExplore.exe", "http://10.10.10.15/orcad/gest.php?cod_comp=" & Mid(ListView1.SelectedItems.Item(0).SubItems(11).Text, 20))
                 Application.DoEvents()
-                ' open DS
-                'If vbYes = MsgBox("Do you want open all DS? ") Then
                 Dim dsstr As String
                 For i = 0 To 9
                     If i <> 1 Then
@@ -1048,9 +1018,6 @@ Public Class FormDownload
                     End If
 
                 Next
-
-                'End If
-
             End If
         End If
 
@@ -1059,13 +1026,10 @@ Public Class FormDownload
 
     Function ds(ByVal comp As String, ByVal i As Integer) As String
         Dim RowHC As DataRow()
-
         If tblDocComp Is Nothing Or tblDocComp.Rows.Count = 0 Then
             Try
                 CloseConnectionSqlOrcad()
-                'OpenConnectionMySqlOrcad("10.10.10.36", "orcad1", "orcadw", "orcadw")
                 OpenConnectionMySqlOrcad(OrcadDBAdr, OrcadDBName, OrcadDBUser, OrcadDBPwd)
-
                 Dim AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where not valido = 'no_valido'", SQLconnectionOrcad)
                 AdapterDocComp.Fill(DsDocComp, "orcadw.T_orcadcis")
                 tblDocComp = DsDocComp.Tables("orcadw.T_orcadcis")
@@ -1073,7 +1037,6 @@ Public Class FormDownload
                 MsgBox("Error in opening Orcad Database! Now - " & ex.Message)
             End Try
         End If
-
         RowHC = tblDocComp.Select("cod_comp = " & comp & " and valido = 'valido'", "valido")
         If RowHC.Length = 1 Then
             ds = Replace(Replace(RowHC(0)("datasheet" & IIf(i > 0, i, "")).ToString, "http://webserver.industrie.bitron.net/", "10.10.10.15\"), "\", "/")
@@ -1087,7 +1050,6 @@ Public Class FormDownload
         objFtp.Password = strFtpServerPsw
         objFtp.Host = strFtpServerAdd
         downloadFileWinPath = ""
-
         If fileName <> "" Then
             Try
                 strPathFtp = Mid(fileName, 1, 3) & "/" & Mid(fileName, 1, 11) & "/"
@@ -1099,7 +1061,6 @@ Public Class FormDownload
         Else
             ComunicationLog("5061") ' fill path
         End If
-
     End Function
 
     Private Sub FlowLayoutPanel4_SizeChanged(sender As Object, e As EventArgs) Handles FlowLayoutPanel4.SizeChanged
@@ -1109,10 +1070,8 @@ Public Class FormDownload
     End Sub
 
     Function NameFile(ByVal id As Long) As String
-
         Dim RowSearchDoc As DataRow()
         Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
-
             AdapterDoc.SelectCommand = New MySqlCommand("SELECT * FROM DOC;", MySqlconnection)
             DsDoc.Clear()
             tblDoc.Clear()
@@ -1127,12 +1086,9 @@ Public Class FormDownload
     End Function
 
     Private Sub ListView1_ColumnClick1(ByVal sender As Object, ByVal e As ColumnClickEventArgs) Handles ListView1.ColumnClick
-
         Me.ListView1.ListViewItemSorter = New ListViewItemComparer(e.Column)
         ' Call the sort method to manually sort.
         ListView1.Sort()
-
-
     End Sub
 
     Sub SalvaFile(ByVal NomeFile As String)
@@ -1180,12 +1136,10 @@ Public Class FormDownload
             If returnValue.Length >= 1 Then
                 RevisionLast = "SRV_DOC - " & returnValue(0).Item("header") & "_" & returnValue(0).Item("filename") & "_" & returnValue(0).Item("rev") & "." & returnValue(0).Item("extension")
             Else
-
             End If
         Catch ex As Exception
             MsgBox("Revision Extract Error")
         End Try
-
     End Function
 
     ' check the control type of file
@@ -1210,7 +1164,6 @@ Public Class FormDownload
         Application.DoEvents()
         If trdFinish Then
             ButtonOrcad.BackColor = Color.Green
-
         Else
             ButtonOrcad.BackColor = Color.Red
         End If
@@ -1251,7 +1204,6 @@ Public Class FormDownload
             TextBoxCompPn.Enabled = False
             TextBoxCompPn.Text = ""
         End If
-
     End Sub
 
     Private Sub ComboBoxCustomer_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxCustomer.SelectedIndexChanged
