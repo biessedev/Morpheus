@@ -76,7 +76,8 @@ Public Class FormAdministration
             'OpenConnectionMySql(FormCredentials.TextBoxhost.Text, FormCredentials.TextBoxDatabase.Text, "root", "bitron")
 
             Dim  builder As  New Common.DbConnectionStringBuilder()
-            builder.ConnectionString = ConfigurationManager.ConnectionStrings("Morpheus").ConnectionString
+
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             OpenConnectionMySql(builder("host"), builder("database") , builder("username"), builder("password"))
 
             TextBoxEcr.Text = date_to_string(Now) & " Start ECR"
@@ -99,7 +100,7 @@ Public Class FormAdministration
             'TimerECR.Stop()
             'OpenConnectionMySql(FormCredentials.TextBoxhost.Text, FormCredentials.TextBoxDatabase.Text, "root", "bitron")
             Dim builder As New Common.DbConnectionStringBuilder()
-            builder.ConnectionString = ConfigurationManager.ConnectionStrings("Morpheus").ConnectionString
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             OpenConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
 
             TextBoxEcr.Text = date_to_string(Now) & " Start TCR"
@@ -114,7 +115,7 @@ Public Class FormAdministration
         If Now.DayOfWeek <> DayOfWeek.Saturday And Now.DayOfWeek <> DayOfWeek.Sunday Then
             'OpenConnectionMySql(FormCredentials.TextBoxhost.Text, FormCredentials.TextBoxDatabase.Text, "root", "bitron")
             Dim  builder As  New Common.DbConnectionStringBuilder()
-            builder.ConnectionString = ConfigurationManager.ConnectionStrings("Morpheus").ConnectionString
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             OpenConnectionMySql(builder("host"), builder("database") , builder("username"), builder("password"))
 
             TextBoxEcr.Text = date_to_string(Now) & " Start Doc Changes"
@@ -129,7 +130,7 @@ Public Class FormAdministration
             'TimerECR.Stop()
             'OpenConnectionMySql(FormCredentials.TextBoxhost.Text, FormCredentials.TextBoxDatabase.Text, "root", "bitron")
             Dim  builder As  New Common.DbConnectionStringBuilder()
-            builder.ConnectionString = ConfigurationManager.ConnectionStrings("Morpheus").ConnectionString
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             OpenConnectionMySql(builder("host"), builder("database") , builder("username"), builder("password"))
 
             TextBoxEcr.Text = date_to_string(Now) & " Start Satus Product"

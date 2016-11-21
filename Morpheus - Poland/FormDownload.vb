@@ -83,7 +83,7 @@ Public Class FormDownload
 
         Dim RowSearchDoc As DataRow()
         Dim builder As New Common.DbConnectionStringBuilder()
-        builder.ConnectionString = ConfigurationManager.ConnectionStrings("Morpheus").ConnectionString
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
             Using AdapterBom As New MySqlDataAdapter("SELECT * FROM sigip", con)
                 AdapterBom.Fill(DsBom, "sigip")

@@ -7,6 +7,7 @@ Imports System.Globalization
 Imports System.Xml
 
 
+
 Module PublicFunction
     Dim AdapterCh As New MySqlDataAdapter("SELECT * FROM mant", MySqlconnection)
     Dim dsCh As New DataSet
@@ -34,6 +35,7 @@ Module PublicFunction
     Public strEqDEs As String
     Public MemProcess As String
     Public NPIDocName As String
+    Public hostName As String
 
 
     Structure credential
