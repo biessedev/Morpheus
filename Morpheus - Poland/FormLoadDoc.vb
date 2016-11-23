@@ -1,16 +1,17 @@
 ﻿Option Explicit On
 Option Compare Text
+Imports System.Configuration
 Imports System.Text.RegularExpressions
 Imports MySql.Data.MySqlClient
 
 Public Class FormLoadDoc
 
-    Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc order by rev desc", MySqlconnection)
-    Dim AdapterRevNote As New MySqlDataAdapter("SELECT * FROM revNote", MySqlconnection)
-    Dim AdapterType As New MySqlDataAdapter("SELECT * FROM doctype", MySqlconnection)
+    'Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc order by rev desc", MySqlconnection)
+    'Dim AdapterRevNote As New MySqlDataAdapter("SELECT * FROM revNote", MySqlconnection)
+    'Dim AdapterType As New MySqlDataAdapter("SELECT * FROM doctype", MySqlconnection)
     Dim tblDoc As DataTable, tblRevNote As DataTable, tblType As DataTable
     Dim DsDoc As New DataSet, DsRevNote As New DataSet, DsType As New DataSet
-    Dim builder As MySqlCommandBuilder = New MySqlCommandBuilder(AdapterDoc)
+    'Dim builder As MySqlCommandBuilder = New MySqlCommandBuilder(AdapterDoc)
     Dim strSintaxCheck As String
     Dim strRevCheck As String
     Dim intLastRev As Integer
@@ -24,10 +25,18 @@ Public Class FormLoadDoc
     Private Sub FormLoadDoc_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Try
             FormStart.Hide()
-            AdapterDoc.Fill(DsDoc, "doc")
-            tblDoc = DsDoc.Tables("doc")
-            AdapterType.Fill(DsType, "doctype")
-            tblType = DsType.Tables("docType")
+            Dim builder As New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+                Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc order by rev desc", con)
+                    AdapterDoc.Fill(DsDoc, "doc")
+                    tblDoc = DsDoc.Tables("doc")
+                End Using
+                Using AdapterType As New MySqlDataAdapter("SELECT * FROM doctype", con)
+		            AdapterType.Fill(DsType, "doctype")
+                    tblType = DsType.Tables("docType")
+	            End Using
+            End Using
             Me.Focus()
         Catch ex As Exception
             MsgBox(ex.Message, MsgBoxStyle.Information)
@@ -193,9 +202,16 @@ Public Class FormLoadDoc
                             End If
 
                             tblDoc.Rows.Add(myrow)
-                            builder.GetUpdateCommand()
-                            AdapterDoc.Update(tblDoc)
-
+                            'builder.GetUpdateCommand()
+                            'AdapterDoc.Update(tblDoc)
+                            'Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc order by rev desc", MySqlconnection)
+                            Dim  builder As  New Common.DbConnectionStringBuilder()
+                            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	                            Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc order by rev desc", con)
+		                             AdapterDoc.Update(tblDoc)
+	                            End Using
+                            End Using
                         End If
 
                         loadCreFile = "5027" ' File uploaded 
@@ -378,13 +394,17 @@ Public Class FormLoadDoc
             tblDoc.Clear()
         Catch ex As Exception
         End Try
-
-        Try
-            AdapterDoc.Fill(DsDoc, "doc")
-            tblDoc = DsDoc.Tables("doc")
-        Catch ex As Exception
-        End Try
-
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            Try
+                Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc order by rev desc", con)
+		            AdapterDoc.Fill(DsDoc, "doc")
+                    tblDoc = DsDoc.Tables("doc")
+	            End Using
+            Catch ex As Exception
+            End Try
+        End Using
         Dim returnValue As DataRow()
         Try
             If strSintaxCheck = ("5008") Then
@@ -484,13 +504,20 @@ Public Class FormLoadDoc
 
     Sub FillComboRevNote()
         Dim row As DataRow
-        AdapterRevNote = New MySqlDataAdapter("SELECT * FROM RevNote", MySqlconnection)
-        AdapterRevNote.Fill(DsRevNote, "RevNote")
-        tblRevNote = DsRevNote.Tables("RevNote")
-        ComboBoxRevNote.Items.Clear()
-        For Each row In tblRevNote.Rows
-            ComboBoxRevNote.Items.Add(row("revnote").ToString)
-        Next
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        'AdapterRevNote = New MySqlDataAdapter("SELECT * FROM RevNote", MySqlConnection)
+            Using AdapterRevNote As New MySqlDataAdapter("SELECT * FROM RevNote", con)
+		        AdapterRevNote.Fill(DsRevNote, "RevNote")
+                tblRevNote = DsRevNote.Tables("RevNote")
+	        End Using
+            
+            ComboBoxRevNote.Items.Clear()
+            For Each row In tblRevNote.Rows
+                ComboBoxRevNote.Items.Add(row("revnote").ToString)
+            Next
+        End Using
         ComboBoxRevNote.Sorted = True
     End Sub
 
@@ -537,10 +564,14 @@ Public Class FormLoadDoc
                     Try
                         strRes = objFtp.DeleteFile(strPathFtp & "/", row("header").ToString & "_" & row("filename").ToString & "_" & row("rev").ToString & "." & row("extension").ToString)
                         If strRes = "5000" Then
-                            Dim sql As String = "UPDATE `" & DBName & "`.`doc` SET " & _
-                                                "`sign` = '', `filename` = '" & CreFile.FileName & "' WHERE `doc`.`id` = " & row("id").ToString & " ;"
-                            Dim cmd = New MySqlCommand(sql, MySqlconnection)
-                            cmd.ExecuteNonQuery()
+                            Dim  builder As  New Common.DbConnectionStringBuilder()
+                            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	                            Dim sql As String = "UPDATE `" & DBName & "`.`doc` SET " & _
+                                                    "`sign` = '', `filename` = '" & CreFile.FileName & "' WHERE `doc`.`id` = " & row("id").ToString & " ;"
+                                Dim cmd = New MySqlCommand(sql, con)
+                                cmd.ExecuteNonQuery()
+                            End Using
                         End If
                     Catch ex As Exception
                         MsgBox("Mysql update query error!")

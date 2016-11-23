@@ -24,7 +24,7 @@ Public Class FormDownload
 
     Private Sub FormDownload_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
         FormStart.Show()
-        If trdFinish Then CloseConnectionMySqlGru()
+        'If trdFinish Then CloseConnectionMySqlGru()
 
     End Sub
 
@@ -33,9 +33,13 @@ Public Class FormDownload
         ButtonOrcad.BackColor = Color.Red
 
         Try
-            OpenConnectionMySqlGru("10.10.10.15", "Gestdoc", "chinadoc", "china")
-            Using AdapterDocGruProdType As New MySqlDataAdapter("SELECT * FROM tipodoc", MySqlconnectionGru)
-                AdapterDocGruProdType.Fill(DsDocGrutype, "tipodoc")
+            'OpenConnectionMySqlGru("10.10.10.15", "Gestdoc", "chinadoc", "china")
+            Dim  builderGru As  New Common.DbConnectionStringBuilder()
+            builderGru.ConnectionString = ConfigurationManager.ConnectionStrings("MySqlConnectionGru").ConnectionString
+            Using con = NewConnectionMySql(builderGru("host"), builderGru("database"), builderGru("username"), builderGru("password"))
+	            Using AdapterDocGruProdType As New MySqlDataAdapter("SELECT * FROM tipodoc", con)
+                    AdapterDocGruProdType.Fill(DsDocGrutype, "tipodoc")
+                End Using
             End Using
             tlbDocGrutype = DsDocGrutype.Tables("tipodoc")
             ButtonConnection.BackColor = Color.Green
@@ -51,35 +55,41 @@ Public Class FormDownload
         Catch ex As Exception
 
         End Try
-
-        If trdFinish Then
-
-            Try
-                Using AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where not valido = 'no_valido'", SQLconnectionOrcad)
-                    AdapterDocComp.Fill(DsDocComp, "orcadw.T_orcadcis")
-                End Using
-                tblDocComp = DsDocComp.Tables("orcadw.T_orcadcis")
-            Catch ex As Exception
+        Dim OrcadDBAdr = ParameterTable("OrcadDBAdr")
+        Dim OrcadDBName = ParameterTable("OrcadDBName")
+        Dim OrcadDBUser = ParameterTable("OrcadDBUser")
+        Dim OrcadDBPwd = ParameterTable("OrcadDBPwd")
+        Using conOrcad = NewOpenConnectionMySqlOrcad(OrcadDBAdr, OrcadDBName, OrcadDBUser, OrcadDBPwd)
+	        If trdFinish Then
 
                 Try
-                    CloseConnectionSqlOrcad()
-                    OpenConnectionMySqlOrcad(OrcadDBAdr, OrcadDBName, OrcadDBUser, OrcadDBPwd)
-
-                    Using AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where not valido = 'no_valido'", SQLconnectionOrcad)
+                    Using AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where not valido = 'no_valido'", conOrcad)
                         AdapterDocComp.Fill(DsDocComp, "orcadw.T_orcadcis")
                     End Using
-
                     tblDocComp = DsDocComp.Tables("orcadw.T_orcadcis")
-                Catch
-                    MsgBox("Error in opening Orcad Database! Now - " & ex.Message)
+                Catch ex As Exception
+
+                    Try
+                        'CloseConnectionSqlOrcad()
+                        'OpenConnectionMySqlOrcad(OrcadDBAdr, OrcadDBName, OrcadDBUser, OrcadDBPwd)
+                        Using con = NewOpenConnectionMySqlOrcad(OrcadDBAdr, OrcadDBName, OrcadDBUser, OrcadDBPwd)
+	                        Using AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where not valido = 'no_valido'", conOrcad)
+                                AdapterDocComp.Fill(DsDocComp, "orcadw.T_orcadcis")
+                            End Using
+                        End Using
+
+                        tblDocComp = DsDocComp.Tables("orcadw.T_orcadcis")
+                    Catch
+                        MsgBox("Error in opening Orcad Database! Now - " & ex.Message)
+
+                    End Try
 
                 End Try
 
-            End Try
-
-        End If
-
-        If MySqlconnectionGru.State = ConnectionState.Closed Then CheckGru.Checked = False
+            End If
+        End Using
+        'If MySqlconnectionGru.State = ConnectionState.Closed Then CheckGru.Checked = False
+        CheckGru.Checked = False
 
         Dim RowSearchDoc As DataRow()
         Dim builder As New Common.DbConnectionStringBuilder()
@@ -109,28 +119,30 @@ Public Class FormDownload
         RadioButtonProductSearch.Checked = False
         FillComboSign()
         FillComboRevision()
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            Label1LastBomUpdate.Text = "Last bom update " & ParameterTable("LAST_SIGIP_BOM_UPDATE")
+            Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", con)
+                AdapterDoc.Fill(DsDoc, "doc")
+            End Using
+            tblDoc = DsDoc.Tables("doc")
 
-        Label1LastBomUpdate.Text = "Last bom update " & ParameterTable("LAST_SIGIP_BOM_UPDATE")
-        Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
-            AdapterDoc.Fill(DsDoc, "doc")
+            Using AdapterDocType As New MySqlDataAdapter("SELECT * FROM Doctype", con)
+                AdapterDocType.Fill(DsDocType, "DocType")
+                AdapterDocType.Dispose()
+            End Using
+
+            tblDocType = DsDocType.Tables("DocType")
+            Using AdapterDocProd As New MySqlDataAdapter("SELECT * FROM Product", con)
+                AdapterDocProd.Fill(DsDocProd, "Product")
+            End Using
+            tblDocProd = DsDocProd.Tables("Product")
+
+            Using AdapterCust As New MySqlDataAdapter("SELECT * FROM customer", con)
+                AdapterCust.Fill(DsDocCust, "customer")
+            End Using
         End Using
-        tblDoc = DsDoc.Tables("doc")
-
-        Using AdapterDocType As New MySqlDataAdapter("SELECT * FROM Doctype", MySqlconnection)
-            AdapterDocType.Fill(DsDocType, "DocType")
-            AdapterDocType.Dispose()
-        End Using
-
-        tblDocType = DsDocType.Tables("DocType")
-        Using AdapterDocProd As New MySqlDataAdapter("SELECT * FROM Product", MySqlconnection)
-            AdapterDocProd.Fill(DsDocProd, "Product")
-        End Using
-        tblDocProd = DsDocProd.Tables("Product")
-
-        Using AdapterCust As New MySqlDataAdapter("SELECT * FROM customer", MySqlconnection)
-            AdapterCust.Fill(DsDocCust, "customer")
-        End Using
-
         tblDocCust = DsDocCust.Tables("customer")
 
         FillComboEcrNull()
@@ -194,276 +206,287 @@ Public Class FormDownload
     End Sub
 
     Private Sub ButtonQuery_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonQuery.Click
-        If Autoupdate = False Then
-            Dim I As Integer, J As Integer
-            Dim RowSearch As DataRow(), strPcbCode = "", strPiastraCode = ""
-            Dim LastRowList As Integer
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            If Autoupdate = False Then
+                Dim I As Integer, J As Integer
+                Dim RowSearch As DataRow(), strPcbCode = "", strPiastraCode = ""
+                Dim LastRowList As Integer
 
-            WriteFile("Info " & Now.ToString, False)
-            stopEvent = False
-            ListBoxLog.Items.Clear()
-            ListView1.Clear()
-            ListBoxLog.Items.Add("Query started.....")
-            ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
-            Using AdapterBom As New MySqlDataAdapter("SELECT * FROM sigip", MySqlconnection)
-                AdapterBom.Fill(DsBom, "sigip")
-            End Using
-            tblBom = DsBom.Tables("sigip")
-            tblBom.Clear()
-            DsBom.Clear()
-            If Not BooAvvio Then
-                Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
-
-                    AdapterDoc.SelectCommand = New MySqlCommand("SELECT * FROM DOC;", MySqlconnection)
-                    DsDoc.Clear()
-                    tblDoc.Clear()
-                    AdapterDoc.Fill(DsDoc, "doc")
+                WriteFile("Info " & Now.ToString, False)
+                stopEvent = False
+                ListBoxLog.Items.Clear()
+                ListView1.Clear()
+                ListBoxLog.Items.Add("Query started.....")
+                ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
+                Using AdapterBom As New MySqlDataAdapter("SELECT * FROM sigip", con)
+                    AdapterBom.Fill(DsBom, "sigip")
                 End Using
-                tblDoc = DsDoc.Tables("doc")
+                tblBom = DsBom.Tables("sigip")
+                tblBom.Clear()
+                DsBom.Clear()
+                If Not BooAvvio Then
+                    Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", con)
 
-                If RadioButtonGeneralSearch.Checked Then
-                    Dim SQL As String = "(filename like '*" & TextBoxfileName.Text & "*') and ( header like '" & IIf(Mid(ComboBoxFirstType.Text, 1, 3) = "", "*", Mid(ComboBoxFirstType.Text, 1, 3) & "_") _
-                                        & IIf(Mid(ComboBoxSecondType.Text, 1, 3) = "", "*", Mid(ComboBoxSecondType.Text, 1, 3) & "_") & IIf(Mid(ComboBoxThirdType.Text, 1, 3) = "", "*", Mid(ComboBoxThirdType.Text, 1, 3)) & "')"
+                        AdapterDoc.SelectCommand = New MySqlCommand("SELECT * FROM DOC;", con)
+                        DsDoc.Clear()
+                        tblDoc.Clear()
+                        AdapterDoc.Fill(DsDoc, "doc")
+                    End Using
+                    tblDoc = DsDoc.Tables("doc")
 
-                    RowSearch = tblDoc.Select(SQL, "id")
+                    If RadioButtonGeneralSearch.Checked Then
+                        Dim SQL As String = "(filename like '*" & TextBoxfileName.Text & "*') and ( header like '" & IIf(Mid(ComboBoxFirstType.Text, 1, 3) = "", "*", Mid(ComboBoxFirstType.Text, 1, 3) & "_") _
+                                            & IIf(Mid(ComboBoxSecondType.Text, 1, 3) = "", "*", Mid(ComboBoxSecondType.Text, 1, 3) & "_") & IIf(Mid(ComboBoxThirdType.Text, 1, 3) = "", "*", Mid(ComboBoxThirdType.Text, 1, 3)) & "')"
 
-                    FillListView(RowSearch)
-                Else
-                    Dim ProdControl As String
-                    ListView1.Clear()
-                    If ComboBoxProd.Text <> "" Then
+                        RowSearch = tblDoc.Select(SQL, "id")
 
-                        Dim resultProdList As DataRow() = tblDocProd.Select(IIf(CheckBoxObsolete.Checked = True, "(status like '*') ", " (not status = 'OBSOLETE') ") &
-                                                                            " AND (status " & IIf(ComboBoxStatus.Text = "ALL - STATUS", "like '*')", "like '" & ComboBoxStatus.Text & "')") &
-                                                                            "  and bitronpn LIKE '" & IIf(Mid(ComboBoxProd.Text, 1, 3) = "ALL", "*", Trim(Mid(ComboBoxProd.Text, 1, InStr(1, ComboBoxProd.Text, "-", CompareMethod.Text) - 1))) &
-                                                                            "' and customer like '" & IIf(ComboBoxCustomer.Text = "ALL - CUSTOMER", "*", ComboBoxCustomer.Text) & "'")
-                        For Each rowPrdList In resultProdList
-                            Application.DoEvents()
-                            If ComboBoxSign.Text = "UNSIGNED" Then
-                                CheckGru.Enabled = False
-                                CheckComp.Enabled = False
-                                TextBoxCompPn.Enabled = False
-                            ElseIf ComboBoxSign.Text = "SIGNED" Then
-                                CheckGru.Enabled = True
-                                CheckComp.Enabled = True
-                                If CheckGru.Checked And Not stopEvent And MySqlconnectionGru.State = ConnectionState.Open Then
-                                    DsDocGru.Clear()
-                                    tlbDocGru.Clear()
-                                    Application.DoEvents()
-                                    Dim prodDoc As String, proddocAux As String
+                        FillListView(RowSearch)
+                    Else
+                        Dim ProdControl As String
+                        ListView1.Clear()
+                        If ComboBoxProd.Text <> "" Then
 
-                                    prodDoc = rowPrdList("bitronpn").ToString
-                                    proddocAux = rowPrdList("piastracode").ToString
-                                    Try
-                                        Dim AdapterDocGruProd As New MySqlDataAdapter("SELECT * FROM documento where codicepf = '" & prodDoc & "' or codicepf = '" & proddocAux & "'", MySqlconnectionGru)
-                                        AdapterDocGruProd.Fill(DsDocGru, "documento")
-                                    Catch ex As Exception
-                                    End Try
-                                    If MySqlconnectionGru.State = ConnectionState.Open Then
-                                        tlbDocGru = DsDocGru.Tables("documento")
-                                        If prodDoc = "" Then prodDoc = proddocAux
-                                        If proddocAux = "" Then proddocAux = prodDoc
-                                        RowSearch = tlbDocGru.Select("( codicepf LIKE '" & prodDoc & "' or codicepf LIKE '" & proddocAux & "')  ")
+                            Dim resultProdList As DataRow() = tblDocProd.Select(IIf(CheckBoxObsolete.Checked = True, "(status like '*') ", " (not status = 'OBSOLETE') ") &
+                                                                                " AND (status " & IIf(ComboBoxStatus.Text = "ALL - STATUS", "like '*')", "like '" & ComboBoxStatus.Text & "')") &
+                                                                                "  and bitronpn LIKE '" & IIf(Mid(ComboBoxProd.Text, 1, 3) = "ALL", "*", Trim(Mid(ComboBoxProd.Text, 1, InStr(1, ComboBoxProd.Text, "-", CompareMethod.Text) - 1))) &
+                                                                                "' and customer like '" & IIf(ComboBoxCustomer.Text = "ALL - CUSTOMER", "*", ComboBoxCustomer.Text) & "'")
+                            For Each rowPrdList In resultProdList
+                                Application.DoEvents()
+                                If ComboBoxSign.Text = "UNSIGNED" Then
+                                    CheckGru.Enabled = False
+                                    CheckComp.Enabled = False
+                                    TextBoxCompPn.Enabled = False
+                                ElseIf ComboBoxSign.Text = "SIGNED" Then
+                                    CheckGru.Enabled = True
+                                    CheckComp.Enabled = True
+                                    If CheckGru.Checked And Not stopEvent Then 'And MySqlconnectionGru.State = ConnectionState.Open
+                                        DsDocGru.Clear()
+                                        tlbDocGru.Clear()
+                                        Application.DoEvents()
+                                        Dim prodDoc As String, proddocAux As String
 
-                                        Dim dima
-                                        Dim sw = False
-                                        ProdControl = fControl(rowPrdList("bitronpn").ToString, strPcbCode, strPiastraCode)
-                                        Dim listLengh As Long = ListView1.Items.Count
-                                        Dim Inconsistent As Object = False
-                                        WriteFile(rowPrdList("bitronpn").ToString & "   " & rowPrdList("name").ToString & " <<-->> " & rowPrdList("status").ToString, True)
-                                        For Each row In RowSearch
-                                            Application.DoEvents()
-                                            If (row("visto").ToString <> "" And row("data_obso").ToString = "") And (row("codicepf").ToString = prodDoc Or row("codicepf").ToString = proddocAux) Then
+                                        prodDoc = rowPrdList("bitronpn").ToString
+                                        proddocAux = rowPrdList("piastracode").ToString
+                                        Try
+                                            Dim  builderGru As  New Common.DbConnectionStringBuilder()
+                                            builderGru.ConnectionString = ConfigurationManager.ConnectionStrings("MySqlConnectionGru").ConnectionString
+                                            Using conGru = NewConnectionMySql(builderGru("host"), builderGru("database"), builderGru("username"), builderGru("password"))
+	                                            Using AdapterDocGruProd As New MySqlDataAdapter("SELECT * FROM documento where codicepf = '" & prodDoc & "' or codicepf = '" & proddocAux & "'", conGru)
+		                                            AdapterDocGruProd.Fill(DsDocGru, "documento")
+	                                            End Using
+                                            End Using
+                                            'Dim AdapterDocGruProd As New MySqlDataAdapter("SELECT * FROM documento where codicepf = '" & prodDoc & "' or codicepf = '" & proddocAux & "'", MySqlconnectionGru)
+                                            
+                                        Catch ex As Exception
+                                        End Try
+                                        'If MySqlconnectionGru.State = ConnectionState.Open Then
+                                            tlbDocGru = DsDocGru.Tables("documento")
+                                            If prodDoc = "" Then prodDoc = proddocAux
+                                            If proddocAux = "" Then proddocAux = prodDoc
+                                            RowSearch = tlbDocGru.Select("( codicepf LIKE '" & prodDoc & "' or codicepf LIKE '" & proddocAux & "')  ")
 
-                                                Dim ssr(tblDoc.Columns.Count) As String
-                                                ssr(0) = "GRU"
-                                                If InStr(tipodoc(row("coddoc").ToString), "dima", CompareMethod.Text) > 0 Then dima = True
-                                                If InStr(tipodoc(row("coddoc").ToString), "sw", CompareMethod.Text) > 0 Then sw = True
-                                                ssr(1) = prodDoc & " -- " & tipodoc(row("coddoc").ToString)
-                                                ssr(2) = row("allegato").ToString
-                                                ssr(11) = FileNameDes(rowPrdList("BITRONPN").ToString)
-                                                Dim kk As New ListViewItem(ssr)
-                                                ListView1.Items.Add(kk)
-                                                ListView1.Items(ListView1.Items.Count - 1).BackColor = Color.Aqua
+                                            Dim dima
+                                            Dim sw = False
+                                            ProdControl = fControl(rowPrdList("bitronpn").ToString, strPcbCode, strPiastraCode)
+                                            Dim listLengh As Long = ListView1.Items.Count
+                                            Dim Inconsistent As Object = False
+                                            WriteFile(rowPrdList("bitronpn").ToString & "   " & rowPrdList("name").ToString & " <<-->> " & rowPrdList("status").ToString, True)
+                                            For Each row In RowSearch
+                                                Application.DoEvents()
+                                                If (row("visto").ToString <> "" And row("data_obso").ToString = "") And (row("codicepf").ToString = prodDoc Or row("codicepf").ToString = proddocAux) Then
 
-                                                For Each rowCk In RowSearch
-                                                    Application.DoEvents()
-                                                    If InStr(rowCk("allegato").ToString, "ECR", CompareMethod.Text) = 0 And
-                                                        InStr(rowCk("allegato").ToString, "RMP", CompareMethod.Text) = 0 And (rowCk("data_obso").ToString = "" And rowCk("visto").ToString <> "" And row("visto").ToString <> "" And row("data_obso").ToString = "") Then
-                                                        Try
-                                                            If (Mid(rowCk("allegato").ToString, 1, InStrRev(rowCk("allegato").ToString, "_") - 1) = Mid(row("allegato").ToString, 1, InStrRev(row("allegato").ToString, "_") - 1)) And
-                                                                (Mid(rowCk("allegato").ToString, InStr(rowCk("allegato").ToString, ".") + 1) = Mid(row("allegato").ToString, InStr(row("allegato").ToString, ".") + 1)) And
-                                                                rowCk("allegato").ToString <> row("allegato").ToString Then
-                                                                ListBoxLog.Items.Add("Inconsistent file : " & row("allegato").ToString & "  and  " & rowCk("allegato").ToString)
-                                                                WriteFile(("--> Inconsistent file : " & row("allegato").ToString & "  and  " & rowCk("allegato").ToString), True)
-                                                                Inconsistent = True
-                                                            End If
-                                                        Catch ex As Exception
+                                                    Dim ssr(tblDoc.Columns.Count) As String
+                                                    ssr(0) = "GRU"
+                                                    If InStr(tipodoc(row("coddoc").ToString), "dima", CompareMethod.Text) > 0 Then dima = True
+                                                    If InStr(tipodoc(row("coddoc").ToString), "sw", CompareMethod.Text) > 0 Then sw = True
+                                                    ssr(1) = prodDoc & " -- " & tipodoc(row("coddoc").ToString)
+                                                    ssr(2) = row("allegato").ToString
+                                                    ssr(11) = FileNameDes(rowPrdList("BITRONPN").ToString)
+                                                    Dim kk As New ListViewItem(ssr)
+                                                    ListView1.Items.Add(kk)
+                                                    ListView1.Items(ListView1.Items.Count - 1).BackColor = Color.Aqua
 
-                                                        End Try
-                                                    End If
-                                                Next
+                                                    For Each rowCk In RowSearch
+                                                        Application.DoEvents()
+                                                        If InStr(rowCk("allegato").ToString, "ECR", CompareMethod.Text) = 0 And
+                                                            InStr(rowCk("allegato").ToString, "RMP", CompareMethod.Text) = 0 And (rowCk("data_obso").ToString = "" And rowCk("visto").ToString <> "" And row("visto").ToString <> "" And row("data_obso").ToString = "") Then
+                                                            Try
+                                                                If (Mid(rowCk("allegato").ToString, 1, InStrRev(rowCk("allegato").ToString, "_") - 1) = Mid(row("allegato").ToString, 1, InStrRev(row("allegato").ToString, "_") - 1)) And
+                                                                    (Mid(rowCk("allegato").ToString, InStr(rowCk("allegato").ToString, ".") + 1) = Mid(row("allegato").ToString, InStr(row("allegato").ToString, ".") + 1)) And
+                                                                    rowCk("allegato").ToString <> row("allegato").ToString Then
+                                                                    ListBoxLog.Items.Add("Inconsistent file : " & row("allegato").ToString & "  and  " & rowCk("allegato").ToString)
+                                                                    WriteFile(("--> Inconsistent file : " & row("allegato").ToString & "  and  " & rowCk("allegato").ToString), True)
+                                                                    Inconsistent = True
+                                                                End If
+                                                            Catch ex As Exception
+
+                                                            End Try
+                                                        End If
+                                                    Next
+                                                End If
+                                            Next
+                                            dima = True
+
+                                            If (Presence("F", ProdControl) = "1" And Not sw) Or Not dima Or listLengh = ListView1.Items.Count Or Inconsistent Then
+                                            Else
+                                                WriteFile(" --> All Doc OK!", True)
                                             End If
-                                        Next
-                                        dima = True
+                                            If listLengh = ListView1.Items.Count Then
+                                                ListBoxLog.Items.Add(rowPrdList("bitronpn").ToString & " - Document NOT found in Intranet!")
+                                                WriteFile(" --> Document not Find In Intranet!", True)
+                                            End If
 
-                                        If (Presence("F", ProdControl) = "1" And Not sw) Or Not dima Or listLengh = ListView1.Items.Count Or Inconsistent Then
-                                        Else
-                                            WriteFile(" --> All Doc OK!", True)
-                                        End If
-                                        If listLengh = ListView1.Items.Count Then
-                                            ListBoxLog.Items.Add(rowPrdList("bitronpn").ToString & " - Document NOT found in Intranet!")
-                                            WriteFile(" --> Document not Find In Intranet!", True)
-                                        End If
+                                            If Presence("F", ProdControl) = "1" Then
+                                                If Not sw Then ListBoxLog.Items.Add(rowPrdList("bitronpn").ToString & " - Software NOT found in Intranet!")
+                                                If Not sw Then WriteFile(" --> Software NOT found in Intranet!", True)
+                                            End If
+                                            If Presence("F", ProdControl) = "1" Or Not dima Or listLengh = ListView1.Items.Count Then WriteFile("", True)
+                                        'End If
+                                    End If
 
-                                        If Presence("F", ProdControl) = "1" Then
-                                            If Not sw Then ListBoxLog.Items.Add(rowPrdList("bitronpn").ToString & " - Software NOT found in Intranet!")
-                                            If Not sw Then WriteFile(" --> Software NOT found in Intranet!", True)
-                                        End If
-                                        If Presence("F", ProdControl) = "1" Or Not dima Or listLengh = ListView1.Items.Count Then WriteFile("", True)
+                                    If CheckComp.Checked And Not stopEvent Then
+
+                                        Dim prodDoc As String
+                                        prodDoc = rowPrdList("bitronpn").ToString
+
+                                        Using AdapterBom = New MySqlDataAdapter("SELECT * FROM sigip where bom = '" & prodDoc & "' and ACQ_FAB like 'ACQ' ", con)
+                                            AdapterBom.Fill(DsBom, "sigip")
+                                        End Using
+                                        tblBom = DsBom.Tables("sigip")
                                     End If
                                 End If
 
-                                If CheckComp.Checked And Not stopEvent Then
+                                If Not stopEvent Then
 
-                                    Dim prodDoc As String
-                                    prodDoc = rowPrdList("bitronpn").ToString
+                                    ProdControl = fControl(rowPrdList("bitronpn").ToString, strPcbCode, strPiastraCode)
+                                    RowSearch = tblDoc.Select("header like '" & IIf(Mid(ComboBoxFirstType.Text, 1, 3) = "", "*", Mid(ComboBoxFirstType.Text, 1, 3) & "_") & IIf(Mid(ComboBoxSecondType.Text, 1, 3) = "", "*", Mid(ComboBoxSecondType.Text, 1, 3) & "_") & IIf(Mid(ComboBoxThirdType.Text, 1, 3) = "", "*", Mid(ComboBoxThirdType.Text, 1, 3)) & "' AND (filename like '" &
+                                                ComboBoxProd.Text & "' or filename like '*" & rowPrdList("bitronpn").ToString & "*')", "rev DESC")
+                                    FillListView(RowSearch, True, rowPrdList("BITRONPN").ToString)
+                                    GroupList = rowPrdList("GROUPLIST").ToString()
 
-                                    Using AdapterBom = New MySqlDataAdapter("SELECT * FROM sigip where bom = '" & prodDoc & "' and ACQ_FAB like 'ACQ' ", MySqlconnection)
-                                        AdapterBom.Fill(DsBom, "sigip")
-                                    End Using
-                                    tblBom = DsBom.Tables("sigip")
-                                End If
-                            End If
+                                    If GroupList <> "" Then
+                                        I = 1
+                                        J = InStr(GroupList, "]", CompareMethod.Text)
+                                        While J > 0
+                                            RowSearch = tblDoc.Select("(HEADER = '" & Mid(GroupList, I, 11) & "' AND filename = '" & Mid(GroupList, I + 12, J - 12 - I) _
+                                             & "') and ( header like '" & IIf(Mid(ComboBoxFirstType.Text, 1, 3) = "", "*", Mid(ComboBoxFirstType.Text, 1, 3) & "_") _
+                                            & IIf(Mid(ComboBoxSecondType.Text, 1, 3) = "", "*", Mid(ComboBoxSecondType.Text, 1, 3) & "_") _
+                                            & IIf(Mid(ComboBoxThirdType.Text, 1, 3) = "", "*", Mid(ComboBoxThirdType.Text, 1, 3)) & "')")
+                                            If RowSearch.Length > 0 Then
+                                                FillListView(RowSearch, True, rowPrdList("BITRONPN").ToString)
+                                            End If
+                                            I = J + 2
+                                            J = InStr(I + 1, GroupList, "]", CompareMethod.Text)
+                                        End While
+                                    End If
 
-                            If Not stopEvent Then
-
-                                ProdControl = fControl(rowPrdList("bitronpn").ToString, strPcbCode, strPiastraCode)
-                                RowSearch = tblDoc.Select("header like '" & IIf(Mid(ComboBoxFirstType.Text, 1, 3) = "", "*", Mid(ComboBoxFirstType.Text, 1, 3) & "_") & IIf(Mid(ComboBoxSecondType.Text, 1, 3) = "", "*", Mid(ComboBoxSecondType.Text, 1, 3) & "_") & IIf(Mid(ComboBoxThirdType.Text, 1, 3) = "", "*", Mid(ComboBoxThirdType.Text, 1, 3)) & "' AND (filename like '" &
-                                            ComboBoxProd.Text & "' or filename like '*" & rowPrdList("bitronpn").ToString & "*')", "rev DESC")
-                                FillListView(RowSearch, True, rowPrdList("BITRONPN").ToString)
-                                GroupList = rowPrdList("GROUPLIST").ToString()
-
-                                If GroupList <> "" Then
-                                    I = 1
-                                    J = InStr(GroupList, "]", CompareMethod.Text)
-                                    While J > 0
-                                        RowSearch = tblDoc.Select("(HEADER = '" & Mid(GroupList, I, 11) & "' AND filename = '" & Mid(GroupList, I + 12, J - 12 - I) _
-                                         & "') and ( header like '" & IIf(Mid(ComboBoxFirstType.Text, 1, 3) = "", "*", Mid(ComboBoxFirstType.Text, 1, 3) & "_") _
-                                        & IIf(Mid(ComboBoxSecondType.Text, 1, 3) = "", "*", Mid(ComboBoxSecondType.Text, 1, 3) & "_") _
-                                        & IIf(Mid(ComboBoxThirdType.Text, 1, 3) = "", "*", Mid(ComboBoxThirdType.Text, 1, 3)) & "')")
-                                        If RowSearch.Length > 0 Then
-                                            FillListView(RowSearch, True, rowPrdList("BITRONPN").ToString)
-                                        End If
-                                        I = J + 2
-                                        J = InStr(I + 1, GroupList, "]", CompareMethod.Text)
-                                    End While
-                                End If
-
-                                If ProdControl <> "" Then
-                                    Dim rowType As DataRow() = tblDocType.Select("control like '*P*' AND ( header like '" & IIf(Mid(ComboBoxFirstType.Text, 1, 3) = "", "*", Mid(ComboBoxFirstType.Text, 1, 3) & "_") & IIf(Mid(ComboBoxSecondType.Text, 1, 3) = "", "*", Mid(ComboBoxSecondType.Text, 1, 3) & "_") & IIf(Mid(ComboBoxThirdType.Text, 1, 3) = "", "*", Mid(ComboBoxThirdType.Text, 1, 3)) & "')")
-                                    Dim row As DataRow
-                                    For Each row In rowType
-                                        If Presence(Presence("Y", row("Control").ToString), ProdControl) = "1" Then
-                                            Dim ListPresence = False
-                                            For I = LastRowList To ListView1.Items.Count - 1
-                                                If ListView1.Items(I).SubItems(1).Text = row("header").ToString Then
-                                                    ListPresence = True
+                                    If ProdControl <> "" Then
+                                        Dim rowType As DataRow() = tblDocType.Select("control like '*P*' AND ( header like '" & IIf(Mid(ComboBoxFirstType.Text, 1, 3) = "", "*", Mid(ComboBoxFirstType.Text, 1, 3) & "_") & IIf(Mid(ComboBoxSecondType.Text, 1, 3) = "", "*", Mid(ComboBoxSecondType.Text, 1, 3) & "_") & IIf(Mid(ComboBoxThirdType.Text, 1, 3) = "", "*", Mid(ComboBoxThirdType.Text, 1, 3)) & "')")
+                                        Dim row As DataRow
+                                        For Each row In rowType
+                                            If Presence(Presence("Y", row("Control").ToString), ProdControl) = "1" Then
+                                                Dim ListPresence = False
+                                                For I = LastRowList To ListView1.Items.Count - 1
+                                                    If ListView1.Items(I).SubItems(1).Text = row("header").ToString Then
+                                                        ListPresence = True
+                                                    End If
+                                                Next
+                                                If Not ListPresence And ComboBoxSign.Text = "SIGNED" Then
+                                                    If row("header").ToString <> ParameterTable("plant") & "R_PRO_MED" Then
+                                                        Dim str(tblDoc.Columns.Count) As String
+                                                        str(1) = row("header").ToString
+                                                        str(2) = rowPrdList("BITRONPN").ToString & " -- File required But Missing!"
+                                                        str(11) = FileNameDes(rowPrdList("bitronpn").ToString)
+                                                        Dim ii As New ListViewItem(str)
+                                                        ListView1.Items.Add(ii)
+                                                        ListView1.Items(ListView1.Items.Count - 1).BackColor = Color.Yellow
+                                                    End If
                                                 End If
-                                            Next
-                                            If Not ListPresence And ComboBoxSign.Text = "SIGNED" Then
-                                                If row("header").ToString <> ParameterTable("plant") & "R_PRO_MED" Then
-                                                    Dim str(tblDoc.Columns.Count) As String
-                                                    str(1) = row("header").ToString
-                                                    str(2) = rowPrdList("BITRONPN").ToString & " -- File required But Missing!"
-                                                    str(11) = FileNameDes(rowPrdList("bitronpn").ToString)
+                                            End If
+                                        Next
+
+                                        Dim ResultDoc As DataRow(), ResultProd As DataRow(), mchElement As String
+                                        ResultProd = tblDocProd.Select("bitronpn = '" & rowPrdList("BITRONPN").ToString & "'")
+                                        If ParameterTable("plant") & "R_PRO_MED" = Mid(ComboBoxFirstType.Text, 1, 3) & "_" & Mid(ComboBoxSecondType.Text, 1, 3) & "_" & Mid(ComboBoxThirdType.Text, 1, 3) Or
+                                        ParameterTable("plant") & "R_PRO_" = Mid(ComboBoxFirstType.Text, 1, 3) & "_" & Mid(ComboBoxSecondType.Text, 1, 3) & "_" & Mid(ComboBoxThirdType.Text, 1, 3) Or
+                                        ParameterTable("plant") & "R__" = Mid(ComboBoxFirstType.Text, 1, 3) & "_" & Mid(ComboBoxSecondType.Text, 1, 3) & "_" & Mid(ComboBoxThirdType.Text, 1, 3) Or
+                                        "__" = Mid(ComboBoxFirstType.Text, 1, 3) & "_" & Mid(ComboBoxSecondType.Text, 1, 3) & "_" & Mid(ComboBoxThirdType.Text, 1, 3) Then
+                                            Dim mech As String = ResultProd(0).Item("mchelement").ToString
+
+                                            For I = 0 To Int(Len(mech) / 60) - 1
+                                                mchElement = Trim(Mid(mech, I * 60 + 1, 20))
+                                                ResultDoc = tblDoc.Select("header = '" & ParameterTable("plant") & "R_PRO_MED' and filename like '" & mchElement & "*'")
+                                                If ResultDoc.Length > 0 Then
+                                                    FillListView(ResultDoc, True, rowPrdList("BITRONPN").ToString)
+                                                ElseIf ComboBoxSign.Text = "SIGNED" Then
+                                                    Dim str(tblDoc.Columns.Count - 1) As String
+                                                    str(1) = ParameterTable("plant") & "R_PRO_MED"
+                                                    str(2) = mchElement & " -- File required But Missing!"
+                                                    str(11) = FileNameDes(rowPrdList("BITRONPN").ToString)
                                                     Dim ii As New ListViewItem(str)
                                                     ListView1.Items.Add(ii)
                                                     ListView1.Items(ListView1.Items.Count - 1).BackColor = Color.Yellow
                                                 End If
-                                            End If
+                                            Next
                                         End If
-                                    Next
-
-                                    Dim ResultDoc As DataRow(), ResultProd As DataRow(), mchElement As String
-                                    ResultProd = tblDocProd.Select("bitronpn = '" & rowPrdList("BITRONPN").ToString & "'")
-                                    If ParameterTable("plant") & "R_PRO_MED" = Mid(ComboBoxFirstType.Text, 1, 3) & "_" & Mid(ComboBoxSecondType.Text, 1, 3) & "_" & Mid(ComboBoxThirdType.Text, 1, 3) Or
-                                    ParameterTable("plant") & "R_PRO_" = Mid(ComboBoxFirstType.Text, 1, 3) & "_" & Mid(ComboBoxSecondType.Text, 1, 3) & "_" & Mid(ComboBoxThirdType.Text, 1, 3) Or
-                                    ParameterTable("plant") & "R__" = Mid(ComboBoxFirstType.Text, 1, 3) & "_" & Mid(ComboBoxSecondType.Text, 1, 3) & "_" & Mid(ComboBoxThirdType.Text, 1, 3) Or
-                                    "__" = Mid(ComboBoxFirstType.Text, 1, 3) & "_" & Mid(ComboBoxSecondType.Text, 1, 3) & "_" & Mid(ComboBoxThirdType.Text, 1, 3) Then
-                                        Dim mech As String = ResultProd(0).Item("mchelement").ToString
-
-                                        For I = 0 To Int(Len(mech) / 60) - 1
-                                            mchElement = Trim(Mid(mech, I * 60 + 1, 20))
-                                            ResultDoc = tblDoc.Select("header = '" & ParameterTable("plant") & "R_PRO_MED' and filename like '" & mchElement & "*'")
-                                            If ResultDoc.Length > 0 Then
-                                                FillListView(ResultDoc, True, rowPrdList("BITRONPN").ToString)
-                                            ElseIf ComboBoxSign.Text = "SIGNED" Then
-                                                Dim str(tblDoc.Columns.Count - 1) As String
-                                                str(1) = ParameterTable("plant") & "R_PRO_MED"
-                                                str(2) = mchElement & " -- File required But Missing!"
-                                                str(11) = FileNameDes(rowPrdList("BITRONPN").ToString)
-                                                Dim ii As New ListViewItem(str)
-                                                ListView1.Items.Add(ii)
-                                                ListView1.Items(ListView1.Items.Count - 1).BackColor = Color.Yellow
-                                            End If
-                                        Next
+                                    Else
+                                        ComunicationLog("5063") ' Product not found in product list
                                     End If
-                                Else
-                                    ComunicationLog("5063") ' Product not found in product list
+                                    LastRowList = ListView1.Items.Count
                                 End If
-                                LastRowList = ListView1.Items.Count
-                            End If
-                        Next
-                    Else
-                        ComunicationLog("0012")
-                    End If
-                End If
-
-                RowSearch = tblBom.Select("bitron_pn like '" & IIf(TextBoxCompPn.Text = "", "*", TextBoxCompPn.Text) & "'", "bitron_pn")
-                Application.DoEvents()
-                Dim oldBitronPn = ""
-                For Each row In RowSearch
-                    Application.DoEvents()
-                    If oldBitronPn <> row("bitron_pn").ToString Then
-                        If Mid(row("bitron_pn").ToString, 1, 2) <> "18" Then
-                            Dim ssr(tblDoc.Columns.Count) As String
-                            If row("acq_fab").ToString = "FAB" Then
-                                ssr(0) = "FAB"
-                            ElseIf Mid(row("doc").ToString, 1, 2) = "HC" Then
-                                ssr(0) = "HC"
-                            ElseIf Mid(row("doc").ToString, 1, 7) = "SRV_DOC" Then
-                                ssr(0) = RevisionLast(row("doc").ToString)
-                            Else
-                                ssr(0) = "MISS"
-                            End If
-                            ssr(1) = row("acq_fab").ToString
-                            ssr(2) = row("bitron_pn").ToString & " - " & row("des_pn").ToString
-                            ssr(11) = "Documentation: " & row("doc").ToString
-                            Dim kk As New ListViewItem(ssr)
-                            ListView1.Items.Add(kk)
-                            If row("doc").ToString = "NO" And row("acq_fab").ToString = "ACQ" Then ListView1.Items(ListView1.Items.Count - 1).BackColor = Color.Yellow
+                            Next
+                        Else
+                            ComunicationLog("0012")
                         End If
                     End If
-                    oldBitronPn = row("bitron_pn").ToString
-                Next
+
+                    RowSearch = tblBom.Select("bitron_pn like '" & IIf(TextBoxCompPn.Text = "", "*", TextBoxCompPn.Text) & "'", "bitron_pn")
+                    Application.DoEvents()
+                    Dim oldBitronPn = ""
+                    For Each row In RowSearch
+                        Application.DoEvents()
+                        If oldBitronPn <> row("bitron_pn").ToString Then
+                            If Mid(row("bitron_pn").ToString, 1, 2) <> "18" Then
+                                Dim ssr(tblDoc.Columns.Count) As String
+                                If row("acq_fab").ToString = "FAB" Then
+                                    ssr(0) = "FAB"
+                                ElseIf Mid(row("doc").ToString, 1, 2) = "HC" Then
+                                    ssr(0) = "HC"
+                                ElseIf Mid(row("doc").ToString, 1, 7) = "SRV_DOC" Then
+                                    ssr(0) = RevisionLast(row("doc").ToString)
+                                Else
+                                    ssr(0) = "MISS"
+                                End If
+                                ssr(1) = row("acq_fab").ToString
+                                ssr(2) = row("bitron_pn").ToString & " - " & row("des_pn").ToString
+                                ssr(11) = "Documentation: " & row("doc").ToString
+                                Dim kk As New ListViewItem(ssr)
+                                ListView1.Items.Add(kk)
+                                If row("doc").ToString = "NO" And row("acq_fab").ToString = "ACQ" Then ListView1.Items(ListView1.Items.Count - 1).BackColor = Color.Yellow
+                            End If
+                        End If
+                        oldBitronPn = row("bitron_pn").ToString
+                    Next
+                End If
+
+                If CheckBoxSaveInfo.Checked Then
+                    SaveFileDialog1.FileName = IO.Path.GetTempPath & "SrvQueryLog.txt"
+                    SaveFileDialog1.ShowDialog()
+                    Try
+                        If SaveFileDialog1.FileName <> "" Then FileCopy(IO.Path.GetTempPath & "SrvQueryLog.txt", SaveFileDialog1.FileName)
+
+                    Catch ex As Exception
+
+                    End Try
+                End If
+                ListBoxLog.Items.Add("Query Done!")
+                ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
+            Else
+                If Not trdFinish And Not Autoupdate Then MsgBox("Wait one moment!")
             End If
-
-            If CheckBoxSaveInfo.Checked Then
-                SaveFileDialog1.FileName = IO.Path.GetTempPath & "SrvQueryLog.txt"
-                SaveFileDialog1.ShowDialog()
-                Try
-                    If SaveFileDialog1.FileName <> "" Then FileCopy(IO.Path.GetTempPath & "SrvQueryLog.txt", SaveFileDialog1.FileName)
-
-                Catch ex As Exception
-
-                End Try
-            End If
-            ListBoxLog.Items.Add("Query Done!")
-            ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
-        Else
-            If Not trdFinish And Not Autoupdate Then MsgBox("Wait one moment!")
-        End If
+        End Using
     End Sub
 
     Private Sub Button3_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBrowse.Click
@@ -509,10 +532,14 @@ Public Class FormDownload
                             End Try
                             strPathFtp = ("/" & Mid(ListView1.CheckedItems(0).SubItems(1).Text, 1, 3) & "/" & ListView1.CheckedItems(0).SubItems(1).Text)
                             objFtp.ListDirectory(strPathFtp & "/", ListView1.CheckedItems(0).SubItems(1).Text & "_" & ListView1.CheckedItems(0).SubItems(2).Text() & "_" & ListView1.CheckedItems(0).SubItems(3).Text() & "." & ListView1.CheckedItems(0).SubItems(4).Text())
+                            Dim  builder As  New Common.DbConnectionStringBuilder()
+                            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
 
-                            sql = "DELETE FROM `" & DBName & "`.`doc` WHERE `doc`.`id` = " & ListView1.CheckedItems(0).SubItems(0).Text & ""
-                            cmd = New MySqlCommand(sql, MySqlconnection)
-                            cmd.ExecuteNonQuery()
+                            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	                            sql = "DELETE FROM `" & DBName & "`.`doc` WHERE `doc`.`id` = " & ListView1.CheckedItems(0).SubItems(0).Text & ""
+                                cmd = New MySqlCommand(sql, con)
+                                cmd.ExecuteNonQuery()
+                            End Using
 
                             ComunicationLog("5057") ' document deleted
                         Catch ex As Exception
@@ -610,9 +637,13 @@ Public Class FormDownload
                     Dim question As String = InputBox("Please write the same [*] number for invalidate the ECR Alarm" & vbCrLf & "EcrPending: " & ListView1.Items(i).SubItems(9).Text)
                     If Mid(question, 1) = "[" And Mid(question, Len(question), 1) = "]" And IsNumeric(Mid(question, 2, Len(question) - 2)) Then
                         Try
-                            Dim sql As String = "UPDATE `" & DBName & "`.`doc` SET `ecrnull` = '" & ListView1.Items(i).SubItems(9).Text & question & "' WHERE `doc`.`id` = '" & ListView1.Items(i).SubItems(0).Text & "' ;"
-                            Dim cmd = New MySqlCommand(sql, MySqlconnection)
-                            cmd.ExecuteNonQuery()
+                            Dim  builder As  New Common.DbConnectionStringBuilder()
+                            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	                            Dim sql As String = "UPDATE `" & DBName & "`.`doc` SET `ecrnull` = '" & ListView1.Items(i).SubItems(9).Text & question & "' WHERE `doc`.`id` = '" & ListView1.Items(i).SubItems(0).Text & "' ;"
+                                Dim cmd = New MySqlCommand(sql, con)
+                                cmd.ExecuteNonQuery()
+                            End Using
                             ComunicationLog("5067") 'ecr nulled
                             ButtonQuery_Click(Me, e)
                         Catch ex As Exception
@@ -638,10 +669,15 @@ Public Class FormDownload
                     If ListView1.CheckedItems(i).Checked Then
                         If controlRight(Mid(ListView1.CheckedItems(i).SubItems(1).Text, 3, 1)) >= 3 Then
                             Try
-                                Dim sql As String = "UPDATE `" & DBName & "`.`doc` SET `sign` = '" & CreAccount.strUserName & "[" & Date.Today.Day & "/" & Date.Today.Month & "/" & Date.Today.Year & "]" &
+                                Dim  builder As  New Common.DbConnectionStringBuilder()
+                                builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                                Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	                                Dim sql As String = "UPDATE `" & DBName & "`.`doc` SET `sign` = '" & CreAccount.strUserName & "[" & Date.Today.Day & "/" & Date.Today.Month & "/" & Date.Today.Year & "]" &
                                                     "' WHERE `doc`.`id` = " & ListView1.CheckedItems(i).SubItems(0).Text & " ;"
-                                Dim cmd = New MySqlCommand(sql, MySqlconnection)
-                                cmd.ExecuteNonQuery()
+                                    Dim cmd = New MySqlCommand(sql, con)
+                                    cmd.ExecuteNonQuery()
+                                End Using
+                                
                                 ComunicationLog("5056") 'doc signed
 
                             Catch ex As Exception
@@ -730,12 +766,17 @@ Public Class FormDownload
 
         Dim rsResult As DataRow(), groupResult As DataRow(), pos As Integer
 
-        Dim AdapterGroupProd As New MySqlDataAdapter("SELECT * FROM Product where groupList like '%" & header & "[" & filename & "]" & "%' COLLATE utf8_unicode_ci", MySqlconnection)
+        'Dim AdapterGroupProd As New MySqlDataAdapter("SELECT * FROM Product where groupList like '%" & header & "[" & filename & "]" & "%' COLLATE utf8_unicode_ci", MySqlconnection)
         Dim tblGroupProd As DataTable
         Dim DsGroupProd As New DataSet
-
-        AdapterGroupProd.Fill(DsGroupProd, "Product")
-        tblGroupProd = DsGroupProd.Tables("Product")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterGroupProd As New MySqlDataAdapter("SELECT * FROM Product where groupList like '%" & header & "[" & filename & "]" & "%' COLLATE utf8_unicode_ci", con)
+		        AdapterGroupProd.Fill(DsGroupProd, "Product")
+                tblGroupProd = DsGroupProd.Tables("Product")
+	        End Using
+        End Using
 
         FileNameDes = ""
 
@@ -1028,11 +1069,15 @@ Public Class FormDownload
         Dim RowHC As DataRow()
         If tblDocComp Is Nothing Or tblDocComp.Rows.Count = 0 Then
             Try
-                CloseConnectionSqlOrcad()
-                OpenConnectionMySqlOrcad(OrcadDBAdr, OrcadDBName, OrcadDBUser, OrcadDBPwd)
-                Dim AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where not valido = 'no_valido'", SQLconnectionOrcad)
-                AdapterDocComp.Fill(DsDocComp, "orcadw.T_orcadcis")
-                tblDocComp = DsDocComp.Tables("orcadw.T_orcadcis")
+                'CloseConnectionSqlOrcad()
+                'OpenConnectionMySqlOrcad(OrcadDBAdr, OrcadDBName, OrcadDBUser, OrcadDBPwd)
+                'Dim AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where not valido = 'no_valido'", SQLconnectionOrcad)
+                Using con = NewOpenConnectionMySqlOrcad(OrcadDBAdr, OrcadDBName, OrcadDBUser, OrcadDBPwd)
+	                Using AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where not valido = 'no_valido'", con)
+		                AdapterDocComp.Fill(DsDocComp, "orcadw.T_orcadcis")
+                        tblDocComp = DsDocComp.Tables("orcadw.T_orcadcis")
+	                End Using
+                End Using
             Catch ex As Exception
                 MsgBox("Error in opening Orcad Database! Now - " & ex.Message)
             End Try
@@ -1071,12 +1116,17 @@ Public Class FormDownload
 
     Function NameFile(ByVal id As Long) As String
         Dim RowSearchDoc As DataRow()
-        Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
-            AdapterDoc.SelectCommand = New MySqlCommand("SELECT * FROM DOC;", MySqlconnection)
-            DsDoc.Clear()
-            tblDoc.Clear()
-            AdapterDoc.Fill(DsDoc, "doc")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", con)
+                AdapterDoc.SelectCommand = New MySqlCommand("SELECT * FROM DOC;", con)
+                DsDoc.Clear()
+                tblDoc.Clear()
+                AdapterDoc.Fill(DsDoc, "doc")
+            End Using
         End Using
+        
         tblDoc = DsDoc.Tables("doc")
         RowSearchDoc = tblDoc.Select("id = " & id)
         NameFile = ""

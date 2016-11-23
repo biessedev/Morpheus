@@ -1,19 +1,20 @@
 ﻿Option Explicit On
 Option Compare Text
+Imports System.Configuration
 Imports MySql.Data.MySqlClient
 
 Public Class FormNPIDocMamagement
 
-    Dim AdapterDocNPI As New MySqlDataAdapter("SELECT * FROM Doc where header like '%_NPI_OPI'", MySqlconnection)
+    'Dim AdapterDocNPI As New MySqlDataAdapter("SELECT * FROM Doc where header like '%_NPI_OPI'", MySqlconnection)
     'Dim AdapterDocNPI As New MySqlDataAdapter("SELECT * FROM Doc", MySqlconnection)
     Dim tblDocNPI As DataTable
     Dim DsDocNPI As New DataSet
 
-    Dim AdapterDocType As New MySqlDataAdapter("SELECT * FROM Doctype where header like '%_NPI_OPI'", MySqlconnection)
+    'Dim AdapterDocType As New MySqlDataAdapter("SELECT * FROM Doctype where header like '%_NPI_OPI'", MySqlconnection)
     Dim tblDocType As DataTable
     Dim DsDocType As New DataSet
 
-    Dim AdapterNPI As New MySqlDataAdapter("SELECT * FROM npi_openissue", MySqlconnection)
+    'Dim AdapterNPI As New MySqlDataAdapter("SELECT * FROM npi_openissue", MySqlconnection)
     Dim tblNPI As New DataTable
     Dim DsNPI As New DataSet
 
@@ -27,10 +28,18 @@ Public Class FormNPIDocMamagement
     Private Sub FormNPIDocMamagement_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         'tblDocNPI.Clear()
         'DsDocNPI.Clear()
-        AdapterDocNPI.Fill(DsDocNPI, "TableNPIDoc")
-        tblDocNPI = DsDocNPI.Tables("TableNPIDoc")
-        AdapterDocType.Fill(DsDocType, "DocType")
-        tblDocType = DsDocType.Tables("DocType")
+        Dim builder As New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            Using AdapterDocNPI As New MySqlDataAdapter("SELECT * FROM Doc where header like '%_NPI_OPI'", con)
+                AdapterDocNPI.Fill(DsDocNPI, "TableNPIDoc")
+                tblDocNPI = DsDocNPI.Tables("TableNPIDoc")
+            End Using
+            Using AdapterDocType As New MySqlDataAdapter("SELECT * FROM Doctype where header like '%_NPI_OPI'", con)
+		        AdapterDocType.Fill(DsDocType, "DocType")
+                tblDocType = DsDocType.Tables("DocType")
+	        End Using
+        End Using
         Call Btn_TypeDocFill()
 
     End Sub
@@ -99,12 +108,16 @@ Public Class FormNPIDocMamagement
         Me.Hide()
 
         If controlRight(Mid(Cob_TypeDoc.Text, 3, 1)) >= 2 Then
-        FormSamples.Txt_FilePath.Text = Cob_TypeDoc.Text & "_" & Cob_NameDoc.Text
-        Sql = "UPDATE npi_openissue  SET FilePath ='" & FormSamples.Txt_FilePath.Text & "' WHERE ID = '" & FormSamples.Txt_Index.Text & "'"
-        Dim cmd = New MySqlCommand(Sql, MySqlconnection)
-        cmd.ExecuteNonQuery()
+            FormSamples.Txt_FilePath.Text = Cob_TypeDoc.Text & "_" & Cob_NameDoc.Text
+            Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	            Sql = "UPDATE npi_openissue  SET FilePath ='" & FormSamples.Txt_FilePath.Text & "' WHERE ID = '" & FormSamples.Txt_Index.Text & "'"
+                Dim cmd = New MySqlCommand(Sql, con)
+                cmd.ExecuteNonQuery()
+            End Using
             '  Call FormSamples.issuefunction(0)
-        MsgBox("Successfully uploaded file")
+            MsgBox("Successfully uploaded file")
         Else
             MsgBox("No enough right to load a file")
         End If

@@ -2,28 +2,38 @@
 Option Compare Text
 Imports MySql.Data.MySqlClient
 Imports System.Text.RegularExpressions
+Imports System.Configuration
 
 Public Class FormTypeAdmin
-    Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
-    Dim AdapterType As New MySqlDataAdapter("SELECT * FROM doctype", MySqlconnection)
+    'Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
+    'Dim AdapterType As New MySqlDataAdapter("SELECT * FROM doctype", MySqlconnection)
     Dim DsType As New DataSet
     Dim tblDocType As DataTable, tblDoc As DataTable
     Dim DsDoc As New DataSet
-    Dim builder As MySqlCommandBuilder = New MySqlCommandBuilder(AdapterType)
+    'Dim builder As MySqlCommandBuilder = New MySqlCommandBuilder(AdapterType)
 
     Private Sub FormDownload_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
         FormStart.Show()
         tblDocType.Dispose()
         DsType.Dispose()
-        AdapterType.Dispose()
+        'AdapterType.Dispose()
     End Sub
 
     Private Sub FormTypeAdmin_load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         FormStart.Hide()
-        AdapterType.Fill(DsType, "doctype")
-        tblDocType = DsType.Tables("doctype")
-        AdapterDoc.Fill(DsDoc, "doc")
-        tblDoc = DsDoc.Tables("doc")
+        Dim builder As New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            Using AdapterType As New MySqlDataAdapter("SELECT * FROM doctype", con)
+                AdapterType.Fill(DsType, "doctype")
+                tblDocType = DsType.Tables("doctype")
+	        End Using
+            Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", con)
+		        AdapterDoc.Fill(DsDoc, "doc")
+                tblDoc = DsDoc.Tables("doc")
+	        End Using
+            
+        End Using
         FillComboFirstType()
         TextBoxPropriety.Text = "S?R?P?Y?C?"
     End Sub
@@ -112,8 +122,15 @@ Public Class FormTypeAdmin
                         myrow.Item("extension") = TextBoxExtension.Text
 
                         tblDocType.Rows.Add(myrow)
-                        builder.GetUpdateCommand()
-                        AdapterType.Update(tblDocType)
+                        'builder.GetUpdateCommand()
+                        Dim  builder As  New Common.DbConnectionStringBuilder()
+                        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	                        Using AdapterType As New MySqlDataAdapter("SELECT * FROM doctype", con)
+		                        AdapterType.Update(tblDocType)
+	                        End Using
+                        End Using
+                        
                         ComunicationLog("5041") '("Record inserted in database")
                         resetCont()
                         FillComboFirstType()
@@ -145,10 +162,13 @@ Public Class FormTypeAdmin
                 Else
                     returnValue = tblDocType.Select("header='" & HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text) & "'")
                     If returnValue.Length > 0 Then
-
-                        Dim sql As String = String.Format("DELETE FROM `{0}`.`doctype` WHERE `doctype`.`header` ='{1}'", DBName, HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text))
-                        Dim cmd As MySqlCommand = New MySqlCommand(sql, MySqlconnection)
-                        cmd.ExecuteNonQuery()
+                        Dim  builder As  New Common.DbConnectionStringBuilder()
+                        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	                        Dim sql As String = String.Format("DELETE FROM `{0}`.`doctype` WHERE `doctype`.`header` ='{1}'", DBName, HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text))
+                            Dim cmd As MySqlCommand = New MySqlCommand(sql, con)
+                            cmd.ExecuteNonQuery()
+                        End Using
                         ComunicationLog("5034") 'Record deleted from database
                         resetCont()
                     Else
@@ -251,8 +271,14 @@ Public Class FormTypeAdmin
     Sub UpdatePropriety()
         tblDocType.Clear()
         DsType.Clear()
-        AdapterType.Fill(DsType, "doctype")
-        tblDocType = DsType.Tables("doctype")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterType As New MySqlDataAdapter("SELECT * FROM doctype", con)
+		        AdapterType.Fill(DsType, "doctype")
+                tblDocType = DsType.Tables("doctype")
+	        End Using
+        End Using
 
         Dim returnValue As DataRow() = tblDocType.Select("header='" & HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text) & "'")
         If returnValue.Length <= 1 Then

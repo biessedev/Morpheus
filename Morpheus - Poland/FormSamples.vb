@@ -6,44 +6,45 @@ Imports System.Data.SqlClient
 Imports System.Text.RegularExpressions
 Imports System.Globalization
 Imports System.Linq
+Imports System.Configuration
 
 Public Class FormSamples
 
     Dim DsDocComp As New DataSet
     Dim tblDocComp As New DataTable
     Dim index As Long = 1
-    Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", MySqlconnection)
+    'Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", MySqlconnection)
     Dim tblProd As DataTable
     Dim DsProd As New DataSet
     Dim currentActivityID As Integer = -1
     Dim currentProductCode As String
     Dim XmlTree As New TreeViewToFromXml
     Dim OpenSession As Boolean
-    Dim AdapterBomOff As New MySqlDataAdapter("SELECT * FROM Bomoffer", MySqlconnection)
+    'Dim AdapterBomOff As New MySqlDataAdapter("SELECT * FROM Bomoffer", MySqlconnection)
     Dim tblBomOff As DataTable
     Dim DsBomOff As New DataSet
-    Dim AdapterSigip As New MySqlDataAdapter("SELECT * FROM sigip", MySqlconnection)
+    'Dim AdapterSigip As New MySqlDataAdapter("SELECT * FROM sigip", MySqlconnection)
     Dim tblSigip As DataTable
     Dim DsSigip As New DataSet
-    Dim AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", MySqlconnection)
+    'Dim AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", MySqlconnection)
     Dim tblOff As DataTable
     Dim DsOff As New DataSet
-    Dim AdapterPfp As New MySqlDataAdapter("SELECT * FROM Pfp", MySqlconnection)
+    'Dim AdapterPfp As New MySqlDataAdapter("SELECT * FROM Pfp", MySqlconnection)
     Dim tblPfp As DataTable
     Dim DsPfp As New DataSet
-    Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
+    'Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
     Dim tblDoc As DataTable
     Dim DsDoc As New DataSet
 
-    Dim AdapterCredentials As New MySqlDataAdapter("SELECT * FROM credentials", MySqlconnection)
+    'Dim AdapterCredentials As New MySqlDataAdapter("SELECT * FROM credentials", MySqlconnection)
     Dim tblCredentials As DataTable
     Dim DsCredentials As New DataSet
 
-    Dim AdapterNPI As New MySqlDataAdapter("SELECT * FROM npi_openissue", MySqlconnection)
+    'Dim AdapterNPI As New MySqlDataAdapter("SELECT * FROM npi_openissue", MySqlconnection)
     Dim tblNPI As New DataTable
     Dim DsNPI As New DataSet
 
-    Dim AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", MySqlconnection)
+    'Dim AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", MySqlconnection)
     Dim tblTP As DataTable
     Dim DsTP As New DataSet
 
@@ -60,62 +61,74 @@ Public Class FormSamples
     Dim cSelectedID As String
 
     Private Sub FormSamples_FormClosing(ByVal sender As Object, ByVal e As FormClosingEventArgs) Handles Me.FormClosing
-        If InStr(TabControlNPI.SelectedTab.Text, "Task") > 0 Then
+        Dim builder As New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
 
-            If currentActivityID > 0 Then
-                If OpenSession Then
-                    If vbYes = MsgBox("Session open! Do you want to save?", MsgBoxStyle.YesNo) Then
-                        ButtonSave_Click(Me, e)
+            If InStr(TabControlNPI.SelectedTab.Text, "Task") > 0 Then
+
+                If currentActivityID > 0 Then
+                    If OpenSession Then
+                        If vbYes = MsgBox("Session open! Do you want to save?", MsgBoxStyle.YesNo) Then
+                            ButtonSave_Click(Me, e)
+                        Else
+                            Dim tblProd As DataTable
+                            Dim DsProd As New DataSet
+                            Dim rowShow As DataRow()
+
+                            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+		                        AdapterProd.Fill(DsProd, "Product")
+	                        End Using
+                            tblProd = DsProd.Tables("Product")
+                            rowShow = tblProd.Select(" idactivity =" & currentActivityID & "")
+
+                            For Each row In rowShow
+                                session("product", row("Id").ToString, False)
+                            Next
+                            OpenSession = False
+                            TimerTask.Stop()
+                            ButtonSave.BackColor = Color.Green
+                            TextBoxBomTime.Text = ""
+                        End If
                     Else
+                        TimerTask.Stop()
                         Dim tblProd As DataTable
                         Dim DsProd As New DataSet
                         Dim rowShow As DataRow()
+                        If currentActivityID > 0 Then
+                            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+		                        AdapterProd.Fill(DsProd, "Product")
+	                        End Using
+                            tblProd = DsProd.Tables("Product")
+                            rowShow = tblProd.Select(" idactivity =" & currentActivityID & "")
+                            For Each row In rowShow
+                                session("Product", row("Id").ToString, False)
+                            Next
+                        End If
 
-                        AdapterProd.Fill(DsProd, "Product")
-                        tblProd = DsProd.Tables("Product")
-                        rowShow = tblProd.Select(" idactivity =" & currentActivityID & "")
-
-                        For Each row In rowShow
-                            session("product", row("Id").ToString, False)
-                        Next
-                        OpenSession = False
-                        TimerTask.Stop()
-                        ButtonSave.BackColor = Color.Green
-                        TextBoxBomTime.Text = ""
                     End If
-                Else
-                    TimerTask.Stop()
-                    Dim tblProd As DataTable
-                    Dim DsProd As New DataSet
-                    Dim rowShow As DataRow()
-                    If currentActivityID > 0 Then
-                        AdapterProd.Fill(DsProd, "Product")
-                        tblProd = DsProd.Tables("Product")
-                        rowShow = tblProd.Select(" idactivity =" & currentActivityID & "")
-                        For Each row In rowShow
-                            session("Product", row("Id").ToString, False)
-                        Next
-                    End If
-
                 End If
             End If
-        End If
 
-        AdapterOff.Fill(DsBomOff, "Offer")
-        tblOff = DsOff.Tables("Offer")
+            Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
+		        AdapterOff.Fill(DsBomOff, "Offer")
+	        End Using
+            tblOff = DsOff.Tables("Offer")
 
-        AdapterSigip.Fill(DsSigip, "sigip")
-        tblSigip = DsSigip.Tables("sigip")
-
+            Using AdapterSigip As New MySqlDataAdapter("SELECT * FROM sigip", con)
+		        AdapterSigip.Fill(DsSigip, "sigip")
+	        End Using
+            tblSigip = DsSigip.Tables("sigip")
+        End Using
         TreeViewTask.HideSelection = False
         TreeViewActivity.HideSelection = False
         If IsNeedUpdate(cSelectedID) Then
-                Dim msgBoxResult As MsgBoxResult
-                msgBoxResult = MsgBox("Do you want to save the changes?", vbYesNo)
-                If msgBoxResult = MsgBoxResult.Yes Then
-                    SaveUpdates(cSelectedID)
-                End If
-        End If  
+            Dim msgBoxResult As MsgBoxResult
+            msgBoxResult = MsgBox("Do you want to save the changes?", vbYesNo)
+            If msgBoxResult = MsgBoxResult.Yes Then
+                SaveUpdates(cSelectedID)
+            End If
+        End If
         FormNPIDocMamagement.Close()
 
     End Sub
@@ -123,101 +136,110 @@ Public Class FormSamples
     Private Sub FormSamples_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
         Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+        
+             Using AdapterCredentials As New MySqlDataAdapter("SELECT * FROM credentials", con)
+		        AdapterCredentials.Fill(DsCredentials, "Credentials")
+	        End Using
+            tblCredentials = DsCredentials.Tables("credentials")
 
-        AdapterCredentials.Fill(DsCredentials, "Credentials")
-        tblCredentials = DsCredentials.Tables("credentials")
-
-        Try
-            AdapterProd.Fill(DsProd, "Product")
-            tblProd = DsProd.Tables("Product")
-            ComboBoxActivityStatus.Items.Add("")
-            ComboBoxActivityStatus.Items.Add("SENT")
-            ComboBoxActivityStatus.Items.Add("STANDBY")
-            ComboBoxActivityStatus.Items.Add("OPEN")
-            ComboBoxActivityStatus.Items.Add("CLOSED")
-            ComboBoxActivityStatus.Text = ""
-            UpdateTreeSample()
-            UpdateActivityID()
-            TextBoxUser.Text = CreAccount.strUserName
-            FillTaskStatus()
-            FillTaskType()
-
-            Cob_StatusFill()
-            Cob_FilterStatusFill()
-            FillCobOwnerContent()
-            FillCobFilterContent()
-            CobFilterBSFill()
-            CobFilterBitronPNFill()
-
-            If controlRight("R") >= 2 And controlRight("J") >= 2 Then
-                ButtonSaveDefault.Enabled = True
-            Else
-                ButtonSaveDefault.Enabled = False
-            End If
-
-            If controlRight("R") >= 2 Then
-
-                ' NPI Activity
-                ButtonUpdateMagBox.Enabled = True
-                Button1.Enabled = True
-                Buttonrefresh.Enabled = True
-
-                ' NPI Task List
-                ButtonNew.Enabled = True
-                ButtonDelete.Enabled = True
-                ButtonSave.Enabled = True
-                ButtonReset.Enabled = True
-                ButtonUpdate.Enabled = True
-            Else
-
-                ' NPI Activity
-                ButtonUpdateMagBox.Enabled = False
-                Button1.Enabled = False
-                Buttonrefresh.Enabled = True
-
-                ' NPI Task List
-                ButtonNew.Enabled = False
-                ButtonDelete.Enabled = False
-                ButtonSave.Enabled = False
-                ButtonReset.Enabled = False
-                ButtonUpdate.Enabled = False
-
-            End If
-
-            If controlRight("W") >= 2 Then                    ' NPI OpenIssue
-
-                Btn_Add.Enabled = True
-                Btn_Del.Enabled = True
-                Btn_Save.Enabled = True
-                Btn_UpLoadFile.Enabled = True
-
-            Else
-
-                Btn_Add.Enabled = False
-                Btn_Del.Enabled = False
-                Btn_Save.Enabled = False
-                Btn_UpLoadFile.Enabled = False
-
-            End If
-
-            AdapterPfp.Fill(DsPfp, "pfp")
-            tblPfp = DsPfp.Tables("pfp")
-
-            AdapterDoc.SelectCommand = New MySqlCommand("SELECT * FROM DOC;", MySqlconnection)
             Try
-                DsDoc.Clear()
-                tblDoc.Clear()
+                Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+		           AdapterProd.Fill(DsProd, "Product")
+	            End Using
+                tblProd = DsProd.Tables("Product")
+                ComboBoxActivityStatus.Items.Add("")
+                ComboBoxActivityStatus.Items.Add("SENT")
+                ComboBoxActivityStatus.Items.Add("STANDBY")
+                ComboBoxActivityStatus.Items.Add("OPEN")
+                ComboBoxActivityStatus.Items.Add("CLOSED")
+                ComboBoxActivityStatus.Text = ""
+                UpdateTreeSample()
+                UpdateActivityID()
+                TextBoxUser.Text = CreAccount.strUserName
+                FillTaskStatus()
+                FillTaskType()
+
+                Cob_StatusFill()
+                Cob_FilterStatusFill()
+                FillCobOwnerContent()
+                FillCobFilterContent()
+                CobFilterBSFill()
+                CobFilterBitronPNFill()
+
+                If controlRight("R") >= 2 And controlRight("J") >= 2 Then
+                    ButtonSaveDefault.Enabled = True
+                Else
+                    ButtonSaveDefault.Enabled = False
+                End If
+
+                If controlRight("R") >= 2 Then
+
+                    ' NPI Activity
+                    ButtonUpdateMagBox.Enabled = True
+                    Button1.Enabled = True
+                    Buttonrefresh.Enabled = True
+
+                    ' NPI Task List
+                    ButtonNew.Enabled = True
+                    ButtonDelete.Enabled = True
+                    ButtonSave.Enabled = True
+                    ButtonReset.Enabled = True
+                    ButtonUpdate.Enabled = True
+                Else
+
+                    ' NPI Activity
+                    ButtonUpdateMagBox.Enabled = False
+                    Button1.Enabled = False
+                    Buttonrefresh.Enabled = True
+
+                    ' NPI Task List
+                    ButtonNew.Enabled = False
+                    ButtonDelete.Enabled = False
+                    ButtonSave.Enabled = False
+                    ButtonReset.Enabled = False
+                    ButtonUpdate.Enabled = False
+
+                End If
+
+                If controlRight("W") >= 2 Then                    ' NPI OpenIssue
+
+                    Btn_Add.Enabled = True
+                    Btn_Del.Enabled = True
+                    Btn_Save.Enabled = True
+                    Btn_UpLoadFile.Enabled = True
+
+                Else
+
+                    Btn_Add.Enabled = False
+                    Btn_Del.Enabled = False
+                    Btn_Save.Enabled = False
+                    Btn_UpLoadFile.Enabled = False
+
+                End If
+                Using AdapterPfp As New MySqlDataAdapter("SELECT * FROM Pfp", con)
+		            AdapterPfp.Fill(DsPfp, "pfp")
+	            End Using
+                tblPfp = DsPfp.Tables("pfp")
+
+                Try
+                    DsDoc.Clear()
+                    tblDoc.Clear()
+                Catch ex As Exception
+
+                End Try
+                Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM DOC;", con)
+		            AdapterDoc.Fill(DsDoc, "doc")
+	            End Using
+                
+                tblDoc = DsDoc.Tables("doc")
+
             Catch ex As Exception
-
+                MsgBox(ex.Message, MsgBoxStyle.Information)
             End Try
-
-            AdapterDoc.Fill(DsDoc, "doc")
-            tblDoc = DsDoc.Tables("doc")
-
-        Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Information)
-        End Try
-
+        End Using
         Me.DTP_Date.CustomFormat = "yyyy-MM-dd"
         DTP_Date.Format = DateTimePickerFormat.Custom
         Me.DTP_Date.Value = DateTime.Now
@@ -229,7 +251,7 @@ Public Class FormSamples
 
             Call issuefunction(0)
             DGV_NPI.Sort(DGV_NPI.Columns("PlanedClosedDate"), System.ComponentModel.ListSortDirection.Ascending)
-            
+
         Catch ex As Exception
             MsgBox(ex.Message)
         End Try
@@ -247,7 +269,13 @@ Public Class FormSamples
         Dim rootChildren1 As TreeNode
         DsProd.Clear()
         tblProd.Clear()
-        AdapterProd.Fill(DsProd, "Product")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+		        AdapterProd.Fill(DsProd, "Product")
+	        End Using
+        End Using
         tblProd = DsProd.Tables("Product")
         If Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " ")) = "" Then
             activity = 0
@@ -392,7 +420,13 @@ Public Class FormSamples
     Sub UpdateCurrent()
         Dim DsProd As New DataSet
         Dim rowShow As DataRow()
-        AdapterProd.Fill(DsProd, "Product")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+		        AdapterProd.Fill(DsProd, "Product")
+	        End Using
+        End Using
         Dim tblProd As DataTable = DsProd.Tables("Product")
 
         TextBoxProductQt.Enabled = False
@@ -438,7 +472,13 @@ Public Class FormSamples
     ' search if there is a product with bom in offer and in sigip bom
     Sub ComboBoxBomLocationAddAvaiable(ByVal mycurrentProductCode As String)
         Dim DsProd As New DataSet
-        AdapterProd.Fill(DsProd, "Product")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+		        AdapterProd.Fill(DsProd, "Product")
+	        End Using
+        End Using
         Dim tblProd As DataTable = DsProd.Tables("Product")
         ComboBoxBomLocation.Items.Clear()
         ComboBoxBomLocation.Items.Add("")
@@ -452,7 +492,13 @@ Public Class FormSamples
         Dim DsProd As New DataSet
         Dim activityid = 0
         ComboBoxActivityID.Items.Clear()
-        AdapterProd.Fill(DsProd, "Product")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+                AdapterProd.Fill(DsProd, "Product")
+	        End Using
+        End Using
         Dim tblProd As DataTable = DsProd.Tables("Product")
         Dim rowShow As DataRow() = tblProd.Select(IIf(CheckBoxClosed.Checked = False, "NOT statusActivity = 'CLOSED'", "bitronpn like '*'"), "idactivity")
         ComboBoxActivityID.Items.Add("")
@@ -475,60 +521,76 @@ Public Class FormSamples
 
     Private Sub Buttonrefresh_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Buttonrefresh.Click
         Dim DsProd As New DataSet
-        AdapterProd.Fill(DsProd, "Product")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+		        AdapterProd.Fill(DsProd, "Product")
+	        End Using
+        End Using
+        
         UpdateTreeSample()
     End Sub
 
     Private Sub ButtonLink_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonLink.Click
         Dim tblProd As DataTable
         Dim DsProd As New DataSet, canDelete
-        If TextBoxProduct.Text <> "" And ComboBoxActivityID.Text <> "" And Len(TextBoxProductQt.Text) <= 6 Then
-            AdapterProd.Fill(DsProd, "Product")
-            tblProd = DsProd.Tables("Product")
-            Dim rowShow As DataRow() = tblProd.Select("bitronpn='" & currentProductCode & "'")
-            If rowShow.Length = 1 Then
-                ComboBoxActivityStatus.Text = rowShow(0).Item("Statusactivity")
-                Dim sql As String
-                If Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " ")))) <> Int(rowShow(0).Item("idactivity")) And
-                    NumberProduct(Int(rowShow(0).Item("idactivity"))) = 1 Then
-                    canDelete = MsgBox("This is the last product for this activity. If you delete this product you will delete also the activity and all linked tasks! Are you sure?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes
-                Else
-                    canDelete = True
-                End If
-                If canDelete Then
-                    Try
-                        sql = "UPDATE `" & DBName & "`.`product` SET " &
-                        " `etd` = '" & TextBoxETD.Text &
-                        "', `statusActivity` = '" & IIf(NumberProduct(Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " "))))) >= 1,
-                        ActivityStatus(Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " "))))), "") &
-                        "',`npieces` = " & Int(TextBoxProductQt.Text) &
-                        ",`BomLocation` = '" & (ComboBoxBomLocation.Text) &
-                        "',`idactivity` = " & Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " ")))) &
-                        ",`nameactivity` = '" & Replace(Mid(ComboBoxActivityID.Text, InStr(ComboBoxActivityID.Text, " -- ") + 4), "NOT ASSIGNED", "") &
-                        "' WHERE `product`.`bitronpn` = '" & Trim(Mid(TextBoxProduct.Text, 1, InStr(TextBoxProduct.Text, " "))) & "' ;"
-                        Dim cmd = New MySqlCommand(sql, MySqlconnection)
-                        cmd.ExecuteNonQuery()
-                        MsgBox("Successful update!")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            If TextBoxProduct.Text <> "" And ComboBoxActivityID.Text <> "" And Len(TextBoxProductQt.Text) <= 6 Then
+           
+	                Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+		                AdapterProd.Fill(DsProd, "Product")
+	                End Using
+           
+                tblProd = DsProd.Tables("Product")
+                Dim rowShow As DataRow() = tblProd.Select("bitronpn='" & currentProductCode & "'")
+                If rowShow.Length = 1 Then
+                    ComboBoxActivityStatus.Text = rowShow(0).Item("Statusactivity")
+                    Dim sql As String
+                    If Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " ")))) <> Int(rowShow(0).Item("idactivity")) And
+                        NumberProduct(Int(rowShow(0).Item("idactivity"))) = 1 Then
+                        canDelete = MsgBox("This is the last product for this activity. If you delete this product you will delete also the activity and all linked tasks! Are you sure?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes
+                    Else
+                        canDelete = True
+                    End If
+                    If canDelete Then
+                        Try
+                            sql = "UPDATE `" & DBName & "`.`product` SET " &
+                            " `etd` = '" & TextBoxETD.Text &
+                            "', `statusActivity` = '" & IIf(NumberProduct(Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " "))))) >= 1,
+                            ActivityStatus(Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " "))))), "") &
+                            "',`npieces` = " & Int(TextBoxProductQt.Text) &
+                            ",`BomLocation` = '" & (ComboBoxBomLocation.Text) &
+                            "',`idactivity` = " & Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " ")))) &
+                            ",`nameactivity` = '" & Replace(Mid(ComboBoxActivityID.Text, InStr(ComboBoxActivityID.Text, " -- ") + 4), "NOT ASSIGNED", "") &
+                            "' WHERE `product`.`bitronpn` = '" & Trim(Mid(TextBoxProduct.Text, 1, InStr(TextBoxProduct.Text, " "))) & "' ;"
+                            Dim cmd = New MySqlCommand(sql, con)
+                            cmd.ExecuteNonQuery()
+                            MsgBox("Successful update!")
 
-                        If NumberProduct(Int(rowShow(0).Item("idactivity"))) = 1 Then
-                            UpdateActivityID()
-                        End If
+                            If NumberProduct(Int(rowShow(0).Item("idactivity"))) = 1 Then
+                                UpdateActivityID()
+                            End If
 
-                    Catch ex As Exception
-                        MsgBox("Mysql update query error!")
-                    End Try
+                        Catch ex As Exception
+                            MsgBox("Mysql update query error!")
+                        End Try
+                    Else
+                        MsgBox("Failed update!")
+                    End If
                 Else
-                    MsgBox("Failed update!")
+                    MsgBox("More products selected!")
                 End If
             Else
-                MsgBox("More products selected!")
+                MsgBox("Need to set the product and the activity before pushing Save!")
             End If
-        Else
-            MsgBox("Need to set the product and the activity before pushing Save!")
-        End If
-
-        AdapterProd.Fill(DsProd, "Product")
-        tblProd = DsProd.Tables("Product")
+            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+		        AdapterProd.Fill(DsProd, "Product")
+	        End Using
+            tblProd = DsProd.Tables("Product")
+        End Using
         UpdateTreeSample()
 
     End Sub
@@ -594,32 +656,38 @@ Public Class FormSamples
 
     Private Sub ButtonUpdateStatus_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonUpdateStatus.Click
         Dim DsProd As New DataSet
-        If ComboBoxActivityID.Text <> "" And ComboBoxActivityStatus.Text <> "" Then
-            AdapterProd.Fill(DsProd, "Product")
-            Dim tblProd As DataTable = DsProd.Tables("Product")
-            Dim rowShow As DataRow() = tblProd.Select(" idactivity =" & Val(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " "))) & "")
-            For Each row In rowShow
-                If Val(row("idactivity")) <> 0 Then
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        If ComboBoxActivityID.Text <> "" And ComboBoxActivityStatus.Text <> "" Then
+                Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+		            AdapterProd.Fill(DsProd, "Product")
+	            End Using
+                Dim tblProd As DataTable = DsProd.Tables("Product")
+                Dim rowShow As DataRow() = tblProd.Select(" idactivity =" & Val(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " "))) & "")
+                For Each row In rowShow
+                    If Val(row("idactivity")) <> 0 Then
 
-                    Try
-                        Dim sql As String = "UPDATE `" & DBName & "`.`product` SET " &
-                                            "`Statusactivity` = '" & ComboBoxActivityStatus.Text &
-                                            "', `delay` = '" & IIf(ComboBoxActivityStatus.Text = "CLOSED", InputBox("Insert the closing activity delay (day):"), "") &
-                                            "' WHERE `product`.`bitronpn` = '" & row("bitronpn") & "' ;"
-                        Dim cmd As MySqlCommand = New MySqlCommand(sql, MySqlconnection)
-                        cmd.ExecuteNonQuery()
+                        Try
+                            Dim sql As String = "UPDATE `" & DBName & "`.`product` SET " &
+                                                "`Statusactivity` = '" & ComboBoxActivityStatus.Text &
+                                                "', `delay` = '" & IIf(ComboBoxActivityStatus.Text = "CLOSED", InputBox("Insert the closing activity delay (day):"), "") &
+                                                "' WHERE `product`.`bitronpn` = '" & row("bitronpn") & "' ;"
+                            Dim cmd As MySqlCommand = New MySqlCommand(sql, con)
+                            cmd.ExecuteNonQuery()
 
-                    Catch ex As Exception
-                        MsgBox("Mysql update query error!")
-                    End Try
-                Else
+                        Catch ex As Exception
+                            MsgBox("Mysql update query error!")
+                        End Try
+                    Else
 
-                End If
-            Next
-            MsgBox("Status updated!")
-        Else
-            MsgBox("Need to fill activity and status!")
-        End If
+                    End If
+                Next
+                MsgBox("Status updated!")
+            Else
+                MsgBox("Need to fill activity and status!")
+            End If
+        End Using
 
     End Sub
 
@@ -633,13 +701,17 @@ Public Class FormSamples
                 Regex.IsMatch(strActiv, "^[0-9]{8} -- [0-9]{8} -- [0-9]{8} -- [0-9]{8} -- [0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Or
                 Regex.IsMatch(strActiv, "^[0-9]{8} -- [0-9]{8} -- [0-9]{8} -- [0-9]{8} -- [0-9]{8} -- [0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Then
                 Try
-                    Dim sql As String = "UPDATE `" & DBName & "`.`product` SET " &
-                                        "`Statusactivity` = 'OPEN'" &
-                                        ", `idactivity` = " & LastIDActivity() + 1 &
-                                        ", `nameactivity` = '" & Trim(ReplaceChar(UCase(strActiv))) &
-                                        "' WHERE `product`.`bitronpn` = '" & currentProductCode & "' ;"
-                    Dim cmd As MySqlCommand = New MySqlCommand(sql, MySqlconnection)
-                    cmd.ExecuteNonQuery()
+                    Dim  builder As  New Common.DbConnectionStringBuilder()
+                    builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                    Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+                        Dim sql As String = "UPDATE `" & DBName & "`.`product` SET " &
+                                            "`Statusactivity` = 'OPEN'" &
+                                            ", `idactivity` = " & LastIDActivity() + 1 &
+                                            ", `nameactivity` = '" & Trim(ReplaceChar(UCase(strActiv))) &
+                                            "' WHERE `product`.`bitronpn` = '" & currentProductCode & "' ;"
+                        Dim cmd As MySqlCommand = New MySqlCommand(sql, con)
+                        cmd.ExecuteNonQuery()
+                    End Using
                     MsgBox("Activity created with ID:" & LastIDActivity())
                 Catch ex As Exception
                     MsgBox("Mysql update query error!")
@@ -657,7 +729,13 @@ Public Class FormSamples
 
         Dim DsProd As New DataSet
         Dim activityid = 0
-        AdapterProd.Fill(DsProd, "Product")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+		        AdapterProd.Fill(DsProd, "Product")
+	        End Using
+        End Using
         Dim tblProd As DataTable = DsProd.Tables("Product")
         Dim rowShow As DataRow() = tblProd.Select("bitronpn like '*' ")
         For Each row In rowShow
@@ -671,7 +749,13 @@ Public Class FormSamples
 
     Function NumberProduct(ByVal idactivity As Integer) As Integer
         Dim DsProd As New DataSet
-        AdapterProd.Fill(DsProd, "Product")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+		        AdapterProd.Fill(DsProd, "Product")
+	        End Using
+        End Using
         Dim tblProd As DataTable = DsProd.Tables("Product")
         Dim rowShow As DataRow() = tblProd.Select("idactivity = " & idactivity)
         NumberProduct = rowShow.Length
@@ -680,7 +764,13 @@ Public Class FormSamples
     ' productActivity
     Function productActivity(ByVal productpn As String) As Integer
         Dim DsProd As New DataSet
-        AdapterProd.Fill(DsProd, "Product")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+		        AdapterProd.Fill(DsProd, "Product")
+	        End Using
+        End Using
         Dim tblProd As DataTable = DsProd.Tables("Product")
         Dim rowShow As DataRow() = tblProd.Select("bitronpn = " & productpn)
         If rowShow.Length > 0 Then
@@ -726,7 +816,13 @@ Public Class FormSamples
 
     Function ActivityStatus(ByVal id As Integer) As String
         Dim DsProd As New DataSet
-        AdapterProd.Fill(DsProd, "Product")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+		        AdapterProd.Fill(DsProd, "Product")
+	        End Using
+        End Using
         Dim tblProd As DataTable = DsProd.Tables("Product")
         Dim rowShow As DataRow() = tblProd.Select("idactivity=" & id & "")
         ActivityStatus = ""
@@ -796,45 +892,51 @@ Public Class FormSamples
             End If
 
         Else
+            Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	            If currentActivityID > 0 Then
+                    If OpenSession Then
+                        If vbYes = MsgBox("Session open! Do you want to save?", MsgBoxStyle.YesNo) Then
+                            ButtonSave_Click(Me, e)
+                        Else
+                            Dim tblProd As DataTable
+                            Dim DsProd As New DataSet
+                            Dim rowShow As DataRow()
 
-            If currentActivityID > 0 Then
-                If OpenSession Then
-                    If vbYes = MsgBox("Session open! Do you want to save?", MsgBoxStyle.YesNo) Then
-                        ButtonSave_Click(Me, e)
+                            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+		                        AdapterProd.Fill(DsProd, "Product")
+	                        End Using
+                            tblProd = DsProd.Tables("Product")
+                            rowShow = tblProd.Select(" idactivity =" & currentActivityID & "")
+
+                            For Each row In rowShow
+                                session("product", row("Id").ToString, False)
+                            Next
+                            OpenSession = False
+                            TimerTask.Stop()
+                            ButtonSave.BackColor = Color.Green
+                            TextBoxBomTime.Text = ""
+                        End If
                     Else
+                        TimerTask.Stop()
                         Dim tblProd As DataTable
                         Dim DsProd As New DataSet
                         Dim rowShow As DataRow()
+                        If currentActivityID > 0 Then
+                            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+		                        AdapterProd.Fill(DsProd, "Product")
+	                        End Using
+                            tblProd = DsProd.Tables("Product")
+                            rowShow = tblProd.Select(" idactivity =" & currentActivityID & "")
+                            For Each row In rowShow
+                                session("Product", row("Id").ToString, False)
+                            Next
+                        End If
 
-                        AdapterProd.Fill(DsProd, "Product")
-                        tblProd = DsProd.Tables("Product")
-                        rowShow = tblProd.Select(" idactivity =" & currentActivityID & "")
-
-                        For Each row In rowShow
-                            session("product", row("Id").ToString, False)
-                        Next
-                        OpenSession = False
-                        TimerTask.Stop()
-                        ButtonSave.BackColor = Color.Green
-                        TextBoxBomTime.Text = ""
                     End If
-                Else
-                    TimerTask.Stop()
-                    Dim tblProd As DataTable
-                    Dim DsProd As New DataSet
-                    Dim rowShow As DataRow()
-                    If currentActivityID > 0 Then
-                        AdapterProd.Fill(DsProd, "Product")
-                        tblProd = DsProd.Tables("Product")
-                        rowShow = tblProd.Select(" idactivity =" & currentActivityID & "")
-                        For Each row In rowShow
-                            session("Product", row("Id").ToString, False)
-                        Next
-                    End If
-
                 End If
-            End If
-
+            End Using
             If InStr(TabControlNPI.SelectedTab.Text, "OpenIssue") > 0 Then
                 'If controlRight("R") < 3 Then
                 If controlRight("W") >= 2 Then
@@ -853,8 +955,13 @@ Public Class FormSamples
     Sub UpdateTreeTask()
         Dim DsProd As New DataSet
         If currentActivityID > 0 Then
-
-            AdapterProd.Fill(DsProd, "Product")
+            Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+		            AdapterProd.Fill(DsProd, "Product")
+	            End Using
+            End Using
             Dim tblProd As DataTable = DsProd.Tables("Product")
             Dim rowShow As DataRow() = tblProd.Select(" idactivity =" & currentActivityID & "", ComboBoxType.Text & " desc")
             If rowShow.Length > 0 Then
@@ -934,11 +1041,15 @@ Public Class FormSamples
     Sub SaveTreeTask(ByVal S As String)
         If currentActivityID > 0 Then
             Try
-                Dim sql As String = "UPDATE `" & DBName & "`.`product` SET " &
-                                    "`" & ComboBoxType.Text & "` = '" & S &
-                                    "' WHERE `product`.`idactivity` = " & currentActivityID & " ;"
-                Dim cmd = New MySqlCommand(sql, MySqlconnection)
-                cmd.ExecuteNonQuery()
+                Dim  builder As  New Common.DbConnectionStringBuilder()
+                builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+                    Dim sql As String = "UPDATE `" & DBName & "`.`product` SET " &
+                                        "`" & ComboBoxType.Text & "` = '" & S &
+                                        "' WHERE `product`.`idactivity` = " & currentActivityID & " ;"
+                    Dim cmd = New MySqlCommand(sql, con)
+                    cmd.ExecuteNonQuery()
+                End Using
             Catch ex As Exception
                 MsgBox("Mysql update query error!")
             End Try
@@ -953,8 +1064,13 @@ Public Class FormSamples
     Private Sub ButtonSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSave.Click
         Dim DsProd As New DataSet
         Dim CanSetReset As Boolean
-
-        AdapterProd.Fill(DsProd, "Product")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+		        AdapterProd.Fill(DsProd, "Product")
+	        End Using
+        End Using
         Dim tblProd As DataTable = DsProd.Tables("Product")
         Dim rowShow As DataRow() = tblProd.Select(" idactivity =" & currentActivityID & "")
         If rowShow.Length > 0 Then CanSetReset = True
@@ -982,8 +1098,13 @@ Public Class FormSamples
         If currentActivityID > 0 Then
             Dim DsProd As New DataSet
             Dim CanSet As Boolean
-
-            AdapterProd.Fill(DsProd, "Product")
+            Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+		            AdapterProd.Fill(DsProd, "Product")
+	            End Using
+            End Using
             Dim tblProd As DataTable = DsProd.Tables("Product")
             Dim rowShow As DataRow() = tblProd.Select(" idactivity =" & currentActivityID & "")
             If rowShow.Length > 0 Then CanSet = True
@@ -1018,7 +1139,13 @@ Public Class FormSamples
             Dim DsProd As New DataSet
             Dim CanSet As Boolean
 
-            AdapterProd.Fill(DsProd, "Product")
+            Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+		            AdapterProd.Fill(DsProd, "Product")
+	            End Using
+            End Using
             Dim tblProd As DataTable = DsProd.Tables("Product")
             Dim rowShow As DataRow() = tblProd.Select(" idactivity =" & currentActivityID & "")
             If rowShow.Length > 0 Then CanSet = True
@@ -1063,7 +1190,13 @@ Public Class FormSamples
             Dim DsProd As New DataSet
             Dim CanSet As Boolean
 
-            AdapterProd.Fill(DsProd, "Product")
+            Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+		            AdapterProd.Fill(DsProd, "Product")
+	            End Using
+            End Using
             Dim tblProd As DataTable = DsProd.Tables("Product")
             Dim rowShow As DataRow() = tblProd.Select(" idactivity =" & currentActivityID & "")
             If rowShow.Length > 0 Then CanSet = True
@@ -1112,8 +1245,13 @@ Public Class FormSamples
         If Not IsNothing(TreeViewTask.SelectedNode) And currentActivityID > 0 Then
             Dim DsProd As New DataSet
             Dim CanSet As Boolean
-
-            AdapterProd.Fill(DsProd, "Product")
+            Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+		            AdapterProd.Fill(DsProd, "Product")
+	            End Using
+            End Using
             Dim tblProd As DataTable = DsProd.Tables("Product")
             Dim rowShow As DataRow() = tblProd.Select(" idactivity =" & currentActivityID & "")
             If rowShow.Length > 0 Then CanSet = True
@@ -1194,7 +1332,13 @@ Public Class FormSamples
             TextBoxBomTime.Text = ""
             Dim DsProd As New DataSet
             If currentActivityID > 0 Then
-                AdapterProd.Fill(DsProd, "Product")
+                Dim  builder As  New Common.DbConnectionStringBuilder()
+                builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	                Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+		                AdapterProd.Fill(DsProd, "Product")
+	                End Using
+                End Using
                 Dim tblProd As DataTable = DsProd.Tables("Product")
                 Dim rowShow As DataRow() = tblProd.Select(" idactivity =" & currentActivityID & "")
                 For Each row In rowShow
@@ -1223,28 +1367,32 @@ Public Class FormSamples
         xlsWorksheet.Activate()
         xlsWorksheet.Cells.Replace(What:=",", Replacement:="")
         'empty the PFP table
-        Dim commandMySql As MySqlCommand = New MySqlCommand("TRUNCATE TABLE `" & DBName & "`.`pfp`", MySqlconnection)
-        commandMySql.ExecuteNonQuery()
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            Dim commandMySql As MySqlCommand = New MySqlCommand("TRUNCATE TABLE `" & DBName & "`.`pfp`", con)
+            commandMySql.ExecuteNonQuery()
 
-        'save the .xls file in .csv format
-        Dim tempPath = Path.GetTempPath() & "temp.csv"
-        Try
-            If File.Exists(tempPath) Then
-                File.Delete(tempPath)
-            End If
-            xlsWorkbook.SaveAs(tempPath, 6)
-            xlsWorkbook.Close(True)
-            xlsApp.Quit()
-            Dim generation As Integer = GC.GetGeneration(xlsApp)
-            GC.Collect(generation)
-        Catch ex As Exception
-            MsgBox(ex.Message)
-        End Try
+            'save the .xls file in .csv format
+            Dim tempPath = Path.GetTempPath() & "temp.csv"
+            Try
+                If File.Exists(tempPath) Then
+                    File.Delete(tempPath)
+                End If
+                xlsWorkbook.SaveAs(tempPath, 6)
+                xlsWorkbook.Close(True)
+                xlsApp.Quit()
+                Dim generation As Integer = GC.GetGeneration(xlsApp)
+                GC.Collect(generation)
+            Catch ex As Exception
+                MsgBox(ex.Message)
+            End Try
 
         'copy data from excel to `pfp`
-        Dim sql As String = "load data local infile '" & Replace(tempPath, "\", "\\") & "' into table `pfp` fields terminated by ','  lines terminated by '\r\n' ignore 1 lines  (`pfidf`,`pepre`,`peval`,`pfpaf`,`pfpan`,`pfpad`,`pelot`,`pedin`,`pedfi`,`pefor`,`forsc`)"
-        commandMySql = New MySqlCommand(sql, MySqlconnection)
-        commandMySql.ExecuteNonQuery()
+            Dim sql As String = "load data local infile '" & Replace(tempPath, "\", "\\") & "' into table `pfp` fields terminated by ','  lines terminated by '\r\n' ignore 1 lines  (`pfidf`,`pepre`,`peval`,`pfpaf`,`pfpan`,`pfpad`,`pelot`,`pedin`,`pedfi`,`pefor`,`forsc`)"
+            commandMySql = New MySqlCommand(sql, con)
+            commandMySql.ExecuteNonQuery()
+        End Using
         KillLastExcel()
     End Sub
 
@@ -1289,174 +1437,181 @@ Public Class FormSamples
         Update_Pfp()
         ButtonUpdateMagBox.Text = "Update Material Request ....."
         Application.DoEvents()
-
-        If IsNothing(tblSigip) Then
-            AdapterSigip.Fill(DsSigip, "sigip")
-            tblSigip = DsSigip.Tables("sigip")
-        End If
-
-        If IsNothing(tblOff) Then
-            AdapterOff.Fill(DsOff, "offer")
-            tblOff = DsOff.Tables("offer")
-        End If
-
-        AdapterProd.Fill(DsProd, "Product")
-        Dim tblProd As DataTable = DsProd.Tables("Product")
-        Dim rowShow As DataRow() = tblProd.Select("statusactivity = 'OPEN'")
-        Dim dsMySql As New DataSet
-        Dim sql = "SELECT * FROM `materialrequest` "
-        Dim adapterMySql = New MySqlDataAdapter(sql, MySqlconnection)
-        adapterMySql.Fill(dsMySql, "materialrequest")
-        Dim tblMySql As DataTable = dsMySql.Tables("materialrequest")
-        ButtonUpdateMagBox.Text = "Deleting data and shift....."
-        Application.DoEvents()
-        For Each rowShowMy In tblMySql.Rows
-
-            sql = "UPDATE `materialrequest` SET `warehouse3d`='',`RequestQt`=0, `BomList`='',`delta`='',`DeltaUsedFlag`=''," &
-                    "`RequestQt_1`=" & rowShowMy("RequestQt").ToString & "," &
-                    "`RequestQt_2`=" & rowShowMy("RequestQt_1").ToString & "," &
-                    "`RequestQt_3`=" & rowShowMy("RequestQt_2").ToString & "," &
-                    "`RequestQt_4`=" & rowShowMy("RequestQt_3").ToString & "," &
-                    "`RequestQt_5`=" & rowShowMy("RequestQt_4").ToString & "," &
-                    "`ProductionUsed`='' where bitronpn = '" & rowShowMy("bitronpn") & "'"
-
-            Try
-                commandMySql = New MySqlCommand(sql, MySqlconnection)
-                commandMySql.ExecuteNonQuery()
-            Catch ex As Exception
-                MsgBox("Error in DB... please reset material request!")
-            End Try
-
-        Next
-
-        ButtonUpdateMagBox.Text = "Deleting data and shift ....."
-        Application.DoEvents()
-        Try
-            OpenConnectionSqlOrcad("10.10.10.36", "Orcad1", "orcadw", "orcadw")
-            'OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
-        Catch ex As Exception
-            CloseConnectionSqlOrcad()
-            OpenConnectionSqlOrcad("10.10.10.36", "Orcad1", "orcadw", "orcadw")
-            'OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
-        End Try
-
-        ButtonUpdateMagBox.Text = "Load Orcad Data....."
-        Application.DoEvents()
-        Dim AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where ( valido = 'valido') ", SqlconnectionOrcad)
-        tblDocComp.Clear()
-        DsDocComp.Clear()
-        AdapterDocComp.Fill(DsDocComp, "orcadw.T_orcadcis")
-        tblDocComp = DsDocComp.Tables("orcadw.T_orcadcis")
-
-        AdapterDoc.SelectCommand = New MySqlCommand("SELECT * FROM DOC;", MySqlconnection)
-        Try
-            DsDoc.Clear()
-            tblDoc.Clear()
-        Catch ex As Exception
-
-        End Try
-
-        AdapterDoc.Fill(DsDoc, "doc")
-        tblDoc = DsDoc.Tables("doc")
-
-        ButtonUpdateMagBox.Text = "Start calculation ..."
-        Application.DoEvents()
-
-        For Each row In rowShow
-            i = i + 1
-            If Val(row("NPIECES").ToString) > 0 Then
-                If row("bomlocation").ToString = "SIGIP" Then
-                    Dim rowShowSigip As DataRow() = tblSigip.Select("bom ='" & row("bitronpn").ToString & "' and (acq_fab = 'acq' Or acq_fab = 'acv')")
-                    If rowShowSigip.Length = 0 Then MsgBox("Bom not found in SIGIP: " & row("bitronpn").ToString & BomName)
-                    For Each rowSigip In rowShowSigip
-                        ButtonUpdateMagBox.Text = "Udpate: " & Math.Round(100 * i / rowShow.Length, 0) & "%"
-                        Application.DoEvents()
-                        If Val(rowSigip("qt").ToString) * Val(row("npieces").ToString) > 0 Then AddRequest(rowSigip("bitron_pn").ToString, rowSigip("des_pn").ToString, rowSigip("qt").ToString, row("npieces").ToString, rowSigip("bom").ToString, rowSigip("bom").ToString & " - " & rowSigip("des_bom").ToString, , , rowSigip("doc").ToString)
-                    Next
-
-                    'ElseIf row("bomlocation").ToString = "OFFER" Then
-                    '    If versionOffer(row("bitronpn").ToString, BomName, verN) = 1 Then
-                    '        rowShowOffer = tblOff.Select("name ='" & BomName & "'")
-                    '        If rowShowOffer.Length = 0 Then MsgBox("Bom not found in OFFER!" & row("bitronpn").ToString & BomName)
-                    '        For Each rowOffer In rowShowOffer
-                    '            Dim BitronPNCode As String
-                    '            If rowOffer("bitronpn").ToString <> "" Then
-                    '                BitronPNCode = rowOffer("bitronpn").ToString
-                    '            Else
-                    '                BitronPNCode = "Q_" & rowOffer("name").ToString & "_" & rowOffer("id").ToString
-                    '            End If
-
-                    '            ButtonUpdateMagBox.Text = "Udpate : " & Math.Round(100 * i / rowShow.Length, 0) & "%"
-                    '            Application.DoEvents()
-                    '            If Val(rowOffer("qt_v" & verN).ToString) * Val(row("npieces").ToString) > 0 Then AddRequest(BitronPNCode, rowOffer("description").ToString, rowOffer("qt_v" & verN).ToString, row("npieces").ToString, row("bitronpn").ToString, row("bitronpn").ToString & " - " & BomName, rowOffer("brand").ToString, rowOffer("brandAlt").ToString, OrcadDoc(rowOffer("bitronpn").ToString))
-                    '        Next
-                    '    Else
-                    '        MsgBox("Bom not found in OFFER!" & row("bitronpn").ToString & BomName)
-                    '    End If
-                Else
-                    MsgBox("For this product BOM not assigned! " & row("bitronpn").ToString & "  " & row("name").ToString)
-                End If
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        
+            If IsNothing(tblSigip) Then
+                Using AdapterSigip As New MySqlDataAdapter("SELECT * FROM sigip", con)
+		            AdapterSigip.Fill(DsSigip, "sigip")
+	            End Using
+                tblSigip = DsSigip.Tables("sigip")
             End If
-        Next
 
-        sql = "DELETE FROM `" & DBName & "`.`materialRequest` WHERE `materialRequest`.`REQUESTQT` = 0 AND `materialRequest`.`REQUESTQT_1` = 0 AND `materialRequest`.`REQUESTQT_2` = 0 AND  `materialRequest`.`REQUESTQT_3` = 0 AND `materialRequest`.`REQUESTQT_4` = 0 AND  `materialRequest`.`REQUESTQT_5` = 0"
+            If IsNothing(tblOff) Then
+                Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
+		            AdapterOff.Fill(DsOff, "offer")
+	            End Using
+                tblOff = DsOff.Tables("offer")
+            End If
+            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
+		       AdapterProd.Fill(DsProd, "Product")
+	        End Using
+            Dim tblProd As DataTable = DsProd.Tables("Product")
+            Dim rowShow As DataRow() = tblProd.Select("statusactivity = 'OPEN'")
+            Dim dsMySql As New DataSet
+            Dim sql = "SELECT * FROM `materialrequest` "
+            Dim adapterMySql = New MySqlDataAdapter(sql, con)
+            adapterMySql.Fill(dsMySql, "materialrequest")
+            Dim tblMySql As DataTable = dsMySql.Tables("materialrequest")
+            ButtonUpdateMagBox.Text = "Deleting data and shift....."
+            Application.DoEvents()
+            For Each rowShowMy In tblMySql.Rows
 
-        Try
-            commandMySql = New MySqlCommand(sql, MySqlconnection)
-            commandMySql.ExecuteNonQuery()
-        Catch ex As Exception
-            MsgBox("Error in DB... please reset material request!")
-        End Try
-
-        ' rda/order elaboration
-
-        Dim InOrder As Single = order("", True)
-        Dim InRda As Single = Rda("", True)
-
-        rowShow = tblMySql.Select("delta < 0 ")
-        For Each row In rowShow
-            RdaInfo = ""
-            OrderInfo = ""
-            Dim NeedRda As String = ""
-            'If "15001152" = row("bitronpn").ToString Then Stop
-            If Mid(row("bitronpn").ToString, 1, 2) <> "Q_" And Mid(row("bitronpn").ToString, 1, 2) <> "18" Then
-                InOrder = order(row("bitronpn").ToString, False)
-                InRda = Rda(row("bitronpn").ToString, False)
-                If -Val(row("delta").ToString) > (InOrder + InRda) Then
-                    NeedRda = "NEED_RDA[" & Val(Val(row("delta").ToString) + (InOrder + InRda)) & "];"
-                End If
-
-                sql = "UPDATE `materialrequest` SET `status`='" & RdaInfo & OrderInfo & NeedRda & "' where bitronpn = '" & row("bitronpn") & "'"
+                sql = "UPDATE `materialrequest` SET `warehouse3d`='',`RequestQt`=0, `BomList`='',`delta`='',`DeltaUsedFlag`=''," &
+                        "`RequestQt_1`=" & rowShowMy("RequestQt").ToString & "," &
+                        "`RequestQt_2`=" & rowShowMy("RequestQt_1").ToString & "," &
+                        "`RequestQt_3`=" & rowShowMy("RequestQt_2").ToString & "," &
+                        "`RequestQt_4`=" & rowShowMy("RequestQt_3").ToString & "," &
+                        "`RequestQt_5`=" & rowShowMy("RequestQt_4").ToString & "," &
+                        "`ProductionUsed`='' where bitronpn = '" & rowShowMy("bitronpn") & "'"
 
                 Try
-                    commandMySql = New MySqlCommand(sql, MySqlconnection)
+                    commandMySql = New MySqlCommand(sql, con)
                     commandMySql.ExecuteNonQuery()
                 Catch ex As Exception
                     MsgBox("Error in DB... please reset material request!")
                 End Try
-            End If
-            Application.DoEvents()
-        Next
 
-        rowShow = tblMySql.Select("delta >= 0 ")
-        For Each row In rowShow
-            sql = "UPDATE `materialrequest` SET `status`='" & "' where bitronpn = '" & row("bitronpn") & "'"
+            Next
+
+            ButtonUpdateMagBox.Text = "Deleting data and shift ....."
+            Application.DoEvents()
+            Try
+                OpenConnectionSqlOrcad("10.10.10.36", "Orcad1", "orcadw", "orcadw")
+                'OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
+            Catch ex As Exception
+                CloseConnectionSqlOrcad()
+                OpenConnectionSqlOrcad("10.10.10.36", "Orcad1", "orcadw", "orcadw")
+                'OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
+            End Try
+
+            ButtonUpdateMagBox.Text = "Load Orcad Data....."
+            Application.DoEvents()
+            Dim AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where ( valido = 'valido') ", SqlconnectionOrcad)
+            tblDocComp.Clear()
+            DsDocComp.Clear()
+            AdapterDocComp.Fill(DsDocComp, "orcadw.T_orcadcis")
+            tblDocComp = DsDocComp.Tables("orcadw.T_orcadcis")
+            
+            Try
+                DsDoc.Clear()
+                tblDoc.Clear()
+            Catch ex As Exception
+
+            End Try
+            Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM DOC;", con)
+		        AdapterDoc.Fill(DsDoc, "doc")
+	        End Using
+            tblDoc = DsDoc.Tables("doc")
+
+            ButtonUpdateMagBox.Text = "Start calculation ..."
+            Application.DoEvents()
+
+            For Each row In rowShow
+                i = i + 1
+                If Val(row("NPIECES").ToString) > 0 Then
+                    If row("bomlocation").ToString = "SIGIP" Then
+                        Dim rowShowSigip As DataRow() = tblSigip.Select("bom ='" & row("bitronpn").ToString & "' and (acq_fab = 'acq' Or acq_fab = 'acv')")
+                        If rowShowSigip.Length = 0 Then MsgBox("Bom not found in SIGIP: " & row("bitronpn").ToString & BomName)
+                        For Each rowSigip In rowShowSigip
+                            ButtonUpdateMagBox.Text = "Udpate: " & Math.Round(100 * i / rowShow.Length, 0) & "%"
+                            Application.DoEvents()
+                            If Val(rowSigip("qt").ToString) * Val(row("npieces").ToString) > 0 Then AddRequest(rowSigip("bitron_pn").ToString, rowSigip("des_pn").ToString, rowSigip("qt").ToString, row("npieces").ToString, rowSigip("bom").ToString, rowSigip("bom").ToString & " - " & rowSigip("des_bom").ToString, , , rowSigip("doc").ToString)
+                        Next
+
+                        'ElseIf row("bomlocation").ToString = "OFFER" Then
+                        '    If versionOffer(row("bitronpn").ToString, BomName, verN) = 1 Then
+                        '        rowShowOffer = tblOff.Select("name ='" & BomName & "'")
+                        '        If rowShowOffer.Length = 0 Then MsgBox("Bom not found in OFFER!" & row("bitronpn").ToString & BomName)
+                        '        For Each rowOffer In rowShowOffer
+                        '            Dim BitronPNCode As String
+                        '            If rowOffer("bitronpn").ToString <> "" Then
+                        '                BitronPNCode = rowOffer("bitronpn").ToString
+                        '            Else
+                        '                BitronPNCode = "Q_" & rowOffer("name").ToString & "_" & rowOffer("id").ToString
+                        '            End If
+
+                        '            ButtonUpdateMagBox.Text = "Udpate : " & Math.Round(100 * i / rowShow.Length, 0) & "%"
+                        '            Application.DoEvents()
+                        '            If Val(rowOffer("qt_v" & verN).ToString) * Val(row("npieces").ToString) > 0 Then AddRequest(BitronPNCode, rowOffer("description").ToString, rowOffer("qt_v" & verN).ToString, row("npieces").ToString, row("bitronpn").ToString, row("bitronpn").ToString & " - " & BomName, rowOffer("brand").ToString, rowOffer("brandAlt").ToString, OrcadDoc(rowOffer("bitronpn").ToString))
+                        '        Next
+                        '    Else
+                        '        MsgBox("Bom not found in OFFER!" & row("bitronpn").ToString & BomName)
+                        '    End If
+                    Else
+                        MsgBox("For this product BOM not assigned! " & row("bitronpn").ToString & "  " & row("name").ToString)
+                    End If
+                End If
+            Next
+
+            sql = "DELETE FROM `" & DBName & "`.`materialRequest` WHERE `materialRequest`.`REQUESTQT` = 0 AND `materialRequest`.`REQUESTQT_1` = 0 AND `materialRequest`.`REQUESTQT_2` = 0 AND  `materialRequest`.`REQUESTQT_3` = 0 AND `materialRequest`.`REQUESTQT_4` = 0 AND  `materialRequest`.`REQUESTQT_5` = 0"
 
             Try
-                commandMySql = New MySqlCommand(sql, MySqlconnection)
+                commandMySql = New MySqlCommand(sql, con)
                 commandMySql.ExecuteNonQuery()
             Catch ex As Exception
                 MsgBox("Error in DB... please reset material request!")
             End Try
-        Next
 
-        tblMySql.Dispose()
-        tblMySql.Dispose()
+            ' rda/order elaboration
+
+            Dim InOrder As Single = order("", True)
+            Dim InRda As Single = Rda("", True)
+
+            rowShow = tblMySql.Select("delta < 0 ")
+            For Each row In rowShow
+                RdaInfo = ""
+                OrderInfo = ""
+                Dim NeedRda As String = ""
+                'If "15001152" = row("bitronpn").ToString Then Stop
+                If Mid(row("bitronpn").ToString, 1, 2) <> "Q_" And Mid(row("bitronpn").ToString, 1, 2) <> "18" Then
+                    InOrder = order(row("bitronpn").ToString, False)
+                    InRda = Rda(row("bitronpn").ToString, False)
+                    If -Val(row("delta").ToString) > (InOrder + InRda) Then
+                        NeedRda = "NEED_RDA[" & Val(Val(row("delta").ToString) + (InOrder + InRda)) & "];"
+                    End If
+
+                    sql = "UPDATE `materialrequest` SET `status`='" & RdaInfo & OrderInfo & NeedRda & "' where bitronpn = '" & row("bitronpn") & "'"
+
+                    Try
+                        commandMySql = New MySqlCommand(sql, con)
+                        commandMySql.ExecuteNonQuery()
+                    Catch ex As Exception
+                        MsgBox("Error in DB... please reset material request!")
+                    End Try
+                End If
+                Application.DoEvents()
+            Next
+
+            rowShow = tblMySql.Select("delta >= 0 ")
+            For Each row In rowShow
+                sql = "UPDATE `materialrequest` SET `status`='" & "' where bitronpn = '" & row("bitronpn") & "'"
+
+                Try
+                    commandMySql = New MySqlCommand(sql, con)
+                    commandMySql.ExecuteNonQuery()
+                Catch ex As Exception
+                    MsgBox("Error in DB... please reset material request!")
+                End Try
+            Next
+            tblMySql.Dispose()
+            tblMySql.Dispose()
+        End Using
         ButtonUpdateMagBox.Text = "Udpate Material Request"
     End Sub
 
     Function order(ByVal bitronpn As String, ByVal refrash As Boolean) As Single
-        Static AdapterOrder As New MySqlDataAdapter("SELECT * FROM `order`", MySqlconnection)
         Static tblOrder As DataTable
         Static DsOrder As New DataSet
         Dim rowShow As DataRow()
@@ -1469,8 +1624,13 @@ Public Class FormSamples
             Catch ex As Exception
 
             End Try
-
-            AdapterOrder.Fill(DsOrder, "order")
+            Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+                Using AdapterOrder As New MySqlDataAdapter("SELECT * FROM `order`", con)
+			        AdapterOrder.Fill(DsOrder, "order")
+		        End Using
+                End Using
             tblOrder = DsOrder.Tables("order")
         Else
             rowShow = tblOrder.Select("identif ='" & bitronpn & "' and stato_item ='0'")
@@ -1480,11 +1640,11 @@ Public Class FormSamples
             Next
 
         End If
-
+      
     End Function
 
     Function Rda(ByVal bitronpn As String, ByVal refrash As Boolean) As Single
-        Static AdapterRda As New MySqlDataAdapter("SELECT * FROM Rda", MySqlconnection)
+        'Static AdapterRda As New MySqlDataAdapter("SELECT * FROM Rda", MySqlConnection)
         Static tblRda As DataTable
         Static DsRda As New DataSet
         Dim rowShow As DataRow()
@@ -1497,8 +1657,13 @@ Public Class FormSamples
             Catch ex As Exception
 
             End Try
-
-            AdapterRda.Fill(DsRda, "Rda")
+            Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+		            Using AdapterRda As New MySqlDataAdapter("SELECT * FROM Rda", con)
+			            AdapterRda.Fill(DsRda, "Rda")
+		            End Using
+            End Using
             tblRda = DsRda.Tables("Rda")
 
         Else
@@ -1530,36 +1695,39 @@ Public Class FormSamples
         Dim strBomList
         Dim dsMySql As New DataSet
         Dim sql As String = "SELECT * FROM `materialrequest` WHERE `bitronpn`='" & bitronPN & "'"
-        Dim adapterMySql = New MySqlDataAdapter(sql, MySqlconnection)
-        adapterMySql.Fill(dsMySql, "materialrequest")
-        Dim tblMySql As DataTable = dsMySql.Tables("materialrequest")
-        Dim stockvalue As Double = Str(Stock(bitronPN))
-        If tblMySql.Rows.Count < 1 Then
-            strBomList = des_bom & "[" & Trim(Str(IIf(qt = Int(qt), Int(qt), Math.Round(Val(qt), 5)))) & "]"
-            sql = "INSERT INTO `" & DBName & "`.`materialrequest` (`DeltaUsedFlag`,`ProductionUsed`,`bitronPN`,`des_pn`,`Brand`,`BrandALT`,`pfp`,`warehouse3d`,`Delta`,`RequestQt`,`BomList`,`doc`) VALUES ('" & IIf(SigipUsed(bitronPN) <> "" Or
-            (stockvalue - Val(strQt)) < Val(strQt) * 0.1, "YES", "NO") & "','" & SigipUsed(bitronPN) & "','" & bitronPN & "','" & des_PN & "','" & brand & "','" & brandAlt & "','" & pfp(bitronPN) & "','" & stockvalue & "','" &
-             stockvalue - Val(Str(Val(qt) * Val(npieces))) & "','" & Trim(Str(Val(qt) * Val(npieces))) & "','" & strBomList & "','" & Doc & "')"
-        Else
-            strQt = Trim(Str(Val(tblMySql.Rows.Item(0)("requestqt")) + Str(Val(qt) * Val(npieces))))
-            strBomList = tblMySql.Rows.Item(0)("BomList").ToString
-            If strBomList.Contains(Bom) And strBomList <> "" Then
-                Dim i As Integer = InStr(strBomList, Bom, CompareMethod.Text)
-                i = InStr(i + 1, strBomList, "[", CompareMethod.Text)
-                Dim j As Integer = InStr(i, strBomList, "]", CompareMethod.Text)
-                strBomList = Mid(strBomList, 1, i) & Trim(Str(Val(Mid(strBomList, i + 1, j - 1 - i)) + Val(qt))) & Mid(strBomList, j)
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            Dim adapterMySql = New MySqlDataAdapter(sql, con)
+            adapterMySql.Fill(dsMySql, "materialrequest")
+            Dim tblMySql As DataTable = dsMySql.Tables("materialrequest")
+            Dim stockvalue As Double = Str(Stock(bitronPN))
+            If tblMySql.Rows.Count < 1 Then
+                strBomList = des_bom & "[" & Trim(Str(IIf(qt = Int(qt), Int(qt), Math.Round(Val(qt), 5)))) & "]"
+                sql = "INSERT INTO `" & DBName & "`.`materialrequest` (`DeltaUsedFlag`,`ProductionUsed`,`bitronPN`,`des_pn`,`Brand`,`BrandALT`,`pfp`,`warehouse3d`,`Delta`,`RequestQt`,`BomList`,`doc`) VALUES ('" & IIf(SigipUsed(bitronPN) <> "" Or
+                (stockvalue - Val(strQt)) < Val(strQt) * 0.1, "YES", "NO") & "','" & SigipUsed(bitronPN) & "','" & bitronPN & "','" & des_PN & "','" & brand & "','" & brandAlt & "','" & pfp(bitronPN) & "','" & stockvalue & "','" &
+                 stockvalue - Val(Str(Val(qt) * Val(npieces))) & "','" & Trim(Str(Val(qt) * Val(npieces))) & "','" & strBomList & "','" & Doc & "')"
             Else
-                strBomList = tblMySql.Rows.Item(0)("BomList") & ";" & des_bom & "[" & Trim(Str(IIf(qt = Int(qt), Int(qt), Math.Round(Val(qt), 5)))) & "]"
-                If Mid(strBomList, 1, 1) = ";" Then strBomList = Mid(strBomList, 2)
+                strQt = Trim(Str(Val(tblMySql.Rows.Item(0)("requestqt")) + Str(Val(qt) * Val(npieces))))
+                strBomList = tblMySql.Rows.Item(0)("BomList").ToString
+                If strBomList.Contains(Bom) And strBomList <> "" Then
+                    Dim i As Integer = InStr(strBomList, Bom, CompareMethod.Text)
+                    i = InStr(i + 1, strBomList, "[", CompareMethod.Text)
+                    Dim j As Integer = InStr(i, strBomList, "]", CompareMethod.Text)
+                    strBomList = Mid(strBomList, 1, i) & Trim(Str(Val(Mid(strBomList, i + 1, j - 1 - i)) + Val(qt))) & Mid(strBomList, j)
+                Else
+                    strBomList = tblMySql.Rows.Item(0)("BomList") & ";" & des_bom & "[" & Trim(Str(IIf(qt = Int(qt), Int(qt), Math.Round(Val(qt), 5)))) & "]"
+                    If Mid(strBomList, 1, 1) = ";" Then strBomList = Mid(strBomList, 2)
+                End If
+                sql = "UPDATE `materialrequest` SET `w_warehouse`=" & Val(Stock_W(bitronPN)) & ", `RequestQt`='" & strQt & "',`BomList`='" & strBomList & "',`brandALT`='" & brandAlt & "',`brand`='" & brand & "',`pfp`='" & pfp(bitronPN) & "',`doc`='" & Doc & "',`warehouse3d`='" & stockvalue & "',`Delta`='" & stockvalue - Val(strQt) & "',`ProductionUsed`='" & SigipUsed(bitronPN) & "',`DeltaUsedFlag`='" & IIf(SigipUsed(bitronPN) <> "" Or (stockvalue - Val(strQt)) < Val(strQt) * 0.1, "YES", "NO") & "' WHERE `bitronpn`='" & bitronPN & "'"
             End If
-            sql = "UPDATE `materialrequest` SET `w_warehouse`=" & Val(Stock_W(bitronPN)) & ", `RequestQt`='" & strQt & "',`BomList`='" & strBomList & "',`brandALT`='" & brandAlt & "',`brand`='" & brand & "',`pfp`='" & pfp(bitronPN) & "',`doc`='" & Doc & "',`warehouse3d`='" & stockvalue & "',`Delta`='" & stockvalue - Val(strQt) & "',`ProductionUsed`='" & SigipUsed(bitronPN) & "',`DeltaUsedFlag`='" & IIf(SigipUsed(bitronPN) <> "" Or (stockvalue - Val(strQt)) < Val(strQt) * 0.1, "YES", "NO") & "' WHERE `bitronpn`='" & bitronPN & "'"
-        End If
-        Try
-            Dim commandMySql = New MySqlCommand(sql, MySqlconnection)
-            commandMySql.ExecuteNonQuery()
-        Catch ex As Exception
-            MsgBox("Error in DB... please reset material request!")
-        End Try
-
+            Try
+                Dim commandMySql = New MySqlCommand(sql, con)
+                commandMySql.ExecuteNonQuery()
+            Catch ex As Exception
+                MsgBox("Error in DB... please reset material request!")
+            End Try
+        End Using
 
     End Sub
     Private Sub ButtonSaveDefault_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSaveDefault.Click
@@ -1601,35 +1769,38 @@ Public Class FormSamples
         xlsWorksheet.Activate()
         xlsWorksheet.Cells.Replace(What:=",", Replacement:="")
 
-
-        'empty the PFP table
-        Dim commandMySql As MySqlCommand = New MySqlCommand("TRUNCATE TABLE `" & DBName & "`.`order`", MySqlconnection)
-        commandMySql.ExecuteNonQuery()
-
-        'save the .xls file in .csv format
-        Dim tempPath = Path.GetTempPath() & "temp.csv"
-        Try
-            If File.Exists(tempPath) Then
-                File.Delete(tempPath)
-            End If
-
-            xlsWorkbook.SaveAs(tempPath, 6)
-            xlsWorkbook.Close(True)
-            xlsApp.Quit()
-            Dim generation As Integer = GC.GetGeneration(xlsApp)
-            GC.Collect(generation)
-            'copy data from excel to `pfp`
-            Dim sql As String = "load data local infile '" & Replace(tempPath, "\", "\\") & "' into table `order` fields terminated by ','  lines terminated by '\r\n' ignore 1 lines  (`stab`,`ordine`,`tipoOrd`,`forn`,`RagSoc`,`Stato_Ord`,`Data_Inserimento`,`Acquisitore`,`Num_Item`,`Num_RDA`,`Identif`,`Descr`,`Stato_Item`,`Qta_Ord`,`Qta_Consegnata`,`Qta_Scartata`)"
-            commandMySql = New MySqlCommand(sql, MySqlconnection)
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            'empty the PFP table
+            Dim commandMySql As MySqlCommand = New MySqlCommand("TRUNCATE TABLE `" & DBName & "`.`order`", con)
             commandMySql.ExecuteNonQuery()
 
-            'sql = "DELETE FROM `" & DBName & "`.`order` WHERE `order`.`stab` = '62'"
-            sql = "DELETE FROM `" & DBName & "`.`order` WHERE `order`.`stab` = " & ParameterTable("plant")
-            commandMySql = New MySqlCommand(sql, MySqlconnection)
-            commandMySql.ExecuteNonQuery()
-        Catch ex As Exception
-            MsgBox(ex.Message)
-        End Try
+            'save the .xls file in .csv format
+            Dim tempPath = Path.GetTempPath() & "temp.csv"
+            Try
+                If File.Exists(tempPath) Then
+                    File.Delete(tempPath)
+                End If
+
+                xlsWorkbook.SaveAs(tempPath, 6)
+                xlsWorkbook.Close(True)
+                xlsApp.Quit()
+                Dim generation As Integer = GC.GetGeneration(xlsApp)
+                GC.Collect(generation)
+                'copy data from excel to `pfp`
+                Dim sql As String = "load data local infile '" & Replace(tempPath, "\", "\\") & "' into table `order` fields terminated by ','  lines terminated by '\r\n' ignore 1 lines  (`stab`,`ordine`,`tipoOrd`,`forn`,`RagSoc`,`Stato_Ord`,`Data_Inserimento`,`Acquisitore`,`Num_Item`,`Num_RDA`,`Identif`,`Descr`,`Stato_Item`,`Qta_Ord`,`Qta_Consegnata`,`Qta_Scartata`)"
+                commandMySql = New MySqlCommand(sql, con)
+                commandMySql.ExecuteNonQuery()
+
+                'sql = "DELETE FROM `" & DBName & "`.`order` WHERE `order`.`stab` = '62'"
+                sql = "DELETE FROM `" & DBName & "`.`order` WHERE `order`.`stab` = " & ParameterTable("plant")
+                commandMySql = New MySqlCommand(sql, con)
+                commandMySql.ExecuteNonQuery()
+            Catch ex As Exception
+                MsgBox(ex.Message)
+            End Try
+        End Using
     End Sub
 
     Public Sub Import_WH_Stock()
@@ -1651,32 +1822,35 @@ Public Class FormSamples
             MsgBox(ex.Message)
         End Try
 
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+		       
+            'empty the PFP table
+            Dim commandMySql As MySqlCommand = New MySqlCommand("TRUNCATE TABLE `" & DBName & "`.`spu`", con)
+            commandMySql.ExecuteNonQuery()
 
-        'empty the PFP table
-        Dim commandMySql As MySqlCommand = New MySqlCommand("TRUNCATE TABLE `" & DBName & "`.`spu`", MySqlconnection)
-        commandMySql.ExecuteNonQuery()
+            'save the .xls file in .csv format
+            Dim tempPath = Path.GetTempPath() & "temp.csv"
+            Try
+                If File.Exists(tempPath) Then
+                    File.Delete(tempPath)
+                End If
 
-        'save the .xls file in .csv format
-        Dim tempPath = Path.GetTempPath() & "temp.csv"
-        Try
-            If File.Exists(tempPath) Then
-                File.Delete(tempPath)
-            End If
+                xlsWorkbook.SaveAs(tempPath, 6)
+                xlsWorkbook.Close(True)
+                xlsApp.Quit()
+                Dim generation As Integer = GC.GetGeneration(xlsApp)
+                GC.Collect(generation)
+            Catch ex As Exception
+                MsgBox(ex.Message)
+            End Try
 
-            xlsWorkbook.SaveAs(tempPath, 6)
-            xlsWorkbook.Close(True)
-            xlsApp.Quit()
-            Dim generation As Integer = GC.GetGeneration(xlsApp)
-            GC.Collect(generation)
-        Catch ex As Exception
-            MsgBox(ex.Message)
-        End Try
-
-        'copy data from excel to `pfp`
-        Dim sql As String = "load data local infile '" & Replace(tempPath, "\", "\\") & "' into table `spu` fields terminated by ','  lines terminated by '\r\n' ignore 1 lines  (`bitronpn`,`pades`,`sagia`,`samgz`,`saubc`,`paumt`,`pmppa`,`pmcmm`,`paclm`)"
-        commandMySql = New MySqlCommand(sql, MySqlconnection)
-        commandMySql.ExecuteNonQuery()
-
+            'copy data from excel to `pfp`
+            Dim sql As String = "load data local infile '" & Replace(tempPath, "\", "\\") & "' into table `spu` fields terminated by ','  lines terminated by '\r\n' ignore 1 lines  (`bitronpn`,`pades`,`sagia`,`samgz`,`saubc`,`paumt`,`pmppa`,`pmcmm`,`paclm`)"
+            commandMySql = New MySqlCommand(sql, con)
+            commandMySql.ExecuteNonQuery()
+        End Using
     End Sub
 
     Public Sub Import_Rda()
@@ -1689,39 +1863,47 @@ Public Class FormSamples
         Dim xlsWorksheet As Object = xlsWorkbook.Worksheets(1)
         xlsWorksheet.Activate()
         xlsWorksheet.Cells.Replace(What:=",", Replacement:="")
+         Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            'empty the rda table
+            Dim commandMySql = New MySqlCommand("TRUNCATE TABLE `" & DBName & "`.`rda`", con)
+            commandMySql.ExecuteNonQuery()
 
-        'empty the rda table
-        Dim commandMySql = New MySqlCommand("TRUNCATE TABLE `" & DBName & "`.`rda`", MySqlconnection)
-        commandMySql.ExecuteNonQuery()
+            'save the .xls file in .csv format
+            Dim tempPath = Path.GetTempPath() & "temp.csv"
+            Try
+                If File.Exists(tempPath) Then
+                    File.Delete(tempPath)
+                End If
 
-        'save the .xls file in .csv format
-        Dim tempPath = Path.GetTempPath() & "temp.csv"
-        Try
-            If File.Exists(tempPath) Then
-                File.Delete(tempPath)
-            End If
+                xlsWorkbook.SaveAs(tempPath, 6)
+                xlsWorkbook.Close(True)
+                xlsApp.Quit()
+                Dim generation As Integer = GC.GetGeneration(xlsApp)
+                GC.Collect(generation)
+            Catch ex As Exception
+                MsgBox(ex.Message)
+            End Try
 
-            xlsWorkbook.SaveAs(tempPath, 6)
-            xlsWorkbook.Close(True)
-            xlsApp.Quit()
-            Dim generation As Integer = GC.GetGeneration(xlsApp)
-            GC.Collect(generation)
-        Catch ex As Exception
-            MsgBox(ex.Message)
-        End Try
-
-        'copy data from excel to `rda`
-        Dim sql As String = "load data local infile '" & Replace(tempPath, "\", "\\") & "' into table `rda` fields terminated by ','  lines terminated by '\r\n' ignore 1 lines  (`RATRK`,`RASTB`,`RANUM`,`RATIF`,`RAITE`,`RADES`,`RACMA`,`RAIDF`,`RAVSM`,`RAVAL`,`RAUNC`,`RAQT1`,`RAQT2`,`RAQT3`,`RAQT4`,`RAQT5`,`RADT1`,`RADT2`,`RADT3`,`RADT4`,`RADT5`,`RAQTO`,`RAVSC`,`RACOM`,`RAFOR`,`RACDI`,`RACDR`,`RAUSE`,`RADTE`,`RADCV`,`RASTA`,`RAOA1`,`RAECO`,`RALOT`,`RAPGM`,`RABUY`,`RAUAG`,`RAORA`)"
-        commandMySql = New MySqlCommand(sql, MySqlconnection)
-        commandMySql.ExecuteNonQuery()
-
+            'copy data from excel to `rda`
+            Dim sql As String = "load data local infile '" & Replace(tempPath, "\", "\\") & "' into table `rda` fields terminated by ','  lines terminated by '\r\n' ignore 1 lines  (`RATRK`,`RASTB`,`RANUM`,`RATIF`,`RAITE`,`RADES`,`RACMA`,`RAIDF`,`RAVSM`,`RAVAL`,`RAUNC`,`RAQT1`,`RAQT2`,`RAQT3`,`RAQT4`,`RAQT5`,`RADT1`,`RADT2`,`RADT3`,`RADT4`,`RADT5`,`RAQTO`,`RAVSC`,`RACOM`,`RAFOR`,`RACDI`,`RACDR`,`RAUSE`,`RADTE`,`RADCV`,`RASTA`,`RAOA1`,`RAECO`,`RALOT`,`RAPGM`,`RABUY`,`RAUAG`,`RAORA`)"
+            commandMySql = New MySqlCommand(sql, con)
+            commandMySql.ExecuteNonQuery()
+        End Using
     End Sub
 
     Public Function Stock(ByVal bitronpn As String) As Double
 
         Dim dsMySql As New DataSet
-        Dim adapterMySql = New MySqlDataAdapter("SELECT SUM(`sagia`) AS sum FROM `" & DBName & "`.`spu` WHERE (samgz='D' or samgz='8') and `bitronpn`='" & bitronpn & "'", MySqlconnection)
-        adapterMySql.Fill(dsMySql, "spu")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+		    Using adapterMySql As New MySqlDataAdapter("SELECT SUM(`sagia`) AS sum FROM `" & DBName & "`.`spu` WHERE (samgz='D' or samgz='8') and `bitronpn`='" & bitronpn & "'", con)
+			    adapterMySql.Fill(dsMySql, "spu")
+		    End Using
+        End Using
+        
         Dim tblMySql As DataTable = dsMySql.Tables("spu")
         Return Val(tblMySql.Rows(0).Item("sum").ToString)
 
@@ -1730,8 +1912,14 @@ Public Class FormSamples
     Public Function Stock_W(ByVal bitronpn As String) As Double
 
         Dim dsMySql As New DataSet
-        Dim adapterMySql = New MySqlDataAdapter(String.Format("SELECT SUM(`sagia`) AS sum FROM `{0}`.`spu` WHERE (samgz='D' or samgz='8' ) and `bitronpn`='{1}'", DBName, bitronpn), MySqlconnection)
-        adapterMySql.Fill(dsMySql, "spu")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+		    Using adapterMySql As New MySqlDataAdapter(String.Format("SELECT SUM(`sagia`) AS sum FROM `{0}`.`spu` WHERE (samgz='D' or samgz='8' ) and `bitronpn`='{1}'", DBName, bitronpn), con)
+			    adapterMySql.Fill(dsMySql, "spu")
+		    End Using
+        End Using
+        
         Dim tblMySql As DataTable = dsMySql.Tables("spu")
 
         Return Val(tblMySql.Rows(0).Item("sum").ToString)
@@ -1948,11 +2136,13 @@ Public Class FormSamples
                 Dim Sql As String = "INSERT INTO npi_openissue (BS,DATE,Issue_description,Bitron_PN,Area,Owner,Temp_corr_action,Final_corr_action,ETC,Status,FilePath ) VALUES ('" &
                                     Txt_description.Text & "','" & DateStart.ToString("yyyy-MM-dd") & "','" & Txt_IssueDescription.Text & "','" & Txt_BitronPN.Text & "','" & Txt_Area.Text & "','" &
                                     Cob_Owner.Text & "','" & Txt_TempCorrectAction.Text & "','" & Txt_FinalCorrectAction.Text & "','" & DateClosed.ToString("yyyy-MM-dd") & "','" & Cob_Status.Text & "','" & Txt_FilePath.Text & "');"
-
-                Dim cmd As MySqlCommand = New MySqlCommand(Sql, MySqlconnection)
-                cmd.ExecuteNonQuery()
-                Call issuefunction(0)
-
+                Dim  builder As  New Common.DbConnectionStringBuilder()
+                builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+		            Dim cmd As MySqlCommand = New MySqlCommand(Sql, con)
+                    cmd.ExecuteNonQuery()
+                    Call issuefunction(0)
+                End Using
             Catch ex As Exception
                 MsgBox(ex.Message)
             End Try
@@ -1975,9 +2165,14 @@ Public Class FormSamples
             Try
                 Dim sql As String = " DELETE  From npi_openissue WHERE ID = " & Txt_Index.Text
 
-                Dim cmd = New MySqlCommand(sql, MySqlconnection)
-                cmd.ExecuteNonQuery()
-                Call issuefunction(selectrowNo - 1)
+                Dim  builder As  New Common.DbConnectionStringBuilder()
+                builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+		            Dim cmd = New MySqlCommand(sql, con)
+                    cmd.ExecuteNonQuery()
+                    Call issuefunction(selectrowNo - 1)
+                End Using
+               
 
             Catch ex As Exception
                 MsgBox(ex.Message)
@@ -2006,12 +2201,13 @@ Public Class FormSamples
                                     Txt_IssueDescription.Text & "',Bitron_PN = '" & Txt_BitronPN.Text & "',Area = '" & Txt_Area.Text & "',Owner = '" & Cob_Owner.Text & "',Temp_corr_action = '" &
                                     Txt_TempCorrectAction.Text & "',Final_corr_action = '" & Txt_FinalCorrectAction.Text & "',ETC = '" & DateClosed.ToString("yyyy-MM-dd") & "',Status = '" &
                                     Cob_Status.Text & "',FilePath ='" & Txt_FilePath.Text & "' WHERE ID = '" & Txt_Index.Text & "'"
-
-                Dim cmd = New MySqlCommand(sql, MySqlconnection)
-                cmd.ExecuteNonQuery()
-                Call issuefunction(selectrowNo)
-
-
+                Dim  builder As  New Common.DbConnectionStringBuilder()
+                builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+		            Dim cmd = New MySqlCommand(sql, con)
+                    cmd.ExecuteNonQuery()
+                    Call issuefunction(selectrowNo)
+                End Using
                 MsgBox("Successful update")
             Catch ex As Exception
                 MsgBox(ex.Message)
@@ -2055,29 +2251,39 @@ Public Class FormSamples
         End If
 
         Sql += "order by ID desc"
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            'Dim AdapterNPICob As New MySqlDataAdapter(Sql, MySqlConnection)
+            Try
+                DsNPI.Clear()
+                tblNPI.Clear()
+                Using AdapterNPICob As New MySqlDataAdapter(Sql, con)
+			        AdapterNPICob.Fill(DsNPI, "NPI")
+		        End Using
+                tblNPI = DsNPI.Tables("NPI")
 
-        Dim AdapterNPICob As New MySqlDataAdapter(Sql, MySqlconnection)
-        Try
-            DsNPI.Clear()
-            tblNPI.Clear()
-            AdapterNPICob.Fill(DsNPI, "NPI")
-            tblNPI = DsNPI.Tables("NPI")
-
-            DGV_NPI.DataSource = tblNPI
-            Call DataBangding(0)
+                DGV_NPI.DataSource = tblNPI
+                Call DataBangding(0)
 
 
-        Catch ex As Exception
-            MsgBox(ex.Message)
-        End Try
-
+            Catch ex As Exception
+                MsgBox(ex.Message)
+            End Try
+        End Using
     End Sub
 
     Public Sub issuefunction(ByVal selectrowNo As Integer)
 
         DsNPI.Clear()
         tblNPI.Clear()
-        AdapterNPI.Fill(DsNPI, "NPI")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+		        Using AdapterNPI As New MySqlDataAdapter("SELECT * FROM npi_openissue", con)
+			        AdapterNPI.Fill(DsNPI, "NPI")
+		        End Using
+        End Using
         tblNPI = DsNPI.Tables("NPI")
 
         DGV_NPI.DataSource = tblNPI
@@ -2182,7 +2388,13 @@ Public Class FormSamples
 
         DsNPI.Clear()
         tblNPI.Clear()
-        AdapterNPI.Fill(DsNPI, "NPI")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+		        Using AdapterNPI As New MySqlDataAdapter("SELECT * FROM npi_openissue", con)
+			        AdapterNPI.Fill(DsNPI, "NPI")
+		        End Using
+        End Using
         tblNPI = DsNPI.Tables("NPI")
 
         Dim rowResults As DataRow() = tblNPI.Select()
@@ -2191,15 +2403,20 @@ Public Class FormSamples
         Next
 
         Cob_FilterBitronPN.Sorted = True
-       
+
 
     End Sub
     Private Sub CobFilterBSFill()
 
         Cob_FilterBS.Items.Clear()
         Cob_FilterBS.Items.Add("")
-
-        AdapterNPI.Fill(DsNPI, "NPI")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+		        Using AdapterNPI As New MySqlDataAdapter("SELECT * FROM npi_openissue", con)
+			        AdapterNPI.Fill(DsNPI, "NPI")
+		        End Using
+        End Using
         tblNPI = DsNPI.Tables("NPI")
 
         Dim rowResults As DataRow() = tblNPI.Select()
@@ -2229,64 +2446,70 @@ Public Class FormSamples
     End Sub
 
 
-   
+
 
     Private Function IsNeedUpdate(ByVal id As String) As Boolean
-        Dim update As Boolean = false
-        Dim dt As DataTable 
+        Dim update As Boolean = False
+        Dim dt As DataTable
         Dim rowDB As DataRow
         Dim rowId As Integer
         Try
             Dim Sql = "SELECT * FROM npi_openissue WHERE ID = " & id
-            Dim dtSet As new DataSet
-            Dim AdapterNPICob As New MySqlDataAdapter(Sql, MySqlconnection)
+            Dim dtSet As New DataSet
+            Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            'Dim AdapterNPICob As New MySqlDataAdapter(Sql, MySqlConnection)
             dtSet.Clear()
-            AdapterNPICob.Fill(dtSet, "NPI")
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+		            Using AdapterNPICob As New MySqlDataAdapter(Sql, con)
+			             AdapterNPICob.Fill(dtSet, "NPI")
+		            End Using
+            End Using
             dt = dtSet.Tables("NPI")
-            rowDB  = dt.Select("id = " & id & "").FirstOrDefault()
+            rowDB = dt.Select("id = " & id & "").FirstOrDefault()
 
             For Each xRow As DataGridViewRow In DGV_NPI.Rows
                 If xRow.Cells("ID").Value = id Then
                     rowId = xRow.Index
-                    Exit for
+                    Exit For
                 End If
             Next
             If DGV_NPI.Rows(rowId).Cells("ID").Value.ToString() = rowDB("ID").ToString() Then
-            If DGV_NPI.Rows(rowId).Cells("BS").Value = rowDB("BS").ToString() And _
-                DGV_NPI.Rows(rowId).Cells("StartDate").Value = rowDB("DATE") And _
-                DGV_NPI.Rows(rowId).Cells("IssueDescription").Value = rowDB("Issue_description").ToString() And _
-                DGV_NPI.Rows(rowId).Cells("BitronPN").Value = rowDB("Bitron_PN").ToString() And _
-                DGV_NPI.Rows(rowId).Cells("Area").Value = rowDB("Area").ToString() And _
-                DGV_NPI.Rows(rowId).Cells("Owner").Value = rowDB("Owner").ToString() And _
-                DGV_NPI.Rows(rowId).Cells("TEMPCorrectAction").Value = rowDB("Temp_corr_action").ToString() And _
-                DGV_NPI.Rows(rowId).Cells("FinalCorrectAction").Value = rowDB("Final_corr_action").ToString() And _
-                DGV_NPI.Rows(rowId).Cells("PlanedClosedDate").Value = rowDB("ETC") And _
-                DGV_NPI.Rows(rowId).Cells("Status").Value = rowDB("Status").ToString() And _
-                DGV_NPI.Rows(rowId).Cells("FilePath").Value = rowDB("FilePath").ToString()  then
-                    update = false
-             Else
-                    update = true
-            End If
+                If DGV_NPI.Rows(rowId).Cells("BS").Value = rowDB("BS").ToString() And _
+                    DGV_NPI.Rows(rowId).Cells("StartDate").Value = rowDB("DATE") And _
+                    DGV_NPI.Rows(rowId).Cells("IssueDescription").Value = rowDB("Issue_description").ToString() And _
+                    DGV_NPI.Rows(rowId).Cells("BitronPN").Value = rowDB("Bitron_PN").ToString() And _
+                    DGV_NPI.Rows(rowId).Cells("Area").Value = rowDB("Area").ToString() And _
+                    DGV_NPI.Rows(rowId).Cells("Owner").Value = rowDB("Owner").ToString() And _
+                    DGV_NPI.Rows(rowId).Cells("TEMPCorrectAction").Value = rowDB("Temp_corr_action").ToString() And _
+                    DGV_NPI.Rows(rowId).Cells("FinalCorrectAction").Value = rowDB("Final_corr_action").ToString() And _
+                    DGV_NPI.Rows(rowId).Cells("PlanedClosedDate").Value = rowDB("ETC") And _
+                    DGV_NPI.Rows(rowId).Cells("Status").Value = rowDB("Status").ToString() And _
+                    DGV_NPI.Rows(rowId).Cells("FilePath").Value = rowDB("FilePath").ToString() Then
+                    update = False
+                Else
+                    update = True
+                End If
             End If
         Catch ex As Exception
 
         End Try
-        return update
+        Return update
     End Function
 
-    
-    Sub SaveUpdates(ByVal cSelectedID As String) 
+
+    Sub SaveUpdates(ByVal cSelectedID As String)
         Dim rowId As Integer
         For Each xRow As DataGridViewRow In DGV_NPI.Rows
-                If xRow.Cells("ID").Value = cSelectedID Then
-                    rowId = xRow.Index
-                    Exit for
-                End If
+            If xRow.Cells("ID").Value = cSelectedID Then
+                rowId = xRow.Index
+                Exit For
+            End If
         Next
         If Trim(DGV_NPI.Rows(rowId).Cells("BitronPN").Value) <> "" Then
             Try
                 Dim startDate = DGV_NPI.Rows(rowId).Cells("StartDate").Value
-                Dim etc  = DGV_NPI.Rows(rowId).Cells("PlanedClosedDate").Value
+                Dim etc = DGV_NPI.Rows(rowId).Cells("PlanedClosedDate").Value
                 Dim sql As String = "UPDATE npi_openissue SET BS = '" & DGV_NPI.Rows(rowId).Cells("BS").Value & _
                                     "',DATE = '" & startDate.Year & "-" & startDate.Month & "-" & startDate.Day & _
                                     "',Issue_description ='" & DGV_NPI.Rows(rowId).Cells("IssueDescription").Value & _
@@ -2295,31 +2518,35 @@ Public Class FormSamples
                                     "',Owner = '" & Cob_Owner.Text & _
                                     "',Temp_corr_action = '" & DGV_NPI.Rows(rowId).Cells("TEMPCorrectAction").Value & _
                                     "',Final_corr_action = '" & DGV_NPI.Rows(rowId).Cells("FinalCorrectAction").Value & _
-                                    "',ETC = '" &   etc.Year & "-" & etc.Month & "-" & etc.Day  & _
+                                    "',ETC = '" & etc.Year & "-" & etc.Month & "-" & etc.Day & _
                                     "',Status = '" & DGV_NPI.Rows(rowId).Cells("Status").Value & _
                                     "',FilePath ='" & DGV_NPI.Rows(rowId).Cells("FilePath").Value & _
                                     "' WHERE ID = '" & cSelectedID & "'"
-
-                Dim cmd = New MySqlCommand(sql, MySqlconnection)
-                cmd.ExecuteNonQuery()
+                Dim  builder As  New Common.DbConnectionStringBuilder()
+                builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+		            Dim cmd = New MySqlCommand(sql, con)
+                    cmd.ExecuteNonQuery()
+                End Using
+                
                 MsgBox("Successful update")
             Catch ex As Exception
                 MsgBox(ex.Message)
             End Try
         Else
             MsgBox("Bitron Product Code can't be empty")
-        End If        
-        
+        End If
+
     End Sub
 
-    Dim saveUpdate As Boolean = true
+    Dim saveUpdate As Boolean = True
     Private Sub DGV_NPI_SelectionChanged(sender As Object, e As EventArgs) Handles DGV_NPI.SelectionChanged
         Dim new_SelectRow As Integer
         Dim newSelectedId As String
         Try
-            If cSelectedID = Nothing then
+            If cSelectedID = Nothing Then
                 cSelectedID = Me.DGV_NPI.Item(DGV_NPI.Columns("ID").Index, Me.DGV_NPI.CurrentRow.Index).Value.ToString()
-            End If     
+            End If
 
             new_SelectRow = Me.DGV_NPI.CurrentRow.Index
             newSelectedId = Me.DGV_NPI.Item(DGV_NPI.Columns("ID").Index, new_SelectRow).Value
@@ -2334,11 +2561,11 @@ Public Class FormSamples
                     newSelectedId = Me.DGV_NPI.Item(DGV_NPI.Columns("ID").Index, Me.DGV_NPI.CurrentRow.Index).Value.ToString()
                 End If
             End If
-            cSelectedID = newSelectedId       
+            cSelectedID = newSelectedId
         Catch ex As Exception
 
         End Try
-        
+
     End Sub
 
     Private Sub DTP_PlanCloseDate_ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles DTP_PlanCloseDate.ValueChanged

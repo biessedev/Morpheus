@@ -1,19 +1,20 @@
-﻿
-Option Explicit Off
+﻿Option Explicit Off
 Option Compare Text
+
+Imports System.Configuration
 Imports MySql.Data.MySqlClient
 
 Public Class FormEquipments
 
     Dim XmlTree As New TreeViewToFromXml
-    Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by idactivity", MySqlconnection)
+    'Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by idactivity", MySqlconnection)
     Dim tblProd As DataTable
     Dim DsProd As New DataSet
-    Dim AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", MySqlconnection)
+    'Dim AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", MySqlconnection)
     Dim tblEQ As DataTable
     Dim DsEQ As New DataSet
     Dim OpenSession As Boolean, UpdatigTree As Boolean = True
-    Dim AdapterCus As New MySqlDataAdapter("SELECT * FROM Customer", MySqlconnection)
+    'Dim AdapterCus As New MySqlDataAdapter("SELECT * FROM Customer", MySqlconnection)
     Dim tblCus As DataTable
     Dim DsCus As New DataSet
     Dim NodeSelect As Integer
@@ -94,9 +95,14 @@ Public Class FormEquipments
         Catch ex As Exception
 
         End Try
-
-        AdapterCus.Fill(DsCus, "Customer")
-        tblCus = DsCus.Tables("Customer")
+        Dim builder As New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            Using AdapterCus As New MySqlDataAdapter("SELECT * FROM Customer", con)
+                AdapterCus.Fill(DsCus, "Customer")
+                tblCus = DsCus.Tables("Customer")
+            End Using
+        End Using
         rowResults = tblCus.Select("name like '*'", "name")
         For Each row In rowResults
             ComboBoxCustomer.Items.Add(row("name").ToString)
@@ -151,22 +157,31 @@ Public Class FormEquipments
         TreeViewEQ.Font = New Font("Segoe UI", 12, FontStyle.Bold)
         TreeViewEQ.Nodes.Clear()
         TreeViewEQ.BackColor = Color.White
-        Try
-            Dim i As Integer = tblEQ.Rows.Count
-            AdapterEQ.Update(DsEQ, "equipment")
-            tblEQ = DsEQ.Tables("equipment")
-        Catch ex As Exception
-            AdapterEQ.Fill(DsEQ, "equipment")
-            tblEQ = DsEQ.Tables("equipment")
-        End Try
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            Try
+                Dim i As Integer = tblEQ.Rows.Count
+                Using AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", con)
+		            AdapterEQ.Update(DsEQ, "equipment")
+                    tblEQ = DsEQ.Tables("equipment")
+	            End Using
+            Catch ex As Exception
+                Using AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", con)
+		            AdapterEQ.Fill(DsEQ, "equipment")
+                    tblEQ = DsEQ.Tables("equipment")
+	            End Using
+            End Try
 
-        If refresh Then
-            DsEQ.Clear()
-            tblEQ.Clear()
-            AdapterEQ.Fill(DsEQ, "equipment")
-            tblEQ = DsEQ.Tables("equipment")
-        End If
-
+            If refresh Then
+                DsEQ.Clear()
+                tblEQ.Clear()
+                Using AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", con)
+		            AdapterEQ.Fill(DsEQ, "equipment")
+                    tblEQ = DsEQ.Tables("equipment")
+	            End Using
+            End If
+        End Using
         Dim rowShow As DataRow() = tblEQ.Select(IIf(ComboBoxToolsType.Text = "", "type like '*' and ", "type = '" & ComboBoxToolsType.Text & "' and ") & IIf(ComboBoxStatus.Text = "", "status like '*' ", "status = '" & ComboBoxStatus.Text & "'"), "IdActivity, status")
 
         Dim activity As String = ""
@@ -220,21 +235,27 @@ Public Class FormEquipments
         Static Dim DsEQ As New DataSet
 
         ActivityStatusStandby = False
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            Try
+                Dim i As Integer = tblEQ.Rows.Count
+            Catch ex As Exception
+                Using AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", con)
+		            AdapterEQ.Fill(DsEQ, "equipment")
+                    tblEQ = DsEQ.Tables("equipment")
+	            End Using
+            End Try
 
-        Try
-            Dim i As Integer = tblEQ.Rows.Count
-        Catch ex As Exception
-            AdapterEQ.Fill(DsEQ, "equipment")
-            tblEQ = DsEQ.Tables("equipment")
-        End Try
-
-        If refresh Then
-            DsEQ.Clear()
-            tblEQ.Clear()
-            AdapterEQ.Fill(DsEQ, "equipment")
-            tblEQ = DsEQ.Tables("equipment")
-        End If
-
+            If refresh Then
+                DsEQ.Clear()
+                tblEQ.Clear()
+                Using AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", con)
+		            AdapterEQ.Fill(DsEQ, "equipment")
+                    tblEQ = DsEQ.Tables("equipment")
+	            End Using
+            End If
+        End Using
         Dim rowShow As DataRow() = tblEQ.Select("idactivity = '" & act & "' and status = 'STANDBY'")
 
         If rowShow.Length > 0 Then
@@ -249,21 +270,28 @@ Public Class FormEquipments
         Static Dim DsEQ As New DataSet
 
         ActivityStatusClosed = True
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            Try
+                Dim i As Integer = tblEQ.Rows.Count
+            Catch ex As Exception
+                Using AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", con)
+		            AdapterEQ.Fill(DsEQ, "equipment")
+                    tblEQ = DsEQ.Tables("equipment")
+	            End Using
+                
+            End Try
 
-        Try
-            Dim i As Integer = tblEQ.Rows.Count
-        Catch ex As Exception
-            AdapterEQ.Fill(DsEQ, "equipment")
-            tblEQ = DsEQ.Tables("equipment")
-        End Try
-
-        If refresh Then
-            DsEQ.Clear()
-            tblEQ.Clear()
-            AdapterEQ.Fill(DsEQ, "equipment")
-            tblEQ = DsEQ.Tables("equipment")
-        End If
-
+            If refresh Then
+                DsEQ.Clear()
+                tblEQ.Clear()
+                Using AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", con)
+		            AdapterEQ.Fill(DsEQ, "equipment")
+                    tblEQ = DsEQ.Tables("equipment")
+	            End Using
+            End If
+        End Using
         Dim rowShow As DataRow() = tblEQ.Select("idactivity = '" & act & "' and not status like 'CLOSED' and not status like 'NONEED'")
 
         If rowShow.Length > 0 Then
@@ -277,21 +305,27 @@ Public Class FormEquipments
         Static Dim DsEQ As New DataSet
 
         ActivityStatusDelay = False
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            Try
+                Dim i As Integer = tblEQ.Rows.Count
+            Catch ex As Exception
+                Using AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", con)
+		            AdapterEQ.Fill(DsEQ, "equipment")
+                    tblEQ = DsEQ.Tables("equipment")
+	            End Using
+            End Try
 
-        Try
-            Dim i As Integer = tblEQ.Rows.Count
-        Catch ex As Exception
-            AdapterEQ.Fill(DsEQ, "equipment")
-            tblEQ = DsEQ.Tables("equipment")
-        End Try
-
-        If refresh Then
-            DsEQ.Clear()
-            tblEQ.Clear()
-            AdapterEQ.Fill(DsEQ, "equipment")
-            tblEQ = DsEQ.Tables("equipment")
-        End If
-
+            If refresh Then
+                DsEQ.Clear()
+                tblEQ.Clear()
+                Using AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", con)
+		            AdapterEQ.Fill(DsEQ, "equipment")
+                    tblEQ = DsEQ.Tables("equipment")
+	            End Using
+            End If
+        End Using
         Dim rowShow As DataRow() = tblEQ.Select("idactivity = '" & act & "'")
         For Each row In rowShow
             If TimingEQ(row("id").ToString, tblEQ) = "DELAY" Then ActivityStatusDelay = True
@@ -304,21 +338,27 @@ Public Class FormEquipments
         Static Dim DsEQ As New DataSet
         Dim timing = ""
         ActivityStatusOnTime = True
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Try
+                Dim i As Integer = tblEQ.Rows.Count
+            Catch ex As Exception
+                Using AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", con)
+		            AdapterEQ.Fill(DsEQ, "equipment")
+                    tblEQ = DsEQ.Tables("equipment")
+	            End Using
+            End Try
 
-        Try
-            Dim i As Integer = tblEQ.Rows.Count
-        Catch ex As Exception
-            AdapterEQ.Fill(DsEQ, "equipment")
-            tblEQ = DsEQ.Tables("equipment")
-        End Try
-
-        If refresh Then
-            DsEQ.Clear()
-            tblEQ.Clear()
-            AdapterEQ.Fill(DsEQ, "equipment")
-            tblEQ = DsEQ.Tables("equipment")
-        End If
-
+            If refresh Then
+                DsEQ.Clear()
+                tblEQ.Clear()
+                Using AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", con)
+		            AdapterEQ.Fill(DsEQ, "equipment")
+                    tblEQ = DsEQ.Tables("equipment")
+	            End Using
+            End If
+        End Using
 
         Dim rowShow As DataRow() = tblEQ.Select("idactivity = '" & act & "'")
 
@@ -397,10 +437,13 @@ Public Class FormEquipments
             TreeViewEQ.ResumeLayout()
 
             Try
-                Dim sql As String = "INSERT INTO `" & DBName & "`.`equipments` (`ToolName`,`idactivity` ) VALUES ( '" & "---- New Tool ----" & "' , '" & ComboBoxActivityId.Text & "'" & ");"
-                Dim cmd = New MySqlCommand(sql, MySqlconnection)
-                cmd.ExecuteNonQuery()
-
+                Dim  builder As  New Common.DbConnectionStringBuilder()
+                builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	                Dim sql As String = "INSERT INTO `" & DBName & "`.`equipments` (`ToolName`,`idactivity` ) VALUES ( '" & "---- New Tool ----" & "' , '" & ComboBoxActivityId.Text & "'" & ");"
+                    Dim cmd = New MySqlCommand(sql, con)
+                    cmd.ExecuteNonQuery()
+                End Using
             Catch ex As Exception
                 MsgBox(ex.Message)
             End Try
@@ -420,8 +463,14 @@ Public Class FormEquipments
         Dim tblEQ As DataTable
         Dim DsEQ As New DataSet
         Dim rowShow As DataRow()
-        AdapterEQ.Fill(DsEQ, "equipments")
-        tblEQ = DsEQ.Tables("equipments")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", con)
+		        AdapterEQ.Fill(DsEQ, "equipments")
+                tblEQ = DsEQ.Tables("equipments")
+	        End Using
+        End Using
         Dim UpdatigTreePrev As Boolean = UpdatigTree
         Dim id As Integer = CurrentID()
 
@@ -526,9 +575,14 @@ Public Class FormEquipments
         Dim tblEQ As DataTable
         Dim DsEQ As New DataSet
         sumHour = 0
-        AdapterEQ.Fill(DsEQ, "equipment")
-        tblEQ = DsEQ.Tables("equipment")
-
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", con)
+		        AdapterEQ.Fill(DsEQ, "equipment")
+                tblEQ = DsEQ.Tables("equipment")
+	        End Using
+        End Using
         Dim rowShow As DataRow() = tblEQ.Select("idactivity = '" & act & "'")
 
         For Each row In rowShow
@@ -539,74 +593,77 @@ Public Class FormEquipments
 
     Private Sub ButtonBomSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSave.Click
         Dim id As Integer = CurrentID()
-        If id > 0 Then
-            If (ComboBoxStatus.Text <> "" And ComboBoxToolsType.Text <> "") Or (ComboBoxStatus.Text = "NONEED") Then
-                If DeltaSessionTime("equipments", id) < 30 And session("equipments", id, False) = "RESET" Then
-                    TextBoxTime.Text = ""
-                    Try
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            If id > 0 Then
+                If (ComboBoxStatus.Text <> "" And ComboBoxToolsType.Text <> "") Or (ComboBoxStatus.Text = "NONEED") Then
+                    If DeltaSessionTime("equipments", id) < 30 And session("equipments", id, False) = "RESET" Then
+                        TextBoxTime.Text = ""
+                        Try
 
-                        Dim sql As String = "UPDATE `" & DBName & "`.`equipments` SET " &
-                                            "`start` = '" & ComboBoxStart.Text &
-                                            "',`IdActivity` = '" & ComboBoxActivityId.Text &
-                                            "',`toolname` = '" & TextBoxToolName.Text &
-                                            "',`type` = '" & ComboBoxToolsType.Text &
-                                            "',`sop` = '" & ComboBoxSop.Text &
-                                            "',`mpa` = '" & ComboBoxmpa.Text &
-                                            "',`start` = '" & ComboBoxStart.Text &
-                                            "',`Asset_ID` = '" & TextBoxToolId.Text &
-                                            "',`HWDebug` = '" & ComboBoxHWDebug.Text &
-                                            "',`HWDoc` = '" & ComboBoxHWDoc.Text &
-                                            "',`HWBuilding` = '" & ComboBoxHWBuilding.Text &
-                                            "',`workhour` = " & Int(Val(TextBoxWorkHours.Text)) &
-                                            ",`SWDebug` = '" & ComboBoxSWDebug.Text &
-                                            "',`note` = '" & Replace(Replace(RichTextBoxNote.Text, "'", ""), "'", "") &
-                                            "',`end` = '" & ComboBoxEnd.Text &
-                                            "',`status` = '" & ComboBoxStatus.Text & "' WHERE `equipments`.`id` = " & id & " ;"
+                            Dim sql As String = "UPDATE `" & DBName & "`.`equipments` SET " &
+                                                "`start` = '" & ComboBoxStart.Text &
+                                                "',`IdActivity` = '" & ComboBoxActivityId.Text &
+                                                "',`toolname` = '" & TextBoxToolName.Text &
+                                                "',`type` = '" & ComboBoxToolsType.Text &
+                                                "',`sop` = '" & ComboBoxSop.Text &
+                                                "',`mpa` = '" & ComboBoxmpa.Text &
+                                                "',`start` = '" & ComboBoxStart.Text &
+                                                "',`Asset_ID` = '" & TextBoxToolId.Text &
+                                                "',`HWDebug` = '" & ComboBoxHWDebug.Text &
+                                                "',`HWDoc` = '" & ComboBoxHWDoc.Text &
+                                                "',`HWBuilding` = '" & ComboBoxHWBuilding.Text &
+                                                "',`workhour` = " & Int(Val(TextBoxWorkHours.Text)) &
+                                                ",`SWDebug` = '" & ComboBoxSWDebug.Text &
+                                                "',`note` = '" & Replace(Replace(RichTextBoxNote.Text, "'", ""), "'", "") &
+                                                "',`end` = '" & ComboBoxEnd.Text &
+                                                "',`status` = '" & ComboBoxStatus.Text & "' WHERE `equipments`.`id` = " & id & " ;"
 
+                       
+	                        Dim cmd As MySqlCommand = New MySqlCommand(sql, con)
+                            cmd.ExecuteNonQuery()
+                            CurrentID()
+                            TreeViewEQ.HideSelection = False
+                            TreeViewEQ.Focus()
+                            TreeViewEQ.SelectedNode.Text = Mid(TreeViewEQ.SelectedNode.Text, 1, InStr(TreeViewEQ.SelectedNode.Text, " - ") - 1) & " - " & IIf(ComboBoxToolsType.Text <> "", ComboBoxToolsType.Text, "?") & " - " & TextBoxToolName.Text
 
-                        Dim cmd As MySqlCommand = New MySqlCommand(sql, MySqlconnection)
-                        cmd.ExecuteNonQuery()
-                        CurrentID()
-                        TreeViewEQ.HideSelection = False
-                        TreeViewEQ.Focus()
-                        TreeViewEQ.SelectedNode.Text = Mid(TreeViewEQ.SelectedNode.Text, 1, InStr(TreeViewEQ.SelectedNode.Text, " - ") - 1) & " - " & IIf(ComboBoxToolsType.Text <> "", ComboBoxToolsType.Text, "?") & " - " & TextBoxToolName.Text
+                        Catch ex As Exception
+                            MsgBox(ex.Message)
+                        End Try
 
-                    Catch ex As Exception
-                        MsgBox(ex.Message)
-                    End Try
-
-                    ButtonSave.BackColor = Color.Green
-                    OpenSession = False
-                    TimerRecord.Stop()
+                        ButtonSave.BackColor = Color.Green
+                        OpenSession = False
+                        TimerRecord.Stop()
+                    Else
+                        MsgBox("Section USED " & session("BomOffer", id, False))
+                    End If
                 Else
-                    MsgBox("Section USED " & session("BomOffer", id, False))
+                    MsgBox(" Please fill the toolsType, status, start and end!", MsgBoxStyle.Information)
                 End If
+            ElseIf currentActivityID() > 0 Then
+
+                Try
+
+                    Dim sql As String = "UPDATE `" & DBName & "`.`equipments` SET " &
+                                        "`sop` = '" & ComboBoxSop.Text &
+                                        "',`mpa` = '" & ComboBoxmpa.Text &
+                                        "',`customer` = '" & ComboBoxCustomer.Text &
+                                        "',`NoteActivity` = '" & Replace(Replace(RichTextBoxNote.Text, "'", ""), "'", "") &
+                                        "',`start` = '" & ComboBoxStart.Text & "' WHERE `equipments`.`idactivity` = '" & TreeViewEQ.SelectedNode.Text & "' ;"
+
+                    Dim cmd = New MySqlCommand(sql, con)
+                    cmd.ExecuteNonQuery()
+                    ButtonSave.BackColor = Color.Green
+
+                Catch ex As Exception
+                    MsgBox(ex.Message)
+                End Try
+
             Else
-                MsgBox(" Please fill the toolsType, status, start and end!", MsgBoxStyle.Information)
+                MsgBox("Section USED " & session("BomOffer", id, False))
             End If
-        ElseIf currentActivityID() > 0 Then
-
-            Try
-
-                Dim sql As String = "UPDATE `" & DBName & "`.`equipments` SET " &
-                                    "`sop` = '" & ComboBoxSop.Text &
-                                    "',`mpa` = '" & ComboBoxmpa.Text &
-                                    "',`customer` = '" & ComboBoxCustomer.Text &
-                                    "',`NoteActivity` = '" & Replace(Replace(RichTextBoxNote.Text, "'", ""), "'", "") &
-                                    "',`start` = '" & ComboBoxStart.Text & "' WHERE `equipments`.`idactivity` = '" & TreeViewEQ.SelectedNode.Text & "' ;"
-
-                Dim cmd = New MySqlCommand(sql, MySqlconnection)
-                cmd.ExecuteNonQuery()
-                ButtonSave.BackColor = Color.Green
-
-            Catch ex As Exception
-                MsgBox(ex.Message)
-            End Try
-
-        Else
-            MsgBox("Section USED " & session("BomOffer", id, False))
-        End If
-
+        End Using
     End Sub
 
     Sub myNodeSelect(ByVal read As Boolean)
@@ -748,9 +805,13 @@ Public Class FormEquipments
             If id > 0 Then
                 If (session("equipments", id, False) = "RESET") Then
                     Try
-                        Dim sql As String = "DELETE FROM `" & DBName & "`.`equipments` WHERE `equipments`.`id` = " & id
-                        Dim cmd = New MySqlCommand(sql, MySqlconnection)
-                        cmd.ExecuteNonQuery()
+                        Dim  builder As  New Common.DbConnectionStringBuilder()
+                        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	                        Dim sql As String = "DELETE FROM `" & DBName & "`.`equipments` WHERE `equipments`.`id` = " & id
+                            Dim cmd = New MySqlCommand(sql, con)
+                            cmd.ExecuteNonQuery()
+                        End Using
                         MsgBox("Bom deleted!")
                         'UpdateTreeEQList(False)    
                         UpdatigTree = True
@@ -882,43 +943,50 @@ Public Class FormEquipments
     Private Sub ButtonLoadTools_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonLoadTools.Click
         Dim tblProd As DataTable
         Dim DsProd As New DataSet
-        AdapterProd.Fill(DsProd, "Product")
-        tblProd = DsProd.Tables("Product")
-        Dim currentIdActivity = 0, rowShow As DataRow(), activityname As String
-        Dim TOOLNAME As String
-        rowShow = tblProd.Select("statusActivity = 'open' or statusActivity = 'sent'")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by idactivity", con)
+		        AdapterProd.Fill(DsProd, "Product")
+                tblProd = DsProd.Tables("Product")
+	        End Using
+            
+            Dim currentIdActivity = 0, rowShow As DataRow(), activityname As String
+            Dim TOOLNAME As String
+            rowShow = tblProd.Select("statusActivity = 'open' or statusActivity = 'sent'")
 
-        For Each row In rowShow
-            If row("idactivity").ToString <> currentIdActivity And row("sop_task").ToString <> "" Then
+            For Each row In rowShow
+                If row("idactivity").ToString <> currentIdActivity And row("sop_task").ToString <> "" Then
 
-                currentIdActivity = row("idactivity").ToString
-                XmlTree.SetTreeView(TreeViewEQ)
-                XmlTree.Import(row("sop_task").ToString)
+                    currentIdActivity = row("idactivity").ToString
+                    XmlTree.SetTreeView(TreeViewEQ)
+                    XmlTree.Import(row("sop_task").ToString)
 
-                For Each node In TreeViewEQ.Nodes(0).Nodes
+                    For Each node In TreeViewEQ.Nodes(0).Nodes
 
-                    If InStr(node.ToString, "EQUIPMENTS") > 0 Then
-                        For Each n In node.Nodes
-                            TOOLNAME = Replace((Mid(n.ToString, InStr(n.ToString, "-") + 1, InStr(InStr(n.ToString, "-") + 1, n.ToString, "-") - InStr(n.ToString, "-") - 1)), "_", " ")
-                            activityname = row("idactivity").ToString & " - " & row("NAMEactivity").ToString
+                        If InStr(node.ToString, "EQUIPMENTS") > 0 Then
+                            For Each n In node.Nodes
+                                TOOLNAME = Replace((Mid(n.ToString, InStr(n.ToString, "-") + 1, InStr(InStr(n.ToString, "-") + 1, n.ToString, "-") - InStr(n.ToString, "-") - 1)), "_", " ")
+                                activityname = row("idactivity").ToString & " - " & row("NAMEactivity").ToString
 
-                            If Not ExistEq(TOOLNAME, activityname) Then
-                                Try
-                                    Dim sql As String = "INSERT INTO `" & DBName & "`.`equipments` (`ToolName`,`idactivity` ) VALUES ( '" & TOOLNAME & "' , '" & activityname & " '" & ");"
-                                    Dim cmd = New MySqlCommand(sql, MySqlconnection)
-                                    cmd.ExecuteNonQuery()
+                                If Not ExistEq(TOOLNAME, activityname) Then
+                                    Try
+                                        Dim sql As String = "INSERT INTO `" & DBName & "`.`equipments` (`ToolName`,`idactivity` ) VALUES ( '" & TOOLNAME & "' , '" & activityname & " '" & ");"
+                                        Dim cmd = New MySqlCommand(sql, con)
+                                        cmd.ExecuteNonQuery()
 
-                                Catch ex As Exception
-                                    MsgBox(ex.Message)
-                                End Try
-                            End If
-                        Next
-                    End If
-                Next
-            Else
+                                    Catch ex As Exception
+                                        MsgBox(ex.Message)
+                                    End Try
+                                End If
+                            Next
+                        End If
+                    Next
+                Else
 
-            End If
-        Next
+                End If
+            Next
+        End Using
         TreeViewEQ.HideSelection = False
         UpdateTreeEQList(True)
         MsgBox("Equipments loaded!", vbInformation)
@@ -927,8 +995,15 @@ Public Class FormEquipments
     Function ExistEq(ByVal toolname As String, ByVal activityname As String) As Boolean
         Dim tblEQ As DataTable
         Dim DsEQ As New DataSet
-        AdapterEQ.Fill(DsEQ, "equipments")
-        tblEQ = DsEQ.Tables("equipments")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", con)
+		        AdapterEQ.Fill(DsEQ, "equipments")
+                tblEQ = DsEQ.Tables("equipments")
+	        End Using
+        End Using
+        
         Dim rowShow As DataRow() = tblEQ.Select("toolname='" & toolname & "' and idactivity='" & activityname & "'", "IdActivity")
         If rowShow.Length > 0 Then
             ExistEq = True

@@ -5,17 +5,16 @@ Imports System.IO
 Imports System.Data.SqlClient
 Imports System.Globalization
 Imports System.Xml
-
-
+Imports System.Configuration
 
 Module PublicFunction
-    Dim AdapterCh As New MySqlDataAdapter("SELECT * FROM mant", MySqlconnection)
+    'Dim AdapterCh As New MySqlDataAdapter("SELECT * FROM mant", MySqlconnection)
     Dim dsCh As New DataSet
     Dim tblCh As New DataTable
-    Public MySqlconnection As MySqlConnection
-    Public MySqlconnection_3DEQTable As MySqlConnection
-    Public MySqlconnectionGru As New MySqlConnection
-    Public SQLconnectionOrcad As New SqlConnection
+    'Public MySqlconnection As MySqlConnection
+    'Public MySqlconnection_3DEQTable As MySqlConnection
+    'Public MySqlconnectionGru As New MySqlConnection
+    'Public SQLconnectionOrcad As New SqlConnection
     Public MySQLConnectionString As String
     Public ConnectionString As String
     Public GroupList As String, OpenIssue As String, ProdOpenIssue As String
@@ -61,18 +60,18 @@ Module PublicFunction
 
     Public CreFile As New FileRecord
 
-    Sub OpenConnectionMySql(ByVal strHost As String, ByVal strDatabase As String, ByVal strUserName As String, ByVal strPassword As String)
-        Try
-            ConnectionString = "host=" & strHost & ";" & "username=" & strUserName & ";" & "password=" & strPassword & ";" & "database=" & strDatabase & ";Connect Timeout=120;allow zero datetime=true;charset=utf8; "
-            MySqlconnection = New MySqlConnection(ConnectionString)
-            If MySqlconnection.State = ConnectionState.Open Then
-                MySqlconnection.Close()
-            End If
-            MySqlconnection.Open()
-        Catch ae As MySqlException
-            MessageBox.Show(ae.Message.ToString())
-        End Try
-    End Sub
+    'Sub OpenConnectionMySql(ByVal strHost As String, ByVal strDatabase As String, ByVal strUserName As String, ByVal strPassword As String)
+    '    Try
+    '        ConnectionString = "host=" & strHost & ";" & "username=" & strUserName & ";" & "password=" & strPassword & ";" & "database=" & strDatabase & ";Connect Timeout=120;allow zero datetime=true;charset=utf8; "
+    '        MySqlconnection = New MySqlConnection(ConnectionString)
+    '        If MySqlconnection.State = ConnectionState.Open Then
+    '            MySqlconnection.Close()
+    '        End If
+    '        MySqlconnection.Open()
+    '    Catch ae As MySqlException
+    '        MessageBox.Show(ae.Message.ToString())
+    '    End Try
+    'End Sub
 
     Public Function NewConnectionMySql(ByVal strHost As String, ByVal strDatabase As String, ByVal strUserName As String, ByVal strPassword As String) As MySqlConnection
         Dim conn = "host=" & strHost & ";" & "username=" & strUserName & ";" & "password=" & strPassword & ";" & "database=" & strDatabase & ";Connect Timeout=120;allow zero datetime=true;charset=utf8; "
@@ -86,77 +85,89 @@ Module PublicFunction
         End Try
     End Function
 
-    Sub CloseConnectionMySql()
-        Try
-            If MySqlconnection.State = ConnectionState.Open Then
-                MySqlconnection.Close()
-            End If
+    'Sub CloseConnectionMySql()
+    '    Try
+    '        If MySqlconnection.State = ConnectionState.Open Then
+    '            MySqlconnection.Close()
+    '        End If
+    '    Catch ae As MySqlException
+    '        MessageBox.Show(ae.Message.ToString())
+    '    End Try
+    'End Sub
+
+    'Sub OpenConnectionMySql_3DEQTable(ByVal strHost As String)
+
+    '    Try
+    '        ConnectionString = "host=" & strHost & ";" & "username=" & "3deqtable" & ";" & "password=" & "3deqtable" & ";" & "database=" & "srvdoc" & ";Connect Timeout=120;allow zero datetime=true;"
+    '        MySqlconnection_3DEQTable = New MySqlConnection(ConnectionString)
+    '        If MySqlconnection_3DEQTable.State = ConnectionState.Open Then
+    '            MySqlconnection_3DEQTable.Close()
+    '        End If
+    '        MySqlconnection_3DEQTable.Open()
+    '    Catch ae As MySqlException
+    '        MessageBox.Show(ae.Message.ToString())
+    '    End Try
+    'End Sub
+
+    'Sub OpenConnectionMySqlGru(ByVal strHost As String, ByVal strDatabase As String, ByVal strUserName As String, ByVal strPassword As String)
+    '    Dim ConnectionStringGru As String
+    '    Try
+    '        ConnectionStringGru = "Allow Zero Datetime=true; host=" & strHost & "; username=" & strUserName & ";" & "password=" & strPassword & ";" & "database=" & strDatabase & ";Connect Timeout=120;"
+    '        MySqlconnectionGru = New MySqlConnection(ConnectionStringGru)
+    '        If MySqlconnectionGru.State = ConnectionState.Open Then
+    '            MySqlconnectionGru.Close()
+    '        End If
+    '        MySqlconnectionGru.Open()
+    '    Catch ae As MySqlException
+    '        MessageBox.Show(ae.Message.ToString())
+    '    End Try
+    'End Sub
+
+    'Sub OpenConnectionMySqlOrcad(ByVal strHost As String, ByVal strDatabase As String, ByVal strUserName As String, ByVal strPassword As String)
+    '    Dim ConnectionStringOrcad As String
+    '    Try
+    '        ConnectionStringOrcad = "server=" & strHost & ";user id=" & strUserName & ";" & "pwd=" & strPassword & ";" & "database=" & strDatabase & ";Connect Timeout=120;"
+    '        SQLconnectionOrcad = New SqlConnection(ConnectionStringOrcad)
+    '        If SQLconnectionOrcad.State = ConnectionState.Open Then
+    '            SQLconnectionOrcad.Close()
+    '        End If
+    '        SQLconnectionOrcad.Open()
+    '    Catch ae As MySqlException
+    '        MessageBox.Show(ae.Message.ToString())
+    '    End Try
+    'End Sub
+
+    Public Function NewOpenConnectionMySqlOrcad(ByVal strHost As String, ByVal strDatabase As String, ByVal strUserName As String, ByVal strPassword As String) As SqlConnection
+        Dim conn = "server=" & strHost & ";user id=" & strUserName & ";" & "pwd=" & strPassword & ";" & "database=" & strDatabase & ";Connect Timeout=120;"
+        Try 
+            Dim mysqlconn = New SqlConnection(conn)
+            mysqlconn.Open()
+            Return mysqlconn
         Catch ae As MySqlException
             MessageBox.Show(ae.Message.ToString())
+            Return New SqlConnection()
         End Try
-    End Sub
+    End Function
 
-    Sub OpenConnectionMySql_3DEQTable(ByVal strHost As String)
+    'Sub CloseConnectionMySqlGru()
+    '    Try
+    '        If MySqlconnectionGru.State = ConnectionState.Open Then
+    '            MySqlconnectionGru.Close()
+    '        End If
+    '    Catch ae As MySqlException
+    '        MessageBox.Show(ae.Message.ToString())
+    '    End Try
+    'End Sub
 
-        Try
-            ConnectionString = "host=" & strHost & ";" & "username=" & "3deqtable" & ";" & "password=" & "3deqtable" & ";" & "database=" & "srvdoc" & ";Connect Timeout=120;allow zero datetime=true;"
-            MySqlconnection_3DEQTable = New MySqlConnection(ConnectionString)
-            If MySqlconnection_3DEQTable.State = ConnectionState.Open Then
-                MySqlconnection_3DEQTable.Close()
-            End If
-            MySqlconnection_3DEQTable.Open()
-        Catch ae As MySqlException
-            MessageBox.Show(ae.Message.ToString())
-        End Try
-    End Sub
-
-    Sub OpenConnectionMySqlGru(ByVal strHost As String, ByVal strDatabase As String, ByVal strUserName As String, ByVal strPassword As String)
-        Dim ConnectionStringGru As String
-        Try
-            ConnectionStringGru = "Allow Zero Datetime=true; host=" & strHost & "; username=" & strUserName & ";" & "password=" & strPassword & ";" & "database=" & strDatabase & ";Connect Timeout=120;"
-            MySqlconnectionGru = New MySqlConnection(ConnectionStringGru)
-            If MySqlconnectionGru.State = ConnectionState.Open Then
-                MySqlconnectionGru.Close()
-            End If
-            MySqlconnectionGru.Open()
-        Catch ae As MySqlException
-            MessageBox.Show(ae.Message.ToString())
-        End Try
-    End Sub
-
-    Sub OpenConnectionMySqlOrcad(ByVal strHost As String, ByVal strDatabase As String, ByVal strUserName As String, ByVal strPassword As String)
-        Dim ConnectionStringOrcad As String
-        Try
-            ConnectionStringOrcad = "server=" & strHost & ";user id=" & strUserName & ";" & "pwd=" & strPassword & ";" & "database=" & strDatabase & ";Connect Timeout=120;"
-            SQLconnectionOrcad = New SqlConnection(ConnectionStringOrcad)
-            If SQLconnectionOrcad.State = ConnectionState.Open Then
-                SQLconnectionOrcad.Close()
-            End If
-            SQLconnectionOrcad.Open()
-        Catch ae As MySqlException
-            MessageBox.Show(ae.Message.ToString())
-        End Try
-    End Sub
-
-    Sub CloseConnectionMySqlGru()
-        Try
-            If MySqlconnectionGru.State = ConnectionState.Open Then
-                MySqlconnectionGru.Close()
-            End If
-        Catch ae As MySqlException
-            MessageBox.Show(ae.Message.ToString())
-        End Try
-    End Sub
-
-    Sub CloseConnectionSqlOrcad()
-        Try
-            If SQLconnectionOrcad.State = ConnectionState.Open Then
-                SQLconnectionOrcad.Close()
-            End If
-        Catch ae As MySqlException
-            MessageBox.Show(ae.Message.ToString())
-        End Try
-    End Sub
+    'Sub CloseConnectionSqlOrcad()
+    '    Try
+    '        If SQLconnectionOrcad.State = ConnectionState.Open Then
+    '            SQLconnectionOrcad.Close()
+    '        End If
+    '    Catch ae As MySqlException
+    '        MessageBox.Show(ae.Message.ToString())
+    '    End Try
+    'End Sub
 
     Function cap7(ByVal s As String) As String
         cap7 = UCase(Mid(s, 1, 7)) & (Mid(s, 8))
@@ -262,41 +273,48 @@ Module PublicFunction
 
     Sub WriteCheckTable(ByVal des As String)
 
-        AdapterCh.SelectCommand = New MySqlCommand("SELECT * FROM mant ", MySqlconnection)
-        AdapterCh.Fill(dsCh, "mant")
-        tblCh = dsCh.Tables("mant")
+        
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+		    Using AdapterCh As New MySqlDataAdapter("SELECT * FROM mant", con)
+			        AdapterCh.Fill(dsCh, "mant")
+		    End Using
+            
+            tblCh = dsCh.Tables("mant")
 
-        Dim returnValue As DataRow(), sql As String, cmd As MySqlCommand
-        returnValue = tblCh.Select("des = '" & des & "'")
-        If returnValue.Length >= 1 Then
-            Try
-                sql = "UPDATE `" & DBName & "`.`mant` SET `des` = '" & des &
-                "', `data` = '" & "[" & date_to_string(Now) & "]" &
-                "'WHERE `mant`.`id` = " & returnValue(0).Item("id").ToString & " ;"
+            Dim returnValue As DataRow(), sql As String, cmd As MySqlCommand
+            returnValue = tblCh.Select("des = '" & des & "'")
+            If returnValue.Length >= 1 Then
+                Try
+                    sql = "UPDATE `" & DBName & "`.`mant` SET `des` = '" & des &
+                    "', `data` = '" & "[" & date_to_string(Now) & "]" &
+                    "'WHERE `mant`.`id` = " & returnValue(0).Item("id").ToString & " ;"
 
-                cmd = New MySqlCommand(sql, MySqlconnection)
-                cmd.ExecuteNonQuery()
-            Catch ex As Exception
+                    cmd = New MySqlCommand(sql, con)
+                    cmd.ExecuteNonQuery()
+                Catch ex As Exception
 
-            End Try
-        Else
-            Try
-                sql = "INSERT INTO `" & DBName & "`.`mant`(`des`, `data`) VALUES ('" &
-                des & "', '[" & date_to_string(Now) & "]'" & ");"
+                End Try
+            Else
+                Try
+                    sql = "INSERT INTO `" & DBName & "`.`mant`(`des`, `data`) VALUES ('" &
+                    des & "', '[" & date_to_string(Now) & "]'" & ");"
 
-                cmd = New MySqlCommand(sql, MySqlconnection)
-                cmd.ExecuteNonQuery()
+                    cmd = New MySqlCommand(sql, con)
+                    cmd.ExecuteNonQuery()
+                    dsCh.Clear()
+                    tblCh.Clear()
+                    Using AdapterCh As New MySqlDataAdapter("SELECT * FROM mant", con)
+			            AdapterCh.Fill(dsCh, "mant")
+		            End Using
+                    tblCh = dsCh.Tables("mant")
 
-                AdapterCh.SelectCommand = New MySqlCommand("SELECT * FROM mant ", MySqlconnection)
-                dsCh.Clear()
-                tblCh.Clear()
-                AdapterCh.Fill(dsCh, "mant")
-                tblCh = dsCh.Tables("mant")
+                Catch ex As Exception
 
-            Catch ex As Exception
-
-            End Try
-        End If
+                End Try
+            End If
+        End Using
     End Sub
 
     Function user() As String
@@ -393,16 +411,25 @@ Module PublicFunction
 
     'Write and get the time of server.
     Function MySqlServerTimeString() As String
-        Try
-            Dim sql As String = "UPDATE `" & DBName & "`.`parameterset` SET `value` =  NOW() +0 where name = 'sessionTime'"
-            Dim cmd = New MySqlCommand(sql, MySqlconnection)
-            cmd.ExecuteNonQuery()
-        Catch ex As Exception
-            MsgBox("Time Write error!")
-        End Try
-        Dim Adapter As New MySqlDataAdapter("SELECT * FROM parameterset where name = 'sessionTime'", MySqlconnection)
-        Dim Ds As New DataSet
-        Adapter.Fill(Ds, "parameterset")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            Try 
+            
+		        Dim sql As String = "UPDATE `" & DBName & "`.`parameterset` SET `value` =  NOW() +0 where name = 'sessionTime'"
+                Dim cmd = New MySqlCommand(sql, con)
+                cmd.ExecuteNonQuery()
+                
+            Catch ex As Exception
+                MsgBox("Time Write error!")
+            End Try
+            'Dim Adapter As New MySqlDataAdapter("SELECT * FROM parameterset where name = 'sessionTime'", con)
+           
+            Dim Ds As New DataSet
+            Using Adapter As New MySqlDataAdapter("SELECT * FROM parameterset where name = 'sessionTime'", con)
+			    Adapter.Fill(Ds, "parameterset")
+		    End Using
+        End Using
         MySqlServerTimeString = ParameterTable("sessionTime")
 
     End Function
@@ -415,38 +442,32 @@ Module PublicFunction
     ' SETTA RESETTA SESSIONE
     Function session(ByVal bomName As String, ByVal id As Long, ByVal setT_clearF As Boolean) As String
         session = "ID_0"
-        If id <> 0 Then
-            Dim SessionTime As String, SessionUser As String
-            Dim Adapter As New MySqlDataAdapter("SELECT * FROM " & bomName & " where id = " & id, MySqlconnection)
-            Dim Ds As New DataSet
-            Adapter.Fill(Ds, bomName)
-            Dim tbl As DataTable = Ds.Tables(bomName)
-            Try
-                SessionTime = tbl.Rows(0).Item("SessionTime").ToString()
-                SessionUser = tbl.Rows(0).Item("SessionUser").ToString()
-            Catch ex As Exception
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            If id <> 0 Then
+                Dim SessionTime As String, SessionUser As String
+                Dim Adapter As New MySqlDataAdapter("SELECT * FROM " & bomName & " where id = " & id, con)
+                Dim Ds As New DataSet
+                Adapter.Fill(Ds, bomName)
+                Dim tbl As DataTable = Ds.Tables(bomName)
+                Try
+                    SessionTime = tbl.Rows(0).Item("SessionTime").ToString()
+                    SessionUser = tbl.Rows(0).Item("SessionUser").ToString()
+                Catch ex As Exception
 
-            End Try
+                End Try
 
-            Dim sql As String = ""
-            If SessionTime = "" Then
-                If setT_clearF = True Then
-                    sql = "UPDATE `" & DBName & "`.`" & bomName & "` SET `SessionTime` =  now() +0,`SessionUser` = '" & CreAccount.strUserName & "' where id= " & id
-                    session = "SET"
-                Else
-                    session = "RESET"
-                End If
-            Else
-                If SessionUser = CreAccount.strUserName Then
+                Dim sql As String = ""
+                If SessionTime = "" Then
                     If setT_clearF = True Then
                         sql = "UPDATE `" & DBName & "`.`" & bomName & "` SET `SessionTime` =  now() +0,`SessionUser` = '" & CreAccount.strUserName & "' where id= " & id
                         session = "SET"
                     Else
-                        sql = "UPDATE `" & DBName & "`.`" & bomName & "` SET `SessionTime` = '',`SessionUser` = '' where id= " & id
                         session = "RESET"
                     End If
                 Else
-                    If DeltaSessionTime(bomName, id) > 30 Then
+                    If SessionUser = CreAccount.strUserName Then
                         If setT_clearF = True Then
                             sql = "UPDATE `" & DBName & "`.`" & bomName & "` SET `SessionTime` =  now() +0,`SessionUser` = '" & CreAccount.strUserName & "' where id= " & id
                             session = "SET"
@@ -455,28 +476,44 @@ Module PublicFunction
                             session = "RESET"
                         End If
                     Else
-                        session = "USED " & SessionUser & " TIME: " & SessionTime
+                        If DeltaSessionTime(bomName, id) > 30 Then
+                            If setT_clearF = True Then
+                                sql = "UPDATE `" & DBName & "`.`" & bomName & "` SET `SessionTime` =  now() +0,`SessionUser` = '" & CreAccount.strUserName & "' where id= " & id
+                                session = "SET"
+                            Else
+                                sql = "UPDATE `" & DBName & "`.`" & bomName & "` SET `SessionTime` = '',`SessionUser` = '' where id= " & id
+                                session = "RESET"
+                            End If
+                        Else
+                            session = "USED " & SessionUser & " TIME: " & SessionTime
+                        End If
                     End If
                 End If
-            End If
 
-            If sql <> "" Then
-                Try
-                    Dim cmd As MySqlCommand = New MySqlCommand(sql, MySqlconnection)
-                    cmd.ExecuteNonQuery()
-                Catch ex As Exception
-                    MsgBox("Set session error!")
-                End Try
-            End If
+                If sql <> "" Then
+                    Try
+                        Dim cmd As MySqlCommand = New MySqlCommand(sql, con)
+                        cmd.ExecuteNonQuery()
+                    Catch ex As Exception
+                        MsgBox("Set session error!")
+                    End Try
+                End If
 
-        End If
+            End If
+        End Using
     End Function
 
 
     Function DeltaSessionTime(ByVal TableName As String, ByVal id As Long) As Integer
-        Dim Adapter As New MySqlDataAdapter("SELECT * FROM " & TableName & " where id = " & id, MySqlconnection)
+        'Dim Adapter As New MySqlDataAdapter("SELECT * FROM " & TableName & " where id = " & id, MySqlconnection)
         Dim Ds As New DataSet
-        Adapter.Fill(Ds, TableName)
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+		        Using Adapter As New MySqlDataAdapter("SELECT * FROM " & TableName & " where id = " & id, con)
+			        Adapter.Fill(Ds, TableName)
+		        End Using
+        End Using
         Dim tbl As DataTable = Ds.Tables(TableName)
         Dim SessionTime As String = tbl.Rows(0).Item("SessionTime").ToString()
         If SessionTime <> "" Then
@@ -484,33 +521,39 @@ Module PublicFunction
         End If
     End Function
 
-
-    'Write and get the time of server.
     Function ParameterTable(ByVal param As String) As String
         Try
-            Dim Adapter As New MySqlDataAdapter("SELECT * FROM parameterset", MySqlconnection)
-            Dim tbl As DataTable
-            Dim Ds As New DataSet, resultRow As DataRow()
-            Adapter.Fill(Ds, "parameterset")
-            tbl = Ds.Tables("parameterset")
-            resultRow = tbl.Select("name = '" & param & "'")
-            If resultRow.Length > 0 Then
-                ParameterTable = resultRow(0).Item("value").ToString()
-            End If
-            Adapter.Dispose()
-            Ds.Dispose()
+            Dim builder As New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+                Dim tbl As DataTable
+                Dim Ds As New DataSet, resultRow As DataRow()
+
+                Using Adapter As New MySqlDataAdapter("SELECT * FROM parameterset", con)
+                    Adapter.Fill(Ds, "parameterset")
+                End Using
+                tbl = Ds.Tables("parameterset")
+                resultRow = tbl.Select("name = '" & param & "'")
+                If resultRow.Length > 0 Then
+                    ParameterTable = resultRow(0).Item("value").ToString()
+                End If
+                Ds.Dispose()
+            End Using
         Catch ex As Exception
             MsgBox("Error: " & ex.Message)
         End Try
-
     End Function
 
     Function ParameterTableWrite(ByVal param As String, ByVal value As String) As String
         ParameterTableWrite = "KO"
         Try
-            Dim sql As String = "UPDATE `" & DBName & "`.`parameterset` SET `value` ='" & value & "' where name = '" & param & "'"
-            Dim cmd = New MySqlCommand(sql, MySqlconnection)
-            cmd.ExecuteNonQuery()
+            Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+		        Dim sql As String = "UPDATE `" & DBName & "`.`parameterset` SET `value` ='" & value & "' where name = '" & param & "'"
+                Dim cmd = New MySqlCommand(sql, con)
+                cmd.ExecuteNonQuery()
+            End Using
             ParameterTableWrite = "OK"
         Catch ex As Exception
             MsgBox("Parametric Write error!   " & ex.Message)
@@ -555,16 +598,16 @@ Module PublicFunction
 
 
 
-        Public Sub CloseConnectionSqlOrcad()
+        'Public Sub CloseConnectionSqlOrcad()
 
-            Try
-                If SQLconnectionOrcad.State = ConnectionState.Closed Then
-                    SQLconnectionOrcad.Open()
-                End If
-            Catch ex As Exception
-                MessageBox.Show(ex.ToString())
-            End Try
-        End Sub
+        '    Try
+        '        If SQLconnectionOrcad.State = ConnectionState.Closed Then
+        '            SQLconnectionOrcad.Open()
+        '        End If
+        '    Catch ex As Exception
+        '        MessageBox.Show(ex.ToString())
+        '    End Try
+        'End Sub
 
 #Region "Export"
         ''' <summary>

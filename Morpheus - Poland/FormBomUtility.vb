@@ -8,15 +8,16 @@ Imports Microsoft.VisualBasic
 Imports System.Globalization
 Imports System.Data
 Imports MySql.Data.MySqlClient
+Imports System.Configuration
 
 Public Class FormBomUtility
     Dim DsDocComp As New DataSet
     Dim tblDocComp As New DataTable
-    Dim AdapterPfp As New MySqlDataAdapter("SELECT * FROM Pfp", MySqlconnection)
+    'Dim AdapterPfp As New MySqlDataAdapter("SELECT * FROM Pfp", MySqlconnection)
     Dim tblPfp As DataTable
     Dim DsPfp As New DataSet
 
-    Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
+    'Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
     Dim tblDoc As DataTable
     Dim DsDoc As New DataSet
     Dim ConnectionStringOrcad As String
@@ -311,53 +312,56 @@ Public Class FormBomUtility
         Dim OrcadDBUserName = ParameterTable("OrcadDBUser")
         Dim OrcadDBPwd = ParameterTable("OrcadDBPwd")
 
-            Try
+        Try
             OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
-            Catch ex As Exception
-                CloseConnectionSqlOrcad()
+        Catch ex As Exception
+            CloseConnectionSqlOrcad()
             OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
-            End Try
+        End Try
 
-            ButtonMissingPf.Text = "load orcad data"
-            Application.DoEvents()
-            Dim AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where ( valido = 'valido') or (valido = 'in_attesa_convalida') ", SqlconnectionOrcad)
-            Try
-                tblDocComp.Clear()
-                DsDocComp.Clear()
-            Catch ex As Exception
+        ButtonMissingPf.Text = "load orcad data"
+        Application.DoEvents()
+        Dim AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where ( valido = 'valido') or (valido = 'in_attesa_convalida') ", SqlconnectionOrcad)
+        Try
+            tblDocComp.Clear()
+            DsDocComp.Clear()
+        Catch ex As Exception
 
-            End Try
+        End Try
 
-            AdapterDocComp.Fill(DsDocComp, "orcadw.T_orcadcis")
-            tblDocComp = DsDocComp.Tables("orcadw.T_orcadcis")
-
-            AdapterDoc.SelectCommand = New MySqlCommand("SELECT * FROM DOC;", MySqlconnection)
+        AdapterDocComp.Fill(DsDocComp, "orcadw.T_orcadcis")
+        tblDocComp = DsDocComp.Tables("orcadw.T_orcadcis")
+        Dim builder As New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            'AdapterDoc.SelectCommand = New MySqlCommand("SELECT * FROM DOC;", MySqlconnection)
             Try
                 DsDoc.Clear()
                 tblDoc.Clear()
             Catch ex As Exception
 
             End Try
+            Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM DOC;", con)
+                AdapterDoc.Fill(DsDoc, "doc")
+                tblDoc = DsDoc.Tables("doc")
+            End Using
 
-            AdapterDoc.Fill(DsDoc, "doc")
-            tblDoc = DsDoc.Tables("doc")
-
-            AdapterPfp.SelectCommand = New MySqlCommand("SELECT * FROM missing_pf;", MySqlconnection)
+            'AdapterPfp.SelectCommand = New MySqlCommand("SELECT * FROM missing_pf;", MySqlconnection)
             Try
                 DsPfp.Clear()
                 tblPfp.Clear()
             Catch ex As Exception
 
             End Try
-
-            AdapterPfp.Fill(DsPfp, "missing_pf")
-            tblPfp = DsPfp.Tables("missing_pf")
-
+            Using AdapterPfp As New MySqlDataAdapter("SELECT * FROM missing_pf;", con)
+                AdapterPfp.Fill(DsPfp, "missing_pf")
+                tblPfp = DsPfp.Tables("missing_pf")
+            End Using
 
             For Each row In tblPfp.Rows
                 Dim sql As String = "UPDATE `missing_pf` SET `doc`='" & OrcadDoc(row("bitron_PN").ToString) & "' WHERE `bitron_pn`='" & row("bitron_PN").ToString & "'"
                 Try
-                    Dim commandMySql As MySqlCommand = New MySqlCommand(sql, MySqlconnection)
+                    Dim commandMySql As MySqlCommand = New MySqlCommand(sql, con)
                     commandMySql.ExecuteNonQuery()
                 Catch ex As Exception
                     MsgBox("Error in DB update/Insert material request")
@@ -365,7 +369,8 @@ Public Class FormBomUtility
                 ButtonMissingPf.Text = "Elaboration of : " & row("bitron_PN").ToString
                 Application.DoEvents()
             Next
-            ButtonMissingPf.Text = "Missing Pf update Doc"
+        End Using
+        ButtonMissingPf.Text = "Missing Pf update Doc"
     End Sub
 
 

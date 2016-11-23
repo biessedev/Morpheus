@@ -7,6 +7,7 @@ Imports System.Text.UTF8Encoding
 Imports System.Text
 Imports MySql.Data.MySqlClient
 Imports System
+Imports System.Configuration
 
 Public Class FormCoding
 
@@ -229,9 +230,15 @@ Public Class FormCoding
 
         If ButtonValid.Text = "CHECK VALIDITY" Then
             Dim PSW = ""
-            Dim Adapter As New MySqlDataAdapter("SELECT * FROM credentials where username='" & TextBoxName.Text & "'", MySqlconnection)
+            'Dim Adapter As New MySqlDataAdapter("SELECT * FROM credentials where username='" & TextBoxName.Text & "'", MySqlconnection)
             Dim ds As New DataSet
-            Adapter.Fill(ds)
+            Dim builder As New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+                Using Adapter As New MySqlDataAdapter("SELECT * FROM credentials where username='" & TextBoxName.Text & "'", con)
+                    Adapter.Fill(ds)
+                End Using
+            End Using
             Dim tblCredentials As DataTable = ds.Tables(0)
             If tblCredentials.Rows.Count = 1 Then
                 PSW = tblCredentials.Rows.Item(0)("PASSWORD").ToString

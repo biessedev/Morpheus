@@ -3,25 +3,31 @@ Option Compare Text
 Imports MySql.Data.MySqlClient
 Imports System
 Imports System.Data
-
+Imports System.Configuration
 
 Public Class FormMould
 
-    Dim AdapterType As New MySqlDataAdapter("SELECT * FROM doctype", MySqlconnection)
+    'Dim AdapterType As New MySqlDataAdapter("SELECT * FROM doctype", MySqlconnection)
     Dim tblType As DataTable
     Dim DsType As New DataSet
-    Dim AdapterIfp As New MySqlDataAdapter("SELECT * FROM Ifp", MySqlconnection)
+    'Dim AdapterIfp As New MySqlDataAdapter("SELECT * FROM Ifp", MySqlconnection)
     Dim tblIfp As DataTable
     Dim DsIfp As New DataSet
-    Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM Doc", MySqlconnection)
+    'Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM Doc", MySqlconnection)
     Dim tblDoc As DataTable
     Dim DsDoc As New DataSet
 
 
 
     Private Sub FormMould_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
-        AdapterDoc.Fill(DsDoc, "doc")
-        tblDoc = DsDoc.Tables("doc")
+        Dim builder As New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM Doc", con)
+                AdapterDoc.Fill(DsDoc, "doc")
+                tblDoc = DsDoc.Tables("doc")
+            End Using
+        End Using
 
         FillTreeview()
 

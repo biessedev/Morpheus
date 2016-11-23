@@ -2,14 +2,15 @@
 Option Compare Text
 Imports MySql.Data.MySqlClient
 Imports Microsoft.VisualBasic
+Imports System.Configuration
 
 Public Class FormEqItem
 
     Public CurrentActivityId As String
-    Dim AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", MySqlconnection)
+    'Dim AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", MySqlconnection)
     Dim tblEQ As DataTable
     Dim DsEQ As New DataSet
-    Dim AdapterEQAsset As New MySqlDataAdapter("SELECT * FROM EqAsset", MySqlconnection)
+    'Dim AdapterEQAsset As New MySqlDataAdapter("SELECT * FROM EqAsset", MySqlconnection)
     Dim tblEQAsset As DataTable
     Dim DsEQAsset As New DataSet
     Dim UpdatingAuto As Boolean
@@ -22,11 +23,19 @@ Public Class FormEqItem
         If controlRight("E") <= 2 Then ComboBoxResponsible.DropDownStyle = ComboBoxStyle.DropDownList
         If controlRight("E") <= 2 Then ButtonClosedDate.Enabled = False
         TextBoxActivity.Text = CurrentActivityId
-        AdapterEQ.Fill(DsEQ, "EQUIPMENTS")
-        tblEQ = DsEQ.Tables("EQUIPMENTS")
-        ComboBoxRDA.Items.Add("NEED_PRICE")
-        AdapterEQAsset.Fill(DsEQAsset, "EqAsset")
-        tblEQAsset = DsEQAsset.Tables("EqAsset")
+        Dim builder As New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            Using AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", con)
+                AdapterEQ.Fill(DsEQ, "EQUIPMENTS")
+                tblEQ = DsEQ.Tables("EQUIPMENTS")
+            End Using
+            ComboBoxRDA.Items.Add("NEED_PRICE")
+            Using AdapterEQAsset As New MySqlDataAdapter("SELECT * FROM EqAsset", con)
+		        AdapterEQAsset.Fill(DsEQAsset, "EqAsset")
+                tblEQAsset = DsEQAsset.Tables("EqAsset")
+	        End Using
+        End Using
         FillTreeViewEQAsset()
         TextBoxTotalCost.Text = CostRecalculation()
         loadComboDai()
@@ -70,10 +79,14 @@ Public Class FormEqItem
 
             End Try
 
-
-            AdapterEQAsset.Fill(DsEQAsset, "EqAsset")
-            tblEQAsset = DsEQAsset.Tables("EqAsset")
-
+            Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	            Using AdapterEQAsset As New MySqlDataAdapter("SELECT * FROM EqAsset", con)
+		            AdapterEQAsset.Fill(DsEQAsset, "EqAsset")
+                    tblEQAsset = DsEQAsset.Tables("EqAsset")
+	            End Using
+            End Using
             rowResults = tblEQAsset.Select("id = " & CurrentAssetId() & "")
 
             FormString = ""
@@ -108,21 +121,25 @@ Public Class FormEqItem
             Catch ex As Exception
 
             End Try
+            Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	            Using AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", con)
+		            AdapterEQ.Fill(DsEQ, "equipment")
+                    tblEQ = DsEQ.Tables("equipment")
+	            End Using
+                Try
+                    DsEQAsset.Clear()
+                    tblEQAsset.Clear()
+                Catch ex As Exception
 
-            AdapterEQ.Fill(DsEQ, "equipment")
-            tblEQ = DsEQ.Tables("equipment")
-
-            Try
-                DsEQAsset.Clear()
-                tblEQAsset.Clear()
-            Catch ex As Exception
-
-            End Try
-
-
-            AdapterEQAsset.Fill(DsEQAsset, "EQAsset")
-            tblEQAsset = DsEQAsset.Tables("EQAsset")
-
+                End Try
+                Using AdapterEQAsset As New MySqlDataAdapter("SELECT * FROM EqAsset", con)
+		            AdapterEQAsset.Fill(DsEQAsset, "EQAsset")
+                    tblEQAsset = DsEQAsset.Tables("EQAsset")
+	            End Using
+                
+            End Using
             Dim rowShow As DataRow() = tblEQ.Select("idactivity ='" & TextBoxActivity.Text & "'", "Id")
 
             For Each row In rowShow
@@ -219,9 +236,13 @@ Public Class FormEqItem
             If vbYes = MsgBox("Do you want delete this Asset?", MsgBoxStyle.YesNo) Then
                 If CompareDatabase(CurrentAssetId()) Then
                     Try
-                        Dim sql As String = "DELETE FROM `" & DBName & "`.`eqAsset` WHERE `eqAsset`.`id` = " & CurrentAssetId()
-                        Dim cmd = New MySqlCommand(sql, MySqlconnection)
-                        cmd.ExecuteNonQuery()
+                        Dim  builder As  New Common.DbConnectionStringBuilder()
+                        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	                        Dim sql As String = "DELETE FROM `" & DBName & "`.`eqAsset` WHERE `eqAsset`.`id` = " & CurrentAssetId()
+                            Dim cmd = New MySqlCommand(sql, con)
+                            cmd.ExecuteNonQuery()
+                        End Using
                         MsgBox("Asset deleted!")
                         TreeViewEQAsset.SelectedNode.Remove()
                         Application.DoEvents()
@@ -260,10 +281,13 @@ Public Class FormEqItem
             TreeViewEQAsset.ResumeLayout()
 
             Try
-                Dim sql As String = "INSERT INTO `" & DBName & "`.`eqasset` (`Name`,`idtool` ,`closeddate`,`rda`) VALUES ( '" & Trim(UCase(Replace(InputBox("Insert the item name: "), "'", ""))) & "' , '" & CurrentToolId() & "'" & ", 'OPEN','NEED_PRICE') ;"
-                Dim cmd = New MySqlCommand(sql, MySqlconnection)
-                cmd.ExecuteNonQuery()
-
+                Dim  builder As  New Common.DbConnectionStringBuilder()
+                builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	                Dim sql As String = "INSERT INTO `" & DBName & "`.`eqasset` (`Name`,`idtool` ,`closeddate`,`rda`) VALUES ( '" & Trim(UCase(Replace(InputBox("Insert the item name: "), "'", ""))) & "' , '" & CurrentToolId() & "'" & ", 'OPEN','NEED_PRICE') ;"
+                    Dim cmd = New MySqlCommand(sql, con)
+                    cmd.ExecuteNonQuery()
+                End Using
             Catch ex As Exception
                 MsgBox(ex.Message)
             End Try
@@ -491,40 +515,46 @@ Public Class FormEqItem
         ButtonSave.Enabled = False
         If CurrentAssetId() > 0 And CompareDatabase(CurrentAssetId()) Then
             If IsNumeric(Replace(Replace(IIf(Mid(TextBoxCost.Text, 2) <> "", Mid(TextBoxCost.Text, 2), "0"), ",", ""), ".", "")) Then
-                Try
-                    Dim sql As String = "UPDATE `" & DBName & "`.`EqAsset` SET " &
-                                        "`description` = '" & Replace(Replace(RichTextBoxNote.Text, "\", "\\"), "'", "") &
-                                        "',`Idasset` = '" & TextBoxAssetID.Text &
-                                        "',`responsible` = '" & Trim(UCase(ComboBoxResponsible.Text)) &
-                                        "',`EstimatedDate` = '" & ComboBoxEstimatedClosed.Text &
-                                        "',`OpenDate` = '" & ComboBoxOpenDate.Text &
-                                        "',`Supplier` = '" & TextBoxSupplier.Text &
-                                        "',`ds` = '" & Replace((TextBoxDS.Text), "\", "\\") &
-                                        "',`ClosedDate` = '" & ButtonClosedDate.Text &
-                                        "',`rda` = '" & ComboBoxRDA.Text &
-                                        "',`order` = '" & TextBoxOrder.Text &
-                                        "',`dai` = '" & UCase(ComboBoxDai.Text) &
-                                        "',`cost` = " & Replace(Replace(IIf(Mid(TextBoxCost.Text, 2) <> "", Mid(TextBoxCost.Text, 2), "0"), ",", ""), ".", "") &
-                                        ",`name` = '" & Trim(Mid(TreeViewEQAsset.SelectedNode.Text, InStr(TreeViewEQAsset.SelectedNode.Text, "-") + 1)) &
-                                        "' WHERE `eqasset`.`id` = " & CurrentAssetId() & " ;"
+                Dim  builder As  New Common.DbConnectionStringBuilder()
+                builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	                Try
+                        Dim sql As String = "UPDATE `" & DBName & "`.`EqAsset` SET " &
+                                            "`description` = '" & Replace(Replace(RichTextBoxNote.Text, "\", "\\"), "'", "") &
+                                            "',`Idasset` = '" & TextBoxAssetID.Text &
+                                            "',`responsible` = '" & Trim(UCase(ComboBoxResponsible.Text)) &
+                                            "',`EstimatedDate` = '" & ComboBoxEstimatedClosed.Text &
+                                            "',`OpenDate` = '" & ComboBoxOpenDate.Text &
+                                            "',`Supplier` = '" & TextBoxSupplier.Text &
+                                            "',`ds` = '" & Replace((TextBoxDS.Text), "\", "\\") &
+                                            "',`ClosedDate` = '" & ButtonClosedDate.Text &
+                                            "',`rda` = '" & ComboBoxRDA.Text &
+                                            "',`order` = '" & TextBoxOrder.Text &
+                                            "',`dai` = '" & UCase(ComboBoxDai.Text) &
+                                            "',`cost` = " & Replace(Replace(IIf(Mid(TextBoxCost.Text, 2) <> "", Mid(TextBoxCost.Text, 2), "0"), ",", ""), ".", "") &
+                                            ",`name` = '" & Trim(Mid(TreeViewEQAsset.SelectedNode.Text, InStr(TreeViewEQAsset.SelectedNode.Text, "-") + 1)) &
+                                            "' WHERE `eqasset`.`id` = " & CurrentAssetId() & " ;"
 
-                    Dim cmd = New MySqlCommand(sql, MySqlconnection)
-                    cmd.ExecuteNonQuery()
+                        Dim cmd = New MySqlCommand(sql, con)
+                        cmd.ExecuteNonQuery()
 
-                Catch ex As Exception
-                    MsgBox(ex.Message)
-                End Try
+                    Catch ex As Exception
+                        MsgBox(ex.Message)
+                    End Try
 
-                ButtonSave.BackColor = Color.Green
-                Try
-                    DsEQAsset.Clear()
-                    tblEQAsset.Clear()
-                Catch ex As Exception
+                    ButtonSave.BackColor = Color.Green
+                    Try
+                        DsEQAsset.Clear()
+                        tblEQAsset.Clear()
+                    Catch ex As Exception
 
-                End Try
+                    End Try
 
-                AdapterEQAsset.Fill(DsEQAsset, "EQAsset")
-                tblEQAsset = DsEQAsset.Tables("EQAsset")
+                    Using AdapterEQAsset As New MySqlDataAdapter("SELECT * FROM EqAsset", con)
+		                AdapterEQAsset.Fill(DsEQAsset, "EQAsset")
+                        tblEQAsset = DsEQAsset.Tables("EQAsset")
+	                End Using
+                End Using
             Else
                 MsgBox("Cost and RDA need be a number, DAI should be 8 char with ""K"" as start!")
             End If
@@ -539,13 +569,15 @@ Public Class FormEqItem
         If CurrentAssetId() > 0 And CompareDatabase(CurrentAssetId()) Then
             If TextBoxDelay.Text <> "" Then
                 Try
-
-                    Dim sql As String = "UPDATE `" & DBName & "`.`EqAsset` SET " &
-                                        "`delay` = " & TextBoxDelay.Text &
-                                        " WHERE `eqasset`.`id` = " & CurrentAssetId() & " ;"
-                    Dim cmd = New MySqlCommand(sql, MySqlconnection)
-                    cmd.ExecuteNonQuery()
-
+                    Dim  builder As  New Common.DbConnectionStringBuilder()
+                    builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                    Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+                        Dim sql As String = "UPDATE `" & DBName & "`.`EqAsset` SET " &
+                                            "`delay` = " & TextBoxDelay.Text &
+                                            " WHERE `eqasset`.`id` = " & CurrentAssetId() & " ;"
+                        Dim cmd = New MySqlCommand(sql, con)
+                        cmd.ExecuteNonQuery()
+                    End Using
 
                 Catch ex As Exception
                     MsgBox(ex.Message)
@@ -661,20 +693,24 @@ Public Class FormEqItem
         Catch ex As Exception
 
         End Try
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", con)
+		        AdapterEQ.Fill(DsEQ, "equipment")
+                tblEQ = DsEQ.Tables("equipment")
+	        End Using
+            Try
+                DsEQAsset.Clear()
+                tblEQAsset.Clear()
+            Catch ex As Exception
 
-        AdapterEQ.Fill(DsEQ, "equipment")
-        tblEQ = DsEQ.Tables("equipment")
-
-        Try
-            DsEQAsset.Clear()
-            tblEQAsset.Clear()
-        Catch ex As Exception
-
-        End Try
-
-        AdapterEQAsset.Fill(DsEQAsset, "EQAsset")
-        tblEQAsset = DsEQAsset.Tables("EQAsset")
-
+            End Try
+            Using AdapterEQAsset As New MySqlDataAdapter("SELECT * FROM EqAsset", con)
+		        AdapterEQAsset.Fill(DsEQAsset, "EQAsset")
+                tblEQAsset = DsEQAsset.Tables("EQAsset")
+	        End Using
+        End Using
         rowResults = tblEQ.Select("idactivity ='" & TextBoxActivity.Text & "'", "Id")
 
         For Each row In rowResults

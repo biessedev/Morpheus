@@ -6,19 +6,20 @@ Imports MySql.Data.MySqlClient
 Imports System.Globalization
 Imports System.Net.Mail
 Imports System.Net
+Imports System.Configuration
 
 Public Class FormECR
-    Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
-    Dim AdapterDocType As New MySqlDataAdapter("SELECT * FROM Doctype", MySqlconnection)
-    Dim AdapterEcr As New MySqlDataAdapter("SELECT * FROM Ecr", MySqlconnection)
-    Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM product", MySqlconnection)
+    'Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
+    'Dim AdapterDocType As New MySqlDataAdapter("SELECT * FROM Doctype", MySqlconnection)
+    'Dim AdapterEcr As New MySqlDataAdapter("SELECT * FROM Ecr", MySqlconnection)
+    'Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM product", MySqlconnection)
     Dim tblDoc As DataTable, tblDocType As DataTable, tblEcr As DataTable, tblProd As DataTable
     Dim DsDoc As New DataSet, DsDocType As New DataSet, DsEcr As New DataSet, DsProd As New DataSet
     Dim userDep3 As String
     Dim cmd As New MySqlCommand
     Dim CultureInfo_ja_JP As New CultureInfo("ja-JP", False)
     Dim needSave As Boolean = False
-    Dim Adaptermail As New MySqlDataAdapter("SELECT * FROM mail", MySqlconnection)
+    'Dim Adaptermail As New MySqlDataAdapter("SELECT * FROM mail", MySqlconnection)
     Dim Dsmail As New DataSet
     Dim tblmail As DataTable
     Dim MailSent As Boolean
@@ -31,17 +32,24 @@ Public Class FormECR
 
     Private Sub FormECR_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         FormStart.Hide()
-        AdapterEcr.SelectCommand = New MySqlCommand("SELECT * FROM ecr ORDER BY NUMBER;", MySqlconnection)
-        AdapterEcr.Fill(DsEcr, "ecr")
-        tblEcr = DsEcr.Tables("ecr")
+        Dim builder As New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            Using AdapterEcr As New MySqlDataAdapter("SELECT * FROM ecr ORDER BY NUMBER;", con)
+		        AdapterEcr.Fill(DsEcr, "ecr")
+	        End Using
+            tblEcr = DsEcr.Tables("ecr")
 
-        AdapterDoc.SelectCommand = New MySqlCommand("SELECT * FROM DOC;", MySqlconnection)
-        AdapterDoc.Fill(DsDoc, "doc")
-        tblDoc = DsDoc.Tables("doc")
+            Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM DOC;", con)
+		        AdapterDoc.Fill(DsDoc, "doc")
+	        End Using
+            tblDoc = DsDoc.Tables("doc")
 
-        AdapterProd.SelectCommand = New MySqlCommand("SELECT * FROM product order by id;", MySqlconnection)
-        AdapterProd.Fill(DsProd, "product")
-        tblProd = DsProd.Tables("product")
+            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM product order by id;", con)
+		        AdapterProd.Fill(DsProd, "product")
+	        End Using
+            tblProd = DsProd.Tables("product")
+        End Using
 
         ComboProductFill()
         userDep3 = user()
@@ -72,7 +80,7 @@ Public Class FormECR
         ColorButton(userDep3)
         UpdateField()
         ButtonSave.BackColor = Color.Green
-        ButtonSaveSend.BackColor = Color.Green 
+        ButtonSaveSend.BackColor = Color.Green
         If userDep3 = "" Then
             ButtonR_Click(Me, e)
         End If
@@ -84,7 +92,13 @@ Public Class FormECR
     Sub fillEcrComboTable()
         ComboBoxEcr.Items.Clear()
         Dim DsEcr As New DataSet
-        AdapterEcr.Fill(DsEcr, "ecr")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            Using AdapterEcr As New MySqlDataAdapter("SELECT * FROM Ecr", con)
+		        AdapterEcr.Fill(DsEcr, "ecr")
+	        End Using
+        End Using
         Dim tblEcr As DataTable = DsEcr.Tables("ecr")
 
         Try
@@ -126,9 +140,14 @@ Public Class FormECR
 
         tblEcr.Clear()
         DsEcr.Clear()
-        AdapterEcr.SelectCommand = New MySqlCommand("SELECT * FROM ecr;", MySqlconnection)
-        AdapterEcr.Fill(DsEcr, "ecr")
-        tblEcr = DsEcr.Tables("ecr")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            Using AdapterEcr As New MySqlDataAdapter("SELECT * FROM ecr;", con)
+		        AdapterEcr.Fill(DsEcr, "ecr")
+	        End Using
+            tblEcr = DsEcr.Tables("ecr")
+        End Using
 
         pos = InStr(1, ComboBoxEcr.Text, "-", CompareMethod.Text)
         EcrN = Val(Mid(ComboBoxEcr.Text, 1, pos))
@@ -390,8 +409,15 @@ Public Class FormECR
         readField = ""
 
         If IsNothing(tblEcr) Then
-            AdapterEcr.Fill(DsEcr, "ecr")
-            tblEcr = DsEcr.Tables("ecr")
+            Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	            Using AdapterEcr As New MySqlDataAdapter("SELECT * FROM Ecr", con)
+		            AdapterEcr.Fill(DsEcr, "ecr")
+                    tblEcr = DsEcr.Tables("ecr")
+	            End Using
+            End Using
+           
         End If
 
         Try
@@ -412,8 +438,12 @@ Public Class FormECR
         EcrN = Val(Mid(ComboBoxEcr.Text, 1, pos))
         Try
             SQL = "UPDATE `" & DBName & "`.`ecr` SET `" & field & "` = '" & v & "' WHERE `ecr`.`number` = " & EcrN & " ;"
-            cmd = New MySqlCommand(SQL, MySqlconnection)
-            cmd.ExecuteNonQuery()
+            Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	           cmd = New MySqlCommand(SQL, con)
+               cmd.ExecuteNonQuery()
+            End Using
         Catch ex As Exception
             ComunicationLog("0052") 'db operation error
         End Try
@@ -623,9 +653,14 @@ Public Class FormECR
         ColorButton(but)
         tblEcr.Clear()
         DsEcr.Clear()
-        AdapterEcr.SelectCommand = New MySqlCommand("SELECT * FROM ecr;", MySqlconnection)
-        AdapterEcr.Fill(DsEcr, "ecr")
-        tblEcr = DsEcr.Tables("ecr")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterEcr As New MySqlDataAdapter("SELECT * FROM ecr;", con)
+		        AdapterEcr.Fill(DsEcr, "ecr")
+	        End Using
+            tblEcr = DsEcr.Tables("ecr")
+        End Using
 
         RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & readField(but & "note", EcrN)
         TextBoxStepCost.Text = readField(but & "cost", EcrN)
@@ -802,9 +837,14 @@ Public Class FormECR
 
         Dim RowSearchDoc As DataRow()
         Dim RowSearchProd As DataRow()
-        AdapterDoc.SelectCommand = New MySqlCommand("SELECT * FROM DOC;", MySqlconnection)
-        AdapterDoc.Fill(DsDoc, "doc")
-        tblDoc = DsDoc.Tables("doc")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM DOC;", con)
+		        AdapterDoc.Fill(DsDoc, "doc")
+	        End Using
+            tblDoc = DsDoc.Tables("doc")
+        End Using
         RowSearchProd = tblProd.Select("bitronpn = '" & Trim(prod) & "'")
         RowSearchDoc = tblDoc.Select("(filename ='" & RowSearchProd(0).Item("bitronpn").ToString & "' or filename ='" &
         RowSearchProd(0).Item("pcbcode").ToString & "' or filename ='" & RowSearchProd(0).Item("piastracode").ToString & "')")
@@ -817,9 +857,13 @@ Public Class FormECR
                 pos = InStr(1, ComboBoxEcr.Text, "-", CompareMethod.Text)
                 ecrN = Val(Mid(ComboBoxEcr.Text, 1, pos))
                 Try
-                    SQL = "UPDATE `" & DBName & "`.`doc` SET `ecrpending` = '" & row("ecrpending") & "[" & ecrN & "]" & "' WHERE `doc`.`id` = '" & row("id").ToString & "' ;"
-                    cmd = New MySqlCommand(SQL, MySqlconnection)
-                    cmd.ExecuteNonQuery()
+                    Dim  conBuilder As  New Common.DbConnectionStringBuilder()
+                    builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                    Using con = NewConnectionMySql(conBuilder("host"), conBuilder("database"), conBuilder("username"), conBuilder("password"))
+                        SQL = "UPDATE `" & DBName & "`.`doc` SET `ecrpending` = '" & row("ecrpending") & "[" & ecrN & "]" & "' WHERE `doc`.`id` = '" & row("id").ToString & "' ;"
+                        cmd = New MySqlCommand(SQL, con)
+                        cmd.ExecuteNonQuery()
+                    End Using
                 Catch ex As Exception
                     ComunicationLog("0052") 'db operation error
                 End Try
@@ -831,33 +875,38 @@ Public Class FormECR
 
     Sub DeinvalidationProd(ByVal prod As String, ByVal ecrN As Integer)
 
-        AdapterDoc.SelectCommand = New MySqlCommand("SELECT * FROM DOC;", MySqlconnection)
-        AdapterDoc.Fill(DsDoc, "doc")
-        tblDoc = DsDoc.Tables("doc")
-        Dim RowSearchDoc As DataRow()
-        Dim RowSearchProd As DataRow()
-        RowSearchProd = tblProd.Select("bitronpn = '" & Trim(prod) & "'")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM DOC;", con)
+		        AdapterDoc.Fill(DsDoc, "doc")
+	        End Using
+            tblDoc = DsDoc.Tables("doc")
+        
+            Dim RowSearchDoc As DataRow()
+            Dim RowSearchProd As DataRow()
+            RowSearchProd = tblProd.Select("bitronpn = '" & Trim(prod) & "'")
 
-        RowSearchDoc = tblDoc.Select("(filename ='" & RowSearchProd(0).Item("bitronpn").ToString & "' or filename ='" &
-        RowSearchProd(0).Item("pcbcode").ToString & "' or filename ='" & RowSearchProd(0).Item("piastracode").ToString & "')")
+            RowSearchDoc = tblDoc.Select("(filename ='" & RowSearchProd(0).Item("bitronpn").ToString & "' or filename ='" &
+            RowSearchProd(0).Item("pcbcode").ToString & "' or filename ='" & RowSearchProd(0).Item("piastracode").ToString & "')")
 
-        For Each row In RowSearchDoc
+            For Each row In RowSearchDoc
 
-            If InStr(1, row("Ecrpending").ToString, "[" & ecrN & "]", CompareMethod.Text) > 0 Then
-                Dim SQL As String
-                Dim pos As Integer
-                pos = InStr(1, ComboBoxEcr.Text, "-", CompareMethod.Text)
-                ecrN = Val(Mid(ComboBoxEcr.Text, 1, pos))
-                Try
-                    SQL = "UPDATE `" & DBName & "`.`doc` SET `ecrpending` = '" & Replace(row("ecrpending"), "[" & ecrN & "]", "") & "' WHERE `doc`.`id` = '" & row("id").ToString & "' ;"
-                    cmd = New MySqlCommand(SQL, MySqlconnection)
-                    cmd.ExecuteNonQuery()
-                Catch ex As Exception
-                    ComunicationLog("0052") 'db operation error
-                End Try
-            End If
-        Next
-
+                If InStr(1, row("Ecrpending").ToString, "[" & ecrN & "]", CompareMethod.Text) > 0 Then
+                    Dim SQL As String
+                    Dim pos As Integer
+                    pos = InStr(1, ComboBoxEcr.Text, "-", CompareMethod.Text)
+                    ecrN = Val(Mid(ComboBoxEcr.Text, 1, pos))
+                    Try
+                        SQL = "UPDATE `" & DBName & "`.`doc` SET `ecrpending` = '" & Replace(row("ecrpending"), "[" & ecrN & "]", "") & "' WHERE `doc`.`id` = '" & row("id").ToString & "' ;"
+                        cmd = New MySqlCommand(SQL, con)
+                        cmd.ExecuteNonQuery()
+                    Catch ex As Exception
+                        ComunicationLog("0052") 'db operation error
+                    End Try
+                End If
+            Next
+        End Using
     End Sub
 
     Function downloadFileWinPath(ByVal fileName As String) As String
@@ -1016,17 +1065,17 @@ Public Class FormECR
         UpdateField()
     End Sub
 
-    Private Function GetDepartamentName(right as String) as String
+    Private Function GetDepartamentName(right As String) As String
         Dim departament = ""
-        If ButtonRL.BackColor = Color.LightGreen then departament =  "R&L"
-        If ButtonLL.BackColor = Color.LightGreen then departament =  "Logistic"
-        If ButtonUL.BackColor = Color.LightGreen then departament =  "Purchasing"
-        If ButtonBL.BackColor = Color.LightGreen then departament =  "Process Engineering"
-        If ButtonEL.BackColor = Color.LightGreen then departament =  "Testing Engineering"
-        If ButtonNL.BackColor = Color.LightGreen then departament =  "Quality"
-        If ButtonPL.BackColor = Color.LightGreen then departament =  "Production"
-        If ButtonQL.BackColor = Color.LightGreen then departament =  "Time and Methods"
-        return departament
+        If ButtonRL.BackColor = Color.LightGreen Then departament = "R&L"
+        If ButtonLL.BackColor = Color.LightGreen Then departament = "Logistic"
+        If ButtonUL.BackColor = Color.LightGreen Then departament = "Purchasing"
+        If ButtonBL.BackColor = Color.LightGreen Then departament = "Process Engineering"
+        If ButtonEL.BackColor = Color.LightGreen Then departament = "Testing Engineering"
+        If ButtonNL.BackColor = Color.LightGreen Then departament = "Quality"
+        If ButtonPL.BackColor = Color.LightGreen Then departament = "Production"
+        If ButtonQL.BackColor = Color.LightGreen Then departament = "Time and Methods"
+        Return departament
     End Function
 
 
@@ -1038,7 +1087,7 @@ Public Class FormECR
         ButtonSave.BackColor = Color.Green
         UpdateField()
 
-        Dim bodyText as String, subject as String
+        Dim bodyText As String, subject As String
         bodyText = "Automatic SrvDoc Message:" & vbLf & vbLf & GetDepartamentName(userDep3) & " Note: " & RichTextBoxStep.Text
         subject = "ECR Note Change Notification:    " & ComboBoxEcr.Text
         SendMail("ECR_VerifyTo; ECR_R_SignTo; ECR_U_SignTo; ECR_L_SignTo; ECR_B_SignTo; ECR_E_SignTo; ECR_N_SignTo; ECR_P_SignTo; ECR_Q_SignTo", _
@@ -1047,25 +1096,31 @@ Public Class FormECR
 
     End Sub
 
-    Function GetEmails(ByVal emailsStr as String) as String
-        Dim listOfEmail as String = ""
-        For Each item in emailsStr.Split(";")
-            if listOfEmail.Contains(item.Trim) = false then listOfEmail += "'" & item.Trim() & "',"
+    Function GetEmails(ByVal emailsStr As String) As String
+        Dim listOfEmail As String = ""
+        For Each item In emailsStr.Split(";")
+            If listOfEmail.Contains(item.Trim) = False Then listOfEmail += "'" & item.Trim() & "',"
         Next
-        If listOfEmail = "" then
+        If listOfEmail = "" Then
             listOfEmail += "'" & emailsStr.Trim() & "'"
-        else
-            listOfEmail = listOfEmail.Remove(listOfEmail.Length - 1,1)
-        End If  
+        Else
+            listOfEmail = listOfEmail.Remove(listOfEmail.Length - 1, 1)
+        End If
         Return listOfEmail
     End Function
 
     Function SendMail(ByVal AddlistTo As String, ByVal AddlistCopy As String, ByVal bodyText As String, ByVal SubText As String, Optional ByVal ATTACH As String = "") As Boolean
         Dim dt As Date = Now
         SendMail = False
-        Adaptermail.SelectCommand = New MySqlCommand("SELECT * FROM mail;", MySqlconnection)
-        Adaptermail.Fill(Dsmail, "mail")
-        tblmail = Dsmail.Tables("mail")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using Adaptermail As New MySqlDataAdapter("SELECT * FROM mail;", con)
+		        Adaptermail.Fill(Dsmail, "mail")
+	        End Using
+            tblmail = Dsmail.Tables("mail")
+        End Using
+        
 
         Dim client As New SmtpClient(ParameterTable("SMTP"), ParameterTable("SMTP_PORT"))
         client.EnableSsl = IIf(ParameterTable("MAIL_SSL") = "YES", True, False)
@@ -1073,26 +1128,26 @@ Public Class FormECR
 
         Dim msg As New MailMessage(ParameterTable("MAIL_SENDER_CREDENTIAL_MAIL"), ParameterTable("MAIL_SENDER_CREDENTIAL_MAIL"))
 
-        
+
         Dim RowSearchMail As DataRow() = tblmail.Select("list in (" & GetEmails(AddlistTo) & ")")
 
         msg.To.Clear()
         msg.CC.Clear()
 
-        For Each row In RowSearchMail      
-            Dim mailAddress as new  MailAddress(row("name").ToString.Replace(Environment.NewLine,""))    
-            if msg.To.Contains(mailAddress) = false then   
-                msg.To.Add(row("name").ToString.Replace(Environment.NewLine,""))
+        For Each row In RowSearchMail
+            Dim mailAddress As New MailAddress(row("name").ToString.Replace(Environment.NewLine, ""))
+            If msg.To.Contains(mailAddress) = False Then
+                msg.To.Add(row("name").ToString.Replace(Environment.NewLine, ""))
             End If
         Next
-        
+
         RowSearchMail = tblmail.Select("list in (" & GetEmails(AddlistCopy) & ")")
         For Each row In RowSearchMail
-            Dim mailAddress as new  MailAddress(row("name").ToString.Replace(Environment.NewLine,""))
-            if msg.CC.Contains(mailAddress) = false then 
-                msg.CC.Add(mailAddress)            
+            Dim mailAddress As New MailAddress(row("name").ToString.Replace(Environment.NewLine, ""))
+            If msg.CC.Contains(mailAddress) = False Then
+                msg.CC.Add(mailAddress)
             End If
-            
+
         Next
 
         If ATTACH <> "" Then
@@ -1110,7 +1165,7 @@ Public Class FormECR
         msg.Subject = SubText
         Try
             client.Send(msg)
-            MailSent = True         
+            MailSent = True
         Catch ex As Exception
             ListBoxLog.Items.Add("Mail not sent...!!!")
         End Try
@@ -1162,8 +1217,13 @@ Public Class FormECR
     Function readDocSign(ByVal docId As Long) As String
         Dim DsDoc As New DataSet
 
-        AdapterDoc.SelectCommand = New MySqlCommand("SELECT * FROM DOC", MySqlconnection)
-        AdapterDoc.Fill(DsDoc, "doc")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM DOC", con)
+		        AdapterDoc.Fill(DsDoc, "doc")
+	        End Using
+        End Using
         Dim tblDoc As DataTable = DsDoc.Tables("doc")
         Dim Res As DataRow() = tblDoc.Select("id = " & docId)
         If Res.Length > 0 Then

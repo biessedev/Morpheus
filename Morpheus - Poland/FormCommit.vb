@@ -4,24 +4,30 @@ Option Compare Text
 Imports MySql.Data.MySqlClient
 Imports System
 Imports Microsoft.VisualBasic
-
+Imports System.Configuration
 
 Public Class FormCommit
-    Dim AdapterCommitList As New MySqlDataAdapter("SELECT * FROM Commit_List", MySqlconnection)
+    'Dim AdapterCommitList As New MySqlDataAdapter("SELECT * FROM Commit_List", MySqlconnection)
     Dim tblCommitList As DataTable
     Dim DsCommitList As New DataSet
-    Dim AdapterCommit As New MySqlDataAdapter("SELECT * FROM Commit", MySqlconnection)
+    'Dim AdapterCommit As New MySqlDataAdapter("SELECT * FROM Commit", MySqlconnection)
     Dim tblCommit As DataTable
     Dim DsCommit As New DataSet
 
 
     Private Sub Commit_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
-        AdapterCommitList.Fill(DsCommitList, "Commit_List")
-        tblCommitList = DsCommitList.Tables("Commit_List")
-
-        AdapterCommit.Fill(DsCommit, "Commit")
-        tblCommit = DsCommit.Tables("Commit")
-
+        Dim builder As New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            Using AdapterCommitList As New MySqlDataAdapter("SELECT * FROM Commit_List", con)
+                AdapterCommitList.Fill(DsCommitList, "Commit_List")
+                tblCommitList = DsCommitList.Tables("Commit_List")
+	        End Using
+            Using AdapterCommit As New MySqlDataAdapter("SELECT * FROM Commit", con)
+		        AdapterCommit.Fill(DsCommit, "Commit")
+                tblCommit = DsCommit.Tables("Commit")
+	        End Using
+        End Using
         FillcomboCommit()
         UpdateTreecommit()
 
@@ -69,9 +75,12 @@ Public Class FormCommit
                                                 TextBoxNote.Text & "', '" & _
                                                 date_to_string(DateTimePicker1.Text) & "', '" & _
                                                 ComboBoxUser.Text & "');"
-
-                            Dim cmd = New MySqlCommand(sql, MySqlconnection)
-                            cmd.ExecuteNonQuery()
+                            Dim  builder As  New Common.DbConnectionStringBuilder()
+                            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	                            Dim cmd = New MySqlCommand(sql, con)
+                                cmd.ExecuteNonQuery()
+                            End Using
                         Catch ex As Exception
                             MsgBox("Insert Error !!")
                         End Try
@@ -98,9 +107,13 @@ Public Class FormCommit
 
                 If MsgBox("Want you delete this Record?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
                     Try
-                        Dim sql As String = "DELETE FROM `" & DBName & "`.`commit` WHERE `commit`.`id` = '" & Trim(Mid(TreeViewBomList.SelectedNode.Text, 1, InStr(TreeViewBomList.SelectedNode.Text, "-") - 1)) & "'"
-                        Dim cmd = New MySqlCommand(sql, MySqlconnection)
-                        cmd.ExecuteNonQuery()
+                        Dim  builder As  New Common.DbConnectionStringBuilder()
+                        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	                        Dim sql As String = "DELETE FROM `" & DBName & "`.`commit` WHERE `commit`.`id` = '" & Trim(Mid(TreeViewBomList.SelectedNode.Text, 1, InStr(TreeViewBomList.SelectedNode.Text, "-") - 1)) & "'"
+                            Dim cmd = New MySqlCommand(sql, con)
+                            cmd.ExecuteNonQuery()
+                        End Using
                     Catch ex As Exception
                         MsgBox("Mysql delete error ")
                     End Try
@@ -122,8 +135,14 @@ Public Class FormCommit
         Dim id As Integer = Val(Trim(Mid(TreeViewBomList.SelectedNode.Text, 1, InStr(TreeViewBomList.SelectedNode.Text, "-") - 1)))
         DsCommit.Clear()
         tblCommit.Clear()
-        AdapterCommit.Fill(DsCommit, "Commit")
-        tblCommit = DsCommit.Tables("Commit")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterCommit As New MySqlDataAdapter("SELECT * FROM Commit", con)
+		        AdapterCommit.Fill(DsCommit, "Commit")
+                tblCommit = DsCommit.Tables("Commit")
+	        End Using
+        End Using
         Dim rowShow As DataRow() = tblCommit.Select("id=" & id, "name")
         If rowShow.Length > 0 Then
             TextBoxNote.Text = rowShow(0).Item("note").ToString()
@@ -134,8 +153,14 @@ Public Class FormCommit
     Private Sub ComboBoxCommit_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxCommit.SelectedIndexChanged
         DsCommitList.Clear()
         tblCommitList.Clear()
-        AdapterCommitList.Fill(DsCommitList, "Commit_List")
-        tblCommitList = DsCommitList.Tables("Commit_List")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterCommitList As New MySqlDataAdapter("SELECT * FROM Commit_List", con)
+		        AdapterCommitList.Fill(DsCommitList, "Commit_List")
+                tblCommitList = DsCommitList.Tables("Commit_List")
+	        End Using
+        End Using
         Dim rowResults As DataRow() = tblCommitList.Select("name = '" & ComboBoxCommit.Text & "'", "name")
         If rowResults.Length > 0 Then
             TextBoxDescription.Text = rowResults(0).Item("description").ToString
@@ -165,9 +190,13 @@ Public Class FormCommit
     Private Sub DateTimePickerEnd_ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles DateTimePickerEnd.ValueChanged
         TextBoxClosed.Text = DateTimePickerEnd.Text
         Try
-            Dim sql As String = "UPDATE `" & DBName & "`.`commit_list` SET `closed` = '" & DateTimePickerEnd.Text & "' WHERE `commit_list`.`name` = '" & ComboBoxCommit.Text & "' ;"
-            Dim cmd As MySqlCommand = New MySqlCommand(sql, MySqlconnection)
-            cmd.ExecuteNonQuery()
+            Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	            Dim sql As String = "UPDATE `" & DBName & "`.`commit_list` SET `closed` = '" & DateTimePickerEnd.Text & "' WHERE `commit_list`.`name` = '" & ComboBoxCommit.Text & "' ;"
+                Dim cmd As MySqlCommand = New MySqlCommand(sql, con)
+                cmd.ExecuteNonQuery()
+            End Using
         Catch ex As Exception
             MsgBox("sql Error !!")
         End Try
@@ -237,9 +266,13 @@ Public Class FormCommit
         If Not CommitmentJob(ComboBoxCommit.Text) Then
             If ComboBoxCommit.Text <> "" Then
                 Try
-                    Dim sql As String = "DELETE FROM `" & DBName & "`.`commit_list` WHERE `commit_list`.`name` = '" & ComboBoxCommit.Text & "'"
-                    Dim cmd = New MySqlCommand(sql, MySqlconnection)
-                    cmd.ExecuteNonQuery()
+                    Dim  builder As  New Common.DbConnectionStringBuilder()
+                    builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                    Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	                    Dim sql As String = "DELETE FROM `" & DBName & "`.`commit_list` WHERE `commit_list`.`name` = '" & ComboBoxCommit.Text & "'"
+                        Dim cmd = New MySqlCommand(sql, con)
+                        cmd.ExecuteNonQuery()
+                    End Using
                 Catch ex As Exception
                     MsgBox("Mysql delete error " & ex.Message)
                 End Try
@@ -258,12 +291,16 @@ Public Class FormCommit
     Private Sub ButtonNewCommit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonNewCommit.Click
         If ComboBoxCommit.Text <> "HOLIDAY" And ComboBoxCommit.Text <> "UN_COMMIT" And ComboBoxCommit.Text <> "" And TextBoxDescription.Text <> "" And TextBoxOpen.Text <> "" Then
             Try
-                Dim sql As String = "INSERT INTO `" & DBName & "`.`commit_list` (`name` ,`description` ,`open`) VALUES ('" & _
+                Dim  builder As  New Common.DbConnectionStringBuilder()
+                builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	                Dim sql As String = "INSERT INTO `" & DBName & "`.`commit_list` (`name` ,`description` ,`open`) VALUES ('" & _
                                     UCase(ComboBoxCommit.Text) & "', '" & _
                                     TextBoxDescription.Text & "', '" & _
                                     TextBoxOpen.Text & "');"
-                Dim cmd = New MySqlCommand(sql, MySqlconnection)
-                cmd.ExecuteNonQuery()
+                    Dim cmd = New MySqlCommand(sql, con)
+                    cmd.ExecuteNonQuery()
+                End Using
             Catch ex As Exception
                 MsgBox("Insert Error !!")
             End Try
@@ -279,8 +316,15 @@ Public Class FormCommit
 
         DsCommit.Clear()
         tblCommit.Clear()
-        AdapterCommit.Fill(DsCommit, "Commit")
-        tblCommit = DsCommit.Tables("Commit")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterCommit As New MySqlDataAdapter("SELECT * FROM Commit", con)
+		        AdapterCommit.Fill(DsCommit, "Commit")
+                tblCommit = DsCommit.Tables("Commit")
+	        End Using
+        End Using
+        
         Dim rowShow As DataRow() = tblCommit.Select("date= '" & d & IIf(CheckBoxUser.Checked, "' and name='" & ComboBoxUser.Text & "'", "'") & _
                                                     IIf(CheckBoxCommit.Checked, " and commit='" & ComboBoxCommit.Text & "'", ""), "name")
         dayHour = 0
@@ -294,8 +338,14 @@ Public Class FormCommit
 
         DsCommit.Clear()
         tblCommit.Clear()
-        AdapterCommit.Fill(DsCommit, "Commit")
-        tblCommit = DsCommit.Tables("Commit")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterCommit As New MySqlDataAdapter("SELECT * FROM Commit", con)
+		        AdapterCommit.Fill(DsCommit, "Commit")
+                tblCommit = DsCommit.Tables("Commit")
+	        End Using
+        End Using
         Dim rowShow As DataRow() = tblCommit.Select("date= '" & d & IIf(CheckBoxUser.Checked, "' and name='" & ComboBoxUser.Text & "'", "'") & _
                                                     IIf(CheckBoxCommit.Checked, " and commit='" & ComboBoxCommit.Text & "'", ""), "name")
         Dim total As Integer = 0
@@ -317,8 +367,14 @@ Public Class FormCommit
 
         DsCommit.Clear()
         tblCommit.Clear()
-        AdapterCommit.Fill(DsCommit, "Commit")
-        tblCommit = DsCommit.Tables("Commit")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterCommit As New MySqlDataAdapter("SELECT * FROM Commit", con)
+		        AdapterCommit.Fill(DsCommit, "Commit")
+                tblCommit = DsCommit.Tables("Commit")
+	        End Using
+        End Using
         Dim rowShow As DataRow() = tblCommit.Select("commit='" & commit & "'", "name")
         If rowShow.Length > 0 Then
             CommitmentJob = True
@@ -332,8 +388,15 @@ Public Class FormCommit
 
         DsCommit.Clear()
         tblCommit.Clear()
-        AdapterCommit.Fill(DsCommit, "Commit")
-        tblCommit = DsCommit.Tables("Commit")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterCommit As New MySqlDataAdapter("SELECT * FROM Commit", con)
+		        AdapterCommit.Fill(DsCommit, "Commit")
+                tblCommit = DsCommit.Tables("Commit")
+	        End Using
+        End Using
+        
         Dim rowShow As DataRow() = tblCommit.Select("date like '" & Mid(date_to_string(QueryDate), 1, 7) & "*'  " & IIf(CheckBoxUser.Checked, " and name='" & ComboBoxUser.Text & "'", "") & _
                                                     IIf(CheckBoxCommit.Checked, " and commit='" & ComboBoxCommit.Text & "'", ""), "name")
         MonthHour = 0
@@ -352,8 +415,15 @@ Public Class FormCommit
         ComboBoxCommit.Items.Add("HOLIDAY")
         DsCommitList.Clear()
         tblCommitList.Clear()
-        AdapterCommitList.Fill(DsCommitList, "Commit_List")
-        tblCommitList = DsCommitList.Tables("Commit_List")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterCommitList As New MySqlDataAdapter("SELECT * FROM Commit_List", con)
+		        AdapterCommitList.Fill(DsCommitList, "Commit_List")
+                tblCommitList = DsCommitList.Tables("Commit_List")
+	        End Using
+        End Using
+        
         Dim rowResults As DataRow() = tblCommitList.Select("name like '*'", "name")
         For Each row In rowResults
             ComboBoxCommit.Items.Add(row("name").ToString)
@@ -366,8 +436,15 @@ Public Class FormCommit
         Dim commit = "", exist As Boolean
         DsCommit.Clear()
         tblCommit.Clear()
-        AdapterCommit.Fill(DsCommit, "Commit")
-        tblCommit = DsCommit.Tables("Commit")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterCommit As New MySqlDataAdapter("SELECT * FROM Commit", con)
+		        AdapterCommit.Fill(DsCommit, "Commit")
+                tblCommit = DsCommit.Tables("Commit")
+	        End Using
+        End Using
+        
         Dim rowResults As DataRow() = tblCommit.Select("name like '*'", "name")
 
         For Each row In rowResults
@@ -386,8 +463,15 @@ Public Class FormCommit
             TreeViewBomList.Nodes.Clear()
             DsCommit.Clear()
             tblCommit.Clear()
-            AdapterCommit.Fill(DsCommit, "Commit")
-            tblCommit = DsCommit.Tables("Commit")
+            Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	            Using AdapterCommit As New MySqlDataAdapter("SELECT * FROM Commit", con)
+		            AdapterCommit.Fill(DsCommit, "Commit")
+                    tblCommit = DsCommit.Tables("Commit")
+	            End Using
+            End Using
+            
             Dim rowShow As DataRow() = tblCommit.Select("date= '" & DateTimePicker1.Text & IIf(CheckBoxUser.Checked, "' and name='" & ComboBoxUser.Text & "'", "' ") & _
                                                         IIf(CheckBoxCommit.Checked, " and commit='" & ComboBoxCommit.Text & "'", ""), "name")
             Dim total As Integer = 0
@@ -411,9 +495,13 @@ Public Class FormCommit
     Private Sub ButtonReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonReset.Click
         TextBoxClosed.Text = ""
         Try
-            Dim sql As String = "UPDATE `" & DBName & "`.`commit_list` SET `closed` = '" & TextBoxClosed.Text & "' WHERE `commit_list`.`name` = '" & ComboBoxCommit.Text & "' ;"
-            Dim cmd = New MySqlCommand(sql, MySqlconnection)
-            cmd.ExecuteNonQuery()
+            Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	            Dim sql As String = "UPDATE `" & DBName & "`.`commit_list` SET `closed` = '" & TextBoxClosed.Text & "' WHERE `commit_list`.`name` = '" & ComboBoxCommit.Text & "' ;"
+                Dim cmd = New MySqlCommand(sql, con)
+                cmd.ExecuteNonQuery()
+            End Using
         Catch ex As Exception
             MsgBox("sql Error !!")
         End Try
@@ -422,8 +510,15 @@ Public Class FormCommit
     Function user(ByVal id As Long)
         DsCommit.Clear()
         tblCommit.Clear()
-        AdapterCommit.Fill(DsCommit, "Commit")
-        tblCommit = DsCommit.Tables("Commit")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterCommit As New MySqlDataAdapter("SELECT * FROM Commit", con)
+		        AdapterCommit.Fill(DsCommit, "Commit")
+                tblCommit = DsCommit.Tables("Commit")
+	        End Using
+        End Using
+        
         Dim rowShow As DataRow() = tblCommit.Select("id='" & id & "'", "name")
         If rowShow.Length > 0 Then
             user = rowShow(0).Item("name")

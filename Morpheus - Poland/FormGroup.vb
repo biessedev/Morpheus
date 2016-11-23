@@ -1,15 +1,16 @@
 ﻿Option Explicit On
 Option Compare Text
+Imports System.Configuration
 Imports MySql.Data.MySqlClient
 
 
 Public Class FormGroup
 
-    Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", MySqlconnection)
+    'Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", MySqlconnection)
     Dim tblProd As DataTable
     Dim DsProd As New DataSet
 
-    Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
+    'Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
     Dim tblDoc As DataTable
     Dim DsDoc As New DataSet
 
@@ -60,12 +61,18 @@ Public Class FormGroup
     End Sub
 
     Private Sub FormGroup_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
-
-        AdapterProd.Fill(DsProd, "product")
-        tblProd = DsProd.Tables("product")
-        AdapterDoc.Fill(DsDoc, "doc")
-        tblDoc = DsDoc.Tables("doc")
-
+        Dim builder As New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
+                AdapterProd.Fill(DsProd, "product")
+                tblProd = DsProd.Tables("product")
+            End Using
+            Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", con)
+		        AdapterDoc.Fill(DsDoc, "doc")
+                tblDoc = DsDoc.Tables("doc")
+	        End Using
+        End Using
         ComboBoxGroup.Text = StrComboBoxGroup
         ComboBoxName.Text = ""
         FillProductList()
@@ -75,8 +82,14 @@ Public Class FormGroup
     Sub FillProductList()
         DsProd.Clear()
         tblProd.Clear()
-        AdapterProd.Update(DsProd, "product")
-        AdapterProd.Fill(DsProd, "product")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
+		        AdapterProd.Update(DsProd, "product")
+                AdapterProd.Fill(DsProd, "product")
+	        End Using
+        End Using
         tblProd = DsProd.Tables("product")
         Dim rowShow As DataRow() = tblProd.Select("bitronpn like '*'", "bitronpn asc")
         Dim Widht(tblProd.Columns.Count - 1) As Integer
@@ -160,83 +173,94 @@ Public Class FormGroup
 
     Private Sub ButtonAddMch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAdd.Click
         Dim sql As String, cmd As MySqlCommand
-        If ListViewForProducts.SelectedItems.Count > 0 Then
-            If ComboBoxName.Text <> "" And ComboBoxGroup.Text <> "" Then
-                Using trans = MySqlconnection.BeginTransaction(IsolationLevel.ReadCommitted)
-                    For Each product In dictionaryForProd
-                        Dim group = product.Value
-                        group = Replace(group, Mid(ComboBoxGroup.Text, 1, 11) & "[" & ComboBoxName.Text & "];", "")
-                        Dim newGroupList = group & Mid(ComboBoxGroup.Text, 1, 11) & "[" & ComboBoxName.Text & "];"
-                        group = newGroupList
-                        Try
-                            sql = "UPDATE `product` SET `grouplist` = '" & UCase(group) &
-                        "' WHERE `product`.`BitronPN` = '" & product.Key & "' ;"
-                            cmd = New MySqlCommand(sql, MySqlconnection)
-                            cmd.ExecuteNonQuery()
-                        Catch ex As Exception
-                        End Try
-                    Next
-                    trans.Commit()
-                End Using
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            If ListViewForProducts.SelectedItems.Count > 0 Then
+                If ComboBoxName.Text <> "" And ComboBoxGroup.Text <> "" Then
+                    Using trans = con.BeginTransaction(IsolationLevel.ReadCommitted)
+                        For Each product In dictionaryForProd
+                            Dim group = product.Value
+                            group = Replace(group, Mid(ComboBoxGroup.Text, 1, 11) & "[" & ComboBoxName.Text & "];", "")
+                            Dim newGroupList = group & Mid(ComboBoxGroup.Text, 1, 11) & "[" & ComboBoxName.Text & "];"
+                            group = newGroupList
+                            Try
+                                sql = "UPDATE `product` SET `grouplist` = '" & UCase(group) &
+                            "' WHERE `product`.`BitronPN` = '" & product.Key & "' ;"
+                                cmd = New MySqlCommand(sql, con)
+                                cmd.ExecuteNonQuery()
+                            Catch ex As Exception
+                            End Try
+                        Next
+                        trans.Commit()
+                    End Using
+                End If
+                Me.DsProd.Reset()
+                tblProd.Reset()
+                Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
+		            AdapterProd.Fill(Me.tblProd)
+	            End Using
+                
+                Me.dictionaryForProd.Clear()
+                For Each productItem As ListViewItem In ListViewForProducts.SelectedItems
+                    Dim item = productItem.SubItems.Item(0)
+                    Dim result = tblProd.Select("id = '" & item.Text & "'")
+                    Dim lastResult = result.Length - 1
+                    Me.dictionaryForProd.Add(result(lastResult).Item("BitronPn"), result(lastResult).Item("groupList"))
+                Next
+                ListViewGRU.Clear()
+                fillList()
+            Else
+                MsgBox("Select a product!")
             End If
-            Me.DsProd.Reset()
-            tblProd.Reset()
-            Me.AdapterProd.Fill(Me.tblProd)
-            Me.dictionaryForProd.Clear()
-            For Each productItem As ListViewItem In ListViewForProducts.SelectedItems
-                Dim item = productItem.SubItems.Item(0)
-                Dim result = tblProd.Select("id = '" & item.Text & "'")
-                Dim lastResult = result.Length - 1
-                Me.dictionaryForProd.Add(result(lastResult).Item("BitronPn"), result(lastResult).Item("groupList"))
-            Next
-            ListViewGRU.Clear()
-            fillList()
-        Else
-            MsgBox("Select a product!")
-        End If
+        End Using
         ComboBoxGroup.Text = StrComboBoxGroup
     End Sub
 
     Private Sub ButtonRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRemove.Click
-
-        If ListViewGRU.SelectedItems.Count > 0 Then
-            Dim i = 0
-            Using trans = MySqlconnection.BeginTransaction(IsolationLevel.ReadCommitted)
-                For Each itemFromList In ListViewGRU.SelectedItems
-                    Dim productNumber As Object = ListViewGRU.SelectedItems.Item(i).SubItems(0).Text
-                    Dim type As Object = ListViewGRU.SelectedItems.Item(i).SubItems(1).Text
-                    Dim filename As Object = ListViewGRU.SelectedItems.Item(i).SubItems(2).Text
-                    Dim valueOfGroupList = dictionaryForProd.Item(productNumber)
-                    GroupList = Replace(valueOfGroupList, type & "[" & filename & "];", "", , , CompareMethod.Text)
-                    Try
-                        Dim sql As String = "UPDATE `product` SET `grouplist` = '" & GroupList &
-                                            "' WHERE `product`.`BitronPN` = '" & productNumber & "' ;"
-                        Dim cmd As MySqlCommand = New MySqlCommand(sql, MySqlconnection)
-                        cmd.ExecuteNonQuery()
-                        dictionaryForProd.Item(productNumber) = GroupList
-                    Catch ex As Exception
-                        MsgBox("Deletion failed!")
-                    End Try
-                    i += 1
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            If ListViewGRU.SelectedItems.Count > 0 Then
+                Dim i = 0
+                Using trans = con.BeginTransaction(IsolationLevel.ReadCommitted)
+                    For Each itemFromList In ListViewGRU.SelectedItems
+                        Dim productNumber As Object = ListViewGRU.SelectedItems.Item(i).SubItems(0).Text
+                        Dim type As Object = ListViewGRU.SelectedItems.Item(i).SubItems(1).Text
+                        Dim filename As Object = ListViewGRU.SelectedItems.Item(i).SubItems(2).Text
+                        Dim valueOfGroupList = dictionaryForProd.Item(productNumber)
+                        GroupList = Replace(valueOfGroupList, type & "[" & filename & "];", "", , , CompareMethod.Text)
+                        Try
+                            Dim sql As String = "UPDATE `product` SET `grouplist` = '" & GroupList &
+                                                "' WHERE `product`.`BitronPN` = '" & productNumber & "' ;"
+                            Dim cmd As MySqlCommand = New MySqlCommand(sql, con)
+                            cmd.ExecuteNonQuery()
+                            dictionaryForProd.Item(productNumber) = GroupList
+                        Catch ex As Exception
+                            MsgBox("Deletion failed!")
+                        End Try
+                        i += 1
+                    Next
+                    trans.Commit()
+                End Using
+                Me.DsProd.Reset()
+                tblProd.Reset()
+                Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
+		            AdapterProd.Fill(Me.tblProd)
+	            End Using
+                Me.dictionaryForProd.Clear()
+                For Each productItem As ListViewItem In ListViewForProducts.SelectedItems
+                    Dim item = productItem.SubItems.Item(0)
+                    Dim result = tblProd.Select("id = '" & item.Text & "'")
+                    Dim lastResult = result.Length - 1
+                    Me.dictionaryForProd.Add(result(lastResult).Item("BitronPn"), result(lastResult).Item("groupList"))
                 Next
-                trans.Commit()
-            End Using
-            Me.DsProd.Reset()
-            tblProd.Reset()
-            Me.AdapterProd.Fill(Me.tblProd)
-            Me.dictionaryForProd.Clear()
-            For Each productItem As ListViewItem In ListViewForProducts.SelectedItems
-                Dim item = productItem.SubItems.Item(0)
-                Dim result = tblProd.Select("id = '" & item.Text & "'")
-                Dim lastResult = result.Length - 1
-                Me.dictionaryForProd.Add(result(lastResult).Item("BitronPn"), result(lastResult).Item("groupList"))
-            Next
-            ListViewGRU.Clear()
-            fillList()
-        Else
-            MsgBox("Select a document!")
-        End If
-
+                ListViewGRU.Clear()
+                fillList()
+            Else
+                MsgBox("Select a document!")
+            End If
+        End Using
     End Sub
 
     Private Sub ListViewForProducts_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListViewForProducts.SelectedIndexChanged
@@ -244,7 +268,13 @@ Public Class FormGroup
             Me.dictionaryForProd = New Dictionary(Of Integer, String)
             Me.DsProd.Reset()
             tblProd.Reset()
-            Me.AdapterProd.Fill(Me.tblProd)
+            Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
+		            AdapterProd.Fill(Me.tblProd)
+	            End Using
+            End Using
             For Each productItem As ListViewItem In ListViewForProducts.SelectedItems
                 Dim item = productItem.SubItems.Item(0)
                 Dim result = tblProd.Select("id = '" & item.Text & "'")

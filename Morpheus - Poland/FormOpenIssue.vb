@@ -1,11 +1,12 @@
 ﻿Option Explicit On
 Option Compare Text
+Imports System.Configuration
 Imports MySql.Data.MySqlClient
 
 
 Public Class FormOpenIssue
 
-    Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", MySqlconnection)
+    'Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", MySqlconnection)
     Dim tblProd As DataTable
     Dim DsProd As New DataSet
 
@@ -48,8 +49,14 @@ Public Class FormOpenIssue
 
     Private Sub FormGroup_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         FormGroup.ComboBoxGroup.Sorted = True
-        AdapterProd.Fill(DsProd, "product")
-        tblProd = DsProd.Tables("product")
+        Dim builder As New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
+                AdapterProd.Fill(DsProd, "product")
+                tblProd = DsProd.Tables("product")
+            End Using
+        End Using
         fillList()
         ComboBoxName.Text = ""
         ComboBoxGroup.SelectedIndex = 0
@@ -61,8 +68,14 @@ Public Class FormOpenIssue
         Dim i As Integer
         tblProd.Clear()
         DsProd.Clear()
-        AdapterProd.Fill(DsProd, "product")
-        tblProd = DsProd.Tables("product")
+        Dim  builder As  New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	        Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
+		        AdapterProd.Fill(DsProd, "product")
+                tblProd = DsProd.Tables("product")
+	        End Using
+        End Using
 
         Try
             If ListViewGRU.SelectedItems.Count = 0 Then
@@ -96,9 +109,13 @@ Public Class FormOpenIssue
             OpenIssue = Replace(OpenIssue, ComboBoxGroup.Text & "[" & ComboBoxName.Text & "];", "")
             OpenIssue = OpenIssue & ComboBoxGroup.Text & "[" & Now.Day & "/" & Now.Month & "/" & Now.Year & "(d/m/y) ; " & ComboBoxName.Text & "];"
             Try
-                sql = "UPDATE `" & DBName & "`.`product` SET `OpenIssue` = '" & UCase(OpenIssue) & "' WHERE `product`.`BitronPN` = '" & Replace(Replace(Trim(FormProduct.TextBoxProduct.Text), ";", ","), "R&D", "R & D") & "' ;"
-                Dim cmd = New MySqlCommand(sql, MySqlconnection)
-                cmd.ExecuteNonQuery()
+                Dim  builder As  New Common.DbConnectionStringBuilder()
+                builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	                sql = "UPDATE `" & DBName & "`.`product` SET `OpenIssue` = '" & UCase(OpenIssue) & "' WHERE `product`.`BitronPN` = '" & Replace(Replace(Trim(FormProduct.TextBoxProduct.Text), ";", ","), "R&D", "R & D") & "' ;"
+                    Dim cmd = New MySqlCommand(sql, con)
+                    cmd.ExecuteNonQuery()
+                End Using
             Catch ex As Exception
             End Try
         End If
@@ -147,10 +164,15 @@ Public Class FormOpenIssue
 
             OpenIssue = Replace(OpenIssue, ListViewGRU.SelectedItems.Item(0).SubItems(0).Text & "[" & ListViewGRU.SelectedItems.Item(0).SubItems(1).Text & "];", "", , , CompareMethod.Text)
             Try
-                sql = "UPDATE `" & DBName & "`.`product` SET `OpenIssue` = '" & OpenIssue &
-                "' WHERE `product`.`BitronPN` = '" & Trim(FormProduct.TextBoxProduct.Text) & "' ;"
-                Dim cmd = New MySqlCommand(sql, MySqlconnection)
-                cmd.ExecuteNonQuery()
+                Dim  builder As  New Common.DbConnectionStringBuilder()
+                builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	                sql = "UPDATE `" & DBName & "`.`product` SET `OpenIssue` = '" & OpenIssue &
+                        "' WHERE `product`.`BitronPN` = '" & Trim(FormProduct.TextBoxProduct.Text) & "' ;"
+                    Dim cmd = New MySqlCommand(sql, con)
+                    cmd.ExecuteNonQuery()
+                End Using
+                
             Catch ex As Exception
                 MsgBox("Deletion failed!")
             End Try
@@ -184,10 +206,14 @@ Public Class FormOpenIssue
 
             OpenIssue = Replace(OpenIssue, ListViewGRU.SelectedItems.Item(0).SubItems(0).Text & "[" & ListViewGRU.SelectedItems.Item(0).SubItems(1).Text & "];", dept & "[" & opi & "];", , , CompareMethod.Text)
             Try
-                sql = "UPDATE `" & DBName & "`.`product` SET `OpenIssue` = '" & OpenIssue &
-                "' WHERE `product`.`BitronPN` = '" & Trim(FormProduct.TextBoxProduct.Text) & "' ;"
-                Dim cmd = New MySqlCommand(sql, MySqlconnection)
-                cmd.ExecuteNonQuery()
+                Dim  builder As  New Common.DbConnectionStringBuilder()
+                builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+                Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+	                sql = "UPDATE `" & DBName & "`.`product` SET `OpenIssue` = '" & OpenIssue &
+                        "' WHERE `product`.`BitronPN` = '" & Trim(FormProduct.TextBoxProduct.Text) & "' ;"
+                    Dim cmd = New MySqlCommand(sql, con)
+                    cmd.ExecuteNonQuery()
+                End Using
                 ComboBoxName.Text = ""
                 ComboBoxGroup.SelectedIndex = 0
                 ButtonUpdate.Enabled = False
