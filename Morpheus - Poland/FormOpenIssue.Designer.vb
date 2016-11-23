@@ -27,10 +27,10 @@ Partial Class FormOpenIssue
         Me.ButtonAdd = New System.Windows.Forms.Button()
         Me.ComboBoxGroup = New System.Windows.Forms.ComboBox()
         Me.Label10 = New System.Windows.Forms.Label()
-        Me.ComboBoxName = New System.Windows.Forms.ComboBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.ListViewGRU = New System.Windows.Forms.ListView()
         Me.ButtonUpdate = New System.Windows.Forms.Button()
+        Me.TextBoxOpenIssueDescription = New System.Windows.Forms.TextBox()
         Me.SuspendLayout
         '
         'ButtonRemove
@@ -80,17 +80,6 @@ Partial Class FormOpenIssue
         Me.Label10.TabIndex = 218
         Me.Label10.Text = "Department"
         '
-        'ComboBoxName
-        '
-        Me.ComboBoxName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.ComboBoxName.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.ComboBoxName.FormattingEnabled = true
-        Me.ComboBoxName.Location = New System.Drawing.Point(12, 73)
-        Me.ComboBoxName.Name = "ComboBoxName"
-        Me.ComboBoxName.Size = New System.Drawing.Size(841, 24)
-        Me.ComboBoxName.TabIndex = 224
-        '
         'Label1
         '
         Me.Label1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
@@ -134,14 +123,22 @@ Partial Class FormOpenIssue
         Me.ButtonUpdate.Text = "Update"
         Me.ButtonUpdate.UseVisualStyleBackColor = true
         '
+        'TextBoxOpenIssueDescription
+        '
+        Me.TextBoxOpenIssueDescription.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.TextBoxOpenIssueDescription.Location = New System.Drawing.Point(12, 73)
+        Me.TextBoxOpenIssueDescription.Name = "TextBoxOpenIssueDescription"
+        Me.TextBoxOpenIssueDescription.Size = New System.Drawing.Size(847, 22)
+        Me.TextBoxOpenIssueDescription.TabIndex = 227
+        '
         'FormOpenIssue
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(879, 417)
+        Me.Controls.Add(Me.TextBoxOpenIssueDescription)
         Me.Controls.Add(Me.ButtonUpdate)
         Me.Controls.Add(Me.ListViewGRU)
-        Me.Controls.Add(Me.ComboBoxName)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.ButtonRemove)
         Me.Controls.Add(Me.ButtonAdd)
@@ -156,9 +153,9 @@ End Sub
     Friend WithEvents ButtonRemove As System.Windows.Forms.Button
     Friend WithEvents ButtonAdd As System.Windows.Forms.Button
     Friend WithEvents Label10 As System.Windows.Forms.Label
-    Friend WithEvents ComboBoxName As System.Windows.Forms.ComboBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents ListViewGRU As System.Windows.Forms.ListView
     Friend WithEvents ButtonUpdate As Button
     Friend WithEvents ComboBoxGroup As ComboBox
+    Friend WithEvents TextBoxOpenIssueDescription As TextBox
 End Class

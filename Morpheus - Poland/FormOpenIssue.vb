@@ -58,7 +58,7 @@ Public Class FormOpenIssue
             End Using
         End Using
         fillList()
-        ComboBoxName.Text = ""
+        TextBoxOpenIssueDescription.Text = ""
         ComboBoxGroup.SelectedIndex = 0
         ButtonUpdate.Enabled = False
     End Sub
@@ -79,22 +79,22 @@ Public Class FormOpenIssue
 
         Try
             If ListViewGRU.SelectedItems.Count = 0 Then
-                ComboBoxName.Text = ""
+                TextBoxOpenIssueDescription.Text = ""
                 Dim result As DataRow() = tblProd.Select("bitronpn = '" & ProdOpenIssue & "'")
-                ComboBoxName.Items.Clear()
+                'ComboBoxName.Items.Clear()
 
-                If result.Length > 0 Then
-                    Dim k As Integer = InStr(1, result(i).Item("OpenIssue").ToString, ComboBoxGroup.Text)
-                    While k > 0
-                        If k > 0 Then
-                            Dim n As Integer = InStr(k + 1, result(i).Item("OpenIssue").ToString, "]")
-                            Dim j As Integer = InStr(k + 1, result(i).Item("OpenIssue").ToString, "[")
-                            ComboBoxName.Items.Add(Mid(result(i).Item("OpenIssue").ToString, j + 1, n - j - 1))
-                        End If
-                        k = InStr(k + 1, result(i).Item("OpenIssue").ToString, ComboBoxGroup.Text)
-                    End While
-                End If
-                ComboBoxName.Text = ""
+                'If result.Length > 0 Then
+                '    Dim k As Integer = InStr(1, result(i).Item("OpenIssue").ToString, ComboBoxGroup.Text)
+                '    While k > 0
+                '        If k > 0 Then
+                '            Dim n As Integer = InStr(k + 1, result(i).Item("OpenIssue").ToString, "]")
+                '            Dim j As Integer = InStr(k + 1, result(i).Item("OpenIssue").ToString, "[")
+                '            ComboBoxName.Items.Add(Mid(result(i).Item("OpenIssue").ToString, j + 1, n - j - 1))
+                '        End If
+                '        k = InStr(k + 1, result(i).Item("OpenIssue").ToString, ComboBoxGroup.Text)
+                '    End While
+                'End If
+                TextBoxOpenIssueDescription.Text = ""
             End If
         Catch ex As Exception
             MsgBox("ERROR TO INTERPRET THE STRING")
@@ -105,9 +105,9 @@ Public Class FormOpenIssue
     Private Sub ButtonAddMch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAdd.Click
 
         Dim sql As String
-        If ComboBoxName.Text <> "" And ComboBoxGroup.Text <> "" Then
-            OpenIssue = Replace(OpenIssue, ComboBoxGroup.Text & "[" & ComboBoxName.Text & "];", "")
-            OpenIssue = OpenIssue & ComboBoxGroup.Text & "[" & Now.Day & "/" & Now.Month & "/" & Now.Year & "(d/m/y) ; " & ComboBoxName.Text & "];"
+        If TextBoxOpenIssueDescription.Text <> "" And ComboBoxGroup.Text <> "" Then
+            OpenIssue = Replace(OpenIssue, ComboBoxGroup.Text & "[" & TextBoxOpenIssueDescription.Text & "];", "")
+            OpenIssue = OpenIssue & ComboBoxGroup.Text & "[" & Now.Day & "/" & Now.Month & "/" & Now.Year & "(d/m/y) ; " & TextBoxOpenIssueDescription.Text & "];"
             Try
                 Dim  builder As  New Common.DbConnectionStringBuilder()
                 builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
@@ -119,7 +119,7 @@ Public Class FormOpenIssue
             Catch ex As Exception
             End Try
         End If
-        ComboBoxName.Text = ""
+        TextBoxOpenIssueDescription.Text = ""
         ComboBoxGroup.SelectedIndex = 0
         ButtonUpdate.Enabled = False
         fillList()
@@ -138,12 +138,12 @@ Public Class FormOpenIssue
             description = ListViewGRU.SelectedItems.Item(0).SubItems(1).Text.ToString()
             dateFromDescription = description.Substring(0, InStr(1, description, ";") + 1)
             ComboBoxGroup.Text = ListViewGRU.SelectedItems.Item(0).SubItems(0).Text.ToString()
-            ComboBoxName.Text = description.Substring(InStr(1, description, ";") + 1)
+            TextBoxOpenIssueDescription.Text = description.Substring(InStr(1, description, ";") + 1)
             ButtonUpdate.Enabled = True
 
         Else
             dateFromDescription = ""
-            ComboBoxName.Text = ""
+            TextBoxOpenIssueDescription.Text = ""
             ComboBoxGroup.SelectedIndex = 0
             ButtonUpdate.Enabled = False
         End If
@@ -179,7 +179,7 @@ Public Class FormOpenIssue
         Else
             MsgBox("Select an Open Issue!")
         End If
-        ComboBoxName.Text = ""
+        TextBoxOpenIssueDescription.Text = ""
         ComboBoxGroup.SelectedIndex = 0
         ButtonUpdate.Enabled = False
         fillList()
@@ -202,7 +202,7 @@ Public Class FormOpenIssue
         If ListViewGRU.SelectedItems.Count = 1 Then
 
             dept = ComboBoxGroup.Text
-            opi = dateFromDescription & ComboBoxName.Text
+            opi = dateFromDescription & TextBoxOpenIssueDescription.Text
 
             OpenIssue = Replace(OpenIssue, ListViewGRU.SelectedItems.Item(0).SubItems(0).Text & "[" & ListViewGRU.SelectedItems.Item(0).SubItems(1).Text & "];", dept & "[" & opi & "];", , , CompareMethod.Text)
             Try
@@ -214,7 +214,7 @@ Public Class FormOpenIssue
                     Dim cmd = New MySqlCommand(sql, con)
                     cmd.ExecuteNonQuery()
                 End Using
-                ComboBoxName.Text = ""
+                TextBoxOpenIssueDescription.Text = ""
                 ComboBoxGroup.SelectedIndex = 0
                 ButtonUpdate.Enabled = False
             Catch ex As Exception
