@@ -101,6 +101,7 @@ Partial Class FormOpenIssue
         Me.ListViewGRU.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ListViewGRU.FullRowSelect = true
         Me.ListViewGRU.GridLines = true
+        Me.ListViewGRU.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
         Me.ListViewGRU.HideSelection = false
         ListViewItem1.StateImageIndex = 0
         Me.ListViewGRU.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})

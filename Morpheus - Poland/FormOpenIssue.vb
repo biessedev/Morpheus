@@ -79,7 +79,7 @@ Public Class FormOpenIssue
 
         Try
             If ListViewGRU.SelectedItems.Count = 0 Then
-                TextBoxOpenIssueDescription.Text = ""
+                'TextBoxOpenIssueDescription.Text = ""
                 Dim result As DataRow() = tblProd.Select("bitronpn = '" & ProdOpenIssue & "'")
                 'ComboBoxName.Items.Clear()
 
@@ -94,7 +94,7 @@ Public Class FormOpenIssue
                 '        k = InStr(k + 1, result(i).Item("OpenIssue").ToString, ComboBoxGroup.Text)
                 '    End While
                 'End If
-                TextBoxOpenIssueDescription.Text = ""
+                'TextBoxOpenIssueDescription.Text = ""
             End If
         Catch ex As Exception
             MsgBox("ERROR TO INTERPRET THE STRING")
@@ -131,25 +131,6 @@ Public Class FormOpenIssue
     End Sub
 
     Dim dateFromDescription As String
-
-    Private Sub ListViewGRU_ItemSelectionChanged(sender As Object, e As ListViewItemSelectionChangedEventArgs) Handles ListViewGRU.ItemSelectionChanged
-        Dim description As String
-        If ListViewGRU.SelectedItems.Count = 1 Then
-            description = ListViewGRU.SelectedItems.Item(0).SubItems(1).Text.ToString()
-            dateFromDescription = description.Substring(0, InStr(1, description, ";") + 1)
-            ComboBoxGroup.Text = ListViewGRU.SelectedItems.Item(0).SubItems(0).Text.ToString()
-            TextBoxOpenIssueDescription.Text = description.Substring(InStr(1, description, ";") + 1)
-            ButtonUpdate.Enabled = True
-
-        Else
-            dateFromDescription = ""
-            TextBoxOpenIssueDescription.Text = ""
-            ComboBoxGroup.SelectedIndex = 0
-            ButtonUpdate.Enabled = False
-        End If
-    End Sub
-
-
     Private Sub ButtonRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRemove.Click
 
         Dim sql As String
@@ -172,7 +153,7 @@ Public Class FormOpenIssue
                     Dim cmd = New MySqlCommand(sql, con)
                     cmd.ExecuteNonQuery()
                 End Using
-                
+                selectedIndex = -1
             Catch ex As Exception
                 MsgBox("Deletion failed!")
             End Try
@@ -235,4 +216,37 @@ Public Class FormOpenIssue
         Next
 
     End Sub
+    Dim selectedIndex As Integer = -1
+    Dim removeSelection As Boolean 
+    
+
+    Private Sub ListViewGRU_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListViewGRU.SelectedIndexChanged
+        If removeSelection Then ListViewGRU.SelectedItems.Clear()
+    End Sub
+
+    Private Sub ListViewGRU_MouseUp(sender As Object, e As MouseEventArgs) Handles ListViewGRU.MouseUp
+        Dim description As String
+        If ListViewGRU.FocusedItem.Index = selectedIndex and selectedIndex <> -1 then
+            ListViewGRU.Items(selectedIndex).Selected = True
+            if ListViewGRU.items(selectedIndex).Selected = True Then
+                dateFromDescription = ""
+                TextBoxOpenIssueDescription.Text = ""
+                ComboBoxGroup.SelectedIndex = 0
+                ButtonUpdate.Enabled = False
+                ListViewGRU.Items(ListViewGRU.FocusedItem.Index).Selected = False
+                selectedIndex = -1
+                removeSelection = true
+            End if
+        else
+            removeSelection = false
+            ListViewGRU.Items(ListViewGRU.FocusedItem.Index).Selected = true
+            selectedIndex = ListViewGRU.FocusedItem.Index
+            description = ListViewGRU.SelectedItems.Item(0).SubItems(1).Text.ToString()
+            dateFromDescription = description.Substring(0, InStr(1, description, ";") + 1)
+            ComboBoxGroup.Text = ListViewGRU.SelectedItems.Item(0).SubItems(0).Text.ToString()
+            TextBoxOpenIssueDescription.Text = description.Substring(InStr(1, description, ";") + 1)
+            ButtonUpdate.Enabled = True
+        End If
+    End Sub
+    
 End Class
