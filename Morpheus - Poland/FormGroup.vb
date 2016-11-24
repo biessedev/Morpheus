@@ -159,16 +159,7 @@ Public Class FormGroup
     End Sub
 
     Private Sub ComboBoxGroup_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxGroup.TextChanged
-        Dim i As Integer
-        Try
-            ComboBoxName.Text = ""
-            ComboBoxName.Items.Clear()
-            Dim resultdoc As DataRow() = tblDoc.Select("header = '" & Mid(ComboBoxGroup.Text, 1, 11) & "'")
-            For i = 0 To resultdoc.Length - 1
-                ComboBoxName.Items.Add(resultdoc(i).Item("filename").ToString)
-            Next
-        Catch ex As Exception
-        End Try
+        PopulateComboBoxName()
     End Sub
 
     Private Sub ButtonAddMch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAdd.Click
@@ -284,6 +275,30 @@ Public Class FormGroup
                 fillList()
             Next
         End If
+        PopulateComboBoxName()
+    End Sub
+
+    Private Sub PopulateComboBoxName()
+        Try
+            Dim i As Integer
+            ComboBoxName.Text = ""
+            ComboBoxName.Items.Clear()
+            Dim resultdoc As DataRow() = tblDoc.Select("header = '" & Mid(ComboBoxGroup.Text, 1, 11) & "'")
+            For Each item In ListViewForProducts.SelectedItems
+
+            Next
+            Dim fileDocExist As String
+            Dim fileName As String
+            For i = 0 To resultdoc.Length - 1
+                fileDocExist = true
+                fileName = resultdoc(i).Item("filename").ToString
+                For Each product In dictionaryForProd
+                    If InStr(product.Value.ToString , fileName) = 0 Then fileDocExist = false
+                Next
+                If fileDocExist = False Then ComboBoxName.Items.Add(resultdoc(i).Item("filename").ToString)
+            Next
+        Catch ex As Exception
+        End Try
     End Sub
 
 End Class
