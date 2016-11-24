@@ -833,6 +833,7 @@ Public Class FormSamples
     End Function
 
     Private Sub ComboBoxActivityStatus_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxActivityStatus.TextChanged
+        If CheckBoxClosed.Checked = true Then CheckBoxClosed.Checked = False
         If ComboBoxActivityID.Text <> "" And ComboBoxActivityStatus.Text <> "" Then
             If controlRight("R") >= 2 Then ButtonUpdateStatus.Enabled = True
         Else
