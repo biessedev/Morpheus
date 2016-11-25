@@ -910,7 +910,7 @@ Public Class FormProduct
 
                 ParameterTableWrite("LAST_SIGIP_BOM_UPDATE", "START - " & CreAccount.strUserName & " " & Today)
                 Dim selectedPath As String = ParameterTable("PathMorpheus") & ParameterTable("PathNPI") & ParameterTable("SIGIP_BOM_FOLDER")
-                'selectedPath = "D:\Sigip\MORPHEUS_NPI\SigipData\SigipBom"
+                selectedPath = "D:\"
                 'FolderBrowserDialog1.Description = "Please select SIGIP BOM folder"
                 'If vbOK = FolderBrowserDialog1.ShowDialog() Then
                 Try
@@ -965,34 +965,34 @@ Public Class FormProduct
 
                 ListBoxLog.Items.Add("Update product cost...")
                 UpdateBomCost()
-                Dim OrcadDBAds = ParameterTable("OrcadDBAdr")
-                Dim OrcadDBName = ParameterTable("OrcadDBName")
-                Dim OrcadDBUserName = ParameterTable("OrcadDBUser")
-                Dim OrcadDBPwd = ParameterTable("OrcadDBPwd")
+                '    Dim OrcadDBAds = ParameterTable("OrcadDBAdr")
+                '    Dim OrcadDBName = ParameterTable("OrcadDBName")
+                '    Dim OrcadDBUserName = ParameterTable("OrcadDBUser")
+                '    Dim OrcadDBPwd = ParameterTable("OrcadDBPwd")
 
-                Try
-                    OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
-                Catch ex As Exception
-                    CloseConnectionSqlOrcad()
-                    OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
-                End Try
+                '    Try
+                '        OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
+                '    Catch ex As Exception
+                '        CloseConnectionSqlOrcad()
+                '        OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
+                '    End Try
 
-                If SqlconnectionOrcad.State = ConnectionState.Open Then
-                    ListBoxLog.Items.Add("Update Component Doc...")
-                    updateSigipBomOrcadDoc()
-                    ParameterTableWrite("LAST_SIGIP_BOM_UPDATE", "DONE - " & CreAccount.strUserName & " " & Today & " - All OK")
-                Else
-                    MsgBox("Orcad connection problem, HC not filled")
-                    ParameterTableWrite("LAST_SIGIP_BOM_UPDATE", "DONE - " & CreAccount.strUserName & " " & Today & " " & " Orcad Error")
-                End If
+                '    If SqlconnectionOrcad.State = ConnectionState.Open Then
+                '        ListBoxLog.Items.Add("Update Component Doc...")
+                '        updateSigipBomOrcadDoc()
+                '        ParameterTableWrite("LAST_SIGIP_BOM_UPDATE", "DONE - " & CreAccount.strUserName & " " & Today & " - All OK")
+                '    Else
+                '        MsgBox("Orcad connection problem, HC not filled")
+                '        ParameterTableWrite("LAST_SIGIP_BOM_UPDATE", "DONE - " & CreAccount.strUserName & " " & Today & " " & " Orcad Error")
+                '    End If
 
 
 
-                'End If
-                ButtonQuery_Click(Me, e)
-                ListBoxLog.Items.Add("Process END")
-                ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
-                ListBoxLog.ScrollAlwaysVisible = True
+                '    'End If
+                '    ButtonQuery_Click(Me, e)
+                '    ListBoxLog.Items.Add("Process END")
+                '    ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
+                '    ListBoxLog.ScrollAlwaysVisible = True
             Else
                 MsgBox("Functionality already in use... " & ParameterTable("LAST_SIGIP_BOM_UPDATE"))
                 If MsgBox("Do you want to reset the functionality and invalid previous job?", MsgBoxStyle.YesNo) = vbYes Then
@@ -1108,8 +1108,10 @@ Public Class FormProduct
                 If String.Join("", fieldData) <> "," And String.Join("", fieldData) <> "" Then
                     Dim lastCell As String
                     lastCell = fieldData(fieldData.Length - 1)
-                    lastCell = If(lastCell(lastCell.Length - 1) = ",", lastCell.Remove(lastCell.Length - 1), lastCell)
-                    fieldData(fieldData.Length - 1) = lastCell
+                    If lastCell <> "" Then
+                        lastCell = If(lastCell(lastCell.Length - 1) = ",", lastCell.Remove(lastCell.Length - 1), lastCell)
+                        fieldData(fieldData.Length - 1) = lastCell
+                    End If
                     csvData.Rows.Add(fieldData)
                 End If
             End While
@@ -1125,51 +1127,65 @@ Public Class FormProduct
         Try
             Dim sqlValues As String = ""
             Dim index As Integer = 1
+            Dim sqlCommand As String
             Dim price As String = "", currency As String = "", liv As String = "", mdi As String = "", mdo As String = "", amm As String = ""
             Dim mdo_t As String = "", amm_t As String = "", spe_t As String = "", spe As String = "", mdi_t As String = ""
             Dim active As String = "", doc As String = "", orcadSupplier As String = ""
             Dim bom As String, des_bom As String, nr As String, qt As String, acq_fab As String, bitron_pn As String, des_pn As String
-            For Each row In dt.Rows
-                bom = If(dt.Columns.Contains("Assieme"), row("Assieme"), "")
-                des_bom = If(dt.Columns.Contains("Descrizione"), row("Descrizione"), "")
-                nr = If(dt.Columns.Contains("UM"), row("UM"), "")
-                qt = If(dt.Columns.Contains("Coeff.Impiego"), row("Coeff.Impiego"), "")
-                acq_fab = If(dt.Columns.Contains("Prov"), row("Prov"), "")
-                bitron_pn = If(dt.Columns.Contains("Componente"), row("Componente"), "")
-                des_pn = If(dt.Columns.Contains("Descrizione Comp"), row("Descrizione Comp"), "")
-                sqlValues = "(" & index & "," &
-                    "'" & Replace(bom, "'", "") & "'," &
-                    "'" & Replace(des_bom, "'", "") & "'," &
-                    "'" & nr & "'," &
-                    "'" & (qt) & "'," &
-                    "'" & (price) & "'," &
-                    "'" & currency & "'," &
-                    "'" & liv & "'," &
-                    "'" & acq_fab & "'," &
-                    "'" & Replace(ReplaceChar(bitron_pn), "-", "") & "'," &
-                    "'" & ReplaceChar(des_pn) & "'," &
-                    "'" & mdi & "'," &
-                    "'" & mdo & "'," &
-                    "'" & amm & "'," &
-                    "'" & spe & "'," &
-                    "'" & mdi_t & "'," &
-                    "'" & mdo_t & "'," &
-                    "'" & amm_t & "'," &
-                    "'" & spe_t & "'," &
-                    "'" & active & "'," &
-                    "'" & doc & "'," &
-                    "'" & orcadSupplier & "'" &
-                     ")," & sqlValues
-                index = index + 1
-            Next
+            
             Dim  builder As  New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	            Dim sqlCommand As String = Mid(sqlValues, 1, Len(sqlValues) - 1)
+              
+                For Each row In dt.Rows
+                    bom = If(dt.Columns.Contains("Assieme"), row("Assieme"), "")
+                    des_bom = If(dt.Columns.Contains("Descrizione"), row("Descrizione"), "")
+                    nr = If(dt.Columns.Contains("UM"), row("UM"), "")
+                    qt = If(dt.Columns.Contains("Coeff.Impiego"), row("Coeff.Impiego"), "")
+                    acq_fab = If(dt.Columns.Contains("Prov"), row("Prov"), "")
+                    bitron_pn = If(dt.Columns.Contains("Componente"), row("Componente"), "")
+                    des_pn = If(dt.Columns.Contains("Descrizione Comp"), row("Descrizione Comp"), "")
+                    sqlValues = "(" & index & "," &
+                        "'" & Replace(bom, "'", "") & "'," &
+                        "'" & Replace(des_bom, "'", "") & "'," &
+                        "'" & nr & "'," &
+                        "'" & qt & "'," &
+                        "'" & price & "'," &
+                        "'" & currency & "'," &
+                        "'" & liv & "'," &
+                        "'" & acq_fab & "'," &
+                        "'" & Replace(ReplaceChar(bitron_pn), "-", "") & "'," &
+                        "'" & ReplaceChar(des_pn) & "'," &
+                        "'" & mdi & "'," &
+                        "'" & mdo & "'," &
+                        "'" & amm & "'," &
+                        "'" & spe & "'," &
+                        "'" & mdi_t & "'," &
+                        "'" & mdo_t & "'," &
+                        "'" & amm_t & "'," &
+                        "'" & spe_t & "'," &
+                        "'" & active & "'," &
+                        "'" & doc & "'," &
+                        "'" & orcadSupplier & "'" &
+                            ")," & sqlValues
+                        
+                If index mod 10000 = 0 Then 
+                    sqlCommand = Mid(sqlValues, 1, Len(sqlValues) - 1)
+                    sqlCommand = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`, `active`, `doc`, `OrcadSupplier`) VALUES " & sqlCommand & ";"
+                    Dim cmd = New MySqlCommand(sqlCommand, con)
+                    cmd.ExecuteNonQuery()
+                    sqlValues = ""
+                End If
+                index = index + 1
+                Next
+                sqlCommand = Mid(sqlValues, 1, Len(sqlValues) - 1)
                 sqlCommand = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`, `active`, `doc`, `OrcadSupplier`) VALUES " & sqlCommand & ";"
-                Dim cmd = New MySqlCommand(sqlCommand, con)
-                cmd.ExecuteNonQuery()
+                Dim cmdLast = New MySqlCommand(sqlCommand, con)
+                cmdLast.ExecuteNonQuery()
+               
             End Using
+               
+          MsgBox("Done")
             'sqlCommand = ""
             'sqlValues = ""
         Catch ex As Exception
