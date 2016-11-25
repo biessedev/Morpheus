@@ -910,7 +910,7 @@ Public Class FormProduct
 
                 ParameterTableWrite("LAST_SIGIP_BOM_UPDATE", "START - " & CreAccount.strUserName & " " & Today)
                 Dim selectedPath As String = ParameterTable("PathMorpheus") & ParameterTable("PathNPI") & ParameterTable("SIGIP_BOM_FOLDER")
-                selectedPath = "D:\"
+                'selectedPath = "D:\"
                 'FolderBrowserDialog1.Description = "Please select SIGIP BOM folder"
                 'If vbOK = FolderBrowserDialog1.ShowDialog() Then
                 Try
@@ -965,34 +965,34 @@ Public Class FormProduct
 
                 ListBoxLog.Items.Add("Update product cost...")
                 UpdateBomCost()
-                '    Dim OrcadDBAds = ParameterTable("OrcadDBAdr")
-                '    Dim OrcadDBName = ParameterTable("OrcadDBName")
-                '    Dim OrcadDBUserName = ParameterTable("OrcadDBUser")
-                '    Dim OrcadDBPwd = ParameterTable("OrcadDBPwd")
+                Dim OrcadDBAds = ParameterTable("OrcadDBAdr")
+                Dim OrcadDBName = ParameterTable("OrcadDBName")
+                Dim OrcadDBUserName = ParameterTable("OrcadDBUser")
+                Dim OrcadDBPwd = ParameterTable("OrcadDBPwd")
 
-                '    Try
-                '        OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
-                '    Catch ex As Exception
-                '        CloseConnectionSqlOrcad()
-                '        OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
-                '    End Try
+                Try
+                    OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
+                Catch ex As Exception
+                    CloseConnectionSqlOrcad()
+                    OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
+                End Try
 
-                '    If SqlconnectionOrcad.State = ConnectionState.Open Then
-                '        ListBoxLog.Items.Add("Update Component Doc...")
-                '        updateSigipBomOrcadDoc()
-                '        ParameterTableWrite("LAST_SIGIP_BOM_UPDATE", "DONE - " & CreAccount.strUserName & " " & Today & " - All OK")
-                '    Else
-                '        MsgBox("Orcad connection problem, HC not filled")
-                '        ParameterTableWrite("LAST_SIGIP_BOM_UPDATE", "DONE - " & CreAccount.strUserName & " " & Today & " " & " Orcad Error")
-                '    End If
+                If SqlconnectionOrcad.State = ConnectionState.Open Then
+                    ListBoxLog.Items.Add("Update Component Doc...")
+                    updateSigipBomOrcadDoc()
+                    ParameterTableWrite("LAST_SIGIP_BOM_UPDATE", "DONE - " & CreAccount.strUserName & " " & Today & " - All OK")
+                Else
+                    MsgBox("Orcad connection problem, HC not filled")
+                    ParameterTableWrite("LAST_SIGIP_BOM_UPDATE", "DONE - " & CreAccount.strUserName & " " & Today & " " & " Orcad Error")
+                End If
 
 
 
-                '    'End If
-                '    ButtonQuery_Click(Me, e)
-                '    ListBoxLog.Items.Add("Process END")
-                '    ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
-                '    ListBoxLog.ScrollAlwaysVisible = True
+                'End If
+                ButtonQuery_Click(Me, e)
+                ListBoxLog.Items.Add("Process END")
+                ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
+                ListBoxLog.ScrollAlwaysVisible = True
             Else
                 MsgBox("Functionality already in use... " & ParameterTable("LAST_SIGIP_BOM_UPDATE"))
                 If MsgBox("Do you want to reset the functionality and invalid previous job?", MsgBoxStyle.YesNo) = vbYes Then
