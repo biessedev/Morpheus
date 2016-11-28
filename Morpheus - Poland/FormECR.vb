@@ -36,18 +36,18 @@ Public Class FormECR
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
             Using AdapterEcr As New MySqlDataAdapter("SELECT * FROM ecr ORDER BY NUMBER;", con)
-		        AdapterEcr.Fill(DsEcr, "ecr")
-	        End Using
+                AdapterEcr.Fill(DsEcr, "ecr")
+            End Using
             tblEcr = DsEcr.Tables("ecr")
 
             Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM DOC;", con)
-		        AdapterDoc.Fill(DsDoc, "doc")
-	        End Using
+                AdapterDoc.Fill(DsDoc, "doc")
+            End Using
             tblDoc = DsDoc.Tables("doc")
 
             Using AdapterProd As New MySqlDataAdapter("SELECT * FROM product order by id;", con)
-		        AdapterProd.Fill(DsProd, "product")
-	        End Using
+                AdapterProd.Fill(DsProd, "product")
+            End Using
             tblProd = DsProd.Tables("product")
         End Using
 
@@ -92,12 +92,12 @@ Public Class FormECR
     Sub fillEcrComboTable()
         ComboBoxEcr.Items.Clear()
         Dim DsEcr As New DataSet
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
             Using AdapterEcr As New MySqlDataAdapter("SELECT * FROM Ecr", con)
-		        AdapterEcr.Fill(DsEcr, "ecr")
-	        End Using
+                AdapterEcr.Fill(DsEcr, "ecr")
+            End Using
         End Using
         Dim tblEcr As DataTable = DsEcr.Tables("ecr")
 
@@ -140,12 +140,12 @@ Public Class FormECR
 
         tblEcr.Clear()
         DsEcr.Clear()
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
             Using AdapterEcr As New MySqlDataAdapter("SELECT * FROM ecr;", con)
-		        AdapterEcr.Fill(DsEcr, "ecr")
-	        End Using
+                AdapterEcr.Fill(DsEcr, "ecr")
+            End Using
             tblEcr = DsEcr.Tables("ecr")
         End Using
 
@@ -409,15 +409,15 @@ Public Class FormECR
         readField = ""
 
         If IsNothing(tblEcr) Then
-            Dim  builder As  New Common.DbConnectionStringBuilder()
+            Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	            Using AdapterEcr As New MySqlDataAdapter("SELECT * FROM Ecr", con)
-		            AdapterEcr.Fill(DsEcr, "ecr")
+                Using AdapterEcr As New MySqlDataAdapter("SELECT * FROM Ecr", con)
+                    AdapterEcr.Fill(DsEcr, "ecr")
                     tblEcr = DsEcr.Tables("ecr")
-	            End Using
+                End Using
             End Using
-           
+
         End If
 
         Try
@@ -438,11 +438,11 @@ Public Class FormECR
         EcrN = Val(Mid(ComboBoxEcr.Text, 1, pos))
         Try
             SQL = "UPDATE `" & DBName & "`.`ecr` SET `" & field & "` = '" & v & "' WHERE `ecr`.`number` = " & EcrN & " ;"
-            Dim  builder As  New Common.DbConnectionStringBuilder()
+            Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	           cmd = New MySqlCommand(SQL, con)
-               cmd.ExecuteNonQuery()
+                cmd = New MySqlCommand(SQL, con)
+                cmd.ExecuteNonQuery()
             End Using
         Catch ex As Exception
             ComunicationLog("0052") 'db operation error
@@ -653,12 +653,12 @@ Public Class FormECR
         ColorButton(but)
         tblEcr.Clear()
         DsEcr.Clear()
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterEcr As New MySqlDataAdapter("SELECT * FROM ecr;", con)
-		        AdapterEcr.Fill(DsEcr, "ecr")
-	        End Using
+            Using AdapterEcr As New MySqlDataAdapter("SELECT * FROM ecr;", con)
+                AdapterEcr.Fill(DsEcr, "ecr")
+            End Using
             tblEcr = DsEcr.Tables("ecr")
         End Using
 
@@ -837,12 +837,12 @@ Public Class FormECR
 
         Dim RowSearchDoc As DataRow()
         Dim RowSearchProd As DataRow()
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM DOC;", con)
-		        AdapterDoc.Fill(DsDoc, "doc")
-	        End Using
+            Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM DOC;", con)
+                AdapterDoc.Fill(DsDoc, "doc")
+            End Using
             tblDoc = DsDoc.Tables("doc")
         End Using
         RowSearchProd = tblProd.Select("bitronpn = '" & Trim(prod) & "'")
@@ -857,7 +857,7 @@ Public Class FormECR
                 pos = InStr(1, ComboBoxEcr.Text, "-", CompareMethod.Text)
                 ecrN = Val(Mid(ComboBoxEcr.Text, 1, pos))
                 Try
-                    Dim  conBuilder As  New Common.DbConnectionStringBuilder()
+                    Dim conBuilder As New Common.DbConnectionStringBuilder()
                     builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                     Using con = NewConnectionMySql(conBuilder("host"), conBuilder("database"), conBuilder("username"), conBuilder("password"))
                         SQL = "UPDATE `" & DBName & "`.`doc` SET `ecrpending` = '" & row("ecrpending") & "[" & ecrN & "]" & "' WHERE `doc`.`id` = '" & row("id").ToString & "' ;"
@@ -875,14 +875,14 @@ Public Class FormECR
 
     Sub DeinvalidationProd(ByVal prod As String, ByVal ecrN As Integer)
 
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM DOC;", con)
-		        AdapterDoc.Fill(DsDoc, "doc")
-	        End Using
+            Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM DOC;", con)
+                AdapterDoc.Fill(DsDoc, "doc")
+            End Using
             tblDoc = DsDoc.Tables("doc")
-        
+
             Dim RowSearchDoc As DataRow()
             Dim RowSearchProd As DataRow()
             RowSearchProd = tblProd.Select("bitronpn = '" & Trim(prod) & "'")
@@ -1090,8 +1090,8 @@ Public Class FormECR
         Dim bodyText As String, subject As String
         bodyText = "Automatic SrvDoc Message:" & vbLf & vbLf & GetDepartamentName(userDep3) & " Note: " & RichTextBoxStep.Text
         subject = "ECR Note Change Notification:    " & ComboBoxEcr.Text
-        SendMail("ECR_VerifyTo; ECR_R_SignTo; ECR_U_SignTo; ECR_L_SignTo; ECR_B_SignTo; ECR_E_SignTo; ECR_N_SignTo; ECR_P_SignTo; ECR_Q_SignTo", _
-                 "ECR_VerifyCopy; ECR_R_SignCopy; ECR_U_SignCopy; ECR_L_SignCopy; ECR_B_SignCopy; ECR_E_SignCopy; ECR_N_SignCopy; ECR_P_SignCopy; ECR_Q_SignCopy;", _
+        SendMail("ECR_VerifyTo; ECR_R_SignTo; ECR_U_SignTo; ECR_L_SignTo; ECR_B_SignTo; ECR_E_SignTo; ECR_N_SignTo; ECR_P_SignTo; ECR_Q_SignTo",
+                 "ECR_VerifyCopy; ECR_R_SignCopy; ECR_U_SignCopy; ECR_L_SignCopy; ECR_B_SignCopy; ECR_E_SignCopy; ECR_N_SignCopy; ECR_P_SignCopy; ECR_Q_SignCopy;",
                  bodyText, subject)
 
     End Sub
@@ -1112,20 +1112,24 @@ Public Class FormECR
     Function SendMail(ByVal AddlistTo As String, ByVal AddlistCopy As String, ByVal bodyText As String, ByVal SubText As String, Optional ByVal ATTACH As String = "") As Boolean
         Dim dt As Date = Now
         SendMail = False
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using Adaptermail As New MySqlDataAdapter("SELECT * FROM mail;", con)
-		        Adaptermail.Fill(Dsmail, "mail")
-	        End Using
+            Using Adaptermail As New MySqlDataAdapter("SELECT * FROM mail;", con)
+                Adaptermail.Fill(Dsmail, "mail")
+            End Using
             tblmail = Dsmail.Tables("mail")
         End Using
-        
+
 
         Dim client As New SmtpClient(ParameterTable("SMTP"), ParameterTable("SMTP_PORT"))
         client.EnableSsl = IIf(ParameterTable("MAIL_SSL") = "YES", True, False)
-        client.Credentials = New NetworkCredential(ParameterTable("MAIL_SENDER_CREDENTIAL_USER"), ParameterTable("MAIL_SENDER_CREDENTIAL_PSW"))
+        If ParameterTable("MAIL_SENDER_CREDENTIAL_PSW") = "" Then
+            client.Credentials = New NetworkCredential(ParameterTable("MAIL_SENDER_CREDENTIAL_USER"), vbNull)
+        Else
+            client.Credentials = New NetworkCredential(ParameterTable("MAIL_SENDER_CREDENTIAL_USER"), ParameterTable("MAIL_SENDER_CREDENTIAL_PSW"))
 
+        End If
         Dim msg As New MailMessage(ParameterTable("MAIL_SENDER_CREDENTIAL_MAIL"), ParameterTable("MAIL_SENDER_CREDENTIAL_MAIL"))
 
 
@@ -1217,12 +1221,12 @@ Public Class FormECR
     Function readDocSign(ByVal docId As Long) As String
         Dim DsDoc As New DataSet
 
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM DOC", con)
-		        AdapterDoc.Fill(DsDoc, "doc")
-	        End Using
+            Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM DOC", con)
+                AdapterDoc.Fill(DsDoc, "doc")
+            End Using
         End Using
         Dim tblDoc As DataTable = DsDoc.Tables("doc")
         Dim Res As DataRow() = tblDoc.Select("id = " & docId)
