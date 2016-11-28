@@ -68,9 +68,11 @@ Public Class FormCredentials
         'builder.ConnectionString = ConfigurationManager.ConnectionStrings("Morpheus").ConnectionString
         'ComboBoxHost.Add("")
         For Each conn  As ConnectionStringSettings in ConfigurationManager.ConnectionStrings
-            If conn.Name <> "LocalSqlServer" And conn.Name <> "MySqlConnectionGru" Then
-                builder.Clear()
-                builder.ConnectionString = ConfigurationManager.ConnectionStrings(conn.Name).ConnectionString
+            builder.Clear()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(conn.Name).ConnectionString
+            If builder("connectionType") = "MainConnections" Then
+                'builder.Clear()
+                'builder.ConnectionString = ConfigurationManager.ConnectionStrings(conn.Name).ConnectionString
                 ComboBoxHost.Items.Add(conn.Name & " - " & builder("host"))    
             End If            
         Next

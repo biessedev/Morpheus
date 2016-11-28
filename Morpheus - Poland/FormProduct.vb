@@ -965,6 +965,7 @@ Public Class FormProduct
 
                 ListBoxLog.Items.Add("Update product cost...")
                 UpdateBomCost()
+                MsgBox("Import Sigip BOM is Done")
                 Dim OrcadDBAds = ParameterTable("OrcadDBAdr")
                 Dim OrcadDBName = ParameterTable("OrcadDBName")
                 Dim OrcadDBUserName = ParameterTable("OrcadDBUser")
@@ -1122,87 +1123,6 @@ Public Class FormProduct
         Return csvData
     End Function
 
-    Sub InsertSigipBomCSV(ByVal sfilename As String)
-        Dim dt As DataTable = GetDataTabletFromCSVFile(sfilename)
-        Try
-            Dim sqlValues As String = ""
-            Dim index As Integer = 1
-            Dim sqlCommand As String
-            Dim price As String = "", currency As String = "", liv As String = "", mdi As String = "", mdo As String = "", amm As String = ""
-            Dim mdo_t As String = "", amm_t As String = "", spe_t As String = "", spe As String = "", mdi_t As String = ""
-            Dim active As String = "", doc As String = "", orcadSupplier As String = ""
-            Dim bom As String, des_bom As String, nr As String, qt As String, acq_fab As String, bitron_pn As String, des_pn As String
-            
-            Dim  builder As  New Common.DbConnectionStringBuilder()
-            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
-            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-              
-                For Each row In dt.Rows
-                    bom = If(dt.Columns.Contains("Assieme"), row("Assieme"), "")
-                    des_bom = If(dt.Columns.Contains("Descrizione"), row("Descrizione"), "")
-                    nr = If(dt.Columns.Contains("UM"), row("UM"), "")
-                    qt = If(dt.Columns.Contains("Coeff.Impiego"), row("Coeff.Impiego"), "")
-                    acq_fab = If(dt.Columns.Contains("Prov"), row("Prov"), "")
-                    bitron_pn = If(dt.Columns.Contains("Componente"), row("Componente"), "")
-                    des_pn = If(dt.Columns.Contains("Descrizione Comp"), row("Descrizione Comp"), "")
-                    sqlValues = "(" & index & "," &
-                        "'" & Replace(bom, "'", "") & "'," &
-                        "'" & Replace(des_bom, "'", "") & "'," &
-                        "'" & nr & "'," &
-                        "'" & qt & "'," &
-                        "'" & price & "'," &
-                        "'" & currency & "'," &
-                        "'" & liv & "'," &
-                        "'" & acq_fab & "'," &
-                        "'" & Replace(ReplaceChar(bitron_pn), "-", "") & "'," &
-                        "'" & ReplaceChar(des_pn) & "'," &
-                        "'" & mdi & "'," &
-                        "'" & mdo & "'," &
-                        "'" & amm & "'," &
-                        "'" & spe & "'," &
-                        "'" & mdi_t & "'," &
-                        "'" & mdo_t & "'," &
-                        "'" & amm_t & "'," &
-                        "'" & spe_t & "'," &
-                        "'" & active & "'," &
-                        "'" & doc & "'," &
-                        "'" & orcadSupplier & "'" &
-                            ")," & sqlValues
-                        
-                If index mod 10000 = 0 Then 
-                    sqlCommand = Mid(sqlValues, 1, Len(sqlValues) - 1)
-                    sqlCommand = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`, `active`, `doc`, `OrcadSupplier`) VALUES " & sqlCommand & ";"
-                    Dim cmd = New MySqlCommand(sqlCommand, con)
-                    cmd.ExecuteNonQuery()
-                    sqlValues = ""
-                End If
-                index = index + 1
-                Next
-                sqlCommand = Mid(sqlValues, 1, Len(sqlValues) - 1)
-                sqlCommand = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`, `active`, `doc`, `OrcadSupplier`) VALUES " & sqlCommand & ";"
-                Dim cmdLast = New MySqlCommand(sqlCommand, con)
-                cmdLast.ExecuteNonQuery()
-               
-            End Using
-               
-          MsgBox("Done")
-            'sqlCommand = ""
-            'sqlValues = ""
-        Catch ex As Exception
-            MsgBox("Sigip update error! " & ex.Message)
-        End Try
-
-    End Sub
-
-    Function ProductStatus(ByVal bom As String) As String
-
-        Dim results As DataRow() = tblProd.Select("bitronpn = '" & bom & "'")
-        ProductStatus = ""
-        For Each res In results
-            ProductStatus = res("status").ToString
-        Next
-
-    End Function
     Sub UpdateBomCost()
         DsProd.Clear()
         tblProd.Clear()
@@ -1325,6 +1245,87 @@ Public Class FormProduct
             Next
         End Using
     End Sub
+
+    Sub InsertSigipBomCSV(ByVal sfilename As String)
+        Dim dt As DataTable = GetDataTabletFromCSVFile(sfilename)
+        Try
+            Dim sqlValues As String = ""
+            Dim index As Integer = 1
+            Dim sqlCommand As String
+            Dim price As String = "", currency As String = "", liv As String = "", mdi As String = "", mdo As String = "", amm As String = ""
+            Dim mdo_t As String = "", amm_t As String = "", spe_t As String = "", spe As String = "", mdi_t As String = ""
+            Dim active As String = "", doc As String = "", orcadSupplier As String = ""
+            Dim bom As String, des_bom As String, nr As String, qt As String, acq_fab As String, bitron_pn As String, des_pn As String
+            
+            Dim  builder As  New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+              
+                For Each row In dt.Rows
+                    bom = If(dt.Columns.Contains("Assieme"), row("Assieme"), "")
+                    des_bom = If(dt.Columns.Contains("Descrizione"), row("Descrizione"), "")
+                    nr = If(dt.Columns.Contains("UM"), row("UM"), "")
+                    qt = If(dt.Columns.Contains("Coeff.Impiego"), row("Coeff.Impiego"), "")
+                    acq_fab = If(dt.Columns.Contains("Prov"), row("Prov"), "")
+                    bitron_pn = If(dt.Columns.Contains("Componente"), row("Componente"), "")
+                    des_pn = If(dt.Columns.Contains("Descrizione Comp"), row("Descrizione Comp"), "")
+                    sqlValues = "(" & index & "," &
+                        "'" & Replace(bom, "'", "") & "'," &
+                        "'" & Replace(des_bom, "'", "") & "'," &
+                        "'" & nr & "'," &
+                        "'" & qt & "'," &
+                        "'" & price & "'," &
+                        "'" & currency & "'," &
+                        "'" & liv & "'," &
+                        "'" & acq_fab & "'," &
+                        "'" & Replace(ReplaceChar(bitron_pn), "-", "") & "'," &
+                        "'" & ReplaceChar(des_pn) & "'," &
+                        "'" & mdi & "'," &
+                        "'" & mdo & "'," &
+                        "'" & amm & "'," &
+                        "'" & spe & "'," &
+                        "'" & mdi_t & "'," &
+                        "'" & mdo_t & "'," &
+                        "'" & amm_t & "'," &
+                        "'" & spe_t & "'," &
+                        "'" & active & "'," &
+                        "'" & doc & "'," &
+                        "'" & orcadSupplier & "'" &
+                            ")," & sqlValues
+                        
+                If index mod 100 = 0 Then 
+                    sqlCommand = Mid(sqlValues, 1, Len(sqlValues) - 1)
+                    sqlCommand = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`, `active`, `doc`, `OrcadSupplier`) VALUES " & sqlCommand & ";"
+                    Dim cmd = New MySqlCommand(sqlCommand, con)
+                    cmd.ExecuteNonQuery()
+                    sqlValues = ""
+                End If
+                index = index + 1
+                Next
+                sqlCommand = Mid(sqlValues, 1, Len(sqlValues) - 1)
+                sqlCommand = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`, `active`, `doc`, `OrcadSupplier`) VALUES " & sqlCommand & ";"
+                Dim cmdLast = New MySqlCommand(sqlCommand, con)
+                cmdLast.ExecuteNonQuery()
+               
+            End Using
+            'sqlCommand = ""
+            'sqlValues = ""
+        Catch ex As Exception
+            MsgBox("Sigip update error! " & ex.Message)
+        End Try
+
+    End Sub
+
+    Function ProductStatus(ByVal bom As String) As String
+
+        Dim results As DataRow() = tblProd.Select("bitronpn = '" & bom & "'")
+        ProductStatus = ""
+        For Each res In results
+            ProductStatus = res("status").ToString
+        Next
+
+    End Function
+    
 
     Sub updateECRMark()
 
