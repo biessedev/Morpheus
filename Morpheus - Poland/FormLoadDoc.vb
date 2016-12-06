@@ -33,9 +33,9 @@ Public Class FormLoadDoc
                     tblDoc = DsDoc.Tables("doc")
                 End Using
                 Using AdapterType As New MySqlDataAdapter("SELECT * FROM doctype", con)
-		            AdapterType.Fill(DsType, "doctype")
+                    AdapterType.Fill(DsType, "doctype")
                     tblType = DsType.Tables("docType")
-	            End Using
+                End Using
             End Using
             Me.Focus()
         Catch ex As Exception
@@ -191,6 +191,10 @@ Public Class FormLoadDoc
                             myrow.Item("FileName") = CreFile.FileName
                             myrow.Item("header") = CreFile.Header
                             myrow.Item("rev") = CreFile.Rev
+                            myrow.Item("Control") = ""
+                            myrow.Item("EcrPending") = ""
+                            myrow.Item("EcrNull") = ""
+                            myrow.Item("notification") = ""
                             myrow.Item("Editor") = CreAccount.strUserName & "[" & Date.Today.Day & "/" & Date.Today.Month & "/" & Date.Today.Year & "]"
                             If controlType("S") = 0 Then myrow.Item("sign") = "NoSignReq[" & Date.Today.Day & "/" & Date.Today.Month & "/" & Date.Today.Year & "]"
                             myrow.Item("Extension") = CreFile.Extension
@@ -205,12 +209,12 @@ Public Class FormLoadDoc
                             'builder.GetUpdateCommand()
                             'AdapterDoc.Update(tblDoc)
                             'Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc order by rev desc", MySqlconnection)
-                            Dim  builder As  New Common.DbConnectionStringBuilder()
+                            Dim builder As New Common.DbConnectionStringBuilder()
                             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                            Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc order by rev desc", con)
-		                             AdapterDoc.Update(tblDoc)
-	                            End Using
+                                Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc order by rev desc", con)
+                                    AdapterDoc.Update(tblDoc)
+                                End Using
                             End Using
                         End If
 
@@ -394,14 +398,14 @@ Public Class FormLoadDoc
             tblDoc.Clear()
         Catch ex As Exception
         End Try
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
             Try
                 Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc order by rev desc", con)
-		            AdapterDoc.Fill(DsDoc, "doc")
+                    AdapterDoc.Fill(DsDoc, "doc")
                     tblDoc = DsDoc.Tables("doc")
-	            End Using
+                End Using
             Catch ex As Exception
             End Try
         End Using
@@ -464,7 +468,7 @@ Public Class FormLoadDoc
     Function SignExtract(ByRef sign As String) As String
         Try
             SignExtract = ("5069") ' Sign extract ok
-            Dim returnValue As DataRow() = tblDoc.Select("header='" & CreFile.Header & "' and FileName='" & CreFile.FileName & _
+            Dim returnValue As DataRow() = tblDoc.Select("header='" & CreFile.Header & "' and FileName='" & CreFile.FileName &
                                                          "' and Extension='" & CreFile.Extension & "' and rev = " & CreFile.Rev, "rev DESC")
             If returnValue.Length >= 1 Then
                 sign = returnValue(0).Item("sign")
@@ -504,15 +508,15 @@ Public Class FormLoadDoc
 
     Sub FillComboRevNote()
         Dim row As DataRow
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        'AdapterRevNote = New MySqlDataAdapter("SELECT * FROM RevNote", MySqlConnection)
+            'AdapterRevNote = New MySqlDataAdapter("SELECT * FROM RevNote", MySqlConnection)
             Using AdapterRevNote As New MySqlDataAdapter("SELECT * FROM RevNote", con)
-		        AdapterRevNote.Fill(DsRevNote, "RevNote")
+                AdapterRevNote.Fill(DsRevNote, "RevNote")
                 tblRevNote = DsRevNote.Tables("RevNote")
-	        End Using
-            
+            End Using
+
             ComboBoxRevNote.Items.Clear()
             For Each row In tblRevNote.Rows
                 ComboBoxRevNote.Items.Add(row("revnote").ToString)
@@ -564,10 +568,10 @@ Public Class FormLoadDoc
                     Try
                         strRes = objFtp.DeleteFile(strPathFtp & "/", row("header").ToString & "_" & row("filename").ToString & "_" & row("rev").ToString & "." & row("extension").ToString)
                         If strRes = "5000" Then
-                            Dim  builder As  New Common.DbConnectionStringBuilder()
+                            Dim builder As New Common.DbConnectionStringBuilder()
                             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                            Dim sql As String = "UPDATE `" & DBName & "`.`doc` SET " & _
+                                Dim sql As String = "UPDATE `" & DBName & "`.`doc` SET " &
                                                     "`sign` = '', `filename` = '" & CreFile.FileName & "' WHERE `doc`.`id` = " & row("id").ToString & " ;"
                                 Dim cmd = New MySqlCommand(sql, con)
                                 cmd.ExecuteNonQuery()
