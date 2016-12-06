@@ -618,7 +618,7 @@ Partial Class FormEquipments
         '
         'PictureBox1
         '
-        Me.PictureBox1.Image = Global.MORPHEUS.My.Resources.Resources.BitronPoland
+        Me.PictureBox1.Image = Global.MORPHEUS.My.Resources.Resources.BitronLogo
         Me.PictureBox1.Location = New System.Drawing.Point(897, 557)
         Me.PictureBox1.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.PictureBox1.Name = "PictureBox1"

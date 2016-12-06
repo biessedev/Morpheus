@@ -116,7 +116,7 @@ Partial Class FormCredentials
         'PictureBox2
         '
         Me.PictureBox2.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.PictureBox2.Image = Global.MORPHEUS.My.Resources.Resources.BitronPoland
+        Me.PictureBox2.Image = Global.MORPHEUS.My.Resources.Resources.BitronLogo
         Me.PictureBox2.Location = New System.Drawing.Point(30, 89)
         Me.PictureBox2.Margin = New System.Windows.Forms.Padding(2)
         Me.PictureBox2.Name = "PictureBox2"

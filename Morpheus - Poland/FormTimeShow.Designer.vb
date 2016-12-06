@@ -562,7 +562,7 @@ Partial Class FormTimeShow
         'PictureBox1
         '
         Me.PictureBox1.ErrorImage = Nothing
-        Me.PictureBox1.Image = Global.MORPHEUS.My.Resources.Resources.BitronPoland
+        Me.PictureBox1.Image = Global.MORPHEUS.My.Resources.Resources.BitronLogo
         Me.PictureBox1.Location = New System.Drawing.Point(1632, 26)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(259, 72)

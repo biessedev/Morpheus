@@ -692,7 +692,7 @@ Partial Class FormProduct
         'PictureBox1
         '
         Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.PictureBox1.Image = Global.MORPHEUS.My.Resources.Resources.BitronPoland
+        Me.PictureBox1.Image = Global.MORPHEUS.My.Resources.Resources.BitronLogo
         Me.PictureBox1.Location = New System.Drawing.Point(899, 666)
         Me.PictureBox1.Margin = New System.Windows.Forms.Padding(2)
         Me.PictureBox1.Name = "PictureBox1"
