@@ -1530,26 +1530,8 @@ Public Class FormSamples
                             Application.DoEvents()
                             If Val(rowSigip("qt").ToString) * Val(row("npieces").ToString) > 0 Then AddRequest(rowSigip("bitron_pn").ToString, rowSigip("des_pn").ToString, rowSigip("qt").ToString, row("npieces").ToString, rowSigip("bom").ToString, rowSigip("bom").ToString & " - " & rowSigip("des_bom").ToString, , , rowSigip("doc").ToString)
                         Next
-
-                        'ElseIf row("bomlocation").ToString = "OFFER" Then
-                        '    If versionOffer(row("bitronpn").ToString, BomName, verN) = 1 Then
-                        '        rowShowOffer = tblOff.Select("name ='" & BomName & "'")
-                        '        If rowShowOffer.Length = 0 Then MsgBox("Bom not found in OFFER!" & row("bitronpn").ToString & BomName)
-                        '        For Each rowOffer In rowShowOffer
-                        '            Dim BitronPNCode As String
-                        '            If rowOffer("bitronpn").ToString <> "" Then
-                        '                BitronPNCode = rowOffer("bitronpn").ToString
-                        '            Else
-                        '                BitronPNCode = "Q_" & rowOffer("name").ToString & "_" & rowOffer("id").ToString
-                        '            End If
-
-                        '            ButtonUpdateMagBox.Text = "Udpate : " & Math.Round(100 * i / rowShow.Length, 0) & "%"
-                        '            Application.DoEvents()
-                        '            If Val(rowOffer("qt_v" & verN).ToString) * Val(row("npieces").ToString) > 0 Then AddRequest(BitronPNCode, rowOffer("description").ToString, rowOffer("qt_v" & verN).ToString, row("npieces").ToString, row("bitronpn").ToString, row("bitronpn").ToString & " - " & BomName, rowOffer("brand").ToString, rowOffer("brandAlt").ToString, OrcadDoc(rowOffer("bitronpn").ToString))
-                        '        Next
-                        '    Else
-                        '        MsgBox("Bom not found in OFFER!" & row("bitronpn").ToString & BomName)
-                        '    End If
+                    ElseIf row("bomlocation").ToString() = "BEQS" Then
+                        ' TODO: Add business logic
                     Else
                         MsgBox("For this product BOM not assigned! " & row("bitronpn").ToString & "  " & row("name").ToString)
                     End If
@@ -1565,8 +1547,6 @@ Public Class FormSamples
                 MsgBox("Error in DB... please reset material request!")
             End Try
 
-            ' rda/order elaboration
-
             Dim InOrder As Single = order("", True)
             Dim InRda As Single = Rda("", True)
 
@@ -1575,7 +1555,6 @@ Public Class FormSamples
                 RdaInfo = ""
                 OrderInfo = ""
                 Dim NeedRda As String = ""
-                'If "15001152" = row("bitronpn").ToString Then Stop
                 If Mid(row("bitronpn").ToString, 1, 2) <> "Q_" And Mid(row("bitronpn").ToString, 1, 2) <> "18" Then
                     InOrder = order(row("bitronpn").ToString, False)
                     InRda = Rda(row("bitronpn").ToString, False)
@@ -1794,10 +1773,6 @@ Public Class FormSamples
                 commandMySql = New MySqlCommand(sql, con)
                 commandMySql.ExecuteNonQuery()
 
-                'sql = "DELETE FROM `" & DBName & "`.`order` WHERE `order`.`stab` = '62'"
-                'sql = "DELETE FROM `" & DBName & "`.`order` WHERE `order`.`stab` = " & ParameterTable("plant")
-                'commandMySql = New MySqlCommand(sql, con)
-                'commandMySql.ExecuteNonQuery()
             Catch ex As Exception
                 MsgBox(ex.Message)
             End Try
@@ -2570,9 +2545,7 @@ Public Class FormSamples
     End Sub
 
     Private Sub DTP_PlanCloseDate_ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles DTP_PlanCloseDate.ValueChanged
-
         DateClosed = DTP_PlanCloseDate.Value.Date
-
     End Sub
 
 End Class
