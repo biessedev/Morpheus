@@ -7,6 +7,8 @@ Imports System.IO
 Imports System.Data.OleDb
 Imports Microsoft.VisualBasic.FileIO
 Imports System.Configuration
+Imports System.Data
+Imports System.Linq
 
 Public Class FormProduct
     Dim index As Long = 1
@@ -159,10 +161,10 @@ Public Class FormProduct
                                             "" & "', '" & strControl() & "', '" & Trim(TextBoxPcb.Text) & "', '" &
                                             Trim(TextBoxPiastra.Text) & "', 'INSERT[" & date_to_string(Today) & "]','" &
                                             mch & "'" & ",'" & TextBoxDAI.Text & "','', '', '', '', '', '', '', '', '',  '', 0, 0, '', '', '', '', '', '', '', '', '" & TextBoxLS.Text & "');"
-                        Dim  builder As  New Common.DbConnectionStringBuilder()
+                        Dim builder As New Common.DbConnectionStringBuilder()
                         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                        Dim cmd As MySqlCommand = New MySqlCommand(sql, con)
+                            Dim cmd As MySqlCommand = New MySqlCommand(sql, con)
                             cmd.ExecuteNonQuery()
                         End Using
                         ComunicationLog("5041") ' 
@@ -201,12 +203,12 @@ Public Class FormProduct
                                         "',`dai` = '" & UCase(Trim(TextBoxDAI.Text)) &
                                         "',`mchElement` = '" & (mch) &
                                         "',`DocFlag` = '" & Trim(strControl()) & "' WHERE `product`.`BitronPN` = '" & Trim(TextBoxProduct.Text) & "' ;"
-                    Dim  builder As  New Common.DbConnectionStringBuilder()
+                    Dim builder As New Common.DbConnectionStringBuilder()
                     builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                     Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                    Dim cmd = New MySqlCommand(sql, con)
+                        Dim cmd = New MySqlCommand(sql, con)
                         cmd.ExecuteNonQuery()
-                    End Using                    
+                    End Using
                     Try
                         griddUpdate(ListView1.SelectedItems.Item(0).SubItems(3).Text = TextBoxProduct.Text)
                         ListBoxLog.Items.Add(ListView1.SelectedItems.Item(0).SubItems(3).Text & "  -  Product Updated!")
@@ -295,10 +297,10 @@ Public Class FormProduct
         If controlRight("W") = 3 Then
             If TextBoxProduct.Text <> "" And MsgBox("Do you want to delete this product?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
                 Try
-                    Dim  builder As  New Common.DbConnectionStringBuilder()
+                    Dim builder As New Common.DbConnectionStringBuilder()
                     builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                     Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                    Dim sql As String = "DELETE FROM `" & DBName & "`.`product` WHERE `product`.`BitronPN` = '" & TextBoxProduct.Text & "'"
+                        Dim sql As String = "DELETE FROM `" & DBName & "`.`product` WHERE `product`.`BitronPN` = '" & TextBoxProduct.Text & "'"
                         Dim cmd = New MySqlCommand(sql, con)
                         cmd.ExecuteNonQuery()
                     End Using
@@ -331,10 +333,10 @@ Public Class FormProduct
             If sql <> "" Then
                 Try
                     sql = "INSERT INTO `" & DBName & "`.`customer` (`name`  ) VALUES ( '" & UCase(sql) & "');"
-                    Dim  builder As  New Common.DbConnectionStringBuilder()
+                    Dim builder As New Common.DbConnectionStringBuilder()
                     builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                     Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                    Dim cmd = New MySqlCommand(sql, con)
+                        Dim cmd = New MySqlCommand(sql, con)
                         cmd.ExecuteNonQuery()
                     End Using
                     ComunicationLog("5051") ' Customer insert
@@ -355,10 +357,10 @@ Public Class FormProduct
         If controlRight("W") = 3 Then
             If ComboBoxCustomer.Text <> "" And MsgBox("Do you want to delete this Customer?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
                 Try
-                    Dim  builder As  New Common.DbConnectionStringBuilder()
+                    Dim builder As New Common.DbConnectionStringBuilder()
                     builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                     Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                    Dim sql As String = "DELETE FROM `" & DBName & "`.`customer` WHERE `customer`.`name` = '" & ComboBoxCustomer.Text & "'"
+                        Dim sql As String = "DELETE FROM `" & DBName & "`.`customer` WHERE `customer`.`name` = '" & ComboBoxCustomer.Text & "'"
                         Dim cmd = New MySqlCommand(sql, con)
                         cmd.ExecuteNonQuery()
                     End Using
@@ -494,13 +496,13 @@ Public Class FormProduct
         ComboBoxCustomer.Items.Add("")
         DsCus.Clear()
         tblCus.Clear()
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterCus As New MySqlDataAdapter("SELECT * FROM Customer", con)
-		        AdapterCus.Fill(DsCus, "Customer")
+            Using AdapterCus As New MySqlDataAdapter("SELECT * FROM Customer", con)
+                AdapterCus.Fill(DsCus, "Customer")
                 tblCus = DsCus.Tables("Customer")
-	        End Using
+            End Using
         End Using
         Dim rowResults As DataRow() = tblCus.Select("name like '*'", "name")
         For Each row In rowResults
@@ -512,13 +514,13 @@ Public Class FormProduct
     Sub FillListView()
         DsProd.Clear()
         tblProd.Clear()
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
-		        AdapterProd.Update(DsProd, "product")
+            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
+                AdapterProd.Update(DsProd, "product")
                 AdapterProd.Fill(DsProd, "product")
-	        End Using
+            End Using
         End Using
         tblProd = DsProd.Tables("product")
 
@@ -642,13 +644,13 @@ Public Class FormProduct
     Private Sub ButtonGroup_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonGroup.Click
         DsProd.Clear()
         tblProd.Clear()
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
-		        AdapterProd.Fill(DsProd, "product")
+            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
+                AdapterProd.Fill(DsProd, "product")
                 tblProd = DsProd.Tables("product")
-	        End Using
+            End Using
         End Using
 
         Dim i As Integer, result As DataRow()
@@ -673,13 +675,13 @@ Public Class FormProduct
 
         DsProd.Clear()
         tblProd.Clear()
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
-		        AdapterProd.Fill(DsProd, "product")
+            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
+                AdapterProd.Fill(DsProd, "product")
                 tblProd = DsProd.Tables("product")
-	        End Using
+            End Using
         End Using
         User3 = user()
 
@@ -834,10 +836,10 @@ Public Class FormProduct
         If controlRight("W") >= 2 Then
             If TextBoxProduct.Text <> "" And TextBoxDescription.Text <> "" Then
                 Try
-                    Dim  builder As  New Common.DbConnectionStringBuilder()
+                    Dim builder As New Common.DbConnectionStringBuilder()
                     builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                     Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                    Dim sql As String = "UPDATE `" & DBName & "`.`product` SET `StatusUpdateDate` = '" & Trim(ComboBoxStatus.Text) & "[" & string_to_date(Today.Year & "/" & Today.Month & "/" & Today.Day) & "]" & StatusUpdateDate & "',`Status` = '" & Trim(ComboBoxStatus.Text) & "', `MAIL` = '' WHERE `product`.`BitronPN` = '" & Trim(TextBoxProduct.Text) & "' ;"
+                        Dim sql As String = "UPDATE `" & DBName & "`.`product` SET `StatusUpdateDate` = '" & Trim(ComboBoxStatus.Text) & "[" & string_to_date(Today.Year & "/" & Today.Month & "/" & Today.Day) & "]" & StatusUpdateDate & "',`Status` = '" & Trim(ComboBoxStatus.Text) & "', `MAIL` = '' WHERE `product`.`BitronPN` = '" & Trim(TextBoxProduct.Text) & "' ;"
                         Dim cmd = New MySqlCommand(sql, con)
                         cmd.ExecuteNonQuery()
                     End Using
@@ -860,15 +862,15 @@ Public Class FormProduct
 
         DsProd.Clear()
         tblProd.Clear()
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
-		        AdapterProd.Fill(DsProd, "product")
+            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
+                AdapterProd.Fill(DsProd, "product")
                 tblProd = DsProd.Tables("product")
-	        End Using
+            End Using
         End Using
-        
+
         User3 = user()
         WriteFile("", False)
         Dim i As Integer, result As DataRow(), k As Integer, j As Integer
@@ -919,14 +921,14 @@ Public Class FormProduct
                 Catch ex As Exception
 
                 End Try
-                Dim  builder As  New Common.DbConnectionStringBuilder()
+                Dim builder As New Common.DbConnectionStringBuilder()
                 builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                 Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                Using AdapterSigip As New MySqlDataAdapter("SELECT * FROM sigip", con)
-		                AdapterSigip.Fill(DsSigip, "sigip")
+                    Using AdapterSigip As New MySqlDataAdapter("SELECT * FROM sigip", con)
+                        AdapterSigip.Fill(DsSigip, "sigip")
                         tblSigip = DsSigip.Tables("sigip")
-	                End Using
-                
+                    End Using
+
                     Try
                         Dim sql As String = "DELETE FROM `" & DBName & "`.`sigip` "
                         Dim cmd = New MySqlCommand(sql, con)
@@ -937,9 +939,9 @@ Public Class FormProduct
                     End Try
                 End Using
                 Try
-                    Dim fileName As String() = Directory.GetFiles(selectedPath & "\", "PELE15PT-BITUSR12-" & Date.Now.Year & Date.Now.Month & Date.Now.Day & ".csv")
+                    Dim fileName As String() = Directory.GetFiles(selectedPath & "\", "PELE15PT-BITUSR12-" & Date.Now.ToString("yyyyMMdd") & ".csv")
                     If fileName.Length = 0 Then
-                        MsgBox("The filename " & "PELE15PT-BITUSR12-" & Date.Now.Year & Date.Now.Month & Date.Now.Day & ".csv" & " does not exist in " & selectedPath & " directory")
+                        MsgBox("The filename " & "PELE15PT-BITUSR12-" & Date.Now.ToString("yyyyMMdd") &  ".csv" & " does not exist in " & selectedPath & " directory")
                     Else
                         InsertSigipBomCSV(fileName(0))
                     End If
@@ -1126,19 +1128,19 @@ Public Class FormProduct
     Sub UpdateBomCost()
         DsProd.Clear()
         tblProd.Clear()
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
-		        AdapterProd.Fill(DsProd, "product")
+            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
+                AdapterProd.Fill(DsProd, "product")
                 tblProd = DsProd.Tables("product")
-	        End Using
+            End Using
             DsSigip.Clear()
             tblSigip.Clear()
             Using AdapterSigip As New MySqlDataAdapter("SELECT * FROM sigip", con)
-		        AdapterSigip.Fill(DsSigip, "sigip")
+                AdapterSigip.Fill(DsSigip, "sigip")
                 tblSigip = DsSigip.Tables("sigip")
-	        End Using
+            End Using
             Dim cost As Single
 
             Dim results As DataRow() = tblProd.Select("status like '*' AND not status ='OBSOLETE'")
@@ -1188,19 +1190,19 @@ Public Class FormProduct
         Dim cmd As New MySqlCommand(), sql As String
         DsProd.Clear()
         tblProd.Clear()
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
-		        AdapterProd.Fill(DsProd, "product")
+            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
+                AdapterProd.Fill(DsProd, "product")
                 tblProd = DsProd.Tables("product")
-	        End Using
+            End Using
             DsSigip.Clear()
             tblSigip.Clear()
             Using AdapterSigip As New MySqlDataAdapter("SELECT * FROM sigip", con)
-		        AdapterSigip.Fill(DsSigip, "sigip")
+                AdapterSigip.Fill(DsSigip, "sigip")
                 tblSigip = DsSigip.Tables("sigip")
-	        End Using
+            End Using
 
             Dim sigip As String
             Dim result As DataRow() = tblProd.Select("status like '*'")
@@ -1256,13 +1258,15 @@ Public Class FormProduct
             Dim mdo_t As String = "", amm_t As String = "", spe_t As String = "", spe As String = "", mdi_t As String = ""
             Dim active As String = "", doc As String = "", orcadSupplier As String = ""
             Dim bom As String, des_bom As String, nr As String, qt As String, acq_fab As String, bitron_pn As String, des_pn As String
-            
-            Dim  builder As  New Common.DbConnectionStringBuilder()
+
+            Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-              
-                For Each row In dt.Rows
-                    bom = If(dt.Columns.Contains("Assieme"), row("Assieme"), "")
+                Dim productsQuery  = From a In dt.AsEnumerable()   
+                                     Join b In ListView1.Items On  b.SubItems(3).Text equals Replace(ReplaceChar(a.Field(Of String)("Assieme")), "-", "").TrimStart("0"c)
+                                     Select a Distinct
+                For Each row In productsQuery
+                    bom = If(dt.Columns.Contains("Assieme"), Replace(ReplaceChar(row("Assieme")), "-", "").TrimStart("0"c), "")
                     des_bom = If(dt.Columns.Contains("Descrizione"), row("Descrizione"), "")
                     nr = If(dt.Columns.Contains("UM"), row("UM"), "")
                     qt = If(dt.Columns.Contains("Coeff.Impiego"), row("Coeff.Impiego"), "")
@@ -1292,24 +1296,22 @@ Public Class FormProduct
                         "'" & doc & "'," &
                         "'" & orcadSupplier & "'" &
                             ")," & sqlValues
-                        
-                If index mod 100 = 0 Then 
-                    sqlCommand = Mid(sqlValues, 1, Len(sqlValues) - 1)
-                    sqlCommand = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`, `active`, `doc`, `OrcadSupplier`) VALUES " & sqlCommand & ";"
-                    Dim cmd = New MySqlCommand(sqlCommand, con)
-                    cmd.ExecuteNonQuery()
-                    sqlValues = ""
-                End If
-                index = index + 1
+                        If index Mod 100 = 0 Then
+                            sqlCommand = Mid(sqlValues, 1, Len(sqlValues) - 1)
+                            sqlCommand = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`, `active`, `doc`, `OrcadSupplier`) VALUES " & sqlCommand & ";"
+                            Dim cmd = New MySqlCommand(sqlCommand, con)
+                            cmd.ExecuteNonQuery()
+                            sqlValues = ""
+                        End If
+                        index = index + 1
                 Next
                 sqlCommand = Mid(sqlValues, 1, Len(sqlValues) - 1)
                 sqlCommand = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`, `active`, `doc`, `OrcadSupplier`) VALUES " & sqlCommand & ";"
                 Dim cmdLast = New MySqlCommand(sqlCommand, con)
                 cmdLast.ExecuteNonQuery()
-               
+                
+
             End Using
-            'sqlCommand = ""
-            'sqlValues = ""
         Catch ex As Exception
             MsgBox("Sigip update error! " & ex.Message)
         End Try
@@ -1325,25 +1327,25 @@ Public Class FormProduct
         Next
 
     End Function
-    
+
 
     Sub updateECRMark()
 
         DsProd.Clear()
         tblProd.Clear()
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
-		        AdapterProd.Fill(DsProd, "product")
+            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
+                AdapterProd.Fill(DsProd, "product")
                 tblProd = DsProd.Tables("product")
-	        End Using
+            End Using
             DsEcr.Clear()
             tblEcr.Clear()
             Using AdapterEcr As New MySqlDataAdapter("SELECT * FROM Ecr", con)
-		        AdapterEcr.Fill(DsEcr, "ecr")
+                AdapterEcr.Fill(DsEcr, "ecr")
                 tblEcr = DsEcr.Tables("ecr")
-	        End Using
+            End Using
             Dim result As DataRow() = tblProd.Select("status like '*'")
 
             For Each res In result
@@ -1378,10 +1380,10 @@ Public Class FormProduct
         ParameterTableWrite("LAST_BOM_UPDATE", "Start but not finish....")
         ' clear field
         Dim allOK = True
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Try
+            Try
                 sql = "UPDATE `" & DBName & "`.`sigip` SET `doc` = '';"
                 cmd = New MySqlCommand(sql, con)
                 cmd.ExecuteNonQuery()
@@ -1393,9 +1395,9 @@ Public Class FormProduct
             DsDoc.Clear()
             tblDoc.Clear()
             Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM DOC;", con)
-		        AdapterDoc.Fill(DsDoc, "doc")
+                AdapterDoc.Fill(DsDoc, "doc")
                 tblDoc = DsDoc.Tables("doc")
-	        End Using
+            End Using
 
             ListBoxLog.Items.Add("Open Orcad Homologation Card......Wait...")
             Try
@@ -1410,14 +1412,14 @@ Public Class FormProduct
                 'OpenConnectionMySqlOrcad("10.10.10.15", "orcad1", "orcadw", "orcadw")
                 'OpenConnectionMySqlOrcad(OrcadDBAdr, OrcadDBName, OrcadDBUser, OrcadDBPwd)
                 Using conOrcad = NewOpenConnectionMySqlOrcad(OrcadDBAdr, OrcadDBName, OrcadDBUser, OrcadDBPwd)
-	                ListBoxLog.Items.Add("Connection estabilished...Done!")
+                    ListBoxLog.Items.Add("Connection estabilished...Done!")
                     DsDocComp.Clear()
                     tblDocComp.Clear()
                     'Dim AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where not valido = 'no_valido'", SqlconnectionOrcad)
                     Using AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where not valido = 'no_valido'", conOrcad)
-		                AdapterDocComp.Fill(DsDocComp, "orcadw.T_orcadcis")
+                        AdapterDocComp.Fill(DsDocComp, "orcadw.T_orcadcis")
                         tblDocComp = DsDocComp.Tables("orcadw.T_orcadcis")
-	                End Using
+                    End Using
                 End Using
             End Try
             ListBoxLog.Items.Add("Open Orcad Homologation Card......Open!")
@@ -1451,9 +1453,9 @@ Public Class FormProduct
                 dsbom.Clear()
                 tblbom.Clear()
                 Using AdapterBom As New MySqlDataAdapter("SELECT * FROM sigip;", con)
-		            AdapterBom.Fill(dsbom, "sigip")
+                    AdapterBom.Fill(dsbom, "sigip")
                     tblbom = dsbom.Tables("sigip")
-	            End Using
+                End Using
                 Dim RowSearchBom As DataRow() = tblbom.Select("ACQ_FAB like '*ACQ*' and doc =''", "bitron_pn")
                 ListBoxLog.Items.Add("Comp. updating.. For finish.." & RowSearchBom.Length)
                 Application.DoEvents()
