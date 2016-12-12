@@ -485,6 +485,7 @@ Public Class FormSamples
         If currentProductCode <> "" Then
             tblProd.Select("bitronpn='" & mycurrentProductCode & "'", "etd desc")
             ComboBoxBomLocation.Items.Add("SIGIP")
+            ComboBoxBomLocation.Items.Add("BEQS")
         End If
     End Sub
 
@@ -833,7 +834,7 @@ Public Class FormSamples
     End Function
 
     Private Sub ComboBoxActivityStatus_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxActivityStatus.TextChanged
-        If CheckBoxClosed.Checked = True Then CheckBoxClosed.Checked = False
+        If CheckBoxClosed.Checked = True And ComboBoxActivityStatus.SelectedIndex <> 0 Then CheckBoxClosed.Checked = False
         If ComboBoxActivityID.Text <> "" And ComboBoxActivityStatus.Text <> "" Then
             If controlRight("R") >= 2 Then ButtonUpdateStatus.Enabled = True
         Else
@@ -1518,7 +1519,7 @@ Public Class FormSamples
 
             ButtonUpdateMagBox.Text = "Start calculation ..."
             Application.DoEvents()
-
+            Dim beqsVersions As String =  ""
             For Each row In rowShow
                 i = i + 1
                 If Val(row("NPIECES").ToString) > 0 Then
@@ -1532,11 +1533,23 @@ Public Class FormSamples
                         Next
                     ElseIf row("bomlocation").ToString() = "BEQS" Then
                         ' TODO: Add business logic
+                        Dim versionName = row("bitronpn")
+                        if beqsVersions = "" Then 
+                            beqsVersions = "(" & "'" & versionName & "',"
+                        Else
+                            beqsVersions += "'" & versionName & "',"
+                        End If
                     Else
                         MsgBox("For this product BOM not assigned! " & row("bitronpn").ToString & "  " & row("name").ToString)
                     End If
                 End If
             Next
+            
+            'If beqsVersions <> "" Then
+            '    beqsVersions = beqsVersions.Remove(beqsVersions.Length - 1) & ")"
+            '    FormBomOffer.ShowForm(beqsVersions)
+            'End If
+
 
             sql = "DELETE FROM `" & DBName & "`.`materialRequest` WHERE `materialRequest`.`REQUESTQT` = 0 AND `materialRequest`.`REQUESTQT_1` = 0 AND `materialRequest`.`REQUESTQT_2` = 0 AND  `materialRequest`.`REQUESTQT_3` = 0 AND `materialRequest`.`REQUESTQT_4` = 0 AND  `materialRequest`.`REQUESTQT_5` = 0"
 
@@ -1734,6 +1747,7 @@ Public Class FormSamples
         UpdateActivityID()
         If CheckBoxClosed.Checked = True Then
             CheckBoxOpenProduct.Checked = False
+            ComboBoxActivityStatus.SelectedIndex = 0
         End If
     End Sub
 
