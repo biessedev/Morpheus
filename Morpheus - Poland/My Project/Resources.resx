@@ -145,6 +145,12 @@
   <data name="administrator" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\administrator.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="uncheck_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\uncheck-icon.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="check_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\check-icon.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="BitronLogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BitronLogo.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

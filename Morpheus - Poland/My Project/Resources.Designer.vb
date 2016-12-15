@@ -93,7 +93,8 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property BitronLogo() As System.Drawing.Bitmap
+  
+         Friend ReadOnly Property BitronLogo() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("BitronLogo", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
@@ -106,6 +107,16 @@ Namespace My.Resources
         Friend ReadOnly Property BitronPoland() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("BitronPoland", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property check_icon() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("check_icon", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -156,6 +167,16 @@ Namespace My.Resources
         Friend ReadOnly Property traffic_lights_yellow() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("traffic_lights_yellow", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property uncheck_icon() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("uncheck_icon", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

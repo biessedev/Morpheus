@@ -183,6 +183,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="TreeViewMS">
+      <HintPath>.\TreeViewMS.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
@@ -197,6 +200,12 @@
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="Class1.vb" />
+    <Compile Include="FormBomOffer.Designer.vb">
+      <DependentUpon>FormBomOffer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormBomOffer.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormBomUtility.Designer.vb">
       <DependentUpon>FormBomUtility.vb</DependentUpon>
     </Compile>
@@ -379,6 +388,9 @@
     <Compile Include="Settings.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FormBomOffer.resx">
+      <DependentUpon>FormBomOffer.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormBomUtility.resx">
       <DependentUpon>FormBomUtility.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -540,7 +552,9 @@
     <None Include="My Project\app.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{967B4E0D-AD0C-4609-AB67-0FA40C0206D8}" />

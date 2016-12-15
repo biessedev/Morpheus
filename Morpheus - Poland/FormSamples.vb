@@ -50,7 +50,7 @@ Public Class FormSamples
 
 
     Dim ConnectionStringOrcad As String
-    Dim SqlconnectionOrcad As New SqlConnection
+    'Dim SqlconnectionOrcad As New SqlConnection
     Dim AdapterSql As SqlDataAdapter
     Dim TblSql As New DataTable
     Dim DsSql As New DataSet
@@ -1416,6 +1416,33 @@ Public Class FormSamples
     End Sub
 
     Private Sub ButtonUpdateMagBox_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonUpdateMagBox.Click
+        'Dim i = 0
+        'Dim BomName = ""
+        'Dim builder As New Common.DbConnectionStringBuilder()
+        'builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        'Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+        '    Dim tblProd As DataTable = DsProd.Tables("Product")
+        '    Dim rowShow As DataRow() = tblProd.Select("statusactivity = 'OPEN'")
+        '    Dim dictionaryVersionsQuatity As New Dictionary(Of String, Integer)
+        '    For Each row In rowShow
+        '        i = i + 1
+        '        If Val(row("NPIECES").ToString) > 0 Then
+        '            If row("bomlocation").ToString = "SIGIP" Then
+
+        '            ElseIf row("bomlocation").ToString() = "BEQS" Then
+        '                ' TODO: Add business logic
+        '                dictionaryVersionsQuatity.Add(row("bitronpn"), row("npieces"))
+
+        '            Else
+        '                MsgBox("For this product BOM not assigned! " & row("bitronpn").ToString & "  " & row("name").ToString)
+        '            End If
+        '        End If
+        '    Next
+
+        '    If dictionaryVersionsQuatity.Count > 0 Then
+        '        FormBomOffer.ShowForm(dictionaryVersionsQuatity)
+        '    End If
+        'End Using
 
         Dim DsProd As New DataSet
         Dim BomName = ""
@@ -1489,23 +1516,26 @@ Public Class FormSamples
 
             ButtonUpdateMagBox.Text = "Deleting data and shift ....."
             Application.DoEvents()
-            Try
-                OpenConnectionSqlOrcad("10.10.10.36", "Orcad1", "orcadw", "orcadw")
-                'OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
-            Catch ex As Exception
-                CloseConnectionSqlOrcad()
-                OpenConnectionSqlOrcad("10.10.10.36", "Orcad1", "orcadw", "orcadw")
-                'OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
-            End Try
+            'Try
+            'OpenConnectionSqlOrcad("10.10.10.36", "Orcad1", "orcadw", "orcadw")
+            'OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
+            'Catch ex As Exception
+            'CloseConnectionSqlOrcad()
+            'OpenConnectionSqlOrcad("10.10.10.36", "Orcad1", "orcadw", "orcadw")
+            'OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
+            'End Try
 
             ButtonUpdateMagBox.Text = "Load Orcad Data....."
             Application.DoEvents()
-            Dim AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where ( valido = 'valido') ", SqlconnectionOrcad)
             tblDocComp.Clear()
             DsDocComp.Clear()
-            AdapterDocComp.Fill(DsDocComp, "orcadw.T_orcadcis")
-            tblDocComp = DsDocComp.Tables("orcadw.T_orcadcis")
-
+            Dim orcadBuilder As New Common.DbConnectionStringBuilder()
+            orcadBuilder.ConnectionString = ConfigurationManager.ConnectionStrings("Orcad").ConnectionString
+            Using orcadCon = NewOpenConnectionMySqlOrcad(orcadBuilder("host"), orcadBuilder("database"), orcadBuilder("username"), orcadBuilder("password"))
+                Dim AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where ( valido = 'valido') ", orcadCon)
+                AdapterDocComp.Fill(DsDocComp, "orcadw.T_orcadcis")
+                tblDocComp = DsDocComp.Tables("orcadw.T_orcadcis")
+            End Using
             Try
                 DsDoc.Clear()
                 tblDoc.Clear()
@@ -1519,7 +1549,8 @@ Public Class FormSamples
 
             ButtonUpdateMagBox.Text = "Start calculation ..."
             Application.DoEvents()
-            Dim beqsVersions As String =  ""
+            Dim beqsVersions As String = ""
+            Dim dictionaryVersionsQuatity As New Dictionary(Of String, Integer)
             For Each row In rowShow
                 i = i + 1
                 If Val(row("NPIECES").ToString) > 0 Then
@@ -1533,22 +1564,16 @@ Public Class FormSamples
                         Next
                     ElseIf row("bomlocation").ToString() = "BEQS" Then
                         ' TODO: Add business logic
-                        Dim versionName = row("bitronpn")
-                        if beqsVersions = "" Then 
-                            beqsVersions = "(" & "'" & versionName & "',"
-                        Else
-                            beqsVersions += "'" & versionName & "',"
-                        End If
+                        dictionaryVersionsQuatity.Add(row("bitronpn"), row("npieces"))
                     Else
                         MsgBox("For this product BOM not assigned! " & row("bitronpn").ToString & "  " & row("name").ToString)
                     End If
                 End If
             Next
-            
-            'If beqsVersions <> "" Then
-            '    beqsVersions = beqsVersions.Remove(beqsVersions.Length - 1) & ")"
-            '    FormBomOffer.ShowForm(beqsVersions)
-            'End If
+
+            If dictionaryVersionsQuatity.Count > 0 Then
+                FormBomOffer.ShowForm(dictionaryVersionsQuatity)
+            End If
 
 
             sql = "DELETE FROM `" & DBName & "`.`materialRequest` WHERE `materialRequest`.`REQUESTQT` = 0 AND `materialRequest`.`REQUESTQT_1` = 0 AND `materialRequest`.`REQUESTQT_2` = 0 AND  `materialRequest`.`REQUESTQT_3` = 0 AND `materialRequest`.`REQUESTQT_4` = 0 AND  `materialRequest`.`REQUESTQT_5` = 0"
@@ -1960,23 +1985,26 @@ Public Class FormSamples
 
     Function GetOrcadSupplier(ByVal BitronPN As String) As String
 
-        Try
-            OpenConnectionSqlOrcad("10.10.10.36", "Orcad1", "orcadw", "orcadw")
-            'OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
-        Catch ex As Exception
-            CloseConnectionSqlOrcad()
-            OpenConnectionSqlOrcad("10.10.10.36", "Orcad1", "orcadw", "orcadw")
-            'OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
-        End Try
+        'Try
+        '    OpenConnectionSqlOrcad("10.10.10.36", "Orcad1", "orcadw", "orcadw")
+        '    'OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
+        'Catch ex As Exception
+        '    CloseConnectionSqlOrcad()
+        '    OpenConnectionSqlOrcad("10.10.10.36", "Orcad1", "orcadw", "orcadw")
+        '    'OpenConnectionSqlOrcad(OrcadDBAds, OrcadDBName, OrcadDBUserName, OrcadDBPwd)
+        'End Try
 
         GetOrcadSupplier = ""
         Try
-            Dim AdapterSql As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where ( valido = 'valido') and codice_bitron = '" & BitronPN & "'", SqlconnectionOrcad)
-            TblSql.Clear()
-            DsSql.Clear()
-            AdapterSql.Fill(DsSql, "orcadw.T_orcadcis")
-            TblSql = DsSql.Tables("orcadw.T_orcadcis")
-
+            Dim orcadBuilder As New Common.DbConnectionStringBuilder()
+            orcadBuilder.ConnectionString = ConfigurationManager.ConnectionStrings("Orcad").ConnectionString
+            Using orcadCon = NewOpenConnectionMySqlOrcad(orcadBuilder("host"), orcadBuilder("database"), orcadBuilder("username"), orcadBuilder("password"))
+                Dim AdapterSql As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where ( valido = 'valido') and codice_bitron = '" & BitronPN & "'", orcadCon)
+                TblSql.Clear()
+                DsSql.Clear()
+                AdapterSql.Fill(DsSql, "orcadw.T_orcadcis")
+                TblSql = DsSql.Tables("orcadw.T_orcadcis")
+            End Using
             If TblSql.Rows.Count > 0 Then
                 For i = 2 To 9
                     GetOrcadSupplier = GetOrcadSupplier & IIf(TblSql.Rows.Item(0)("costruttore" & i).ToString <> "", TblSql.Rows.Item(0)("costruttore" & i).ToString & "[" & TblSql.Rows.Item(0)("orderingcode" & i).ToString & "];", "")
@@ -1988,32 +2016,32 @@ Public Class FormSamples
         End Try
 
     End Function
-    Sub OpenConnectionSqlOrcad(ByVal strHost As String, ByVal strDatabase As String, ByVal strUserName As String, ByVal strPassword As String)
+    'Sub OpenConnectionSqlOrcad(ByVal strHost As String, ByVal strDatabase As String, ByVal strUserName As String, ByVal strPassword As String)
 
-        Try
-            ConnectionStringOrcad = "server=" & strHost & ";user id=" & strUserName & ";" & "pwd=" & strPassword & ";" & "database=" & strDatabase & ";Connect Timeout=10;"
-            SqlconnectionOrcad = New SqlConnection(ConnectionStringOrcad)
-            If SqlconnectionOrcad.State = ConnectionState.Closed Then
-                SqlconnectionOrcad.Open()
-            End If
-        Catch ex As Exception
+    '    Try
+    '        ConnectionStringOrcad = "server=" & strHost & ";user id=" & strUserName & ";" & "pwd=" & strPassword & ";" & "database=" & strDatabase & ";Connect Timeout=10;"
+    '        SqlconnectionOrcad = New SqlConnection(ConnectionStringOrcad)
+    '        If SqlconnectionOrcad.State = ConnectionState.Closed Then
+    '            SqlconnectionOrcad.Open()
+    '        End If
+    '    Catch ex As Exception
 
-            MessageBox.Show(ex.ToString())
-        End Try
+    '        MessageBox.Show(ex.ToString())
+    '    End Try
 
-    End Sub
+    'End Sub
 
-    Sub CloseConnectionSqlOrcad()
+    'Sub CloseConnectionSqlOrcad()
 
-        Try
-            If SqlconnectionOrcad.State = ConnectionState.Closed Then
-                SqlconnectionOrcad.Open()
-            End If
-        Catch ex As Exception
-            MessageBox.Show(ex.ToString())
-        End Try
+    '    Try
+    '        If SqlconnectionOrcad.State = ConnectionState.Closed Then
+    '            SqlconnectionOrcad.Open()
+    '        End If
+    '    Catch ex As Exception
+    '        MessageBox.Show(ex.ToString())
+    '    End Try
 
-    End Sub
+    'End Sub
 
     Function ReplaceChar(ByVal s As String) As String
         ReplaceChar = s
