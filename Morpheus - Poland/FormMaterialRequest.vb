@@ -164,7 +164,7 @@ Public Class FormMaterialRequest
     End Sub
 
     Private Sub FormMaterialRequest_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        If needSaveList.Count = 0 Then 
+        If needSaveList.Count > 0 Then 
             Dim result As Integer = MessageBox.Show("Do you want to save pe changes", "caption", MessageBoxButtons.YesNo)
             If result = DialogResult.Yes Then
                 ButtonSave_Click(sender, e)
