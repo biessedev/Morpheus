@@ -83,10 +83,10 @@ Public Class FormStart
         FormSamples.Text = FormSamples.Text & " <>  Welcome : " & CreAccount.strUserName
     End Sub
 
-    Private Sub ButtonQuote_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonQuote.Click
-        FormOffer.Show()
-        FormOffer.Focus()
-        FormOffer.Text = FormOffer.Text & " <>  Welcome : " & CreAccount.strUserName
+    Private Sub ButtonMaterialReques_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonMaterialRequest.Click
+        FormMaterialRequest.Show()
+        FormMaterialRequest.Focus()
+        FormMaterialRequest.Text = FormMaterialRequest.Text & " <>  Welcome : " & CreAccount.strUserName
     End Sub
     Private Sub ButtonCommit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonCommit.Click
         FormCommit.Show()

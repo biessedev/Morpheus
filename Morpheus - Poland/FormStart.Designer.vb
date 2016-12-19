@@ -32,7 +32,7 @@ Partial Class FormStart
         Me.ButtonLoadDoc = New System.Windows.Forms.Button()
         Me.ButtonHelp = New System.Windows.Forms.Button()
         Me.ButtonNpi = New System.Windows.Forms.Button()
-        Me.ButtonQuote = New System.Windows.Forms.Button()
+        Me.ButtonMaterialRequest = New System.Windows.Forms.Button()
         Me.ButtonCommit = New System.Windows.Forms.Button()
         Me.ButtonEq = New System.Windows.Forms.Button()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
@@ -193,22 +193,22 @@ Partial Class FormStart
         Me.ButtonNpi.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.ButtonNpi.UseVisualStyleBackColor = false
         '
-        'ButtonQuote
+        'ButtonMaterialRequest
         '
-        Me.ButtonQuote.BackColor = System.Drawing.Color.Transparent
-        Me.ButtonQuote.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ButtonQuote.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ButtonQuote.Enabled = false
-        Me.ButtonQuote.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.ButtonQuote.Image = CType(resources.GetObject("ButtonQuote.Image"),System.Drawing.Image)
-        Me.ButtonQuote.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonQuote.Location = New System.Drawing.Point(353, 187)
-        Me.ButtonQuote.Name = "ButtonQuote"
-        Me.ButtonQuote.Size = New System.Drawing.Size(242, 40)
-        Me.ButtonQuote.TabIndex = 121
-        Me.ButtonQuote.Text = "Quota"
-        Me.ButtonQuote.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonQuote.UseVisualStyleBackColor = false
+        Me.ButtonMaterialRequest.BackColor = System.Drawing.Color.Transparent
+        Me.ButtonMaterialRequest.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.ButtonMaterialRequest.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ButtonMaterialRequest.Enabled = True
+        Me.ButtonMaterialRequest.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ButtonMaterialRequest.Image = CType(resources.GetObject("ButtonMaterialRequest.Image"),System.Drawing.Image)
+        Me.ButtonMaterialRequest.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ButtonMaterialRequest.Location = New System.Drawing.Point(353, 187)
+        Me.ButtonMaterialRequest.Name = "ButtonMaterialRequest"
+        Me.ButtonMaterialRequest.Size = New System.Drawing.Size(242, 40)
+        Me.ButtonMaterialRequest.TabIndex = 121
+        Me.ButtonMaterialRequest.Text = "Material Request"
+        Me.ButtonMaterialRequest.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.ButtonMaterialRequest.UseVisualStyleBackColor = false
         '
         'ButtonCommit
         '
@@ -289,7 +289,7 @@ Partial Class FormStart
         Me.TableLayoutPanel1.Controls.Add(Me.ButtonDocManagement, 1, 3)
         Me.TableLayoutPanel1.Controls.Add(Me.ButtonLoadDoc, 1, 2)
         Me.TableLayoutPanel1.Controls.Add(Me.ButtonTypeEdit, 1, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.ButtonQuote, 3, 4)
+        Me.TableLayoutPanel1.Controls.Add(Me.ButtonMaterialRequest, 3, 4)
         Me.TableLayoutPanel1.Controls.Add(Me.ButtonCommit, 3, 3)
         Me.TableLayoutPanel1.Controls.Add(Me.ButtonEq, 3, 2)
         Me.TableLayoutPanel1.Controls.Add(Me.ButtonNpi, 3, 1)
@@ -434,7 +434,7 @@ End Sub
     Friend WithEvents ButtonLoadDoc As System.Windows.Forms.Button
     Friend WithEvents ButtonHelp As System.Windows.Forms.Button
     Friend WithEvents ButtonNpi As System.Windows.Forms.Button
-    Friend WithEvents ButtonQuote As System.Windows.Forms.Button
+    Friend WithEvents ButtonMaterialRequest As System.Windows.Forms.Button
     Friend WithEvents ButtonCommit As System.Windows.Forms.Button
     Friend WithEvents ButtonEq As System.Windows.Forms.Button
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox

@@ -12,7 +12,7 @@
     <AssemblyName>MORPHEUS</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <OptionExplicit>On</OptionExplicit>
     <OptionCompare>Text</OptionCompare>
     <OptionStrict>Off</OptionStrict>
@@ -168,6 +168,9 @@
     </WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AdvancedDataGridView">
+      <HintPath>.\AdvancedDataGridView.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic.PowerPacks.Vs, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\Microsoft.VisualBasic.PowerPacks.Vs.dll</HintPath>
@@ -200,6 +203,12 @@
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="Class1.vb" />
+    <Compile Include="FormMaterialRequest.Designer.vb">
+      <DependentUpon>FormMaterialRequest.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormMaterialRequest.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormBomOffer.Designer.vb">
       <DependentUpon>FormBomOffer.vb</DependentUpon>
     </Compile>
@@ -388,6 +397,9 @@
     <Compile Include="Settings.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FormMaterialRequest.resx">
+      <DependentUpon>FormMaterialRequest.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormBomOffer.resx">
       <DependentUpon>FormBomOffer.vb</DependentUpon>
     </EmbeddedResource>
