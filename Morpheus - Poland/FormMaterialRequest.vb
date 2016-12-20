@@ -1,4 +1,5 @@
-﻿Imports System.Configuration
+﻿Imports System.ComponentModel
+Imports System.Configuration
 Imports System.Linq
 Imports MySql.Data.MySqlClient
 
@@ -20,6 +21,7 @@ Public Class FormMaterialRequest
             End Using
 
             Me.dataGridView.AutoGenerateColumns = True
+            Me.dataGridView.AllowUserToAddRows = False
             If tblMaterialRequest.Rows.Count > 0 Then
                 Me.BindingSource.DataMember = tblMaterialRequest.TableName
             End If
@@ -30,7 +32,7 @@ Public Class FormMaterialRequest
         End Try
     End Sub
 
-    
+
 
     Private Sub SetColumnsProperties()
         'Set properties for all columns
@@ -41,8 +43,8 @@ Public Class FormMaterialRequest
         'Set particular properties
         dataGridView.Columns("NoteRnd").ReadOnly = False
         dataGridView.Columns("NotePurchasing").ReadOnly = False
-        dataGridView.Columns("NoteRnd").DefaultCellStyle.BackColor  = Color.Beige
-        dataGridView.Columns("NotePurchasing").DefaultCellStyle.BackColor  = Color.Beige
+        dataGridView.Columns("NoteRnd").DefaultCellStyle.BackColor = Color.Beige
+        dataGridView.Columns("NotePurchasing").DefaultCellStyle.BackColor = Color.Beige
         dataGridView.Columns("BitronPN").Visible = True
         dataGridView.Columns("Des_PN").Visible = True
         dataGridView.Columns("Brand").Visible = True
@@ -60,8 +62,22 @@ Public Class FormMaterialRequest
 
     End Sub
 
+   
+    
+
     Private Sub dataGridView_SortStringChanged(sender As Object, e As EventArgs) Handles dataGridView.SortStringChanged
-        Me.BindingSource.Sort = Me.dataGridView.SortString
+        If Me.dataGridView.SortString = "" Then
+            Me.BindingSource.Sort = Me.dataGridView.SortString
+            Return
+        End If
+        Dim SortString As String = Me.dataGridView.SortString
+        Dim columnName As String = SortString.Substring(1, SortString.IndexOf("]") - 1)
+        Dim direction As ListSortDirection = If(SortString.Substring(SortString.IndexOf("]") + 2) = "ASC", ListSortDirection.Ascending, ListSortDirection.Descending)
+
+        dataGridView.CleanSort()
+        dataGridView.Sort(dataGridView.Columns(columnName), direction)
+        Me.BindingSource.Sort = SortString
+
     End Sub
 
     Private Sub dataGridView_FilterStringChanged(sender As Object, e As EventArgs) Handles dataGridView.FilterStringChanged
@@ -130,45 +146,45 @@ Public Class FormMaterialRequest
         dataGridView.CleanFilter()
     End Sub
 
-    Private Sub ButtonClearSort_Click(sender As Object, e As EventArgs) Handles ButtonClearSort.Click
-        dataGridView.CleanSort()
-    End Sub
+
 
     Private Sub ButtonSave_Click(sender As Object, e As EventArgs) Handles ButtonSave.Click
-        If needSaveList.Count = 0 Then Return
+        'If needSaveList.Count = 0 Then Return
+        dataGridView.CleanFilter()
         Try
             Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
                 Dim sqlCommand As String = ""
-                For Each row In needSaveList
-                    sqlCommand = "Update materialrequest set NoteRnd = '" & row.Cells("NoteRnd").Value.ToString & "' , NotePurchasing = '" & row.Cells("NotePurchasing").Value.ToString & "' where id = " & row.Cells("id").Value
+                For Each row As DataGridViewRow In dataGridView.Rows
+                    Dim NoteRnd = row.Cells("NoteRnd").Value.ToString
+                    Dim NotePurchasing = row.Cells("NotePurchasing").Value.ToString
+                    Dim Id = row.Cells("Id").Value.ToString
+                    sqlCommand = "Update materialrequest set NoteRnd = '" & NoteRnd & "' , NotePurchasing = '" & NotePurchasing & "' where id = " & Id
                     Dim cmd = New MySqlCommand(sqlCommand, con)
                     cmd.ExecuteNonQuery()
                 Next
-                needSaveList.Clear()
+                needSave = False
                 MessageBox.Show("All changes saved.")
-             End Using
+            End Using
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
     End Sub
-
-    Dim needSaveList As List(Of DataGridViewRow) = New List(Of DataGridViewRow)
-     
+  
+    Dim needSave As Boolean = False
     Private Sub dataGridView_CellEndEdit(sender As Object, e As DataGridViewCellEventArgs) Handles dataGridView.CellEndEdit
-        If needSaveList.Contains(dataGridView.Rows(e.RowIndex)) =False Then
-            needSaveList.Add(dataGridView.Rows(e.RowIndex))
-        End If
-        
+        needSave = True
     End Sub
 
     Private Sub FormMaterialRequest_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        If needSaveList.Count > 0 Then 
-            Dim result As Integer = MessageBox.Show("Do you want to save pe changes", "caption", MessageBoxButtons.YesNo)
+        If needSave = True Then
+            Dim result As Integer = MessageBox.Show("Do you want to save the changes?", "Material Request", MessageBoxButtons.YesNo)
             If result = DialogResult.Yes Then
                 ButtonSave_Click(sender, e)
             End If
         End If
     End Sub
+
+    
 End Class

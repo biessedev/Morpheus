@@ -30,7 +30,6 @@ Partial Class FormMaterialRequest
         Me.dataGridView = New Zuby.ADGV.AdvancedDataGridView()
         Me.ContextMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.ButtonClearFilter = New System.Windows.Forms.Button()
-        Me.ButtonClearSort = New System.Windows.Forms.Button()
         Me.ButtonSave = New System.Windows.Forms.Button()
         CType(Me.BindingSource,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.dataSet,System.ComponentModel.ISupportInitialize).BeginInit
@@ -76,15 +75,6 @@ Partial Class FormMaterialRequest
         Me.ButtonClearFilter.Text = "Clear Filter"
         Me.ButtonClearFilter.UseVisualStyleBackColor = true
         '
-        'ButtonClearSort
-        '
-        Me.ButtonClearSort.Location = New System.Drawing.Point(165, 11)
-        Me.ButtonClearSort.Name = "ButtonClearSort"
-        Me.ButtonClearSort.Size = New System.Drawing.Size(98, 24)
-        Me.ButtonClearSort.TabIndex = 4
-        Me.ButtonClearSort.Text = "Clear Sort"
-        Me.ButtonClearSort.UseVisualStyleBackColor = true
-        '
         'ButtonSave
         '
         Me.ButtonSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
@@ -101,11 +91,10 @@ Partial Class FormMaterialRequest
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1041, 641)
         Me.Controls.Add(Me.ButtonSave)
-        Me.Controls.Add(Me.ButtonClearSort)
         Me.Controls.Add(Me.ButtonClearFilter)
         Me.Controls.Add(Me.dataGridView)
         Me.Name = "FormMaterialRequest"
-        Me.Text = "ADGVSample"
+        Me.Text = "MaterialRequest"
         CType(Me.BindingSource,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.dataSet,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.dataGridView,System.ComponentModel.ISupportInitialize).EndInit
@@ -123,6 +112,5 @@ End Sub
     Friend WithEvents BindingSource As BindingSource
     Friend WithEvents ContextMenuStrip As ContextMenuStrip
     Friend WithEvents ButtonClearFilter As Button
-    Friend WithEvents ButtonClearSort As Button
     Friend WithEvents ButtonSave As Button
 End Class
