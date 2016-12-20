@@ -78,11 +78,12 @@ Partial Class FormMaterialRequest
         'ButtonSave
         '
         Me.ButtonSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.ButtonSave.Enabled = false
         Me.ButtonSave.Location = New System.Drawing.Point(931, 12)
         Me.ButtonSave.Name = "ButtonSave"
         Me.ButtonSave.Size = New System.Drawing.Size(98, 23)
         Me.ButtonSave.TabIndex = 5
-        Me.ButtonSave.Text = "Save"
+        Me.ButtonSave.Text = "Update"
         Me.ButtonSave.UseVisualStyleBackColor = true
         '
         'FormMaterialRequest

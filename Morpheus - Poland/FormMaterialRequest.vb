@@ -167,6 +167,7 @@ Public Class FormMaterialRequest
                     cmd.ExecuteNonQuery()
                 Next
                 needSave = False
+                ButtonSave.Enabled = False
                 MessageBox.Show("All changes saved.")
             End Using
         Catch ex As Exception
@@ -176,6 +177,7 @@ Public Class FormMaterialRequest
   
     Dim needSave As Boolean = False
     Private Sub dataGridView_CellEndEdit(sender As Object, e As DataGridViewCellEventArgs) Handles dataGridView.CellEndEdit
+        
         needSave = True
     End Sub
 
@@ -190,5 +192,9 @@ Public Class FormMaterialRequest
 
     Private Sub dataGridView_CellLeave(sender As Object, e As DataGridViewCellEventArgs) Handles dataGridView.CellLeave
 
+    End Sub
+
+    Private Sub dataGridView_CellBeginEdit(sender As Object, e As DataGridViewCellCancelEventArgs) Handles dataGridView.CellBeginEdit
+        ButtonSave.Enabled = True
     End Sub
 End Class
