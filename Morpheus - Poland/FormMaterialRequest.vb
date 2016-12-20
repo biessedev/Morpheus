@@ -66,6 +66,7 @@ Public Class FormMaterialRequest
     
 
     Private Sub dataGridView_SortStringChanged(sender As Object, e As EventArgs) Handles dataGridView.SortStringChanged
+        dataGridView.SelectedCells(0).Value = dataGridView.SelectedCells(0).EditedFormattedValue
         If Me.dataGridView.SortString = "" Then
             Me.BindingSource.Sort = Me.dataGridView.SortString
             Return
@@ -81,6 +82,7 @@ Public Class FormMaterialRequest
     End Sub
 
     Private Sub dataGridView_FilterStringChanged(sender As Object, e As EventArgs) Handles dataGridView.FilterStringChanged
+        dataGridView.SelectedCells(0).Value = dataGridView.SelectedCells(0).EditedFormattedValue
         Try
             Me.BindingSource.Filter = Me.dataGridView.FilterString
         Catch ex As Exception
@@ -186,5 +188,7 @@ Public Class FormMaterialRequest
         End If
     End Sub
 
-    
+    Private Sub dataGridView_CellLeave(sender As Object, e As DataGridViewCellEventArgs) Handles dataGridView.CellLeave
+
+    End Sub
 End Class
