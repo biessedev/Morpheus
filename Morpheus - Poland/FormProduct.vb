@@ -156,11 +156,11 @@ Public Class FormProduct
             If ComboBoxCustomer.Text <> "" And TextBoxProduct.Text <> "" And TextBoxDescription.Text <> "" Then
                 Try
                     If (TextBoxDAI.Text = "" Or TextBoxDAI.Text = "NO_DAI" Or (Regex.IsMatch(TextBoxDAI.Text, "^K[0-9]+")) And Len(TextBoxDAI.Text) = 8) Then
-                        Dim sql As String = "INSERT INTO `" & DBName & "`.`product` (`BitronPN` ,`Name` ,`Customer` ,`Status` ,`DocFlag` ,`pcbCode`,`PiastraCode`,`StatusUpdateDate`,`MchElement`, `DAI`,`SOP`,`Vol`,`pac`,`GroupList`,`OpenIssue`,`SIGIP`,`ECR`,`bom_val`,`bom_Ratio`,`mail`,`nPieces`,`IDActivity`,`ETD`,`StatusActivity`,`sop_task`,`NameActivity`,`sessiontime`,`sessionuser`,`delay`,`BomLocation`, `ls_rmb`) VALUES ('" &
+                        Dim sql As String = "INSERT INTO `" & DBName & "`.`product` (`BitronPN` ,`Name` ,`Customer` ,`Status` ,`DocFlag` ,`pcbCode`,`PiastraCode`,`StatusUpdateDate`,`MchElement`, `DAI`,`SOP`,`Vol`,`pac`,`GroupList`,`OpenIssue`,`SIGIP`,`ECR`,`bom_val`,`bom_Ratio`,`mail`,`nPieces`,`IDActivity`,`ETD`,`StatusActivity`,`sop_task`,`NameActivity`,`sessiontime`,`sessionuser`,`delay`,`BomLocation`, `ls_rmb`, `ProductCodePlant`) VALUES ('" &
                                             Trim(TextBoxProduct.Text) & "', '" & Trim(UCase(TextBoxDescription.Text)) & "', '" & Trim(ComboBoxCustomer.Text) & "', '" & ComboBoxStatus.Text &
                                             "" & "', '" & strControl() & "', '" & Trim(TextBoxPcb.Text) & "', '" &
                                             Trim(TextBoxPiastra.Text) & "', 'INSERT[" & date_to_string(Today) & "]','" &
-                                            mch & "'" & ",'" & TextBoxDAI.Text & "','', '', '', '', '', '', '', '', '',  '', 0, 0, '', '', '', '', '', '', '', '', '" & TextBoxLS.Text & "');"
+                                            mch & "'" & ",'" & TextBoxDAI.Text & "','', '', '', '', '', '', '', '', '',  '', 0, 0, '', '', '', '', '', '', '', '', '" & TextBoxLS.Text & "', '" & TextBoxProductPlant.Text & "');"
                         Dim builder As New Common.DbConnectionStringBuilder()
                         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
@@ -202,7 +202,9 @@ Public Class FormProduct
                                         "',`LS_rmb` = '" & TextBoxLS.Text &
                                         "',`dai` = '" & UCase(Trim(TextBoxDAI.Text)) &
                                         "',`mchElement` = '" & (mch) &
-                                        "',`DocFlag` = '" & Trim(strControl()) & "' WHERE `product`.`BitronPN` = '" & Trim(TextBoxProduct.Text) & "' ;"
+                                        "',`DocFlag` = '" & Trim(strControl()) &
+                                        "',`ProductCodePlant` = '" & Trim(TextBoxProductPlant.Text) & "'" & 
+                                        " WHERE `product`.`BitronPN` = '" & Trim(TextBoxProduct.Text) & "' ;"
                     Dim builder As New Common.DbConnectionStringBuilder()
                     builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                     Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
@@ -264,6 +266,7 @@ Public Class FormProduct
             TextBoxPiastra.Text = ListView1.SelectedItems.Item(0).SubItems(2).Text
             TextBoxLS.Text = ListView1.SelectedItems.Item(0).SubItems(17).Text
             TextBoxDAI.Text = ListView1.SelectedItems.Item(0).SubItems(6).Text
+            TextBoxProductPlant.Text = ListView1.SelectedItems.Item(0).SubItems(32).Text
             ListViewMch.Items.Clear()
 
             Dim mech As String = ListView1.SelectedItems.Item(0).SubItems(11).Text
@@ -570,6 +573,9 @@ Public Class FormProduct
             Widht(27) = 0
             Widht(28) = 0
             Widht(29) = 0
+            Widht(30) = 0
+            Widht(31) = 0
+            Widht(32) = 170
         Else
             Widht(0) = 0  ' 
             Widht(1) = 0  ' 
@@ -601,6 +607,10 @@ Public Class FormProduct
             Widht(27) = 0
             Widht(28) = 0
             Widht(29) = 0
+            Widht(30) = 0
+            Widht(31) = 0
+            Widht(32) = 170
+
 
         End If
 
@@ -622,20 +632,12 @@ Public Class FormProduct
             Next
             Dim ii As New ListViewItem(str)
             ListView1.Items.Add(ii)
-
-            'ListView1.Items(ListView1.Items.Count - 1).SubItems(6).Text = mpaFunction(ListView1.Items(ListView1.Items.Count - 1).SubItems(3).Text)
+            
             ListView1.Items(ListView1.Items.Count - 1).BackColor = Color.White
 
             If ListView1.Items(ListView1.Items.Count - 1).SubItems(14).Text <> "" Then
                 ListView1.Items(ListView1.Items.Count - 1).BackColor = Color.LightCoral
             End If
-
-            'If ListView1.Items(ListView1.Items.Count - 1).SubItems(1).Text = "" Or _
-            '   ListView1.Items(ListView1.Items.Count - 1).SubItems(8).Text = "" Or _
-            '   ListView1.Items(ListView1.Items.Count - 1).SubItems(2).Text = "" Or _
-            '   ListView1.Items(ListView1.Items.Count - 1).SubItems(11).Text = "" Or _
-            '   ListView1.Items(ListView1.Items.Count - 1).SubItems(4).Text = "" _
-            'Then ListView1.Items(ListView1.Items.Count - 1).BackColor = Color.LightPink
 
         Next
         ListView1.Refresh()

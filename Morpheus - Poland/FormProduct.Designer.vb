@@ -23,8 +23,8 @@ Partial Class FormProduct
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormProduct))
-        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {""}, -1, System.Drawing.Color.Empty, System.Drawing.Color.Empty, New System.Drawing.Font("Times New Roman", 23!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte)))
-        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("")
+        Dim ListViewItem3 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {""}, -1, System.Drawing.Color.Empty, System.Drawing.Color.Empty, New System.Drawing.Font("Times New Roman", 23!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte)))
+        Dim ListViewItem4 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("")
         Me.ButtonAddProduct = New System.Windows.Forms.Button()
         Me.ButtonQuery = New System.Windows.Forms.Button()
         Me.ButtonDelete = New System.Windows.Forms.Button()
@@ -77,6 +77,8 @@ Partial Class FormProduct
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.TextBoxDAI = New System.Windows.Forms.TextBox()
+        Me.TextBoxProductPlant = New System.Windows.Forms.TextBox()
+        Me.Label11 = New System.Windows.Forms.Label()
         CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
         '
@@ -142,9 +144,9 @@ Partial Class FormProduct
         'TextBoxDescription
         '
         Me.TextBoxDescription.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.TextBoxDescription.Location = New System.Drawing.Point(201, 52)
+        Me.TextBoxDescription.Location = New System.Drawing.Point(289, 52)
         Me.TextBoxDescription.Name = "TextBoxDescription"
-        Me.TextBoxDescription.Size = New System.Drawing.Size(419, 20)
+        Me.TextBoxDescription.Size = New System.Drawing.Size(345, 20)
         Me.TextBoxDescription.TabIndex = 5
         '
         'TextBoxProduct
@@ -152,7 +154,7 @@ Partial Class FormProduct
         Me.TextBoxProduct.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.TextBoxProduct.Location = New System.Drawing.Point(43, 52)
         Me.TextBoxProduct.Name = "TextBoxProduct"
-        Me.TextBoxProduct.Size = New System.Drawing.Size(134, 20)
+        Me.TextBoxProduct.Size = New System.Drawing.Size(96, 20)
         Me.TextBoxProduct.TabIndex = 6
         '
         'ListBoxLog
@@ -180,7 +182,7 @@ Partial Class FormProduct
         Me.Label3.AutoSize = true
         Me.Label3.BackColor = System.Drawing.Color.Transparent
         Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.Label3.Location = New System.Drawing.Point(198, 33)
+        Me.Label3.Location = New System.Drawing.Point(289, 36)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(60, 13)
         Me.Label3.TabIndex = 121
@@ -191,7 +193,7 @@ Partial Class FormProduct
         Me.Label4.AutoSize = true
         Me.Label4.BackColor = System.Drawing.Color.Transparent
         Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.Label4.Location = New System.Drawing.Point(42, 33)
+        Me.Label4.Location = New System.Drawing.Point(42, 36)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(97, 13)
         Me.Label4.TabIndex = 122
@@ -408,8 +410,8 @@ Partial Class FormProduct
         Me.ListView1.Font = New System.Drawing.Font("Courier New", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ListView1.FullRowSelect = true
         Me.ListView1.GridLines = true
-        ListViewItem1.StateImageIndex = 0
-        Me.ListView1.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
+        ListViewItem3.StateImageIndex = 0
+        Me.ListView1.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem3})
         Me.ListView1.Location = New System.Drawing.Point(43, 359)
         Me.ListView1.MultiSelect = false
         Me.ListView1.Name = "ListView1"
@@ -629,8 +631,8 @@ Partial Class FormProduct
         Me.ListViewMch.CheckBoxes = true
         Me.ListViewMch.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ListViewMch.GridLines = true
-        ListViewItem2.StateImageIndex = 0
-        Me.ListViewMch.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
+        ListViewItem4.StateImageIndex = 0
+        Me.ListViewMch.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem4})
         Me.ListViewMch.Location = New System.Drawing.Point(43, 231)
         Me.ListViewMch.MultiSelect = false
         Me.ListViewMch.Name = "ListViewMch"
@@ -720,12 +722,33 @@ Partial Class FormProduct
         Me.TextBoxDAI.Size = New System.Drawing.Size(156, 22)
         Me.TextBoxDAI.TabIndex = 239
         '
+        'TextBoxProductPlant
+        '
+        Me.TextBoxProductPlant.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.TextBoxProductPlant.Location = New System.Drawing.Point(145, 52)
+        Me.TextBoxProductPlant.Name = "TextBoxProductPlant"
+        Me.TextBoxProductPlant.Size = New System.Drawing.Size(138, 20)
+        Me.TextBoxProductPlant.TabIndex = 241
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = true
+        Me.Label11.BackColor = System.Drawing.Color.Transparent
+        Me.Label11.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.Label11.Location = New System.Drawing.Point(142, 36)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(141, 13)
+        Me.Label11.TabIndex = 242
+        Me.Label11.Text = "Product Code on other Plant"
+        '
         'FormProduct
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"),System.Drawing.Image)
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ClientSize = New System.Drawing.Size(1019, 721)
+        Me.Controls.Add(Me.Label11)
+        Me.Controls.Add(Me.TextBoxProductPlant)
         Me.Controls.Add(Me.Label9)
         Me.Controls.Add(Me.TextBoxDAI)
         Me.Controls.Add(Me.PictureBox1)
@@ -836,4 +859,6 @@ End Sub
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents Label9 As System.Windows.Forms.Label
     Friend WithEvents TextBoxDAI As System.Windows.Forms.TextBox
+    Friend WithEvents TextBoxProductPlant As TextBox
+    Friend WithEvents Label11 As Label
 End Class
