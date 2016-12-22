@@ -109,6 +109,9 @@ Public Class FormDownload
     End Sub
 
     Private Sub FormDownload_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+
+        
+
         Autoupdate = True
         trd = New Thread(AddressOf ThreadTask)
         trd.IsBackground = True
@@ -579,8 +582,7 @@ Public Class FormDownload
         Dim objRegEx As New Regex(rgPattern)
         Dim fileDetail As IO.FileInfo
         Dim i As Integer
-        Dim  builder As  New Common.DbConnectionStringBuilder()
-        builder.ConnectionString = ConfigurationManager.ConnectionStrings("DownloadIp").ConnectionString
+        Dim ip As String = ConfigurationManager.AppSettings("DownloadIp").ToString()
         If TextBoxFilePath.Text <> "" Then
             For i = 0 To ListView1.CheckedItems.Count - 1
                 Application.DoEvents()
@@ -593,7 +595,7 @@ Public Class FormDownload
 
                         Application.DoEvents()
                         
-                        My.Computer.Network.DownloadFile("http://" & builder("host") & "/grugliasco/gestdoc/attach/" & ListView1.CheckedItems(i).SubItems(2).Text, TextBoxFilePath.Text & "\" & ListView1.CheckedItems(i).SubItems(2).Text, "", "", False, 10000, True)
+                        My.Computer.Network.DownloadFile("http://" & ip & "/grugliasco/gestdoc/attach/" & ListView1.CheckedItems(i).SubItems(2).Text, TextBoxFilePath.Text & "\" & ListView1.CheckedItems(i).SubItems(2).Text, "", "", False, 10000, True)
                         ComunicationLog("5076") ' file download from web
                         ListBoxLog.Items.Add("")
                     Catch ex As Exception
@@ -602,7 +604,7 @@ Public Class FormDownload
                 ElseIf (ListView1.CheckedItems(i).SubItems(0).Text) = "HC" Then
                     ListBoxLog.Items.Add("Download HC....")
                     ListBoxLog.Items.Add(ListView1.CheckedItems(i).SubItems(1).Text & "_" & ListView1.CheckedItems(i).SubItems(2).Text() & "_" & ListView1.CheckedItems(i).SubItems(3).Text() & "." & ListView1.CheckedItems(i).SubItems(4).Text())
-                    My.Computer.Network.DownloadFile("http://" & builder("host") & "/orcad/carica_file_pdf.php?cod_comp=" & Mid(ListView1.CheckedItems(i).SubItems(11).Text, 20), TextBoxFilePath.Text & "\" & objRegEx.Replace(ListView1.CheckedItems(i).SubItems(2).Text, "") & ".pdf", "", "", False, 10000, True)
+                    My.Computer.Network.DownloadFile("http://" & ip & "/orcad/carica_file_pdf.php?cod_comp=" & Mid(ListView1.CheckedItems(i).SubItems(11).Text, 20), TextBoxFilePath.Text & "\" & objRegEx.Replace(ListView1.CheckedItems(i).SubItems(2).Text, "") & ".pdf", "", "", False, 10000, True)
                     ComunicationLog("5076")
                     ListBoxLog.Items.Add("")
                 ElseIf IsNumeric((ListView1.CheckedItems(i).SubItems(0).Text)) Then
@@ -760,8 +762,7 @@ Public Class FormDownload
     End Function
 
     Function TranslateIntranetName(ByVal h As String, ByVal f As String, ByVal r As Integer, ByVal e As String) As String
-        Dim  builder As  New Common.DbConnectionStringBuilder()
-        builder.ConnectionString = ConfigurationManager.ConnectionStrings("DownloadIp").ConnectionString
+        Dim ip As String = ConfigurationManager.AppSettings("DownloadIp").ToString()
         TranslateIntranetName = ""
         If h = ParameterTable("plant") & "R_PRO_GPN" Then TranslateIntranetName = f & "_" & IIf(r > 10, r, "0" & r) & "." & e
         If h = ParameterTable("plant") & "R_PRO_GFX" Then TranslateIntranetName = "fix_" & f & "_" & IIf(r > 10, r, "0" & r) & "." & e
@@ -771,7 +772,7 @@ Public Class FormDownload
         If h = ParameterTable("plant") & "R_PRO_PST" Then TranslateIntranetName = f & "_" & IIf(r > 10, r, "0" & r) & "." & e
         If h = ParameterTable("plant") & "R_PRO_SPG" Then TranslateIntranetName = "ps_" & f & "_" & IIf(r > 10, r, "0" & r) & "." & e
         If h = ParameterTable("plant") & "R_PRO_TDS" Then TranslateIntranetName = f & "_" & IIf(r > 10, r, "0" & r) & "." & e
-        TranslateIntranetName = "http://" & builder("host") & "/grugliasco/gestdoc/attach/" & TranslateIntranetName
+        TranslateIntranetName = "http://" & ip & "/grugliasco/gestdoc/attach/" & TranslateIntranetName
     End Function
 
     Function FileNameDes(ByVal filename As String, Optional ByVal header As String = "") As String
@@ -1024,8 +1025,7 @@ Public Class FormDownload
     End Function
 
     Private Sub ListView1_MouseDoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles ListView1.MouseDoubleClick
-        Dim  builder As  New Common.DbConnectionStringBuilder()
-        builder.ConnectionString = ConfigurationManager.ConnectionStrings("DownloadIp").ConnectionString
+        Dim ip As String = ConfigurationManager.AppSettings("DownloadIp").ToString()
         
         If ListView1.SelectedItems.Count = 1 Then
             If IsNumeric(ListView1.SelectedItems.Item(0).SubItems(0).Text) Then
@@ -1050,7 +1050,7 @@ Public Class FormDownload
                     Application.DoEvents()
                     ListBoxLog.Items.Add("Download Web....")
                     Application.DoEvents()
-                    My.Computer.Network.DownloadFile("http://" & builder("host") & "/grugliasco/gestdoc/attach/" & ListView1.SelectedItems(0).SubItems(2).Text, IO.Path.GetTempPath & ListView1.SelectedItems(0).SubItems(2).Text, "", "", False, 10000, True)
+                    My.Computer.Network.DownloadFile("http://" & ip & "/grugliasco/gestdoc/attach/" & ListView1.SelectedItems(0).SubItems(2).Text, IO.Path.GetTempPath & ListView1.SelectedItems(0).SubItems(2).Text, "", "", False, 10000, True)
                     ListBoxLog.Items.Add("Download Web....Finish!")
                     Process.Start(IO.Path.GetTempPath & ListView1.SelectedItems(0).SubItems(2).Text)
                     Application.DoEvents()
@@ -1058,7 +1058,7 @@ Public Class FormDownload
                     MsgBox("Document not present in Bitron Intranet. Error in Intranet DB")
                 End Try
             ElseIf ListView1.SelectedItems.Item(0).SubItems(0).Text = "HC" Then
-                Process.Start("IExplore.exe", "http://" & builder("host") & "/orcad/gest.php?cod_comp=" & Mid(ListView1.SelectedItems.Item(0).SubItems(11).Text, 20))
+                Process.Start("IExplore.exe", "http://" & ip & "/orcad/gest.php?cod_comp=" & Mid(ListView1.SelectedItems.Item(0).SubItems(11).Text, 20))
                 Application.DoEvents()
                 Dim dsstr As String
                 For i = 0 To 9
@@ -1081,9 +1081,8 @@ Public Class FormDownload
 
     Function ds(ByVal comp As String, ByVal i As Integer) As String
         Dim RowHC As DataRow()
-        Dim  builder As  New Common.DbConnectionStringBuilder()
-        builder.ConnectionString = ConfigurationManager.ConnectionStrings("DownloadIp").ConnectionString
-        
+        Dim ip As String = ConfigurationManager.AppSettings("DownloadIp").ToString()
+        Dim industrieBitron As String = ConfigurationManager.AppSettings("IndustrieBitron").ToString()
         If tblDocComp Is Nothing Or tblDocComp.Rows.Count = 0 Then
             Try
                 'CloseConnectionSqlOrcad()
@@ -1101,7 +1100,7 @@ Public Class FormDownload
         End If
         RowHC = tblDocComp.Select("cod_comp = " & comp & " and valido = 'valido'", "valido")
         If RowHC.Length = 1 Then
-            ds = Replace(Replace(RowHC(0)("datasheet" & IIf(i > 0, i, "")).ToString, "http://webserver.industrie.bitron.net/", builder("host") & "\"), "\", "/")
+            ds = Replace(Replace(RowHC(0)("datasheet" & IIf(i > 0, i, "")).ToString, industrieBitron, ip & "\"), "\", "/")
         End If
     End Function
 
