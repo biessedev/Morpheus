@@ -2154,7 +2154,7 @@ Public Class FormSamples
     Private Sub Btn_Search_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Search.Click
 
         Call DGV_Fill()
-
+        DeselectRows()
     End Sub
 
     Private Sub DGV_Fill()
