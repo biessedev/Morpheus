@@ -2147,8 +2147,9 @@ Public Class FormSamples
         Else
             MsgBox("Bitron Product Code can't be empty")
         End If
-       
+
         CobFilterBitronPNFill()
+        DeselectRows()
     End Sub
 
     Private Sub Btn_Search_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Search.Click
