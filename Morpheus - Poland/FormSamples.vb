@@ -2192,7 +2192,6 @@ Public Class FormSamples
                 tblNPI = DsNPI.Tables("NPI")
 
                 DGV_NPI.DataSource = tblNPI
-                Call DataBangding(0)
 
 
             Catch ex As Exception
@@ -2508,12 +2507,19 @@ Public Class FormSamples
 
     Private Sub DGV_NPI_MouseUp(sender As Object, e As MouseEventArgs) Handles DGV_NPI.MouseUp
         Try
-            If selectedIndex = DGV_NPI.SelectedCells(0).RowIndex and selectedIndex <> -1 then
-                if DGV_NPI.Rows(selectedIndex).Selected  = True Then
-                    DeselectRows()
-                End if
-            else
-                Dim newSelectedId As String
+            Dim hitInfo As DataGridView.HitTestInfo = DGV_NPI.HitTest(e.X, e.Y)
+
+            'Click to column Header 
+            If hitInfo.RowIndex = -1 Then
+                Return
+            End If
+
+            If selectedIndex = DGV_NPI.SelectedCells(0).RowIndex And selectedIndex <> -1 Then
+                    If DGV_NPI.Rows(selectedIndex).Selected = True Then
+                        DeselectRows()
+                    End If
+                Else
+                    Dim newSelectedId As String
 
                     If cSelectedID = Nothing Then
                         cSelectedID = Me.DGV_NPI.Item(DGV_NPI.Columns("ID").Index, Me.DGV_NPI.CurrentRow.Index).Value.ToString()
@@ -2537,11 +2543,19 @@ Public Class FormSamples
                         End If
                     End If
                     cSelectedID = newSelectedId
-            End If
+                End If
         Catch ex As Exception
 
         End Try
     End Sub
+
+    Private Sub DGV_NPI_Sorted(sender As Object, e As EventArgs) Handles DGV_NPI.Sorted
+        If selectedIndex = -1 Then
+            DeselectRows()
+            Return
+        End If
+    End Sub
+
 
     Private Sub DTP_PlanCloseDate_ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles DTP_PlanCloseDate.ValueChanged
         DateClosed = DTP_PlanCloseDate.Value.Date
