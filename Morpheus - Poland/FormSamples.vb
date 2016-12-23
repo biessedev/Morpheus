@@ -51,6 +51,7 @@ Public Class FormSamples
     Dim DateStart As New Date
     Dim DateClosed As New Date
     Dim cSelectedID As String
+    Dim firstLoad As Boolean = True
 
     Private Sub FormSamples_FormClosing(ByVal sender As Object, ByVal e As FormClosingEventArgs) Handles Me.FormClosing
         Dim builder As New Common.DbConnectionStringBuilder()
@@ -247,8 +248,7 @@ Public Class FormSamples
         Catch ex As Exception
             MsgBox(ex.Message)
         End Try
-
-
+        firstLoad = False
     End Sub
 
     ' update the tree viewer
@@ -944,7 +944,12 @@ Public Class FormSamples
             End If
 
         End If
+        If Not firstLoad Then
+            DeselectRows()
+            firstLoad = False
+        End If
     End Sub
+    
 
     Sub UpdateTreeTask()
         Dim DsProd As New DataSet
@@ -2086,9 +2091,7 @@ Public Class FormSamples
         End If
        
         CobFilterBitronPNFill()
-        Btn_Del.Enabled = True
-        Btn_Save.Enabled = True
-        Btn_UpLoadFile.Enabled = True
+        DeselectRows()
     End Sub
 
     Private Sub Btn_Del_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Del.Click
@@ -2114,6 +2117,7 @@ Public Class FormSamples
         End If
         
         CobFilterBitronPNFill()
+        DeselectRows()
     End Sub
 
     Private Sub Btn_Save_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Save.Click
@@ -2491,19 +2495,22 @@ Public Class FormSamples
     End Sub
 
     Dim selectedIndex As Integer = 0
-   
+
+    Private Sub DeselectRows()
+        selectedIndex = -1
+        DGV_NPI.ClearSelection()
+        ClearDataBindings()
+        Btn_Del.Enabled = False
+        Btn_Save.Enabled = False
+        Btn_UpLoadFile.Enabled = False
+    End Sub
 
 
     Private Sub DGV_NPI_MouseUp(sender As Object, e As MouseEventArgs) Handles DGV_NPI.MouseUp
         Try
             If selectedIndex = DGV_NPI.SelectedCells(0).RowIndex and selectedIndex <> -1 then
                 if DGV_NPI.Rows(selectedIndex).Selected  = True Then
-                    selectedIndex = -1
-                    DGV_NPI.ClearSelection()
-                    ClearDataBindings()
-                    Btn_Del.Enabled = False
-                    Btn_Save.Enabled = False
-                    Btn_UpLoadFile.Enabled = False
+                    DeselectRows()
                 End if
             else
                 Dim newSelectedId As String
