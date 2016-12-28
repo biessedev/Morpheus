@@ -8,13 +8,8 @@ Imports System.Xml
 Imports System.Configuration
 
 Module PublicFunction
-    'Dim AdapterCh As New MySqlDataAdapter("SELECT * FROM mant", MySqlconnection)
     Dim dsCh As New DataSet
     Dim tblCh As New DataTable
-    'Public MySqlconnection As MySqlConnection
-    'Public MySqlconnection_3DEQTable As MySqlConnection
-    'Public MySqlconnectionGru As New MySqlConnection
-    'Public SQLconnectionOrcad As New SqlConnection
     Public MySQLConnectionString As String
     Public ConnectionString As String
     Public GroupList As String, OpenIssue As String, ProdOpenIssue As String
@@ -60,19 +55,6 @@ Module PublicFunction
 
     Public CreFile As New FileRecord
 
-    'Sub OpenConnectionMySql(ByVal strHost As String, ByVal strDatabase As String, ByVal strUserName As String, ByVal strPassword As String)
-    '    Try
-    '        ConnectionString = "host=" & strHost & ";" & "username=" & strUserName & ";" & "password=" & strPassword & ";" & "database=" & strDatabase & ";Connect Timeout=120;allow zero datetime=true;charset=utf8; "
-    '        MySqlconnection = New MySqlConnection(ConnectionString)
-    '        If MySqlconnection.State = ConnectionState.Open Then
-    '            MySqlconnection.Close()
-    '        End If
-    '        MySqlconnection.Open()
-    '    Catch ae As MySqlException
-    '        MessageBox.Show(ae.Message.ToString())
-    '    End Try
-    'End Sub
-
     Public Function NewConnectionMySql(ByVal strHost As String, ByVal strDatabase As String, ByVal strUserName As String, ByVal strPassword As String) As MySqlConnection
         Dim conn = "host=" & strHost & ";" & "username=" & strUserName & ";" & "password=" & strPassword & ";" & "database=" & strDatabase & ";Connect Timeout=120;allow zero datetime=true;charset=utf8; "
         Try
@@ -85,61 +67,9 @@ Module PublicFunction
         End Try
     End Function
 
-    'Sub CloseConnectionMySql()
-    '    Try
-    '        If MySqlconnection.State = ConnectionState.Open Then
-    '            MySqlconnection.Close()
-    '        End If
-    '    Catch ae As MySqlException
-    '        MessageBox.Show(ae.Message.ToString())
-    '    End Try
-    'End Sub
-
-    'Sub OpenConnectionMySql_3DEQTable(ByVal strHost As String)
-
-    '    Try
-    '        ConnectionString = "host=" & strHost & ";" & "username=" & "3deqtable" & ";" & "password=" & "3deqtable" & ";" & "database=" & "srvdoc" & ";Connect Timeout=120;allow zero datetime=true;"
-    '        MySqlconnection_3DEQTable = New MySqlConnection(ConnectionString)
-    '        If MySqlconnection_3DEQTable.State = ConnectionState.Open Then
-    '            MySqlconnection_3DEQTable.Close()
-    '        End If
-    '        MySqlconnection_3DEQTable.Open()
-    '    Catch ae As MySqlException
-    '        MessageBox.Show(ae.Message.ToString())
-    '    End Try
-    'End Sub
-
-    'Sub OpenConnectionMySqlGru(ByVal strHost As String, ByVal strDatabase As String, ByVal strUserName As String, ByVal strPassword As String)
-    '    Dim ConnectionStringGru As String
-    '    Try
-    '        ConnectionStringGru = "Allow Zero Datetime=true; host=" & strHost & "; username=" & strUserName & ";" & "password=" & strPassword & ";" & "database=" & strDatabase & ";Connect Timeout=120;"
-    '        MySqlconnectionGru = New MySqlConnection(ConnectionStringGru)
-    '        If MySqlconnectionGru.State = ConnectionState.Open Then
-    '            MySqlconnectionGru.Close()
-    '        End If
-    '        MySqlconnectionGru.Open()
-    '    Catch ae As MySqlException
-    '        MessageBox.Show(ae.Message.ToString())
-    '    End Try
-    'End Sub
-
-    'Sub OpenConnectionMySqlOrcad(ByVal strHost As String, ByVal strDatabase As String, ByVal strUserName As String, ByVal strPassword As String)
-    '    Dim ConnectionStringOrcad As String
-    '    Try
-    '        ConnectionStringOrcad = "server=" & strHost & ";user id=" & strUserName & ";" & "pwd=" & strPassword & ";" & "database=" & strDatabase & ";Connect Timeout=120;"
-    '        SQLconnectionOrcad = New SqlConnection(ConnectionStringOrcad)
-    '        If SQLconnectionOrcad.State = ConnectionState.Open Then
-    '            SQLconnectionOrcad.Close()
-    '        End If
-    '        SQLconnectionOrcad.Open()
-    '    Catch ae As MySqlException
-    '        MessageBox.Show(ae.Message.ToString())
-    '    End Try
-    'End Sub
-
     Public Function NewOpenConnectionMySqlOrcad(ByVal strHost As String, ByVal strDatabase As String, ByVal strUserName As String, ByVal strPassword As String) As SqlConnection
         Dim conn = "server=" & strHost & ";user id=" & strUserName & ";" & "pwd=" & strPassword & ";" & "database=" & strDatabase & ";Connect Timeout=120;"
-        Try 
+        Try
             Dim mysqlconn = New SqlConnection(conn)
             mysqlconn.Open()
             Return mysqlconn
@@ -148,26 +78,6 @@ Module PublicFunction
             Return New SqlConnection()
         End Try
     End Function
-
-    'Sub CloseConnectionMySqlGru()
-    '    Try
-    '        If MySqlconnectionGru.State = ConnectionState.Open Then
-    '            MySqlconnectionGru.Close()
-    '        End If
-    '    Catch ae As MySqlException
-    '        MessageBox.Show(ae.Message.ToString())
-    '    End Try
-    'End Sub
-
-    'Sub CloseConnectionSqlOrcad()
-    '    Try
-    '        If SQLconnectionOrcad.State = ConnectionState.Open Then
-    '            SQLconnectionOrcad.Close()
-    '        End If
-    '    Catch ae As MySqlException
-    '        MessageBox.Show(ae.Message.ToString())
-    '    End Try
-    'End Sub
 
     Function cap7(ByVal s As String) As String
         cap7 = UCase(Mid(s, 1, 7)) & (Mid(s, 8))
@@ -185,7 +95,6 @@ Module PublicFunction
 
     Declare Function GetTempPath Lib "kernel32.dll" Alias "GetTempPathA" (ByVal nBufferLength As Long, ByVal lpBuffer As String) As Long
     Public Const MAX_BUFFER_LENGTH = 256
-
 
     Public Function getTempPathName() As String
         Dim strBufferString As String
@@ -215,34 +124,6 @@ Module PublicFunction
         End If
     End Function
 
-
-    ' Esempi
-
-    'Sub pippo()
-    '    Dim fwr As FtpWebRequest = FtpWebRequest.Create("ftp://localhost/pippo.zip")
-    '    fwr.Method = WebRequestMethods.Ftp.ListDirectory
-
-
-    '    fwr.Credentials = New NetworkCredential("test", "test")
-
-    '    Dim sr As New StreamReader(fwr.GetResponse().GetResponseStream())
-
-    '    Dim str As String = sr.ReadLine()
-
-    '    While Not str Is Nothing
-
-    '        Console.WriteLine(str)
-
-    '        str = sr.ReadLine()
-
-    '    End While
-
-    '    sr.Close()
-
-    '    sr = Nothing
-
-    '    fwr = Nothing
-    'End Sub
 
     Function StrSettingRead(ByVal ComCode As String) As String
         Dim rsResult As DataRow()
@@ -341,13 +222,6 @@ Module PublicFunction
             sw.Close()
         End Using
 
-        'Using sw As StreamReader = New StreamReader(System.IO.Path.GetTempPath & "SrvQueryLog.txt")
-        '    ' Add some text to the file.
-        '    a = sw.ReadLine
-        '    sw.Close()
-        'End Using
-
-
     End Sub
 
     Sub WriteTxtFile(ByVal file As String, ByVal text As String, ByVal append As Boolean)
@@ -423,8 +297,7 @@ Module PublicFunction
             Catch ex As Exception
                 MsgBox("Time Write error!")
             End Try
-            'Dim Adapter As New MySqlDataAdapter("SELECT * FROM parameterset where name = 'sessionTime'", con)
-           
+
             Dim Ds As New DataSet
             Using Adapter As New MySqlDataAdapter("SELECT * FROM parameterset where name = 'sessionTime'", con)
 			    Adapter.Fill(Ds, "parameterset")
@@ -505,7 +378,6 @@ Module PublicFunction
 
 
     Function DeltaSessionTime(ByVal TableName As String, ByVal id As Long) As Integer
-        'Dim Adapter As New MySqlDataAdapter("SELECT * FROM " & TableName & " where id = " & id, MySqlconnection)
         Dim Ds As New DataSet
         Dim  builder As  New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
@@ -597,18 +469,6 @@ Module PublicFunction
         End Sub
 
 
-
-        'Public Sub CloseConnectionSqlOrcad()
-
-        '    Try
-        '        If SQLconnectionOrcad.State = ConnectionState.Closed Then
-        '            SQLconnectionOrcad.Open()
-        '        End If
-        '    Catch ex As Exception
-        '        MessageBox.Show(ex.ToString())
-        '    End Try
-        'End Sub
-
 #Region "Export"
         ''' <summary>
         ''' Exports the Treeview as Xml to the given File
@@ -695,9 +555,6 @@ Module PublicFunction
                 xmlKD = TVTFX_XmlDoc.CreateElement(XmlConvert.EncodeName(ActualTreeNode.Text.Replace(":", ";")))
                 ActualNode.AppendChild(xmlKD)
             End If
-            'If (ActualTreeNode.Text.Chars(1).ToString = ":") Then
-            'xmlKD.OuterXml = ActualTreeNode.Text.Substring(0, 2).ToString & xmlKD.LocalName
-            'End If
             ienum = ActualTreeNode.Nodes.GetEnumerator
             While ienum.MoveNext
                 XmlAddNode(DirectCast(ienum.Current, TreeNode), xmlKD)

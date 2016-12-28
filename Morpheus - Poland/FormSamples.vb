@@ -29,20 +29,16 @@ Public Class FormSamples
     Dim DsPfp As New DataSet
     Dim tblDoc As DataTable
     Dim DsDoc As New DataSet
-    
     Dim tblCredentials As DataTable
     Dim DsCredentials As New DataSet
-    
     Dim tblNPI As New DataTable
     Dim DsNPI As New DataSet
-
-    
     Dim tblTP As DataTable
     Dim DsTP As New DataSet
 
 
     Dim ConnectionStringOrcad As String
-    
+
     Dim AdapterSql As SqlDataAdapter
     Dim TblSql As New DataTable
     Dim DsSql As New DataSet
@@ -797,7 +793,7 @@ Public Class FormSamples
                 End If
 
                 Process.Start("explorer.exe", ParameterTable("PathMorpheus") & ParameterTable("PathNPI") & ParameterTable("PathActivityDoc") & ComboBoxActivityID.Text)
-                
+
 
             Catch ex As Exception
                 MsgBox("Directory creation error!" & ex.ToString)
@@ -949,7 +945,7 @@ Public Class FormSamples
             firstLoad = False
         End If
     End Sub
-    
+
 
     Sub UpdateTreeTask()
         Dim DsProd As New DataSet
@@ -1413,7 +1409,7 @@ Public Class FormSamples
     End Sub
 
     Private Sub ButtonUpdateMagBox_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonUpdateMagBox.Click
-       
+
         Dim DsProd As New DataSet
         Dim BomName = ""
         Dim i = 0
@@ -1486,7 +1482,7 @@ Public Class FormSamples
 
             ButtonUpdateMagBox.Text = "Deleting data and shift ....."
             Application.DoEvents()
-            
+
             ButtonUpdateMagBox.Text = "Load Orcad Data....."
             Application.DoEvents()
             tblDocComp.Clear()
@@ -1921,7 +1917,7 @@ Public Class FormSamples
                 End If
                 If ass >= 100 Then Exit For
             End If
-            
+
         Next
         If (ass < 100 Or ass > 100) And rowShow.Length > 0 Then
             pfp = pfp & " " & ("Error in PFP recognize of p/n " & Replace(bitronpn, "E", ""))
@@ -1966,7 +1962,7 @@ Public Class FormSamples
         End Try
 
     End Function
-   
+
     Function ReplaceChar(ByVal s As String) As String
         ReplaceChar = s
         For i = 1 To Len(s)
@@ -1983,7 +1979,7 @@ Public Class FormSamples
 
     Function OrcadDoc(ByVal bitronPN As String) As String
         Dim rowShow As DataRow(), rowHC As DataRow()
-       
+
         rowShow = tblDoc.Select("filename like '" & bitronPN & " - *' or filename like '" & bitronPN & "'", "rev DESC")
         If rowShow.Length > 0 And Mid(bitronPN, 1, 2) <> "15" Then
             OrcadDoc = "SRV_DOC - " & rowShow(0)("header").ToString & "_" & rowShow(0)("filename").ToString & "_" & rowShow(0)("rev").ToString & "." & rowShow(0)("extension").ToString
@@ -2047,7 +2043,7 @@ Public Class FormSamples
         Txt_FilePath.DataBindings.Clear()
 
         DGV_NPI.Update()
-        
+
         objCurrencyManager.Position = selectrowNo
 
         Txt_Index.DataBindings.Add("Text", tblNPI, "ID")
@@ -2059,7 +2055,7 @@ Public Class FormSamples
         Txt_TempCorrectAction.DataBindings.Add("Text", tblNPI, "Temp_corr_action")
         Txt_FinalCorrectAction.DataBindings.Add("Text", tblNPI, "Final_corr_action")
         Cob_Owner.DataBindings.Add("Text", tblNPI, "Owner")
-        
+
         Txt_FilePath.DataBindings.Add("Text", tblNPI, "FilePath")
 
     End Sub
@@ -2089,14 +2085,14 @@ Public Class FormSamples
             MsgBox("Bitron Product Code can't be empty")
 
         End If
-       
+
         CobFilterBitronPNFill()
         DeselectRows()
     End Sub
 
     Private Sub Btn_Del_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Del.Click
         Dim selectrowNo As Integer = DGV_NPI.CurrentRow.Index
-       
+
         If MsgBox("Are you sure to delete this issue?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
             Try
                 Dim sql As String = " DELETE  From npi_openissue WHERE ID = " & Txt_Index.Text
@@ -2115,14 +2111,14 @@ Public Class FormSamples
             End Try
 
         End If
-        
+
         CobFilterBitronPNFill()
         DeselectRows()
     End Sub
 
     Private Sub Btn_Save_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Save.Click
-        
-        Dim selectrowNo As Integer = DGV_NPI.CurrentRow.Index        
+
+        Dim selectrowNo As Integer = DGV_NPI.CurrentRow.Index
 
         If Trim(Txt_BitronPN.Text) <> "" Then
             Try
@@ -2160,7 +2156,7 @@ Public Class FormSamples
 
     Private Sub DGV_Fill()
 
-        
+
         Dim Sql = "SELECT * FROM npi_openissue WHERE ID > 0 "
         If (Cob_FilterOwner.Text <> "") Then
             Sql += "And Owner='" & Cob_FilterOwner.Text & "'"
@@ -2183,7 +2179,7 @@ Public Class FormSamples
         Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-            
+
             Try
                 DsNPI.Clear()
                 tblNPI.Clear()
@@ -2300,7 +2296,7 @@ Public Class FormSamples
                 objFtp.DownloadFile(strPathFtp, Path.GetTempPath, fileName) ' download successfull
                 downloadFileWinPath = Path.GetTempPath & fileName
             Catch ex As Exception
-                
+
             End Try
         Else
             MsgBox("FilePath does not exist")
@@ -2460,8 +2456,8 @@ Public Class FormSamples
 
     Dim saveUpdate As Boolean = True
 
-    
-    
+
+
 
     Private Sub ClearDataBindings()
         Txt_Index.DataBindings.Clear()
@@ -2477,21 +2473,21 @@ Public Class FormSamples
         Txt_FinalCorrectAction.DataBindings.Clear()
         Txt_FilePath.DataBindings.Clear()
 
-        Txt_Index.Text  = ""
-        Txt_BitronPN.Text  = ""
-        Txt_description.Text  = ""
-        Cob_Owner.Text  = ""
-        Txt_Area.Text  = ""
-        Cob_Status.Text  = ""
-        DTP_Date.Text  = ""
-        DTP_PlanCloseDate.Text  = ""
-        Txt_IssueDescription.Text  = ""
-        Txt_TempCorrectAction.Text  = ""
-        Txt_FinalCorrectAction.Text  = ""
-        Txt_FilePath.Text  = ""
+        Txt_Index.Text = ""
+        Txt_BitronPN.Text = ""
+        Txt_description.Text = ""
+        Cob_Owner.Text = ""
+        Txt_Area.Text = ""
+        Cob_Status.Text = ""
+        DTP_Date.Text = ""
+        DTP_PlanCloseDate.Text = ""
+        Txt_IssueDescription.Text = ""
+        Txt_TempCorrectAction.Text = ""
+        Txt_FinalCorrectAction.Text = ""
+        Txt_FilePath.Text = ""
 
         Txt_Area.SelectedIndex = 0
-        Cob_Status.SelectedIndex  = 0
+        Cob_Status.SelectedIndex = 0
     End Sub
 
     Dim selectedIndex As Integer = 0
@@ -2516,35 +2512,35 @@ Public Class FormSamples
             End If
 
             If selectedIndex = DGV_NPI.SelectedCells(0).RowIndex And selectedIndex <> -1 Then
-                    If DGV_NPI.Rows(selectedIndex).Selected = True Then
-                        DeselectRows()
-                    End If
-                Else
-                    Dim newSelectedId As String
-
-                    If cSelectedID = Nothing Then
-                        cSelectedID = Me.DGV_NPI.Item(DGV_NPI.Columns("ID").Index, Me.DGV_NPI.CurrentRow.Index).Value.ToString()
-                    End If
-                    selectedIndex = DGV_NPI.SelectedCells(0).RowIndex
-                    DataBangding(selectedIndex)
-
-                    Btn_Del.Enabled = True
-                    Btn_Save.Enabled = True
-                    Btn_UpLoadFile.Enabled = True
-
-                    newSelectedId = Me.DGV_NPI.Item(DGV_NPI.Columns("ID").Index, selectedIndex).Value
-                    If newSelectedId <> cSelectedID And IsNeedUpdate(cSelectedID) Then
-                        Dim msgBoxResult As MsgBoxResult
-                        msgBoxResult = MsgBox("Do you want to save the changes?", vbYesNo)
-                        If msgBoxResult = MsgBoxResult.Yes Then
-                            SaveUpdates(cSelectedID)
-                        ElseIf msgBoxResult = MsgBoxResult.No Then
-                            CobFilterBitronPNFill()
-                            newSelectedId = Me.DGV_NPI.Item(DGV_NPI.Columns("ID").Index, Me.DGV_NPI.CurrentRow.Index).Value.ToString()
-                        End If
-                    End If
-                    cSelectedID = newSelectedId
+                If DGV_NPI.Rows(selectedIndex).Selected = True Then
+                    DeselectRows()
                 End If
+            Else
+                Dim newSelectedId As String
+
+                If cSelectedID = Nothing Then
+                    cSelectedID = Me.DGV_NPI.Item(DGV_NPI.Columns("ID").Index, Me.DGV_NPI.CurrentRow.Index).Value.ToString()
+                End If
+                selectedIndex = DGV_NPI.SelectedCells(0).RowIndex
+                DataBangding(selectedIndex)
+
+                Btn_Del.Enabled = True
+                Btn_Save.Enabled = True
+                Btn_UpLoadFile.Enabled = True
+
+                newSelectedId = Me.DGV_NPI.Item(DGV_NPI.Columns("ID").Index, selectedIndex).Value
+                If newSelectedId <> cSelectedID And IsNeedUpdate(cSelectedID) Then
+                    Dim msgBoxResult As MsgBoxResult
+                    msgBoxResult = MsgBox("Do you want to save the changes?", vbYesNo)
+                    If msgBoxResult = MsgBoxResult.Yes Then
+                        SaveUpdates(cSelectedID)
+                    ElseIf msgBoxResult = MsgBoxResult.No Then
+                        CobFilterBitronPNFill()
+                        newSelectedId = Me.DGV_NPI.Item(DGV_NPI.Columns("ID").Index, Me.DGV_NPI.CurrentRow.Index).Value.ToString()
+                    End If
+                End If
+                cSelectedID = newSelectedId
+            End If
         Catch ex As Exception
 
         End Try

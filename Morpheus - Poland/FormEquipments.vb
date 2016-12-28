@@ -7,14 +7,11 @@ Imports MySql.Data.MySqlClient
 Public Class FormEquipments
 
     Dim XmlTree As New TreeViewToFromXml
-    'Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by idactivity", MySqlconnection)
     Dim tblProd As DataTable
     Dim DsProd As New DataSet
-    'Dim AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", MySqlconnection)
     Dim tblEQ As DataTable
     Dim DsEQ As New DataSet
     Dim OpenSession As Boolean, UpdatigTree As Boolean = True
-    'Dim AdapterCus As New MySqlDataAdapter("SELECT * FROM Customer", MySqlconnection)
     Dim tblCus As DataTable
     Dim DsCus As New DataSet
     Dim NodeSelect As Integer
@@ -62,8 +59,6 @@ Public Class FormEquipments
         ComboBoxHWDoc.Items.Add("NA")
         ComboBoxSWDebug.Items.Add("NA")
         ComboBoxHWBuilding.Items.Add("NA")
-        '  ComboBoxStart.Items.Add("NA")
-        '  ComboBoxEnd.Items.Add("NA")
 
         ComboBoxHWBuilding.Items.Add("DONE")
         ComboBoxHWDebug.Items.Add("DONE")
@@ -78,7 +73,6 @@ Public Class FormEquipments
         TreeViewEQ.HideSelection = False
 
         ComboBoxRange.Text = 60
-        'ChartEq.ChartAreas(0).AxisX.LabelStyle.Angle = 90
         TreeViewEQ.Visible = True
         UpdatigTree = False
         ComboBoxToolsType.Text = ""
@@ -134,8 +128,6 @@ Public Class FormEquipments
         ComboBoxHWDoc.Items.Add("NA")
         ComboBoxSWDebug.Items.Add("NA")
         ComboBoxHWBuilding.Items.Add("NA")
-        'ComboBoxEnd.Items.Add("NA")
-        'ComboBoxStart.Items.Add("NA")
 
         ComboBoxmpa.Items.Add("")
 
@@ -217,16 +209,13 @@ Public Class FormEquipments
 
                     End If
                 End If
-                'TreeViewEQ.BeginUpdate()
                 rootNode.Nodes.Add(rootChildren1)
-                'TreeViewEQ.EndUpdate()
                 TreeViewEQ.ResumeLayout()
 
 
             End If
             refresh = False
         Next
-        'ResumeLayout()
         UpdatigTree = False
     End Sub
 
@@ -374,7 +363,6 @@ Public Class FormEquipments
     End Function
 
     Function TimingEQ(ByVal id As Long, ByVal tblEQ As DataTable) As String
-        ' If id = 33 Then Stop
 
         Dim rowShow As DataRow()
 
@@ -541,7 +529,6 @@ Public Class FormEquipments
             ComboBoxActivityId.Items.Add(rowShow(0).Item("idactivity").ToString)
             ComboBoxActivityId.Text = rowShow(0).Item("idactivity").ToString
             TextBoxToolId.Text = rowShow(0).Item("asset_ID").ToString
-            'If ComboBoxActivityId.Text <> "" Then Clipboard.SetText(ComboBoxActivityId.Text)
             Application.DoEvents()
             ResetComboData()
             If currentActivityID() > 0 Then TextBoxWorkHours.Text = sumHour(ComboBoxActivityId.Text)
@@ -813,7 +800,6 @@ Public Class FormEquipments
                             cmd.ExecuteNonQuery()
                         End Using
                         MsgBox("Bom deleted!")
-                        'UpdateTreeEQList(False)    
                         UpdatigTree = True
                         TreeViewEQ.SelectedNode.Remove()
                         UpdatigTree = False

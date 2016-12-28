@@ -5,18 +5,14 @@ Imports System.Text.RegularExpressions
 Imports System.Configuration
 
 Public Class FormTypeAdmin
-    'Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
-    'Dim AdapterType As New MySqlDataAdapter("SELECT * FROM doctype", MySqlconnection)
     Dim DsType As New DataSet
     Dim tblDocType As DataTable, tblDoc As DataTable
     Dim DsDoc As New DataSet
-    'Dim builder As MySqlCommandBuilder = New MySqlCommandBuilder(AdapterType)
 
     Private Sub FormDownload_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
         FormStart.Show()
         tblDocType.Dispose()
         DsType.Dispose()
-        'AdapterType.Dispose()
     End Sub
 
     Private Sub FormTypeAdmin_load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
@@ -122,8 +118,7 @@ Public Class FormTypeAdmin
                         myrow.Item("extension") = TextBoxExtension.Text
 
                         tblDocType.Rows.Add(myrow)
-                        'builder.GetUpdateCommand()
-                        Dim  builder As  New Common.DbConnectionStringBuilder()
+                        Dim builder As New Common.DbConnectionStringBuilder()
                         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
 	                        Using AdapterType As New MySqlDataAdapter("SELECT * FROM doctype", con)
@@ -304,7 +299,6 @@ Public Class FormTypeAdmin
     Sub ComunicationLog(ByVal ComCode As String)
         Dim rsResult As DataRow() = tblError.Select("code='" & ComCode & "'")
         ListBoxLog.Items.Add(ComCode & " -> " & rsResult(0).Item("en").ToString)
-        'ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
 
         If Val(ComCode) >= 5000 Then
             ListBoxLog.BackColor = Color.LightGreen

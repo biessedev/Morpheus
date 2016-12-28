@@ -48,8 +48,6 @@ Public Class FormStart
         Application.DoEvents()
         If controlRight("A") >= 3 Or controlRight("E") >= 3 Or controlRight("N") >= 3 Or controlRight("L") >= 3 Or controlRight("P") >= 3 Or controlRight("Q") >= 3 Or controlRight("R") >= 3 Or controlRight("U") >= 3 Then ButtonECR.Enabled = True
         If controlRight("L") >= 2 Or controlRight("B") >= 2 Or controlRight("R") >= 2 Then ButtonECR.Enabled = True
-        'If controlRight("R") >= 2 Or controlRight("U") >= 2 Then ButtonQuote.Enabled = True
-        'If controlRight("R") >= 2 Or controlRight("E") >= 2 Then ButtonEq.Enabled = True
         If controlRight("R") >= 2 Then ButtonNpi.Enabled = True
 
         If controlRight("R") >= 2 Then ButtonCommit.Enabled = True

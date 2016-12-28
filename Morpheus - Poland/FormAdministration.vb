@@ -12,11 +12,6 @@ Imports System.Configuration
 Public Class FormAdministration
 
     Dim closeform As Boolean
-    'Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
-    'Dim AdapterDocType As New MySqlDataAdapter("SELECT * FROM Doctype", MySqlconnection)
-    'Dim AdapterEcr As New MySqlDataAdapter("SELECT * FROM Ecr", MySqlconnection)
-    'Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM product", MySqlconnection)
-    'Dim Adaptermail As New MySqlDataAdapter("SELECT * FROM mail", MySqlconnection)
     Dim dep As New List(Of String)
     Dim CultureInfo_ja_JP As New CultureInfo("ja-JP", False)
     Dim MailSent As Boolean
@@ -81,14 +76,8 @@ Public Class FormAdministration
         Dim builder As New Common.DbConnectionStringBuilder()
 
         If Now.DayOfWeek <> DayOfWeek.Saturday And Now.DayOfWeek <> DayOfWeek.Sunday Then
-            'TimerECR.Stop()
-            'OpenConnectionMySql(FormCredentials.TextBoxhost.Text, FormCredentials.TextBoxDatabase.Text, "root", "bitron")
-
-            Dim  conBuilder As  New Common.DbConnectionStringBuilder()
-
+            Dim conBuilder As New Common.DbConnectionStringBuilder()
             conBuilder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
-            'OpenConnectionMySql(conBuilder("host"), conBuilder("database") , conBuilder("username"), conBuilder("password"))
-
             TextBoxEcr.Text = date_to_string(Now) & " Start ECR"
             Application.DoEvents()
             UpdateEcrTable()
@@ -102,31 +91,20 @@ Public Class FormAdministration
             ecrDocSign()
             Application.DoEvents()
             TextBoxEcr.Text = date_to_string(Now) & " Finish ECR"
-            'TimerECR.Start()
         End If
 
         If Now.DayOfWeek <> DayOfWeek.Saturday And Now.DayOfWeek <> DayOfWeek.Sunday Then
-            'TimerECR.Stop()
-            'OpenConnectionMySql(FormCredentials.TextBoxhost.Text, FormCredentials.TextBoxDatabase.Text, "root", "bitron")
-            
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
-            'OpenConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-
             TextBoxEcr.Text = date_to_string(Now) & " Start TCR"
             Application.DoEvents()
             TCRMailScheduler()
             Application.DoEvents()
             TextBoxEcr.Text = date_to_string(Now) & " Finish TCR"
-            'TimerECR.Start()
         End If
 
         ' DOC
         If Now.DayOfWeek <> DayOfWeek.Saturday And Now.DayOfWeek <> DayOfWeek.Sunday Then
-            'OpenConnectionMySql(FormCredentials.TextBoxhost.Text, FormCredentials.TextBoxDatabase.Text, "root", "bitron")
-            'Dim  builder As  New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
-            'OpenConnectionMySql(builder("host"), builder("database") , builder("username"), builder("password"))
-
             TextBoxEcr.Text = date_to_string(Now) & " Start Doc Changes"
             Application.DoEvents()
             DocMailScheduler()
@@ -136,23 +114,16 @@ Public Class FormAdministration
 
         ' Status
         If Now.DayOfWeek <> DayOfWeek.Saturday And Now.DayOfWeek <> DayOfWeek.Sunday Then
-            'TimerECR.Stop()
-            'OpenConnectionMySql(FormCredentials.TextBoxhost.Text, FormCredentials.TextBoxDatabase.Text, "root", "bitron")
-            'Dim  builder As  New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
-            'OpenConnectionMySql(builder("host"), builder("database") , builder("username"), builder("password"))
-
             TextBoxEcr.Text = date_to_string(Now) & " Start Satus Product"
             Application.DoEvents()
             StatusMailScheduler()
             Application.DoEvents()
             TextBoxEcr.Text = date_to_string(Now) & " Finish Satus Product"
-            'TimerECR.Start()
         End If
 
         TextBoxEcr.Text = date_to_string(Now) & " Email notification completed"
 
-        'Dim  builder As  New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
 		    Using Adaptermail As New MySqlDataAdapter("SELECT * FROM mail;", con)
@@ -189,8 +160,6 @@ Public Class FormAdministration
             Dim  builder As  New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-		            
-                'AdapterEcr.SelectCommand = New MySqlCommand("SELECT * FROM ecr;", MySqlconnection)
                 tblEcr.Clear()
                 DsEcr.Clear()
                 Using AdapterEcr As New MySqlDataAdapter("SELECT * FROM ecr;", con)
@@ -204,7 +173,6 @@ Public Class FormAdministration
                 If EcrN > 0 And RowEcr.Length = 0 And InStr(row("filename").ToString, "template", CompareMethod.Text) <= 0 Then
                     Try
                         filename = row("filename").ToString & "_" & row("rev").ToString & "." & row("extension").ToString
-                        'Dim data As String = Mid(row("editor").ToString, Len(row("editor").ToString) - 9, 9)
                         sql = "INSERT INTO `" & DBName & "`.`ecr` (`nnote` ,`number` ,`description` ,`date`,`Usign`,`nsign`,`Lsign`,`Asign`,`Qsign`,`Esign`,`Rsign`,`Psign`,`Bsign`,`DocInvalid`,`IdDoc`) VALUES (" &
                         Replace("'{\rtf1\fbidis\ansi\ansicpg1252\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}{\f1\fswiss\fprq2\fcharset0 Calibri;}}{\colortbl ;\red23\green54\blue93;}\viewkind4\uc1\pard\ltrpar\sl360\slmult1\cf1\lang1040\f0\fs22\par\par\par\par\ul\b\i\f1 Confirmation AREA\par\lang1033\ulnone\b0\i0 Time and First serial number / Fiche:\par\par\par\parOther Annotation:\f0\par\pard\ltrpar\cf0\lang1040\fs24\par\par\par\par}', ", "\", "\\") _
                         & EcrN & ", '" & filename & "', '" & "01/01/2000" & "', 'NOT CHECKED' , 'NOT CHECKED', 'NOT CHECKED', 'System[automatic]', 'NOT CHECKED', 'NOT CHECKED', 'NOT CHECKED', 'NOT CHECKED','NOT CHECKED', 'NO',  " & row("id").ToString & " );"
@@ -442,7 +410,6 @@ Public Class FormAdministration
                             MsgBox("Failed email sending for ECR confirmation!")
                         End If
 
-                        'sql = "UPDATE `" & DBName & "`.`ECR` SET `confirm` = 'SENT_CONFIRMED' WHERE `ECR`.`id` = " & row("id").ToString & " ;"
                         cmd = New MySqlCommand(sql, con)
                         cmd.ExecuteNonQuery()
                     End Using
@@ -577,8 +544,7 @@ Public Class FormAdministration
         Dim listFile = ""
         tblDoc.Clear()
         DsDoc.Clear()
-        'AdapterDoc As New MySqlDataAdapter("SELECT *, DATEDIFF(CURDATE(),STR_TO_DATE(MID(editor, INSTR(editor,'[') + 1, INSTR(editor,']') - INSTR(editor,'[') - 1), '%d/%m/%Y')) DiffInDays FROM doc ", MySqlconnection)
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
             Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", con)
@@ -589,7 +555,6 @@ Public Class FormAdministration
             Dim RowSearchDoc = From p In tblDoc.Rows
                                Where (p("header") <> (ParameterTable("plant") & "R_PRO_ECR")) And ((p("notification") = "" And p("sign") = "") Or (p("notification") = "" And p("sign") = "SENT" And (DateTime.Now.Date - DateTime.ParseExact(p("editor").Substring(p("editor").IndexOf("[") + 1, p("editor").LastIndexOf("]") - p("editor").IndexOf("[") - 1), "d/M/yyyy", CultureInfo.CurrentCulture).Date).TotalDays > 2))
                                Select p
-            'RowSearchDoc = tblDoc.Select("notification = '' and sign = '' and HEADER <>'" & ParameterTable("plant") & "R_PRO_ECR'")
             For Each row In RowSearchDoc
                 listFile = listFile & " " & vbCrLf & row("header").ToString & "_" & row("FileName").ToString & "_" & row("rev").ToString & "." & row("Extension").ToString & " " & vbCrLf
             Next
@@ -684,8 +649,6 @@ Public Class FormAdministration
                 End If
 
                 For Each SS In dep
-
-                    'If SS = "E" And row("Status").ToString = "PURCHASING_APPROVED" Then Stop
                     If prevStatus(SS) = row("Status").ToString Or (row("Status").ToString = "MPA_STOPPED" And SS = "N") Then
                         Try
 
@@ -771,9 +734,6 @@ Public Class FormAdministration
 
         Try
             If DayOfWeek.Saturday <> dt.DayOfWeek And DayOfWeek.Sunday <> dt.DayOfWeek And (dt.Hour > 8 And dt.Hour < 20) Then
-                'If (InStr(freqTo, "[" & Necr & "]", CompareMethod.Text) <= 0) And Necr <> "DAILY" Or ((dt.Hour = 9) And (dt.Minute() >= 0 And dt.Minute() < 59)) Then
-                'If (InStr(freqTo, "[" & Necr & "]", CompareMethod.Text) <= 0) And Necr <> "DAILY" And (dt.Hour > 8 And dt.Hour < 20) Then
-
                 Dim rowEcr As DataRow() = tblEcr.Select("number = '" & Necr & "'")
                 Dim parsedDate
                 Dim dateList As  New List(Of DateTime)
@@ -788,10 +748,9 @@ Public Class FormAdministration
                 dateList.Add(IF(DateTime.TryParse(rowEcr(0).Item("dateP"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
                 dateList.Sort()
                 dateList.Reverse()
-                
-                'If (InStr(freqTo, "[" & Necr & "]", CompareMethod.Text) <= 0) Then
-                If(InStr(freqTo, "[" & Necr & "]", CompareMethod.Text) <= 0) Or _
-                  ((InStr(freqTo, "[" & Necr & "]", CompareMethod.Text) > 0) And ( DateDiff(DateInterval.Day, dateList.ElementAt(0), DateTime.Now) >= 3 )) Then
+
+                If (InStr(freqTo, "[" & Necr & "]", CompareMethod.Text) <= 0) Or
+                  ((InStr(freqTo, "[" & Necr & "]", CompareMethod.Text) > 0) And (DateDiff(DateInterval.Day, dateList.ElementAt(0), DateTime.Now) >= 3)) Then
                     client.Send(msg)
                     MailSent = True
                     ListBoxLog.Items.Add("E mail sent: " & SubText & "  " & Mid(msg.To.Item(0).ToString, 1, 45) & " ....")
@@ -1010,7 +969,6 @@ Public Class FormAdministration
                     path = path.Replace(vbCr, "").Replace(vbLf, "")
                     ExploreFile(path)
                 End If
-                'ExploreFile(strDir & Mid(strRec, 56, Len(strRec) - 56) & "/")
             Else 'file
 
                 Dim file As String = Mid(strRec, 49).Trim
@@ -1026,7 +984,6 @@ Public Class FormAdministration
                                                            "' and FileName='" & FileName &
                                                            "' and rev=" & rev &
                                                            " and Extension='" & Extension & "' ")
-
                 If RowSearch.Length = 1 Then
 
                 ElseIf RowSearch.Length > 1 Then ' db error

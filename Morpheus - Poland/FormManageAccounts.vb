@@ -3,7 +3,6 @@ Imports System.Text.RegularExpressions
 Imports MySql.Data.MySqlClient
 
 Public Class FormManageAccounts
-    'Dim AdapterCred As New MySqlDataAdapter("SELECT * FROM Credentials ORDER BY username asc", MySqlconnection)
     Dim tblCred As DataTable
     Dim DsCred As New DataSet
 
@@ -134,10 +133,10 @@ Public Class FormManageAccounts
                 returnValue = Regex.IsMatch(TextBoxForSign.Text.ToUpper.Trim, "R[0-9]J[0-9]E[0-9]B[0-9]Q[0-9]N[0-9]P[0-9]U[0-9]F[0-9]L[0-9]C[0-9]I[0-9]A[0-9]T[0-9]W[0-9]Z[0-9]$")
                 If returnValue = True Then
                     If IsUserExist(TextBoxForUsername.Text.Trim.ToLower) = False Then
-                        Dim  builder As  New Common.DbConnectionStringBuilder()
+                        Dim builder As New Common.DbConnectionStringBuilder()
                         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                        sql = "INSERT INTO `" & DBName & "`.`credentials` (username, password, sign) VALUES ('" & TextBoxForUsername.Text & "','" & TextBoxForPassword.Text & "','" & TextBoxForSign.Text & "')"
+                            sql = "INSERT INTO `" & DBName & "`.`credentials` (username, password, sign) VALUES ('" & TextBoxForUsername.Text & "','" & TextBoxForPassword.Text & "','" & TextBoxForSign.Text & "')"
                             Dim cmd = New MySqlCommand(sql, con)
                             cmd.ExecuteNonQuery()
                         End Using
@@ -156,10 +155,6 @@ Public Class FormManageAccounts
         Else
             MsgBox("All fields must be completed", vbOKOnly)
         End If
-        'Dim column As ColumnHeader
-        'For Each column In ListViewForUsers.Columns
-        '    column.Width = -2
-        'Next
     End Sub
 
     Private Function IsUserExist(userName As String) As Boolean
@@ -194,6 +189,5 @@ Public Class FormManageAccounts
 
         Return returnValue
     End Function
-
 
 End Class

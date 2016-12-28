@@ -12,26 +12,19 @@ Imports System.Linq
 
 Public Class FormProduct
     Dim index As Long = 1
-    'Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", MySqlconnection)
     Dim tblProd As DataTable
     Dim DsProd As New DataSet
-    'Dim AdapterCus As New MySqlDataAdapter("SELECT * FROM Customer", MySqlconnection)
     Dim tblCus As DataTable
     Dim DsCus As New DataSet
-    'Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
     Dim tblDoc As DataTable
     Dim DsDoc As New DataSet
-    'Dim Adaptertype As New MySqlDataAdapter("SELECT * FROM doctype", MySqlconnection)
     Dim tbltype As DataTable
     Dim Dstype As New DataSet
     Dim User3 As String
-    'Dim AdapterSigip As New MySqlDataAdapter("SELECT * FROM sigip", MySqlconnection)
     Dim tblSigip As DataTable
     Dim DsSigip As New DataSet
-    'Dim AdapterEcr As New MySqlDataAdapter("SELECT * FROM Ecr", MySqlconnection)
     Dim tblEcr As DataTable
     Dim DsEcr As New DataSet
-    'Dim AdapterBom As New MySqlDataAdapter("SELECT * FROM sigip", MySqlconnection)
     Dim tblbom As New DataTable
     Dim dsbom As New DataSet
     Dim DsDocComp As New DataSet
@@ -46,10 +39,8 @@ Public Class FormProduct
         FormStart.Show()
         tblProd.Dispose()
         DsProd.Dispose()
-        'AdapterProd.Dispose()
         tblCus.Dispose()
         DsCus.Dispose()
-        'AdapterCus.Dispose()
     End Sub
 
     Private Sub PreVentFlicker()
@@ -84,8 +75,6 @@ Public Class FormProduct
                 Adaptertype.Fill(Dstype, "doctype")
                 tbltype = Dstype.Tables("doctype")
             End Using
-            'AdapterSigip.Fill(DsSigip, "sigip")
-            'tblSigip = DsSigip.Tables("sigip")
             Using AdapterEcr As New MySqlDataAdapter("SELECT * FROM Ecr", con)
                 AdapterEcr.Fill(DsEcr, "ecr")
                 tblEcr = DsEcr.Tables("ecr")
@@ -114,7 +103,6 @@ Public Class FormProduct
         updateECRMark()
         FillListView()
 
-        'If controlRight("R") >= 3 Then  
         If controlRight("R") >= 2 Then
             ButtonAddProduct.Enabled = True
             ButtonDelete.Enabled = True
@@ -251,7 +239,6 @@ Public Class FormProduct
     Private Sub ListView1_ColumnClick1(ByVal sender As Object, ByVal e As ColumnClickEventArgs) Handles ListView1.ColumnClick
 
         Me.ListView1.ListViewItemSorter = New ListViewItemComparer(e.Column)
-        ' Call the sort method to manually sort.
         ListView1.Sort()
 
     End Sub
@@ -914,9 +901,6 @@ Public Class FormProduct
 
                 ParameterTableWrite("LAST_SIGIP_BOM_UPDATE", "START - " & CreAccount.strUserName & " " & Today)
                 Dim selectedPath As String = ParameterTable("PathMorpheus") & ParameterTable("PathNPI") & ParameterTable("SIGIP_BOM_FOLDER")
-                'selectedPath = "D:\"
-                'FolderBrowserDialog1.Description = "Please select SIGIP BOM folder"
-                'If vbOK = FolderBrowserDialog1.ShowDialog() Then
                 Try
                     DsSigip.Clear()
                     tblSigip.Clear()
@@ -951,18 +935,6 @@ Public Class FormProduct
                 Catch ex As Exception
 
                 End Try
-                'index = 1
-                'Dim FileContenuti() As IO.FileInfo = New IO.DirectoryInfo(FolderBrowserDialog1.SelectedPath).GetFiles()
-                'Dim i As Integer
-                'For i = 0 To FileContenuti.Length - 1
-                '    If Mid(FileContenuti(i).ToString, Len(FileContenuti(i).ToString) - 2, 3) = "xls" Then
-
-                '        InsertSigipBomXLS(FolderBrowserDialog1.SelectedPath & "\" & FileContenuti(i).ToString)
-
-                '    Else
-                '        MsgBox("File should be xls!")
-                '    End If
-                'Next i
 
                 ListBoxLog.Items.Add("Update product list...")
                 updateSigipMark()
@@ -1009,91 +981,6 @@ Public Class FormProduct
         End If
     End Sub
 
-    ' CO18 in BitronPoland
-    'Sub InsertSigipBomXLS(ByVal sfilename As String)
-    '    Dim excelApp As Object = CreateObject("Excel.Application")
-    '    Try
-    '        Dim excelWorkbook As Object = excelApp.Workbooks.Open(sfilename)
-    '        excelWorkbook.Activate()
-    '        Dim excelSheet As Object = excelWorkbook.Worksheets("Foglio 1")
-    '        excelSheet.Activate()
-
-    '        Dim bom As String = Mid(sfilename, Len(sfilename) - 11, 8)
-    '        Dim sql = ""
-    '        Dim des = ""
-    '        Dim mdi_t = ""
-    '        Dim mdo_t = ""
-    '        Dim amm_t = ""
-    '        Dim spe_t = ""
-
-    '        ListBoxLog.Items.Add("Process BOM: " & bom)
-    '        Application.DoEvents()
-    '        ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
-    '        ListBoxLog.ScrollAlwaysVisible = True
-
-    '        Dim xlsRow = 2
-    '        While excelSheet.Cells(xlsRow, 1).text <> ""
-
-    '            If excelSheet.Cells(xlsRow, 3).text <> "" Then 'Non considera le righe contenenti il nome del fornitore
-
-    '                Dim nr As String = excelSheet.Cells(xlsRow, 6).Text
-    '                Dim qt As String = Replace(excelSheet.Cells(xlsRow, 7).Text, ",", ".")
-    '                Dim price As String = Replace(excelSheet.Cells(xlsRow, 18).Text, ",", ".")
-    '                Dim currency = ""
-    '                Dim liv As String = excelSheet.Cells(xlsRow, 1).Text
-    '                Dim acq_fab As String = excelSheet.Cells(xlsRow, 5).Text
-    '                Dim bitron_pn As String = excelSheet.Cells(xlsRow, 2).Text
-    '                Dim despn As String = excelSheet.Cells(xlsRow, 3).Text
-    '                Dim mdi As String = Replace(excelSheet.Cells(xlsRow, 13).Text, ",", ".")
-    '                Dim mdo As String = Replace(excelSheet.Cells(xlsRow, 12).Text, ",", ".")
-    '                Dim amm As String = Replace(excelSheet.Cells(xlsRow, 14).Text, ",", ".")
-    '                Dim spe As String = Replace(excelSheet.Cells(xlsRow, 15).Text, ",", ".")
-
-    '                sql = "(" & index & "," &
-    '                "'" & bom & "'," &
-    '                "'" & Replace(des, "'", "") & "'," &
-    '                "'" & nr & "'," &
-    '                "'" & (qt) & "'," &
-    '                "'" & (price) & "'," &
-    '                "'" & currency & "'," &
-    '                "'" & liv & "'," &
-    '                "'" & acq_fab & "'," &
-    '                "'" & Replace(ReplaceChar(bitron_pn), "-", "") & "'," &
-    '                "'" & ReplaceChar(despn) & "'," &
-    '                "'" & mdi & "'," &
-    '                "'" & mdo & "'," &
-    '                "'" & amm & "'," &
-    '                "'" & spe & "'," &
-    '                "'" & mdi_t & "'," &
-    '                "'" & mdo_t & "'," &
-    '                "'" & amm_t & "'," &
-    '                "'" & spe_t & "'" &
-    '                 ")," & sql
-
-    '            End If
-    '            xlsRow = xlsRow + 1
-    '            index = index + 1
-    '        End While
-
-    '        Try
-    '            Dim sqlCommand As String = Mid(sql, 1, Len(sql) - 1)
-    '            sqlCommand = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`) VALUES " & sqlCommand & ";"
-    '            Dim cmd = New MySqlCommand(sqlCommand, MySqlconnection)
-    '            cmd.ExecuteNonQuery()
-    '            sqlCommand = ""
-    '            sql = ""
-    '        Catch ex As Exception
-    '            MsgBox("Sigip update error! " & ex.Message)
-    '        End Try
-
-    '        excelWorkbook.Close(True)
-    '        excelApp.Quit()
-    '    Catch ex As Exception
-    '        MsgBox(ex.Message)
-    '    End Try
-
-    'End Sub
-
     Function GetDataTabletFromCSVFile(csv_file_path As String) As DataTable
         Dim csvData As DataTable = New DataTable()
         Try
@@ -1120,7 +1007,6 @@ Public Class FormProduct
                     csvData.Rows.Add(fieldData)
                 End If
             End While
-
         Catch ex As Exception
             MsgBox(ex.Message)
         End Try
@@ -1226,10 +1112,6 @@ Public Class FormProduct
                 Else
                     sigip = "NO"
                 End If
-
-                'If MySqlConnection.State = ConnectionState.Closed Then
-                '    MySqlConnection.Open()
-                'End If
 
                 Try
                     sql = "UPDATE `" & DBName & "`.`sigip` SET `active` = '" & sigip & "' WHERE `sigip`.`bom` = '" & res("bitronpn").ToString & "' ;"
@@ -1393,7 +1275,6 @@ Public Class FormProduct
                 ComunicationLog("5050") ' Mysql update query error 
                 allOK = False
             End Try
-            'AdapterDoc.SelectCommand = New MySqlCommand(, MySqlConnection)
             DsDoc.Clear()
             tblDoc.Clear()
             Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM DOC;", con)
@@ -1411,13 +1292,10 @@ Public Class FormProduct
             Catch ex As Exception
                 ListBoxLog.Items.Add("Connection lost, need waiting 20 sec...")
                 CloseConnectionSqlOrcad()
-                'OpenConnectionMySqlOrcad("10.10.10.15", "orcad1", "orcadw", "orcadw")
-                'OpenConnectionMySqlOrcad(OrcadDBAdr, OrcadDBName, OrcadDBUser, OrcadDBPwd)
                 Using conOrcad = NewOpenConnectionMySqlOrcad(OrcadDBAdr, OrcadDBName, OrcadDBUser, OrcadDBPwd)
                     ListBoxLog.Items.Add("Connection estabilished...Done!")
                     DsDocComp.Clear()
                     tblDocComp.Clear()
-                    'Dim AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where not valido = 'no_valido'", SqlconnectionOrcad)
                     Using AdapterDocComp As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where not valido = 'no_valido'", conOrcad)
                         AdapterDocComp.Fill(DsDocComp, "orcadw.T_orcadcis")
                         tblDocComp = DsDocComp.Tables("orcadw.T_orcadcis")
@@ -1451,7 +1329,6 @@ Public Class FormProduct
 
             While changed
                 changed = False
-                'AdapterDoc.SelectCommand = New MySqlCommand("SELECT * FROM sigip;", MySqlConnection)
                 dsbom.Clear()
                 tblbom.Clear()
                 Using AdapterBom As New MySqlDataAdapter("SELECT * FROM sigip;", con)
@@ -1468,7 +1345,6 @@ Public Class FormProduct
                         CurrentBitronPN = row("bitron_pn").ToString
                         Application.DoEvents()
                         ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
-                        ' find only file type c1 or c2 also if not declared.To avoid to find code inside others code.
 
                         Dim RowSearchDoc As DataRow() = tblDoc.Select("filename like '" & row("bitron_pn").ToString & " - *' or filename like '" & row("bitron_pn").ToString & "'", "rev DESC")
                         If RowSearchDoc.Length > 0 And Mid(row("bitron_pn").ToString, 1, 2) <> "15" Then
@@ -1537,7 +1413,6 @@ Public Class FormProduct
             TblSql = DsSql.Tables("orcadw.T_orcadcis")
 
             If TblSql.Rows.Count > 0 Then
-                'GetOrcadSupplier = ReplaceChar(info)
                 For i = 2 To 9
                     GetOrcadSupplier = GetOrcadSupplier & IIf(TblSql.Rows.Item(0)("costruttore" & i).ToString <> "", TblSql.Rows.Item(0)("costruttore" & i).ToString & "[" & TblSql.Rows.Item(0)("orderingcode" & i).ToString & "];", "")
                 Next
@@ -1595,7 +1470,6 @@ Public Class FormProduct
     End Function
 
     Private Sub FormProduct_SizeChanged(sender As Object, e As EventArgs) Handles MyBase.SizeChanged
-        'ListView1.Size.Width = Me.Width - 111
         ListView1.Width = Me.Width - 111
         ListView1.Height = Me.Height - 359 - 88
         ListView1.Location = New Point(43, 359)

@@ -9,24 +9,18 @@ Imports System.Net
 Imports System.Configuration
 
 Public Class FormECR
-    'Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
-    'Dim AdapterDocType As New MySqlDataAdapter("SELECT * FROM Doctype", MySqlconnection)
-    'Dim AdapterEcr As New MySqlDataAdapter("SELECT * FROM Ecr", MySqlconnection)
-    'Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM product", MySqlconnection)
     Dim tblDoc As DataTable, tblDocType As DataTable, tblEcr As DataTable, tblProd As DataTable
     Dim DsDoc As New DataSet, DsDocType As New DataSet, DsEcr As New DataSet, DsProd As New DataSet
     Dim userDep3 As String
     Dim cmd As New MySqlCommand
     Dim CultureInfo_ja_JP As New CultureInfo("ja-JP", False)
     Dim needSave As Boolean = False
-    'Dim Adaptermail As New MySqlDataAdapter("SELECT * FROM mail", MySqlconnection)
     Dim Dsmail As New DataSet
     Dim tblmail As DataTable
     Dim MailSent As Boolean
 
     Private Sub FormECR_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
         checkSave()
-
         FormStart.Show()
     End Sub
 
@@ -53,8 +47,6 @@ Public Class FormECR
 
         ComboProductFill()
         userDep3 = user()
-
-        'If userDep3 <> "A" And userDep3 <> "" Then Me.Controls("DateTimePicker" & userDep3).Visible = True        ‘edited by johnson
 
         If userDep3 <> "A" And userDep3 <> "" Then Me.Controls("Button" & userDep3 & "L").Enabled = True
 
@@ -88,7 +80,6 @@ Public Class FormECR
     End Sub
 
     ' Fill the ECR combo with all ECR yet open
-
     Sub fillEcrComboTable()
         ComboBoxEcr.Items.Clear()
         Dim DsEcr As New DataSet
@@ -115,7 +106,6 @@ Public Class FormECR
             If ComboBoxEcr.Items.Count > 0 Then
                 ComboBoxEcr.Text = ComboBoxEcr.Items(ComboBoxEcr.Items.Count - 1)
             End If
-            'ComboBoxEcr.Sorted = True
         Catch ex As Exception
             MsgBox(ex.Message)
         End Try
@@ -275,7 +265,6 @@ Public Class FormECR
             If Not AllSign() Then
 
                 ComboBoxPay.Enabled = True
-                'If userDep3 <> "A" Then Me.Controls("DateTimePicker" & userDep3).Visible = True
                 If userDep3 <> "A" Then Me.Controls("Button" & userDep3 & "L").Enabled = True
 
             Else
@@ -287,8 +276,6 @@ Public Class FormECR
 
         End Try
 
-        'If userDep3 = "N" And CheckConfirm.Checked = False Then Me.Controls("DateTimePicker" & userDep3).Visible = True
-
         If Not AllSign() Then
             RichTextBoxStep.ReadOnly = False
             TextBoxStepCost.ReadOnly = False
@@ -297,7 +284,6 @@ Public Class FormECR
             LabelApproved.ForeColor = Color.Red
             LabelApproved.Text = "NOT_APPROVED"
         Else
-            'RichTextBoxStep.ReadOnly = True
             TextBoxStepCost.ReadOnly = True
             ButtonData.BackColor = Color.Green
             ButtonCalc.Enabled = False
@@ -522,7 +508,6 @@ Public Class FormECR
                     If MsgBox("Do you want to sign this ECR?", MsgBoxStyle.YesNo, "ECR Question") = MsgBoxResult.Yes Then
 
                         If but <> "A" Then
-                            'datepresence = Me.Controls("Button" & but & "L").Text <> ""
                             datepresence = True
                         Else
                             datepresence = True
@@ -532,9 +517,6 @@ Public Class FormECR
                                 Me.Controls("Button" & but).Text = CreAccount.strUserName & "[" & date_to_string(Now) & "]"
                                 WriteField(but & "sign", Me.Controls("Button" & but).Text)
                                 WriteField("date" & but, date_to_string(Now))
-
-                                'UpdateDate()
-
                             Else
                                 MsgBox("Please fill the data!")
                             End If
@@ -557,7 +539,6 @@ Public Class FormECR
                     If MsgBox("Do you want to approve this ECR?", MsgBoxStyle.YesNo, "ECR Question") = MsgBoxResult.Yes Then
 
                         If but <> "A" Then
-                            'datepresence = Me.Controls("Button" & but & "L").Text <> ""
                             datepresence = True
                         Else
                             datepresence = True
@@ -574,13 +555,9 @@ Public Class FormECR
                         Else
                             MsgBox("It is not possible to approve if there is some dept. that has not yet CHECKED!")
                             If MsgBox("Do you want to remove your CHECKED?", MsgBoxStyle.YesNo, "ECR Question") = MsgBoxResult.Yes Then
-                                'If Not AllApproved() Then
                                 WriteField(but & "sign", "NOT CHECKED")
                                 Me.Controls("Button" & but).Text = "NOT CHECKED"
                                 WriteField("date" & but, date_to_string(Now))
-                                'Else
-                                '    ListBoxLog.Items.Add("Now, all approved, you cant can remove your approve ")
-                                'End If
                             End If
                         End If
                     End If
@@ -588,7 +565,6 @@ Public Class FormECR
                 ElseIf Me.Controls("Button" & but).Text = "NOT CHECKED" Then
 
                     If but <> "A" Then
-                        'datepresence = Me.Controls("Button" & but & "L").Text <> ""
                         datepresence = True
                     Else
                         datepresence = True
@@ -868,8 +844,6 @@ Public Class FormECR
                     ComunicationLog("0052") 'db operation error
                 End Try
             End If
-
-
         Next
     End Sub
 
@@ -919,11 +893,8 @@ Public Class FormECR
 
         If fileName <> "" Then
             Try
-                'strPathFtp = ("65R/65R_PRO_ECR/")
                 strPathFtp = (ParameterTable("plant") & "R/" & ParameterTable("plant") & "R_PRO_ECR/")
-                'ComunicationLog(objFtp.DownloadFile(strPathFtp, System.IO.Path.GetTempPath, "65R_PRO_ECR_" & fileName)) ' download successfull
                 ComunicationLog(objFtp.DownloadFile(strPathFtp, IO.Path.GetTempPath, ParameterTable("plant") & "R_PRO_ECR_" & fileName)) ' download successfull
-                'downloadFileWinPath = System.IO.Path.GetTempPath & "65R_PRO_ECR_" & fileName
                 downloadFileWinPath = IO.Path.GetTempPath & ParameterTable("plant") & "R_PRO_ECR_" & fileName
             Catch ex As Exception
                 ComunicationLog("0049") ' Error in ecr Download
@@ -941,95 +912,6 @@ Public Class FormECR
 
     End Sub
 
-    'Private Sub DateTimePickerN_CloseUp(ByVal sender As Object, ByVal e As System.EventArgs) Handles DateTimePickern.CloseUp
-    '    ButtonNL.Text = DateTimePickern.Text
-    '    WriteField("dateN", DateTimePickern.Text)
-    '    UpdateDate()
-    'End Sub
-
-    'Private Sub ButtonNL_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ButtonNL.Click
-    '    If ButtonNL.Text = "" Then
-    '        ButtonNL.Text = ""
-    '        WriteField("dateN", "")
-    '        UpdateDate()
-    '    End If
-    'End Sub
-
-    'Private Sub DateTimePickerR_CloseUp(ByVal sender As Object, ByVal e As System.EventArgs) Handles DateTimePickerR.CloseUp
-    '   ButtonRL.Text = DateTimePickerR.Text
-    '  WriteField("dateR", DateTimePickerR.Text)
-    '   UpdateDate()
-    ' End Sub
-    'Private Sub ButtonRL_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ButtonRL.Click
-    '     If ButtonRL.Text = "" Then
-    '        ButtonRL.Text = ""
-    '        WriteField("dateR", "")
-    '       UpdateDate()
-    '   End If
-    ' End Sub
-    'Private Sub DateTimePickeru_CloseUp(ByVal sender As Object, ByVal e As System.EventArgs) Handles DateTimePickerU.CloseUp
-    '    ButtonUL.Text = DateTimePickerU.Text
-    '    WriteField("dateu", DateTimePickerU.Text)
-    '    UpdateDate()
-    'End Sub
-    'Private Sub Buttonul_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ButtonUL.Click
-    '    If ButtonUL.Text = "" Then
-    '        ButtonUL.Text = ""
-    '        WriteField("dateu", "")
-    '        UpdateDate()
-    '    End If
-    'End Sub
-
-    'Private Sub DateTimePickerq_CloseUp(ByVal sender As Object, ByVal e As System.EventArgs) Handles DateTimePickerQ.CloseUp
-    '    ButtonQL.Text = DateTimePickerQ.Text
-    '    WriteField("dateq", DateTimePickerQ.Text)
-    '    UpdateDate()
-    'End Sub
-    'Private Sub Buttonql_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ButtonQL.Click
-    '    If ButtonQL.Text = "" Then
-    '        ButtonQL.Text = ""
-    '        WriteField("dateq", "")
-    '        UpdateDate()
-    '    End If
-    'End Sub
-
-    'Private Sub DateTimePickere_CloseUp(ByVal sender As Object, ByVal e As System.EventArgs) Handles DateTimePickerE.CloseUp
-    '    ButtonEL.Text = DateTimePickerE.Text
-    '    WriteField("datee", DateTimePickerE.Text)
-    '    UpdateDate()
-    'End Sub
-    'Private Sub Buttonel_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ButtonEL.Click
-    '    If ButtonEL.Text = "" Then
-    '        ButtonEL.Text = ""
-    '        WriteField("datee", "")
-    '        UpdateDate()
-    '    End If
-    'End Sub
-
-    'Private Sub DateTimePickerl_CloseUp(ByVal sender As Object, ByVal e As System.EventArgs) Handles DateTimePickerL.CloseUp
-    '    ButtonLL.Text = DateTimePickerL.Text
-    '    WriteField("datel", DateTimePickerL.Text)
-    '    UpdateDate()
-    'End Sub
-    'Private Sub Buttonll_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ButtonLL.Click
-    '    If ButtonLL.Text = "" Then
-    '        ButtonLL.Text = ""
-    '        WriteField("datel", "")
-    '        UpdateDate()
-    '    End If
-    'End Sub
-    'Private Sub DateTimePickerp_CloseUp(ByVal sender As Object, ByVal e As System.EventArgs) Handles DateTimePickerp.CloseUp
-    '    ButtonPL.Text = DateTimePickerp.Text
-    '    WriteField("datep", DateTimePickerp.Text)
-    '    UpdateDate()
-    'End Sub
-    'Private Sub Buttonpl_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ButtonPL.Click
-    '    If ButtonLL.Text = "" Then
-    '        ButtonPL.Text = ""
-    '        WriteField("datep", "")
-    '        UpdateDate()
-    '    End If
-    'End Sub
     Sub UpdateDate() Handles DateTimePickerL.ValueChanged, DateTimePickerU.ValueChanged, DateTimePickerE.ValueChanged, DateTimePickerQ.ValueChanged, DateTimePickerp.ValueChanged, DateTimePickerR.ValueChanged
 
         Dim maxVal As Date = string_to_date("2000/01/01")
@@ -1121,7 +1003,6 @@ Public Class FormECR
             tblmail = Dsmail.Tables("mail")
         End Using
 
-
         Dim client As New SmtpClient(ParameterTable("SMTP"), ParameterTable("SMTP_PORT"))
         client.EnableSsl = IIf(ParameterTable("MAIL_SSL") = "YES", True, False)
         If ParameterTable("MAIL_SENDER_CREDENTIAL_PSW") = "" Then
@@ -1131,7 +1012,6 @@ Public Class FormECR
 
         End If
         Dim msg As New MailMessage(ParameterTable("MAIL_SENDER_CREDENTIAL_MAIL"), ParameterTable("MAIL_SENDER_CREDENTIAL_MAIL"))
-
 
         Dim RowSearchMail As DataRow() = tblmail.Select("list in (" & GetEmails(AddlistTo) & ")")
 
@@ -1151,7 +1031,6 @@ Public Class FormECR
             If msg.CC.Contains(mailAddress) = False Then
                 msg.CC.Add(mailAddress)
             End If
-
         Next
 
         If ATTACH <> "" Then
@@ -1173,7 +1052,6 @@ Public Class FormECR
         Catch ex As Exception
             ListBoxLog.Items.Add("Mail not sent...!!!")
         End Try
-        'Application.DoEvents()
     End Function
 
 

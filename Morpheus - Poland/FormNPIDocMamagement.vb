@@ -5,29 +5,19 @@ Imports MySql.Data.MySqlClient
 
 Public Class FormNPIDocMamagement
 
-    'Dim AdapterDocNPI As New MySqlDataAdapter("SELECT * FROM Doc where header like '%_NPI_OPI'", MySqlconnection)
-    'Dim AdapterDocNPI As New MySqlDataAdapter("SELECT * FROM Doc", MySqlconnection)
     Dim tblDocNPI As DataTable
     Dim DsDocNPI As New DataSet
-
-    'Dim AdapterDocType As New MySqlDataAdapter("SELECT * FROM Doctype where header like '%_NPI_OPI'", MySqlconnection)
     Dim tblDocType As DataTable
     Dim DsDocType As New DataSet
-
-    'Dim AdapterNPI As New MySqlDataAdapter("SELECT * FROM npi_openissue", MySqlconnection)
     Dim tblNPI As New DataTable
     Dim DsNPI As New DataSet
 
     Private Sub FormNPIDocMamagement_FormClosing(ByVal sender As Object, ByVal e As FormClosingEventArgs) Handles Me.FormClosing
-
         FormSamples.Show()
         FormSamples.Focus()
-
     End Sub
 
     Private Sub FormNPIDocMamagement_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
-        'tblDocNPI.Clear()
-        'DsDocNPI.Clear()
         Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
@@ -36,9 +26,9 @@ Public Class FormNPIDocMamagement
                 tblDocNPI = DsDocNPI.Tables("TableNPIDoc")
             End Using
             Using AdapterDocType As New MySqlDataAdapter("SELECT * FROM Doctype where header like '%_NPI_OPI'", con)
-		        AdapterDocType.Fill(DsDocType, "DocType")
+                AdapterDocType.Fill(DsDocType, "DocType")
                 tblDocType = DsDocType.Tables("DocType")
-	        End Using
+            End Using
         End Using
         Call Btn_TypeDocFill()
 
@@ -55,13 +45,10 @@ Public Class FormNPIDocMamagement
     End Sub
 
     Private Sub Cob_TypeDoc_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles Cob_TypeDoc.TextChanged
-
         Dim i As Integer
         Try
             Cob_NameDoc.Items.Clear()
-
             Dim resultdoc As DataRow() = tblDocNPI.Select("header = '" & Cob_TypeDoc.Text & "'")
-
             For i = 0 To resultdoc.Length - 1
                 Cob_NameDoc.Items.Add(resultdoc(i).Item("FileName").ToString & "_" & resultdoc(i).Item("rev").ToString & "." & resultdoc(i).Item("Extension").ToString)
             Next
@@ -104,19 +91,16 @@ Public Class FormNPIDocMamagement
 
     Private Sub Btn_Add_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Add.Click
         Dim Sql As String
-
         Me.Hide()
-
         If controlRight(Mid(Cob_TypeDoc.Text, 3, 1)) >= 2 Then
             FormSamples.Txt_FilePath.Text = Cob_TypeDoc.Text & "_" & Cob_NameDoc.Text
-            Dim  builder As  New Common.DbConnectionStringBuilder()
+            Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	            Sql = "UPDATE npi_openissue  SET FilePath ='" & FormSamples.Txt_FilePath.Text & "' WHERE ID = '" & FormSamples.Txt_Index.Text & "'"
+                Sql = "UPDATE npi_openissue  SET FilePath ='" & FormSamples.Txt_FilePath.Text & "' WHERE ID = '" & FormSamples.Txt_Index.Text & "'"
                 Dim cmd = New MySqlCommand(Sql, con)
                 cmd.ExecuteNonQuery()
             End Using
-            '  Call FormSamples.issuefunction(0)
             MsgBox("Successfully uploaded file")
         Else
             MsgBox("No enough right to load a file")

@@ -6,7 +6,6 @@ Imports MySql.Data.MySqlClient
 
 Public Class FormOpenIssue
 
-    'Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", MySqlconnection)
     Dim tblProd As DataTable
     Dim DsProd As New DataSet
 
@@ -79,22 +78,7 @@ Public Class FormOpenIssue
 
         Try
             If ListViewGRU.SelectedItems.Count = 0 Then
-                'TextBoxOpenIssueDescription.Text = ""
                 Dim result As DataRow() = tblProd.Select("bitronpn = '" & ProdOpenIssue & "'")
-                'ComboBoxName.Items.Clear()
-
-                'If result.Length > 0 Then
-                '    Dim k As Integer = InStr(1, result(i).Item("OpenIssue").ToString, ComboBoxGroup.Text)
-                '    While k > 0
-                '        If k > 0 Then
-                '            Dim n As Integer = InStr(k + 1, result(i).Item("OpenIssue").ToString, "]")
-                '            Dim j As Integer = InStr(k + 1, result(i).Item("OpenIssue").ToString, "[")
-                '            ComboBoxName.Items.Add(Mid(result(i).Item("OpenIssue").ToString, j + 1, n - j - 1))
-                '        End If
-                '        k = InStr(k + 1, result(i).Item("OpenIssue").ToString, ComboBoxGroup.Text)
-                '    End While
-                'End If
-                'TextBoxOpenIssueDescription.Text = ""
             End If
         Catch ex As Exception
             MsgBox("ERROR TO INTERPRET THE STRING")

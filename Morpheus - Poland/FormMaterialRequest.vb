@@ -151,7 +151,6 @@ Public Class FormMaterialRequest
 
 
     Private Sub ButtonSave_Click(sender As Object, e As EventArgs) Handles ButtonSave.Click
-        'If needSaveList.Count = 0 Then Return
         dataGridView.CleanFilter()
         Try
             Dim builder As New Common.DbConnectionStringBuilder()
