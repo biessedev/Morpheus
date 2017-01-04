@@ -2501,6 +2501,32 @@ Public Class FormSamples
         Btn_UpLoadFile.Enabled = False
     End Sub
 
+    Private Sub SelectRow()
+        Dim newSelectedId As String
+
+        If cSelectedID = Nothing Then
+            cSelectedID = Me.DGV_NPI.Item(DGV_NPI.Columns("ID").Index, DGV_NPI.SelectedRows(0).Index).Value.ToString()
+        End If
+        selectedIndex = DGV_NPI.SelectedRows(0).Index
+        DataBangding(selectedIndex)
+
+        Btn_Del.Enabled = True
+        Btn_Save.Enabled = True
+        Btn_UpLoadFile.Enabled = True
+
+        newSelectedId = Me.DGV_NPI.Item(DGV_NPI.Columns("ID").Index, selectedIndex).Value
+        If newSelectedId <> cSelectedID And IsNeedUpdate(cSelectedID) Then
+            Dim msgBoxResult As MsgBoxResult
+            msgBoxResult = MsgBox("Do you want to save the changes?", vbYesNo)
+            If msgBoxResult = MsgBoxResult.Yes Then
+                SaveUpdates(cSelectedID)
+            ElseIf msgBoxResult = MsgBoxResult.No Then
+                CobFilterBitronPNFill()
+                newSelectedId = Me.DGV_NPI.Item(DGV_NPI.Columns("ID").Index, Me.DGV_NPI.CurrentRow.Index).Value.ToString()
+            End If
+        End If
+        cSelectedID = newSelectedId
+    End Sub
 
     Private Sub DGV_NPI_MouseUp(sender As Object, e As MouseEventArgs) Handles DGV_NPI.MouseUp
         Try
@@ -2516,30 +2542,7 @@ Public Class FormSamples
                     DeselectRows()
                 End If
             Else
-                Dim newSelectedId As String
-
-                If cSelectedID = Nothing Then
-                    cSelectedID = Me.DGV_NPI.Item(DGV_NPI.Columns("ID").Index, Me.DGV_NPI.CurrentRow.Index).Value.ToString()
-                End If
-                selectedIndex = DGV_NPI.SelectedCells(0).RowIndex
-                DataBangding(selectedIndex)
-
-                Btn_Del.Enabled = True
-                Btn_Save.Enabled = True
-                Btn_UpLoadFile.Enabled = True
-
-                newSelectedId = Me.DGV_NPI.Item(DGV_NPI.Columns("ID").Index, selectedIndex).Value
-                If newSelectedId <> cSelectedID And IsNeedUpdate(cSelectedID) Then
-                    Dim msgBoxResult As MsgBoxResult
-                    msgBoxResult = MsgBox("Do you want to save the changes?", vbYesNo)
-                    If msgBoxResult = MsgBoxResult.Yes Then
-                        SaveUpdates(cSelectedID)
-                    ElseIf msgBoxResult = MsgBoxResult.No Then
-                        CobFilterBitronPNFill()
-                        newSelectedId = Me.DGV_NPI.Item(DGV_NPI.Columns("ID").Index, Me.DGV_NPI.CurrentRow.Index).Value.ToString()
-                    End If
-                End If
-                cSelectedID = newSelectedId
+                SelectRow()
             End If
         Catch ex As Exception
 
@@ -2552,6 +2555,53 @@ Public Class FormSamples
             Return
         End If
     End Sub
+
+    Private Sub DGV_NPI_KeyDown(sender As Object, e As KeyEventArgs) Handles DGV_NPI.KeyDown
+        If (e.KeyCode.Equals(Keys.Up)) Then
+            moveUp()
+        ElseIf (e.KeyCode.Equals(Keys.Down)) Then
+            moveDown()
+        End If
+        e.Handled = True
+    End Sub
+
+    Private Sub moveUp()
+        If (DGV_NPI.RowCount > 0) Then
+            If (DGV_NPI.SelectedRows.Count > 0) Then
+                Dim rowCount = DGV_NPI.Rows.Count
+                Dim index = DGV_NPI.SelectedRows(0).Index
+
+                If (index = 0) Then
+                    Return
+                End If
+                Dim rows As DataGridViewRowCollection = DGV_NPI.Rows
+
+                DGV_NPI.Rows(index - 1).Selected = True
+                SelectRow()
+            End If
+        End If
+
+    End Sub
+
+    Private Sub moveDown()
+        If (DGV_NPI.RowCount > 0) Then
+            If (DGV_NPI.SelectedRows.Count > 0) Then
+                Dim rowCount = DGV_NPI.Rows.Count
+                Dim index = DGV_NPI.SelectedRows(0).Index
+
+                If (index = (rowCount - 1)) Then
+                    Return
+                End If
+                Dim rows As DataGridViewRowCollection = DGV_NPI.Rows
+
+                DGV_NPI.Rows(index + 1).Selected = True
+                SelectRow()
+            End If
+        End If
+
+    End Sub
+
+
 
 
     Private Sub DTP_PlanCloseDate_ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles DTP_PlanCloseDate.ValueChanged
