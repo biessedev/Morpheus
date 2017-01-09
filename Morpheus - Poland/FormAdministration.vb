@@ -1,5 +1,4 @@
-﻿
-Option Explicit On
+﻿Option Explicit On
 Option Compare Text
 
 Imports System.Globalization
@@ -25,27 +24,27 @@ Public Class FormAdministration
     End Sub
 
     Private Sub FormAdministration_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
-        Dim  conBuilder As  New Common.DbConnectionStringBuilder()
+        Dim conBuilder As New Common.DbConnectionStringBuilder()
         conBuilder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(conBuilder("host"), conBuilder("database"), conBuilder("username"), conBuilder("password"))
             Using AdapterEcr As New MySqlDataAdapter("SELECT * FROM ecr;", con)
-			     AdapterEcr.Fill(DsEcr, "ecr")
-		    End Using
+                AdapterEcr.Fill(DsEcr, "ecr")
+            End Using
             tblEcr = DsEcr.Tables("ecr")
 
             Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM DOC", con)
-			    AdapterDoc.Fill(DsDoc, "doc")
-		    End Using
+                AdapterDoc.Fill(DsDoc, "doc")
+            End Using
             tblDoc = DsDoc.Tables("doc")
 
             Using AdapterProd As New MySqlDataAdapter("SELECT * FROM product;", con)
-			    AdapterProd.Fill(DsProd, "product")
-		    End Using
+                AdapterProd.Fill(DsProd, "product")
+            End Using
             tblProd = DsProd.Tables("product")
 
             Using Adaptermail As New MySqlDataAdapter("SELECT * FROM mail;", con)
-			    Adaptermail.Fill(Dsmail, "mail")
-		    End Using
+                Adaptermail.Fill(Dsmail, "mail")
+            End Using
             tblmail = Dsmail.Tables("mail")
         End Using
 
@@ -58,15 +57,12 @@ Public Class FormAdministration
         dep.Add("C")
         dep.Add("F")
         dep.Add("B")
-
     End Sub
 
     Private Sub ButtonSchedule_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSchedule.Click
-
         TimerECR.Enabled = False
         TimerECR_Tick(Me, e)
         TimerECR.Enabled = True
-
     End Sub
 
     Private Sub TimerECR_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerECR.Tick
@@ -126,9 +122,9 @@ Public Class FormAdministration
 
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-		    Using Adaptermail As New MySqlDataAdapter("SELECT * FROM mail;", con)
-			    Adaptermail.Fill(Dsmail, "mail")
-		    End Using
+            Using Adaptermail As New MySqlDataAdapter("SELECT * FROM mail;", con)
+                Adaptermail.Fill(Dsmail, "mail")
+            End Using
             tblmail = Dsmail.Tables("mail")
         End Using
 
@@ -149,7 +145,6 @@ Public Class FormAdministration
     End Sub
 
     Sub UpdateEcrTable()
-
         Dim RowEcr As DataRow(), pos As Integer
         Dim EcrN As Integer, sql As String, filename As String
         Dim RowSearchDoc As DataRow()
@@ -157,14 +152,14 @@ Public Class FormAdministration
         RowSearchDoc = tblDoc.Select("header = '" & ParameterTable("plant") & "R_PRO_ECR'")
 
         For Each row In RowSearchDoc
-            Dim  builder As  New Common.DbConnectionStringBuilder()
+            Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
                 tblEcr.Clear()
                 DsEcr.Clear()
                 Using AdapterEcr As New MySqlDataAdapter("SELECT * FROM ecr;", con)
-			        AdapterEcr.Fill(DsEcr, "ecr")
-		        End Using
+                    AdapterEcr.Fill(DsEcr, "ecr")
+                End Using
                 tblEcr = DsEcr.Tables("ecr")
 
                 pos = InStr(1, row("filename").ToString, "-", CompareMethod.Text)
@@ -186,11 +181,9 @@ Public Class FormAdministration
                 End If
             End Using
         Next
-
     End Sub
 
     Sub EcrMailScheduler()
-
         Dim refresh = True
         Dim RowSearchEcr As DataRow() = tblEcr.Select("")
         For Each row In RowSearchEcr
@@ -384,20 +377,18 @@ Public Class FormAdministration
     End Sub
 
     Sub ecrDocConfirm()
-
         Dim sql As String, refresh = True
         Dim RowSearchEcr As DataRow() = tblEcr.Select("docInvalid = 'NO'", "number")
-
         For Each row In RowSearchEcr
             If InStr(row("Rsign").ToString & row("Lsign").ToString & row("Usign").ToString & row("Bsign").ToString & row("Esign").ToString & row("Nsign").ToString & row("Psign").ToString & row("Qsign").ToString & row("Asign").ToString, "APPROVED", CompareMethod.Text) <= 0 And readDocSign(row("iddoc").ToString, refresh) <> "" And
                 row("confirm").ToString = "CONFIRMED" Then
 
                 Dim fileOpen As String = downloadFileWinPath(ParameterTable("plant") & "R_PRO_ECR_" & row("DESCRIPTION").ToString, ParameterTable("plant") & "R/" & ParameterTable("plant") & "R_PRO_ECR/")
                 Try
-                    Dim  builder As  New Common.DbConnectionStringBuilder()
+                    Dim builder As New Common.DbConnectionStringBuilder()
                     builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                     Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-                    
+
                         If mailSender("Status_SignTo", "Status_SignCopy", "Automatic SrvDoc Message:" & vbCrLf &
                                    vbCrLf & row("description").ToString & " -- > (Result: Confirmation of ECR Introduction) " & vbCrLf & vbCrLf &
                                    vbCrLf & "Validate Data :" & row("date").ToString & " (yyyy/mm/dd)" & vbCrLf &
@@ -443,10 +434,10 @@ Public Class FormAdministration
                                vbCrLf & "Time & Methods Note: " & rtfTrans(row("qnote").ToString) & vbCrLf &
                                vbCrLf & "Admin Note: " & rtfTrans(row("anote").ToString) & vbCrLf &
                                vbCrLf & "For all details please download ECR from server SrvDoc. ", "ECR APPROVAL Notification:   " & " " & row("description").ToString, "SS" & row("number").ToString, False, fileOpen) Then
-                        Dim  builder As  New Common.DbConnectionStringBuilder()
+                        Dim builder As New Common.DbConnectionStringBuilder()
                         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                        Dim sql As String = "UPDATE `" & DBName & "`.`ecr` SET `approve` = '" & "System" & "[" & date_to_string(Now) & "]" & "' WHERE `ecr`.`approve` ='' and `ecr`.`number` = '" & i & "' ;"
+                            Dim sql As String = "UPDATE `" & DBName & "`.`ecr` SET `approve` = '" & "System" & "[" & date_to_string(Now) & "]" & "' WHERE `ecr`.`approve` ='' and `ecr`.`number` = '" & i & "' ;"
                             cmd = New MySqlCommand(sql, con)
                             cmd.ExecuteNonQuery()
                         End Using
@@ -485,10 +476,10 @@ Public Class FormAdministration
                                vbCrLf & "Time & Methods Note: " & rtfTrans(row("qnote").ToString) & vbCrLf &
                                vbCrLf & "Administration Note: " & rtfTrans(row("anote").ToString) & vbCrLf &
                                vbCrLf & "For all details please download ECR from server SrvDoc. ", "ECR Sign Notification:   " & " " & row("description").ToString, "SS" & row("number").ToString, False, fileOpen) Then
-                        Dim  builder As  New Common.DbConnectionStringBuilder()
+                        Dim builder As New Common.DbConnectionStringBuilder()
                         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                        Dim sql As String = "UPDATE `" & DBName & "`.`ecr` SET `sign` = '" & "System" & "[" & date_to_string(Now) & "]" & "' WHERE `ecr`.`sign` ='' and `ecr`.`number` = '" & i & "' ;"
+                            Dim sql As String = "UPDATE `" & DBName & "`.`ecr` SET `sign` = '" & "System" & "[" & date_to_string(Now) & "]" & "' WHERE `ecr`.`sign` ='' and `ecr`.`number` = '" & i & "' ;"
                             cmd = New MySqlCommand(sql, con)
                             cmd.ExecuteNonQuery()
                             sql = "UPDATE `" & DBName & "`.`doc` SET `sign` = '" & "System" & "[" & date_to_string(Now) & "]" & "' WHERE `doc`.`sign` ='' and `doc`.`id` = '" & row("iddoc").ToString & "' ;"
@@ -511,12 +502,12 @@ Public Class FormAdministration
     Sub TCRMailScheduler()
         tblDoc.Clear()
         DsDoc.Clear()
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
             Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", con)
-			    AdapterDoc.Fill(DsDoc, "doc")
-		    End Using
+                AdapterDoc.Fill(DsDoc, "doc")
+            End Using
             tblDoc = DsDoc.Tables("doc")
             Dim RowSearchDoc As DataRow() = tblDoc.Select("sign = '' and HEADER='" & ParameterTable("plant") & "R_PRO_TCR'")
             For Each row In RowSearchDoc
@@ -548,8 +539,8 @@ Public Class FormAdministration
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
             Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", con)
-		        AdapterDoc.Fill(DsDoc, "doc")
-	        End Using
+                AdapterDoc.Fill(DsDoc, "doc")
+            End Using
             tblDoc = DsDoc.Tables("doc")
             Dim sql As String
             Dim RowSearchDoc = From p In tblDoc.Rows
@@ -584,16 +575,13 @@ Public Class FormAdministration
     End Sub
 
     Function readDocSign(ByVal docId As Long, ByVal refresh As Boolean) As String
-        Static Dim tblDoc As DataTable
-        Static Dim DsDoc As New DataSet
-
         If refresh = True Then
-            Dim  builder As  New Common.DbConnectionStringBuilder()
+            Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	            Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM DOC", con)
-		            AdapterDoc.Fill(DsDoc, "doc")
-	            End Using
+                Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM DOC", con)
+                    AdapterDoc.Fill(DsDoc, "doc")
+                End Using
                 tblDoc = DsDoc.Tables("doc")
             End Using
         End If
@@ -604,18 +592,17 @@ Public Class FormAdministration
         Else
             MsgBox("ECR document not found: " & docId)
         End If
-
     End Function
 
     Sub StatusMailScheduler()
         tblProd.Clear()
         DsProd.Clear()
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterProd As New MySqlDataAdapter("SELECT * FROM product", con)
-		        AdapterProd.Fill(DsProd, "product")
-	        End Using
+            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM product", con)
+                AdapterProd.Fill(DsProd, "product")
+            End Using
             tblProd = DsProd.Tables("product")
 
             Dim RowSearchProduct As DataRow(), sql As String
@@ -685,12 +672,12 @@ Public Class FormAdministration
         tblmail.Clear()
         Dsmail.Clear()
         mailSender = False
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using Adaptermail As New MySqlDataAdapter("SELECT * FROM mail;", con)
-		        Adaptermail.Fill(Dsmail, "mail")
-	        End Using
+            Using Adaptermail As New MySqlDataAdapter("SELECT * FROM mail;", con)
+                Adaptermail.Fill(Dsmail, "mail")
+            End Using
         End Using
         tblmail = Dsmail.Tables("mail")
 
@@ -736,16 +723,16 @@ Public Class FormAdministration
             If DayOfWeek.Saturday <> dt.DayOfWeek And DayOfWeek.Sunday <> dt.DayOfWeek And (dt.Hour > 8 And dt.Hour < 20) Then
                 Dim rowEcr As DataRow() = tblEcr.Select("number = '" & Necr & "'")
                 Dim parsedDate
-                Dim dateList As  New List(Of DateTime)
-                dateList.Add(IF(DateTime.TryParse(rowEcr(0).Item("date"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
-                dateList.Add(IF(DateTime.TryParse(rowEcr(0).Item("dateR"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
-                dateList.Add(IF(DateTime.TryParse(rowEcr(0).Item("dateU"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
-                dateList.Add(IF(DateTime.TryParse(rowEcr(0).Item("dateL"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
-                dateList.Add(IF(DateTime.TryParse(rowEcr(0).Item("dateB"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
-                dateList.Add(IF(DateTime.TryParse(rowEcr(0).Item("dateE"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
-                dateList.Add(IF(DateTime.TryParse(rowEcr(0).Item("dateN"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
-                dateList.Add(IF(DateTime.TryParse(rowEcr(0).Item("dateQ"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
-                dateList.Add(IF(DateTime.TryParse(rowEcr(0).Item("dateP"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                Dim dateList As New List(Of DateTime)
+                dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("date"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("dateR"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("dateU"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("dateL"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("dateB"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("dateE"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("dateN"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("dateQ"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("dateP"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
                 dateList.Sort()
                 dateList.Reverse()
 
@@ -776,10 +763,10 @@ Public Class FormAdministration
 
     Sub WriteField(ByVal field As String, ByVal v As String, ByVal list As String)
         Try
-            Dim  builder As  New Common.DbConnectionStringBuilder()
+            Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	            Dim SQL As String = "UPDATE `" & DBName & "`.`mail` SET `" & field & "` = '" & v & "' WHERE `mail`.`id` = " & list & " ;"
+                Dim SQL As String = "UPDATE `" & DBName & "`.`mail` SET `" & field & "` = '" & v & "' WHERE `mail`.`id` = " & list & " ;"
                 cmd = New MySqlCommand(SQL, con)
                 cmd.ExecuteNonQuery()
             End Using
@@ -795,15 +782,15 @@ Public Class FormAdministration
         objFtp.Host = strFtpServerAdd
 
         TimerECR.Stop()
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM DOC ", con)
-		        AdapterDoc.Fill(DsDoc, "doc")
-	        End Using
+            Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM DOC ", con)
+                AdapterDoc.Fill(DsDoc, "doc")
+            End Using
             DsDoc.Clear()
             tblDoc.Clear()
-            
+
             tblDoc = DsDoc.Tables("doc")
 
             Dim RowSearch As DataRow() = tblDoc.Select("filename like '*'")
@@ -884,12 +871,12 @@ Public Class FormAdministration
     Sub DelDuplicate()
         tblDoc.Clear()
         DsDoc.Clear()
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM DOC", con)
-		       AdapterDoc.Fill(DsDoc, "doc")
-	        End Using
+            Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM DOC", con)
+                AdapterDoc.Fill(DsDoc, "doc")
+            End Using
             tblDoc = DsDoc.Tables("doc")
 
             Dim returnsel As DataRow(), sql As String, i As Long
@@ -1028,11 +1015,9 @@ Public Class FormAdministration
         Else
             ComunicationLog("5061") ' fill path
         End If
-
     End Function
 
     Function RemotePresence(ByVal link As String, ByVal header As String, ByVal FileName As String, ByVal Extension As String, ByVal rev As Integer) As String
-
         Try
             My.Computer.Network.DownloadFile(link, "C:\DocumentsTMP\" & header & "_" & FileName & "_" & rev & "." & Extension, "", "", True, 3000, True, FileIO.UICancelOption.DoNothing)
             Application.DoEvents()
@@ -1041,18 +1026,14 @@ Public Class FormAdministration
             Try
                 If rev > 0 Then My.Computer.FileSystem.DeleteFile("C:\DocumentsTMP\" & header & "_" & FileName & "_" & (rev - 1) & "." & Extension)
             Catch ex As Exception
-
             End Try
-
         Catch ex As Exception
             RemotePresence = "FAIL"
             My.Computer.FileSystem.DeleteFile("C:\DocumentsTMP\" & header & "_" & FileName & "_" & (rev) & "." & Extension)
         End Try
-
     End Function
 
     Function LocalRevision(ByVal header As String, ByVal FileName As String, ByVal Extension As String) As Integer
-
         Try
             Dim returnValue As DataRow() = tblDoc.Select("header='" & header & "' and FileName='" & FileName & "' and Extension='" & Extension & "' ", "rev DESC")
             If returnValue.Length >= 1 Then
@@ -1063,18 +1044,15 @@ Public Class FormAdministration
         Catch ex As Exception
             LocalRevision = -2 ' error
         End Try
-
     End Function
 
     Sub ComunicationLog(ByVal ComCode As String)
-
         Dim rsResult As DataRow()
         rsResult = tblError.Select("code='" & ComCode & "'")
         If rsResult.Length = 0 Then
             ComCode = "0051"
             rsResult = tblError.Select("code='" & ComCode & "'")
         End If
-
         ListBoxLog.Items.Add(ComCode & " -> " & rsResult(0).Item("en").ToString)
 
         If Val(ComCode) >= 5000 Then
@@ -1085,11 +1063,9 @@ Public Class FormAdministration
         ElseIf Val(ComCode) < 5000 Then
             ListBoxLog.BackColor = Color.OrangeRed
         End If
-
     End Sub
 
     Private Sub ButtonClose_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonClose.Click
-
         If controlRight("Z") >= 3 And InputBox("Please insert psw for this account : ", "Password Request") = CreAccount.strPassword Then
             FormStart.Show()
             closeform = True
@@ -1112,7 +1088,6 @@ Public Class FormAdministration
     End Sub
 
     Private Sub Form1_Resize(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Resize
-
         Try
             If Me.WindowState = FormWindowState.Minimized Then
                 Me.WindowState = FormWindowState.Minimized
@@ -1126,10 +1101,7 @@ Public Class FormAdministration
     End Sub
 
     Private Sub Form1_Closing(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
-
         e.Cancel = True
         If closeform = True Then e.Cancel = False 'keeps form from closing
-
     End Sub
-
 End Class

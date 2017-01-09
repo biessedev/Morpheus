@@ -5,12 +5,9 @@ Imports Microsoft.VisualBasic
 Imports System.Configuration
 
 Public Class FormEqItem
-
     Public CurrentActivityId As String
-    'Dim AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", MySqlconnection)
     Dim tblEQ As DataTable
     Dim DsEQ As New DataSet
-    'Dim AdapterEQAsset As New MySqlDataAdapter("SELECT * FROM EqAsset", MySqlconnection)
     Dim tblEQAsset As DataTable
     Dim DsEQAsset As New DataSet
     Dim UpdatingAuto As Boolean
@@ -32,9 +29,9 @@ Public Class FormEqItem
             End Using
             ComboBoxRDA.Items.Add("NEED_PRICE")
             Using AdapterEQAsset As New MySqlDataAdapter("SELECT * FROM EqAsset", con)
-		        AdapterEQAsset.Fill(DsEQAsset, "EqAsset")
+                AdapterEQAsset.Fill(DsEQAsset, "EqAsset")
                 tblEQAsset = DsEQAsset.Tables("EqAsset")
-	        End Using
+            End Using
         End Using
         FillTreeViewEQAsset()
         TextBoxTotalCost.Text = CostRecalculation()
@@ -44,19 +41,13 @@ Public Class FormEqItem
         ButtonSave.BackColor = Color.Green
     End Sub
 
-
-
     Function CompareDatabase(ByVal id As Integer) As String
         Dim rowResults As DataRow()
         Dim DBString As String
         Dim FormString As String
         CompareDatabase = False
         If CurrentAssetId() > 0 Then
-
-
-
             rowResults = tblEQAsset.Select("id = " & CurrentAssetId() & "")
-
             DBString = ""
             DBString = DBString & rowResults(0)("description")
             DBString = DBString & rowResults(0)("IdAsset")
@@ -70,8 +61,6 @@ Public Class FormEqItem
             DBString = DBString & rowResults(0)("Dai")
             DBString = DBString & rowResults(0)("Cost")
 
-
-
             Try
                 DsEQAsset.Clear()
                 tblEQAsset.Clear()
@@ -79,13 +68,13 @@ Public Class FormEqItem
 
             End Try
 
-            Dim  builder As  New Common.DbConnectionStringBuilder()
+            Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	            Using AdapterEQAsset As New MySqlDataAdapter("SELECT * FROM EqAsset", con)
-		            AdapterEQAsset.Fill(DsEQAsset, "EqAsset")
+                Using AdapterEQAsset As New MySqlDataAdapter("SELECT * FROM EqAsset", con)
+                    AdapterEQAsset.Fill(DsEQAsset, "EqAsset")
                     tblEQAsset = DsEQAsset.Tables("EqAsset")
-	            End Using
+                End Using
             End Using
             rowResults = tblEQAsset.Select("id = " & CurrentAssetId() & "")
 
@@ -101,8 +90,6 @@ Public Class FormEqItem
             FormString = FormString & rowResults(0)("Order")
             FormString = FormString & rowResults(0)("Dai")
             FormString = FormString & rowResults(0)("Cost")
-
-
             If FormString = DBString Then CompareDatabase = True
         End If
     End Function
@@ -110,8 +97,6 @@ Public Class FormEqItem
 
     Sub FillTreeViewEQAsset()
         Try
-            Static Dim tblEQ As DataTable
-            Static Dim DsEQ As New DataSet
             TreeViewEQAsset.Font = New Font("Segoe UI", 12, FontStyle.Bold)
             TreeViewEQAsset.Nodes.Clear()
             TreeViewEQAsset.BackColor = Color.White
@@ -121,13 +106,13 @@ Public Class FormEqItem
             Catch ex As Exception
 
             End Try
-            Dim  builder As  New Common.DbConnectionStringBuilder()
+            Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	            Using AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", con)
-		            AdapterEQ.Fill(DsEQ, "equipment")
+                Using AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", con)
+                    AdapterEQ.Fill(DsEQ, "equipment")
                     tblEQ = DsEQ.Tables("equipment")
-	            End Using
+                End Using
                 Try
                     DsEQAsset.Clear()
                     tblEQAsset.Clear()
@@ -135,17 +120,15 @@ Public Class FormEqItem
 
                 End Try
                 Using AdapterEQAsset As New MySqlDataAdapter("SELECT * FROM EqAsset", con)
-		            AdapterEQAsset.Fill(DsEQAsset, "EQAsset")
+                    AdapterEQAsset.Fill(DsEQAsset, "EQAsset")
                     tblEQAsset = DsEQAsset.Tables("EQAsset")
-	            End Using
-                
+                End Using
+
             End Using
             Dim rowShow As DataRow() = tblEQ.Select("idactivity ='" & TextBoxActivity.Text & "'", "Id")
 
             For Each row In rowShow
-
                 Dim rootNode As TreeNode = New TreeNode(row("Id").ToString & " - " & row("Toolname").ToString)
-
                 TreeViewEQAsset.BeginUpdate()
                 TreeViewEQAsset.Nodes.Add(rootNode)
                 TreeViewEQAsset.EndUpdate()
@@ -161,7 +144,6 @@ Public Class FormEqItem
                     ElseIf TimingEQ(row("id").ToString, tblEQ) = ("DELAY") Then
                         rootNode.ForeColor = Color.Red
                     Else
-
                     End If
                 End If
 
@@ -177,18 +159,14 @@ Public Class FormEqItem
                     TreeViewEQAsset.EndUpdate()
                     TreeViewEQAsset.ResumeLayout()
                 Next
-
             Next
         Catch ex As Exception
             MsgBox("Problem in Item load!")
         End Try
     End Sub
 
-
     Function TimingEQ(ByVal id As Long, ByVal tblEQ As DataTable) As String
-
         Dim rowShow As DataRow() = tblEQ.Select("id = " & id & "")
-
         If rowShow(0).Item("status").ToString = "CLOSED" Then
             TimingEQ = "CLOSED"
         ElseIf Len(rowShow(0).Item("START").ToString) = 10 And Len(rowShow(0).Item("end").ToString) = 10 Then
@@ -199,47 +177,40 @@ Public Class FormEqItem
                     TimingEQ = "DELAY"
                 End If
             End If
-
             If Len(rowShow(0).Item("END").ToString) = 10 Then
                 If DateDiff("d", Today, string_to_date(rowShow(0).Item("END").ToString)) < 0 Then
                     TimingEQ = "DELAY"
                 End If
             End If
-
             If Len(rowShow(0).Item("HWDebug").ToString) = 10 Then
                 If DateDiff("d", Today, string_to_date(rowShow(0).Item("HWDebug").ToString)) < 0 Then
                     TimingEQ = "DELAY"
                 End If
             End If
-
             If Len(rowShow(0).Item("SWDebug").ToString) = 10 Then
                 If DateDiff("d", Today, string_to_date(rowShow(0).Item("SWDebug").ToString)) < 0 Then
                     TimingEQ = "DELAY"
                 End If
             End If
-
             If Len(rowShow(0).Item("HWBuilding").ToString) = 10 Then
                 If DateDiff("d", Today, string_to_date(rowShow(0).Item("HWBuilding").ToString)) < 0 Then
                     TimingEQ = "DELAY"
                 End If
             End If
-
         Else
             TimingEQ = ""
         End If
-
     End Function
-
 
     Private Sub ButtonRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRemove.Click
         If CurrentAssetId() > 0 Then
             If vbYes = MsgBox("Do you want delete this Asset?", MsgBoxStyle.YesNo) Then
                 If CompareDatabase(CurrentAssetId()) Then
                     Try
-                        Dim  builder As  New Common.DbConnectionStringBuilder()
+                        Dim builder As New Common.DbConnectionStringBuilder()
                         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                        Dim sql As String = "DELETE FROM `" & DBName & "`.`eqAsset` WHERE `eqAsset`.`id` = " & CurrentAssetId()
+                            Dim sql As String = "DELETE FROM `" & DBName & "`.`eqAsset` WHERE `eqAsset`.`id` = " & CurrentAssetId()
                             Dim cmd = New MySqlCommand(sql, con)
                             cmd.ExecuteNonQuery()
                         End Using
@@ -254,19 +225,15 @@ Public Class FormEqItem
                 Else
                     MsgBox("session open from others user, plese try later! ")
                 End If
-
             End If
         Else
             MsgBox("Please select a valid Asset!")
         End If
-
     End Sub
 
     Private Sub ButtonAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAdd.Click
-
         Dim rootNode As TreeNode
         myNodeSelect(True)
-
         If Not IsNothing(TreeViewEQAsset.SelectedNode) Then
             If Not IsNothing(TreeViewEQAsset.SelectedNode.Parent) Then
                 rootNode = TreeViewEQAsset.SelectedNode.Parent
@@ -276,15 +243,14 @@ Public Class FormEqItem
             Dim rootNodeChild = New TreeNode("---- New Tool ----")
             TreeViewEQAsset.BeginUpdate()
             rootNode.Nodes.Add(rootNodeChild)
-
             TreeViewEQAsset.EndUpdate()
             TreeViewEQAsset.ResumeLayout()
 
             Try
-                Dim  builder As  New Common.DbConnectionStringBuilder()
+                Dim builder As New Common.DbConnectionStringBuilder()
                 builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                 Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                Dim sql As String = "INSERT INTO `" & DBName & "`.`eqasset` (`Name`,`idtool` ,`closeddate`,`rda`) VALUES ( '" & Trim(UCase(Replace(InputBox("Insert the item name: "), "'", ""))) & "' , '" & CurrentToolId() & "'" & ", 'OPEN','NEED_PRICE') ;"
+                    Dim sql As String = "INSERT INTO `" & DBName & "`.`eqasset` (`Name`,`idtool` ,`closeddate`,`rda`) VALUES ( '" & Trim(UCase(Replace(InputBox("Insert the item name: "), "'", ""))) & "' , '" & CurrentToolId() & "'" & ", 'OPEN','NEED_PRICE') ;"
                     Dim cmd = New MySqlCommand(sql, con)
                     cmd.ExecuteNonQuery()
                 End Using
@@ -292,14 +258,10 @@ Public Class FormEqItem
                 MsgBox(ex.Message)
             End Try
             FillTreeViewEQAsset()
-
             rootNode.Expand()
-
         End If
-
         myNodeSelect(False)
     End Sub
-
 
     Function CurrentAssetId() As Integer
         Try
@@ -310,8 +272,8 @@ Public Class FormEqItem
         Catch ex As Exception
             CurrentAssetId = 0
         End Try
-
     End Function
+
     Function CurrentAssetName() As String
         Try
             CurrentAssetName = ""
@@ -351,15 +313,11 @@ Public Class FormEqItem
 
     End Function
 
-
     Sub myNodeSelect(ByVal read As Boolean)
-
-        Static Dim selNode As TreeNode
-
+        Dim selNode As TreeNode
         If read Then
             selNode = TreeViewEQAsset.SelectedNode
             TreeViewEQAsset.Select()
-
         Else
             TreeViewEQAsset.Visible = False
             Dim idSelected As Integer = Trim(Mid(selNode.Text, 1, InStr(selNode.Text, " - ") - 1))
@@ -370,24 +328,17 @@ Public Class FormEqItem
                     Try
                         id = Mid(nn.Text, 1, InStr(nn.Text, " - ") - 1)
                     Catch ex As Exception
-
                     End Try
-
-
                     If idSelected = id Then
                         selNode = nn
                     End If
                 Next
             Next
-
             TreeViewEQAsset.SelectedNode = selNode
             TreeViewEQAsset.Focus()
             TreeViewEQAsset.Visible = True
         End If
-
     End Sub
-
-
 
     Private Sub DateTimePickerED_CloseUp(ByVal sender As Object, ByVal e As EventArgs) Handles DateTimePickerED.CloseUp
         ComboBoxEstimatedClosed.Items.Clear()
@@ -395,7 +346,6 @@ Public Class FormEqItem
         ComboBoxEstimatedClosed.Items.Add(date_to_string(DateTimePickerED.Text))
         ComboBoxEstimatedClosed.Text = date_to_string(DateTimePickerED.Text)
     End Sub
-
 
     Private Sub DateTimePickerOD_CloseUp(ByVal sender As Object, ByVal e As EventArgs) Handles DateTimePickerOD.CloseUp
         ComboBoxOpenDate.Items.Clear()
@@ -456,9 +406,7 @@ Public Class FormEqItem
         If CurrentAssetId() > 0 Then
             GroupBoxItem.Enabled = True
             rowShow = tblEQAsset.Select("id = " & CurrentAssetId() & "")
-
             If rowShow.Length > 0 Then
-
                 RichTextBoxNote.Text = rowShow(0)("description").ToString
                 TextBoxAssetID.Text = rowShow(0)("IdAsset").ToString
                 ComboBoxResponsible.Text = rowShow(0)("Responsible").ToString
@@ -475,7 +423,6 @@ Public Class FormEqItem
                 TextBoxCost.Text = Replace(Replace(Replace(rowShow(0)("Cost").ToString, "'", ""), ",", ""), ".", "")
                 TextBoxDS.Text = rowShow(0)("DS").ToString
             End If
-
         Else
             GroupBoxItem.Enabled = False
             RichTextBoxNote.Text = ""
@@ -492,7 +439,6 @@ Public Class FormEqItem
             RichTextBoxNote.Text = ""
             TextBoxDS.Text = ""
         End If
-
         If UpdatingAuto And IsNumeric(TextBoxCost.Text) Then
             Dim MyInt As Integer = Val(TextBoxCost.Text)
             Dim MyCulture As New Globalization.CultureInfo("zh-CN")
@@ -510,15 +456,14 @@ Public Class FormEqItem
 
 
     Private Sub ButtonSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSave.Click
-
         Application.DoEvents()
         ButtonSave.Enabled = False
         If CurrentAssetId() > 0 And CompareDatabase(CurrentAssetId()) Then
             If IsNumeric(Replace(Replace(IIf(Mid(TextBoxCost.Text, 2) <> "", Mid(TextBoxCost.Text, 2), "0"), ",", ""), ".", "")) Then
-                Dim  builder As  New Common.DbConnectionStringBuilder()
+                Dim builder As New Common.DbConnectionStringBuilder()
                 builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                 Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                Try
+                    Try
                         Dim sql As String = "UPDATE `" & DBName & "`.`EqAsset` SET " &
                                             "`description` = '" & Replace(Replace(RichTextBoxNote.Text, "\", "\\"), "'", "") &
                                             "',`Idasset` = '" & TextBoxAssetID.Text &
@@ -547,13 +492,11 @@ Public Class FormEqItem
                         DsEQAsset.Clear()
                         tblEQAsset.Clear()
                     Catch ex As Exception
-
                     End Try
-
                     Using AdapterEQAsset As New MySqlDataAdapter("SELECT * FROM EqAsset", con)
-		                AdapterEQAsset.Fill(DsEQAsset, "EQAsset")
+                        AdapterEQAsset.Fill(DsEQAsset, "EQAsset")
                         tblEQAsset = DsEQAsset.Tables("EQAsset")
-	                End Using
+                    End Using
                 End Using
             Else
                 MsgBox("Cost and RDA need be a number, DAI should be 8 char with ""K"" as start!")
@@ -569,7 +512,7 @@ Public Class FormEqItem
         If CurrentAssetId() > 0 And CompareDatabase(CurrentAssetId()) Then
             If TextBoxDelay.Text <> "" Then
                 Try
-                    Dim  builder As  New Common.DbConnectionStringBuilder()
+                    Dim builder As New Common.DbConnectionStringBuilder()
                     builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                     Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
                         Dim sql As String = "UPDATE `" & DBName & "`.`EqAsset` SET " &
@@ -583,7 +526,6 @@ Public Class FormEqItem
                     MsgBox(ex.Message)
                 End Try
             End If
-
         Else
             MsgBox("Error in dave delay!")
         End If
@@ -605,27 +547,20 @@ Public Class FormEqItem
         Else
             toolAsset = ""
         End If
-
-
     End Function
-
 
     Sub loadComboResponsible()
         Try
             ComboBoxResponsible.Items.Clear()
             ComboBoxResponsible.Items.Add("")
-
             Dim rowResults As DataRow() = tblEQAsset.Select("name like '*'", "name")
             For Each row In rowResults
                 If Not ComboBoxResponsible.Items.Contains(row("responsible").ToString) Then ComboBoxResponsible.Items.Add(row("responsible").ToString)
             Next
             ComboBoxResponsible.Sorted = True
         Catch ex As Exception
-
         End Try
-
     End Sub
-
 
     Sub loadComboDai()
         Dim rowResults As DataRow()
@@ -640,12 +575,8 @@ Public Class FormEqItem
             Next
             ComboBoxDai.Sorted = True
         Catch ex As Exception
-
         End Try
-
-
     End Sub
-
 
     Private Sub TreeViewEQAsset_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles TreeViewEQAsset.DoubleClick
         Dim name
@@ -658,13 +589,11 @@ Public Class FormEqItem
         End If
     End Sub
 
-
     Private Sub TextBoxCost_LostFocus(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxCost.LostFocus
         Dim MyInt As Integer = TextBoxCost.Text
         Dim MyCulture As New Globalization.CultureInfo("zh-CN")
         TextBoxCost.Text = MyInt.ToString("C0", MyCulture)
     End Sub
-
 
     Sub FieldChange() Handles TextBoxAssetID.KeyUp, RichTextBoxNote.KeyUp, ComboBoxResponsible.KeyUp,
         TextBoxSupplier.KeyUp, ComboBoxEstimatedClosed.TextChanged, ComboBoxOpenDate.TextChanged,
@@ -673,7 +602,6 @@ Public Class FormEqItem
             ButtonSave.BackColor = Color.Red
         End If
     End Sub
-
 
     Private Sub TextBoxTotalCost_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxTotalCost.TextChanged
         If UpdatingAuto And IsNumeric(TextBoxTotalCost.Text) Then
@@ -691,15 +619,14 @@ Public Class FormEqItem
             DsEQ.Clear()
             tblEQ.Clear()
         Catch ex As Exception
-
         End Try
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", con)
-		        AdapterEQ.Fill(DsEQ, "equipment")
+            Using AdapterEQ As New MySqlDataAdapter("SELECT * FROM EQUIPMENTS", con)
+                AdapterEQ.Fill(DsEQ, "equipment")
                 tblEQ = DsEQ.Tables("equipment")
-	        End Using
+            End Using
             Try
                 DsEQAsset.Clear()
                 tblEQAsset.Clear()
@@ -707,33 +634,26 @@ Public Class FormEqItem
 
             End Try
             Using AdapterEQAsset As New MySqlDataAdapter("SELECT * FROM EqAsset", con)
-		        AdapterEQAsset.Fill(DsEQAsset, "EQAsset")
+                AdapterEQAsset.Fill(DsEQAsset, "EQAsset")
                 tblEQAsset = DsEQAsset.Tables("EQAsset")
-	        End Using
+            End Using
         End Using
         rowResults = tblEQ.Select("idactivity ='" & TextBoxActivity.Text & "'", "Id")
 
         For Each row In rowResults
-
             rowShowAsset = tblEQAsset.Select("idtool ='" & row("Id").ToString & "'", "Id")
-
             For Each rowshow In rowShowAsset
                 CostRecalculation = CostRecalculation + Int(rowshow("cost").ToString)
             Next
-
         Next
-
     End Function
 
-
     Private Sub TextBoxCost_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxCost.TextChanged
-
         If UpdatingAuto And IsNumeric(TextBoxCost.Text) Then
             Dim MyInt As Integer = Val(TextBoxCost.Text)
             Dim MyCulture As New Globalization.CultureInfo("zh-CN")
             TextBoxCost.Text = MyInt.ToString("C0", MyCulture)
         End If
-
     End Sub
 
     Private Sub ButtonComponentDelLink_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonComponentDelLink.Click
@@ -775,5 +695,4 @@ Public Class FormEqItem
     Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
         FillTreeViewEQAsset()
     End Sub
-
 End Class

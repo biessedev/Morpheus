@@ -31,7 +31,6 @@ Public Class FormNPIDocMamagement
             End Using
         End Using
         Call Btn_TypeDocFill()
-
     End Sub
 
     Private Sub Btn_TypeDocFill()
@@ -59,7 +58,6 @@ Public Class FormNPIDocMamagement
     End Sub
 
     Private Sub Cob_NameDoc_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles Cob_NameDoc.TextChanged
-
         Dim i As Integer
         Dim m As Integer = InStrRev(Cob_NameDoc.Text, "_")
         Dim n As Integer = InStrRev(Cob_NameDoc.Text, ".")
@@ -79,14 +77,12 @@ Public Class FormNPIDocMamagement
         End With
 
         For i = 0 To DR.Length - 1
-
             ListViewNPI.Items.Add(DR(i).Item("header").ToString)
             ListViewNPI.Items(0).SubItems.Add(DR(i).Item("FileName").ToString)
             ListViewNPI.Items(0).SubItems.Add(DR(i).Item("rev").ToString)
             ListViewNPI.Items(0).SubItems.Add(DR(i).Item("Extension").ToString)
             ListViewNPI.Items(0).SubItems.Add(DR(i).Item("Editor").ToString)
         Next
-
     End Sub
 
     Private Sub Btn_Add_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Add.Click
@@ -115,5 +111,4 @@ Public Class FormNPIDocMamagement
         FormSamples.Show()
         FormSamples.Focus()
     End Sub
-
 End Class

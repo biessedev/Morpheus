@@ -35,7 +35,6 @@ Public Class FormStart
     Private Sub ButtonAbout_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAbout.Click
         FormAbaut.Show()
         FormAbaut.Focus()
-
     End Sub
 
     Private Sub FormStart_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
@@ -66,12 +65,10 @@ Public Class FormStart
     End Sub
 
     Private Sub ButtonSystem_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSystem.Click
-
         If controlRight("Z") = 3 Then
             FormAdministration.Show()
             Me.Hide()
         End If
-
         FormAdministration.Text = FormAdministration.Text & " <>  Welcome : " & CreAccount.strUserName
     End Sub
 
@@ -159,9 +156,7 @@ Public Class FormStart
         End Try
     End Sub
 
-
     Sub ComunicationLog(ByVal ComCode As String)
-
         Dim rsResult As DataRow()
         rsResult = tblError.Select("code='" & ComCode & "'")
         If rsResult.Length = 0 Then
@@ -169,7 +164,6 @@ Public Class FormStart
             rsResult = tblError.Select("code='" & ComCode & "'")
         End If
         WriteFile(ComCode & " -> " & rsResult(0).Item("en").ToString & vbCrLf, True)
-
     End Sub
 
     Private Sub ButtonChangePassword_Click(sender As Object, e As EventArgs) Handles ButtonChangePassword.Click
@@ -180,7 +174,6 @@ Public Class FormStart
             FormChangePassword.Show()
             FormChangePassword.Focus()
         End If
-
     End Sub
 
 End Class

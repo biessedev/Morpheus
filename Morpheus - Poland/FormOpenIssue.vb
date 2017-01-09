@@ -3,7 +3,6 @@ Option Compare Text
 Imports System.Configuration
 Imports MySql.Data.MySqlClient
 
-
 Public Class FormOpenIssue
 
     Dim tblProd As DataTable

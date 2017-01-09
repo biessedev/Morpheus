@@ -6,13 +6,9 @@ Imports MySql.Data.MySqlClient
 Public Class FormTime
     Dim CultureInfo_ja_JP As New Globalization.CultureInfo("ja-JP", False)
     Dim XmlTree As New TreeViewToFromXml
-
-    'Dim AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", MySqlconnection)
     Dim tblTP As DataTable
     Dim DsTP As New DataSet
-
     Dim OpenSession As Boolean, UpdatigTree As Boolean = True
-    'Dim AdapterCus As New MySqlDataAdapter("SELECT * FROM Customer", MySqlconnection)
     Dim tblCus As DataTable
     Dim DsCus As New DataSet
     Dim tbltp_static As DataTable
@@ -91,15 +87,15 @@ Public Class FormTime
         If refresh Then
             DsTP.Clear()
             tblTP.Clear()
-            Dim  builder As  New Common.DbConnectionStringBuilder()
+            Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	            Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-		            AdapterTP.Fill(DsTP, "TimeProject")
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(DsTP, "TimeProject")
                     tblTP = DsTP.Tables("TimeProject")
-	            End Using
+                End Using
             End Using
-            
+
         End If
         Dim sql As String = IIf(ComboBoxAreaFilter.Text = "", "area like '*' and ", "area = '" & ComboBoxAreaFilter.Text & "' and ") &
                             IIf(ComboBoxStatusFilter.Text = "", "status like '*'  and ", "status = '" & ComboBoxStatusFilter.Text & "'  and ") &
@@ -203,32 +199,30 @@ Public Class FormTime
     End Sub
 
     Function ProjectStatus(ByVal id As String, ByVal refresh As Boolean) As String
-        Static Dim tbltp As DataTable
-        Static Dim Dstp As New DataSet
         ProjectStatus = "MISSING"
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Try
-                Dim i As Integer = tbltp.Rows.Count
+            Try
+                Dim i As Integer = tblTP.Rows.Count
             Catch ex As Exception
                 Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-		            AdapterTP.Fill(Dstp, "TimeProject")
-                    tbltp = Dstp.Tables("TimeProject")
-	            End Using
-                
+                    AdapterTP.Fill(DsTP, "TimeProject")
+                    tblTP = DsTP.Tables("TimeProject")
+                End Using
+
             End Try
 
             If refresh Then
-                Dstp.Clear()
-                tbltp.Clear()
+                DsTP.Clear()
+                tblTP.Clear()
                 Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-		            AdapterTP.Fill(Dstp, "TimeProject")
-                    tbltp = Dstp.Tables("TimeProject")
-	            End Using
+                    AdapterTP.Fill(DsTP, "TimeProject")
+                    tblTP = DsTP.Tables("TimeProject")
+                End Using
             End If
         End Using
-        Dim rowShow As DataRow() = tbltp.Select("Project = '" & id & "'")
+        Dim rowShow As DataRow() = tblTP.Select("Project = '" & id & "'")
 
         For Each row In rowShow
 
@@ -348,8 +342,8 @@ Public Class FormTime
 
     Sub myNodeSelect(ByVal read As Boolean, Optional ByVal parent As Boolean = False)
         Try
-            Static Dim selNode As TreeNode
-            Static Dim selNodeParent As TreeNode
+            Dim selNode As TreeNode
+            Dim selNodeParent As TreeNode
             If read Then
                 selNode = TreeViewTP.SelectedNode
                 If selNode.Level = 1 Then selNodeParent = TreeViewTP.SelectedNode.Parent
@@ -429,10 +423,10 @@ Public Class FormTime
             If vbYes = MsgBox("Do you want delete this Item?", MsgBoxStyle.YesNo) Then
                 If OpenSession = False And TreeViewTP.SelectedNode.Level = 1 Then
                     Try
-                        Dim  builder As  New Common.DbConnectionStringBuilder()
+                        Dim builder As New Common.DbConnectionStringBuilder()
                         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                        Dim sql As String = "DELETE FROM `" & DBName & "`.`TimeProject` WHERE `TimeProject`.`Project` = '" & TreeViewTP.SelectedNode.Parent.Text & "' and `TimeProject`.`TaskName` = '" & TreeViewTP.SelectedNode.Text & "'"
+                            Dim sql As String = "DELETE FROM `" & DBName & "`.`TimeProject` WHERE `TimeProject`.`Project` = '" & TreeViewTP.SelectedNode.Parent.Text & "' and `TimeProject`.`TaskName` = '" & TreeViewTP.SelectedNode.Text & "'"
                             Dim cmd As MySqlCommand = New MySqlCommand(sql, con)
                             cmd.ExecuteNonQuery()
                         End Using
@@ -501,10 +495,10 @@ Public Class FormTime
                     Catch ex As Exception
                         nodeparent = " `TimeProject`.`project` like '*'"
                     End Try
-                    Dim  builder As  New Common.DbConnectionStringBuilder()
+                    Dim builder As New Common.DbConnectionStringBuilder()
                     builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                     Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                    Dim sql As String = "UPDATE `" & DBName & "`.`TimeProject` SET " &
+                        Dim sql As String = "UPDATE `" & DBName & "`.`TimeProject` SET " &
                                             IIf(TreeViewTP.SelectedNode.Level = 0, "`area` = '" & Replace(Trim(UCase(ReplaceChar(ComboBoxArea.Text))), " ", "") & "',", "") &
                                             IIf(TreeViewTP.SelectedNode.Level = 0, "`customer` = '" & Trim(UCase(ReplaceChar(ComboBoxCustomer.Text))), "") &
                                             IIf(TreeViewTP.SelectedNode.Level = 0, "',`ProjectLeader` = '" & Trim(UCase(ReplaceChar(ComboBoxResponsible.Text))), "") &
@@ -716,25 +710,25 @@ Public Class FormTime
     Function ProjectCompleated(ByVal id As String, ByVal refresh As Boolean) As Integer
 
         ProjectCompleated = 0
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	         Try
+            Try
                 Dim i As Integer = tbltp_static.Rows.Count
             Catch ex As Exception
                 Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-		            AdapterTP.Fill(Dstp_static, "TimeProject")
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
                     tbltp_static = Dstp_static.Tables("TimeProject")
-	            End Using
+                End Using
             End Try
 
             If refresh Then
                 Dstp_static.Clear()
                 tbltp_static.Clear()
                 Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-		            AdapterTP.Fill(Dstp_static, "TimeProject")
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
                     tblTP = Dstp_static.Tables("TimeProject")
-	            End Using
+                End Using
             End If
         End Using
         Dim TotalTime As Integer = 0
@@ -755,26 +749,26 @@ Public Class FormTime
     Function ProjectStart(ByVal id As String, ByVal refresh As Boolean) As String
 
         ProjectStart = ""
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	         Try
-		        Dim i As Integer = tbltp_static.Rows.Count
-	        Catch ex As Exception
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tbltp_static = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End Try
+            Try
+                Dim i As Integer = tbltp_static.Rows.Count
+            Catch ex As Exception
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tbltp_static = Dstp_static.Tables("TimeProject")
+                End Using
+            End Try
 
-	        If refresh Then
-		        Dstp_static.Clear()
-		        tbltp_static.Clear()
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tblTP = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End If
+            If refresh Then
+                Dstp_static.Clear()
+                tbltp_static.Clear()
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tblTP = Dstp_static.Tables("TimeProject")
+                End Using
+            End If
         End Using
 
 
@@ -792,26 +786,26 @@ Public Class FormTime
     Function ProjectEnd(ByVal id As String, ByVal refresh As Boolean) As String
 
         ProjectEnd = ""
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	         Try
-		        Dim i As Integer = tbltp_static.Rows.Count
-	        Catch ex As Exception
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tbltp_static = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End Try
+            Try
+                Dim i As Integer = tbltp_static.Rows.Count
+            Catch ex As Exception
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tbltp_static = Dstp_static.Tables("TimeProject")
+                End Using
+            End Try
 
-	        If refresh Then
-		        Dstp_static.Clear()
-		        tbltp_static.Clear()
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tblTP = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End If
+            If refresh Then
+                Dstp_static.Clear()
+                tbltp_static.Clear()
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tblTP = Dstp_static.Tables("TimeProject")
+                End Using
+            End If
         End Using
 
 
@@ -829,26 +823,26 @@ Public Class FormTime
     Function quality(ByVal id As String, ByVal refresh As Boolean) As Integer
 
         quality = 0
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	         Try
-		        Dim i As Integer = tbltp_static.Rows.Count
-	        Catch ex As Exception
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tbltp_static = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End Try
+            Try
+                Dim i As Integer = tbltp_static.Rows.Count
+            Catch ex As Exception
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tbltp_static = Dstp_static.Tables("TimeProject")
+                End Using
+            End Try
 
-	        If refresh Then
-		        Dstp_static.Clear()
-		        tbltp_static.Clear()
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tblTP = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End If
+            If refresh Then
+                Dstp_static.Clear()
+                tbltp_static.Clear()
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tblTP = Dstp_static.Tables("TimeProject")
+                End Using
+            End If
         End Using
 
         quality = 0
@@ -867,26 +861,26 @@ Public Class FormTime
 
     Function customer(ByVal id As String, ByVal refresh As Boolean) As String
         customer = ""
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	         Try
-		        Dim i As Integer = tbltp_static.Rows.Count
-	        Catch ex As Exception
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tbltp_static = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End Try
+            Try
+                Dim i As Integer = tbltp_static.Rows.Count
+            Catch ex As Exception
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tbltp_static = Dstp_static.Tables("TimeProject")
+                End Using
+            End Try
 
-	        If refresh Then
-		        Dstp_static.Clear()
-		        tbltp_static.Clear()
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tblTP = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End If
+            If refresh Then
+                Dstp_static.Clear()
+                tbltp_static.Clear()
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tblTP = Dstp_static.Tables("TimeProject")
+                End Using
+            End If
         End Using
 
         Dim rowShow As DataRow() = tbltp_static.Select("Project = '" & id & "'")
@@ -900,26 +894,26 @@ Public Class FormTime
     Function TaskCompleated(ByVal id As String, ByVal idp As String, ByVal refresh As Boolean) As String
 
         TaskCompleated = ""
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	         Try
-		        Dim i As Integer = tbltp_static.Rows.Count
-	        Catch ex As Exception
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tbltp_static = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End Try
+            Try
+                Dim i As Integer = tbltp_static.Rows.Count
+            Catch ex As Exception
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tbltp_static = Dstp_static.Tables("TimeProject")
+                End Using
+            End Try
 
-	        If refresh Then
-		        Dstp_static.Clear()
-		        tbltp_static.Clear()
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tblTP = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End If
+            If refresh Then
+                Dstp_static.Clear()
+                tbltp_static.Clear()
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tblTP = Dstp_static.Tables("TimeProject")
+                End Using
+            End If
         End Using
 
         Dim rowShow As DataRow() = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
@@ -933,26 +927,26 @@ Public Class FormTime
     Function TaskFixedStart(ByVal id As String, ByVal idp As String, ByVal refresh As Boolean) As String
 
         TaskFixedStart = ""
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	         Try
-		        Dim i As Integer = tbltp_static.Rows.Count
-	        Catch ex As Exception
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tbltp_static = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End Try
+            Try
+                Dim i As Integer = tbltp_static.Rows.Count
+            Catch ex As Exception
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tbltp_static = Dstp_static.Tables("TimeProject")
+                End Using
+            End Try
 
-	        If refresh Then
-		        Dstp_static.Clear()
-		        tbltp_static.Clear()
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tblTP = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End If
+            If refresh Then
+                Dstp_static.Clear()
+                tbltp_static.Clear()
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tblTP = Dstp_static.Tables("TimeProject")
+                End Using
+            End If
         End Using
 
         Dim rowShow As DataRow() = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
@@ -966,26 +960,26 @@ Public Class FormTime
     Function TaskFixedEnd(ByVal id As String, ByVal idp As String, ByVal refresh As Boolean) As String
 
         TaskFixedEnd = ""
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	         Try
-		        Dim i As Integer = tbltp_static.Rows.Count
-	        Catch ex As Exception
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tbltp_static = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End Try
+            Try
+                Dim i As Integer = tbltp_static.Rows.Count
+            Catch ex As Exception
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tbltp_static = Dstp_static.Tables("TimeProject")
+                End Using
+            End Try
 
-	        If refresh Then
-		        Dstp_static.Clear()
-		        tbltp_static.Clear()
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tblTP = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End If
+            If refresh Then
+                Dstp_static.Clear()
+                tbltp_static.Clear()
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tblTP = Dstp_static.Tables("TimeProject")
+                End Using
+            End If
         End Using
 
         Dim rowShow As DataRow() = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
@@ -999,26 +993,26 @@ Public Class FormTime
     Function TaskStatus(ByVal id As String, ByVal idp As String, ByVal refresh As Boolean) As String
 
         TaskStatus = "MISSING"
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	         Try
-		        Dim i As Integer = tbltp_static.Rows.Count
-	        Catch ex As Exception
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tbltp_static = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End Try
+            Try
+                Dim i As Integer = tbltp_static.Rows.Count
+            Catch ex As Exception
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tbltp_static = Dstp_static.Tables("TimeProject")
+                End Using
+            End Try
 
-	        If refresh Then
-		        Dstp_static.Clear()
-		        tbltp_static.Clear()
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tblTP = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End If
+            If refresh Then
+                Dstp_static.Clear()
+                tbltp_static.Clear()
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tblTP = Dstp_static.Tables("TimeProject")
+                End Using
+            End If
         End Using
 
         Dim rowShow As DataRow() = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
@@ -1032,26 +1026,26 @@ Public Class FormTime
     Function ProjectLeader(ByVal id As String, ByVal refresh As Boolean) As String
 
         ProjectLeader = ""
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	         Try
-		        Dim i As Integer = tbltp_static.Rows.Count
-	        Catch ex As Exception
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tbltp_static = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End Try
+            Try
+                Dim i As Integer = tbltp_static.Rows.Count
+            Catch ex As Exception
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tbltp_static = Dstp_static.Tables("TimeProject")
+                End Using
+            End Try
 
-	        If refresh Then
-		        Dstp_static.Clear()
-		        tbltp_static.Clear()
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tblTP = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End If
+            If refresh Then
+                Dstp_static.Clear()
+                tbltp_static.Clear()
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tblTP = Dstp_static.Tables("TimeProject")
+                End Using
+            End If
         End Using
 
         Dim rowShow As DataRow() = tbltp_static.Select("Project = '" & id & "'")
@@ -1065,26 +1059,26 @@ Public Class FormTime
     Function TaskEnd(ByVal id As String, ByVal idp As String, ByVal refresh As Boolean) As String
 
         TaskEnd = ""
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	         Try
-		        Dim i As Integer = tbltp_static.Rows.Count
-	        Catch ex As Exception
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tbltp_static = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End Try
+            Try
+                Dim i As Integer = tbltp_static.Rows.Count
+            Catch ex As Exception
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tbltp_static = Dstp_static.Tables("TimeProject")
+                End Using
+            End Try
 
-	        If refresh Then
-		        Dstp_static.Clear()
-		        tbltp_static.Clear()
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tblTP = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End If
+            If refresh Then
+                Dstp_static.Clear()
+                tbltp_static.Clear()
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tblTP = Dstp_static.Tables("TimeProject")
+                End Using
+            End If
         End Using
 
         Dim rowShow As DataRow() = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
@@ -1098,26 +1092,26 @@ Public Class FormTime
     Function TaskQuality(ByVal id As String, ByVal idp As String, ByVal refresh As Boolean) As String
 
         TaskQuality = ""
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	         Try
-		        Dim i As Integer = tbltp_static.Rows.Count
-	        Catch ex As Exception
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tbltp_static = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End Try
+            Try
+                Dim i As Integer = tbltp_static.Rows.Count
+            Catch ex As Exception
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tbltp_static = Dstp_static.Tables("TimeProject")
+                End Using
+            End Try
 
-	        If refresh Then
-		        Dstp_static.Clear()
-		        tbltp_static.Clear()
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tblTP = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End If
+            If refresh Then
+                Dstp_static.Clear()
+                tbltp_static.Clear()
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tblTP = Dstp_static.Tables("TimeProject")
+                End Using
+            End If
         End Using
 
         Dim rowShow As DataRow() = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
@@ -1131,26 +1125,26 @@ Public Class FormTime
     Function TaskStart(ByVal id As String, ByVal idp As String, ByVal refresh As Boolean) As String
 
         TaskStart = ""
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	         Try
-		        Dim i As Integer = tbltp_static.Rows.Count
-	        Catch ex As Exception
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tbltp_static = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End Try
+            Try
+                Dim i As Integer = tbltp_static.Rows.Count
+            Catch ex As Exception
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tbltp_static = Dstp_static.Tables("TimeProject")
+                End Using
+            End Try
 
-	        If refresh Then
-		        Dstp_static.Clear()
-		        tbltp_static.Clear()
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tblTP = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End If
+            If refresh Then
+                Dstp_static.Clear()
+                tbltp_static.Clear()
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tblTP = Dstp_static.Tables("TimeProject")
+                End Using
+            End If
         End Using
 
 
@@ -1163,26 +1157,26 @@ Public Class FormTime
 
     Function TaskLeader(ByVal id As String, ByVal idp As String, ByVal refresh As Boolean) As String
         TaskLeader = ""
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	         Try
-		        Dim i As Integer = tbltp_static.Rows.Count
-	        Catch ex As Exception
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tbltp_static = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End Try
+            Try
+                Dim i As Integer = tbltp_static.Rows.Count
+            Catch ex As Exception
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tbltp_static = Dstp_static.Tables("TimeProject")
+                End Using
+            End Try
 
-	        If refresh Then
-		        Dstp_static.Clear()
-		        tbltp_static.Clear()
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tblTP = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End If
+            If refresh Then
+                Dstp_static.Clear()
+                tbltp_static.Clear()
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tblTP = Dstp_static.Tables("TimeProject")
+                End Using
+            End If
         End Using
 
         Dim rowShow As DataRow() = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
@@ -1196,26 +1190,26 @@ Public Class FormTime
     Function area(ByVal id As String, ByVal refresh As Boolean) As String
 
         area = ""
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	         Try
-		        Dim i As Integer = tbltp_static.Rows.Count
-	        Catch ex As Exception
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tbltp_static = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End Try
+            Try
+                Dim i As Integer = tbltp_static.Rows.Count
+            Catch ex As Exception
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tbltp_static = Dstp_static.Tables("TimeProject")
+                End Using
+            End Try
 
-	        If refresh Then
-		        Dstp_static.Clear()
-		        tbltp_static.Clear()
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tblTP = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End If
+            If refresh Then
+                Dstp_static.Clear()
+                tbltp_static.Clear()
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tblTP = Dstp_static.Tables("TimeProject")
+                End Using
+            End If
         End Using
 
         Dim rowShow As DataRow() = tbltp_static.Select("Project = '" & id & "'")
@@ -1229,26 +1223,26 @@ Public Class FormTime
     Function taskname(ByVal id As String, ByVal idp As String, ByVal refresh As Boolean) As String
 
         taskname = ""
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	         Try
-		        Dim i As Integer = tbltp_static.Rows.Count
-	        Catch ex As Exception
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tbltp_static = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End Try
+            Try
+                Dim i As Integer = tbltp_static.Rows.Count
+            Catch ex As Exception
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tbltp_static = Dstp_static.Tables("TimeProject")
+                End Using
+            End Try
 
-	        If refresh Then
-		        Dstp_static.Clear()
-		        tbltp_static.Clear()
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tblTP = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End If
+            If refresh Then
+                Dstp_static.Clear()
+                tbltp_static.Clear()
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tblTP = Dstp_static.Tables("TimeProject")
+                End Using
+            End If
         End Using
 
         Dim rowShow As DataRow() = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
@@ -1262,26 +1256,26 @@ Public Class FormTime
     Function note(ByVal id As String, ByVal idp As String, ByVal refresh As Boolean) As String
 
         note = ""
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	         Try
-		        Dim i As Integer = tbltp_static.Rows.Count
-	        Catch ex As Exception
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tbltp_static = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End Try
+            Try
+                Dim i As Integer = tbltp_static.Rows.Count
+            Catch ex As Exception
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tbltp_static = Dstp_static.Tables("TimeProject")
+                End Using
+            End Try
 
-	        If refresh Then
-		        Dstp_static.Clear()
-		        tbltp_static.Clear()
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tblTP = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End If
+            If refresh Then
+                Dstp_static.Clear()
+                tbltp_static.Clear()
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tblTP = Dstp_static.Tables("TimeProject")
+                End Using
+            End If
         End Using
 
         Dim rowShow As DataRow() = tbltp_static.Select("taskname = '" & id & "' and project = '" & idp & "'")
@@ -1295,26 +1289,26 @@ Public Class FormTime
     Function ProjectStatusOpenClosed(ByVal id As String, ByVal refresh As Boolean) As String
 
         ProjectStatusOpenClosed = "CLOSED"
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	         Try
-		        Dim i As Integer = tbltp_static.Rows.Count
-	        Catch ex As Exception
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tbltp_static = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End Try
+            Try
+                Dim i As Integer = tbltp_static.Rows.Count
+            Catch ex As Exception
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tbltp_static = Dstp_static.Tables("TimeProject")
+                End Using
+            End Try
 
-	        If refresh Then
-		        Dstp_static.Clear()
-		        tbltp_static.Clear()
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tblTP = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End If
+            If refresh Then
+                Dstp_static.Clear()
+                tbltp_static.Clear()
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tblTP = Dstp_static.Tables("TimeProject")
+                End Using
+            End If
         End Using
 
         Dim rowShow As DataRow() = tbltp_static.Select("Project = '" & id & "'")
@@ -1331,13 +1325,13 @@ Public Class FormTime
     Private Sub ButtonAddTemplate_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDuplicate.Click
         DsTP.Clear()
         tblTP.Clear()
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-		        AdapterTP.Fill(DsTP, "timeproject")
+            Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                AdapterTP.Fill(DsTP, "timeproject")
                 tblTP = DsTP.Tables("timeproject")
-	        End Using
+            End Using
             myNodeSelect(True, True)
             Dim rowShow As DataRow()
             If TreeViewTP.SelectedNode.Text <> "" Then
@@ -1384,10 +1378,10 @@ Public Class FormTime
                 If needAdd Then
 
                     Try
-                        Dim  builder As  New Common.DbConnectionStringBuilder()
+                        Dim builder As New Common.DbConnectionStringBuilder()
                         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                        Dim sql As String = "INSERT INTO `" & DBName & "`.`timeproject` (`Project`,`TaskName` ) VALUES ( '" & TextBoxProject.Text & "' , '" & TextBoxTask.Text & "'" & ");"
+                            Dim sql As String = "INSERT INTO `" & DBName & "`.`timeproject` (`Project`,`TaskName` ) VALUES ( '" & TextBoxProject.Text & "' , '" & TextBoxTask.Text & "'" & ");"
                             Dim cmd = New MySqlCommand(sql, con)
                             cmd.ExecuteNonQuery()
                         End Using
@@ -1422,13 +1416,13 @@ Public Class FormTime
 
         DsTP.Clear()
         tblTP.Clear()
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-		        AdapterTP.Fill(DsTP, "TimeProject")
+            Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                AdapterTP.Fill(DsTP, "TimeProject")
                 tblTP = DsTP.Tables("TimeProject")
-	        End Using
+            End Using
         End Using
 
         Dim sql As String = IIf(ComboBoxAreaFilter.Text = "", "area like '*' and ", "area = '" & ComboBoxAreaFilter.Text & "' and ") &

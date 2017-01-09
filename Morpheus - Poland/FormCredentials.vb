@@ -1,5 +1,4 @@
-﻿
-Option Strict Off
+﻿Option Strict Off
 Option Compare Text
 Imports MySql.Data.MySqlClient
 Imports System
@@ -8,11 +7,10 @@ Imports System.Data.SqlClient
 
 Public Class FormCredentials
 
-    Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click       
+    Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
         If TextBoxPassword.Text <> "" And TextBoxUserName.Text <> "" Then
-            Dim  builder As  New Common.DbConnectionStringBuilder()
-
-            hostName = ComboBoxHost.Text.Substring(0,InStr(ComboBoxHost.Text, " - ") - 1)
+            Dim builder As New Common.DbConnectionStringBuilder()
+            hostName = ComboBoxHost.Text.Substring(0, InStr(ComboBoxHost.Text, " - ") - 1)
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
                 If con.State = ConnectionState.Open Then
@@ -29,7 +27,6 @@ Public Class FormCredentials
                     If tblCredentials.Rows.Count = 1 Then
                         Dim connStr As New Common.DbConnectionStringBuilder()
                         connStr.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
-
                         CreAccount.strUserName = LCase(TextBoxUserName.Text)
                         CreAccount.strPassword = LCase(TextBoxPassword.Text)
                         CreAccount.strHost = connStr("host")
@@ -63,7 +60,7 @@ Public Class FormCredentials
     End Sub
 
     Private Sub FormCredentials_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         For Each conn As ConnectionStringSettings In ConfigurationManager.ConnectionStrings
             builder.Clear()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(conn.Name).ConnectionString
@@ -78,11 +75,9 @@ Public Class FormCredentials
 
     End Sub
 
-   
     Private Sub TextBoxPassword_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles TextBoxPassword.KeyPress
         If e.KeyChar = vbCr Then
             Button1_Click(Me, e)
         End If
     End Sub
-
 End Class

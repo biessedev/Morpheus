@@ -20,31 +20,22 @@ Public Class FormOffer
     Dim TblSql As New DataTable
     Dim DsSql As New DataSet
     Dim updatigComponentTBD As Boolean
-    'Dim AdapterCustomerPrice As New MySqlDataAdapter("SELECT * FROM CustomerPrice", MySqlconnection)
     Dim tblCustomerPrice As DataTable
     Dim DsCustomerPrice As New DataSet
-    'Dim AdapterBomOff As New MySqlDataAdapter("SELECT * FROM Bomoffer", MySqlconnection)
     Dim tblBomOff As DataTable
     Dim DsBomOff As New DataSet
-    'Dim AdapterPfp As New MySqlDataAdapter("SELECT * FROM Pfp", MySqlconnection)
     Dim tblPfp As DataTable
     Dim DsPfp As New DataSet
-    'Dim AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", MySqlconnection)
     Dim tblOff As DataTable
     Dim DsOff As New DataSet
-    'Dim AdapterBrand As New MySqlDataAdapter("SELECT * FROM Brand", MySqlconnection)
     Dim tblBrand As DataTable
     Dim DsBrand As New DataSet
-    'Dim AdapterSigip As New MySqlDataAdapter("SELECT * FROM sigip", MySqlconnection)
     Dim tblSigip As DataTable
     Dim DsSigip As New DataSet
-    'Dim AdapterClass As New MySqlDataAdapter("SELECT * FROM ComponentClass", MySqlconnection)
     Dim tblClass As DataTable
     Dim DsClass As New DataSet
-    'Dim AdapterCus As New MySqlDataAdapter("SELECT * FROM Customer", MySqlconnection)
     Dim tblPfpElaborated As DataTable
     Dim DsPfpElaborated As New DataSet
-    'Dim AdapterPfpElaborated As New MySqlDataAdapter("SELECT * FROM PfpElaborated", MySqlconnection)
     Dim tblCus As DataTable
     Dim DsCus As New DataSet
     Dim OpenSession As Boolean, updating As Boolean
@@ -81,11 +72,9 @@ Public Class FormOffer
         End If
         Dim n As New TreeNode
         Dim eTree As New TreeViewCancelEventArgs(n, False, TreeViewAction.Unknown)
-
         If OpenSession Then TreeViewBomList_BeforeSelect(Me, eTree)
         If BrandSession Then TreeViewBrand_BeforeSelect(Me, eTree)
         If ComponentSession Then TreeViewComponent_BeforeSelect(Me, eTree)
-
         FormStart.Show()
         FormStart.Focus()
     End Sub
@@ -97,14 +86,12 @@ Public Class FormOffer
         Me.Focus()
         EnableBrandControl()
         If controlRight("R") >= 2 Then
-
             ComboBoxComponentStatus.Items.Add("R&D CHEKED")
             ComboBoxComponentStatus.Items.Add("R&D MODIFIED")
             ComboBoxComponentStatus.Items.Add("UNCHECKED")
             TextBoxComponentBitronPN.ReadOnly = False
             TextBoxComponentDescription.ReadOnly = False
             TextBoxComponentCustomer.Enabled = True
-
             TextBoxComponentqt1.Enabled = True
             TextBoxComponentqt2.Enabled = True
             TextBoxComponentqt4.Enabled = True
@@ -129,11 +116,7 @@ Public Class FormOffer
             TextBoxBomTurnover.Enabled = True
             ButtonComponentImportOrcad.Enabled = True
             ComboBoxClass.Enabled = True
-
-            'CheckBoxResult_On_Going.Enabled = True
-
         ElseIf controlRight("U") >= 2 Then
-
             For i = 0 To TabControl.TabPages.Item(0).Controls.Count - 1
                 TabControl.TabPages.Item(0).Controls.Item(i).Enabled = False
             Next
@@ -162,14 +145,12 @@ Public Class FormOffer
             CheckBoxOpen.Enabled = True
             FillcomboBrandSupplier()
             ButtonBomOfferOpen.Enabled = True
-            'CheckBoxResult_On_Going.Enabled = True
             ComboBoxCustomerFilter.Enabled = True
             Label31.Enabled = True
             CheckBoxEstimation.Enabled = True
             CheckBoxOrderByNumber.Enabled = True
             CheckBoxOrderByDate.Enabled = True
         Else
-
         End If
 
         DateTimePickerBom.Enabled = False
@@ -187,7 +168,6 @@ Public Class FormOffer
         TextBoxQt_V4.Enabled = False
         TextBoxQt_V5.Enabled = False
         TextBoxQt_V6.Enabled = False
-
         TextBoxNote.Enabled = False
         DateTimePickerBom.Text = ""
         ComboBoxBomCurrency.Text = ""
@@ -215,15 +195,14 @@ Public Class FormOffer
                 tblBomOff = DsBomOff.Tables("BomOffer")
             End Using
             Using AdapterCus As New MySqlDataAdapter("SELECT * FROM Customer", con)
-		        AdapterCus.Fill(DsCus, "Customer")
+                AdapterCus.Fill(DsCus, "Customer")
                 tblCus = DsCus.Tables("Customer")
-	        End Using
+            End Using
             Using AdapterClass As New MySqlDataAdapter("SELECT * FROM ComponentClass", con)
-		        AdapterClass.Fill(DsClass, "ComponentClass")
+                AdapterClass.Fill(DsClass, "ComponentClass")
                 tblClass = DsClass.Tables("ComponentClass")
-	        End Using
+            End Using
         End Using
-        ' PfpElaborated()
         UpdateBomFields()
         FillcomboCustomer()
         FillcomboCurrency()
@@ -231,7 +210,6 @@ Public Class FormOffer
         ButtonBomSave.BackColor = Color.Green
 
         ' COMPONENT
-
 
         ComboBoxBomResult.Items.Add("NEGATIVE")
         ComboBoxBomResult.Items.Add("SENT")
@@ -314,15 +292,14 @@ Public Class FormOffer
         TreeViewBomList.HideSelection = False
         TreeViewBrand.HideSelection = False
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterPfp As New MySqlDataAdapter("SELECT * FROM Pfp", con)
-		        AdapterPfp.Fill(DsPfp, "pfp")
+            Using AdapterPfp As New MySqlDataAdapter("SELECT * FROM Pfp", con)
+                AdapterPfp.Fill(DsPfp, "pfp")
                 tblPfp = DsPfp.Tables("pfp")
-	        End Using
+            End Using
 
             TextBoxBomUSD_CNY.Text = ParameterTable("USD_CNY")
             TextBoxBomEUR_USD.Text = ParameterTable("EUR_USD")
             TextBoxBomEUR_JPY.Text = ParameterTable("EUR_JPY")
-            'Fill orcad supplier
 
             FillComboBoxClass()
 
@@ -340,9 +317,9 @@ Public Class FormOffer
             End Try
 
             Using AdapterBrand As New MySqlDataAdapter("SELECT * FROM Brand", con)
-		        AdapterBrand.Fill(DsBrand, "Brand")
+                AdapterBrand.Fill(DsBrand, "Brand")
                 tblBrand = DsBrand.Tables("Brand")
-	        End Using
+            End Using
             CheckBoxBestPrice.Enabled = True
             CheckBoxBestPrice.Visible = True
         End Using
@@ -367,20 +344,20 @@ Public Class FormOffer
         ComboBoxCustomerFilter.Items.Add("")
         DsBomOff.Clear()
         tblBomOff.Clear()
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterBomOff As New MySqlDataAdapter("SELECT * FROM Bomoffer", con)
-		        AdapterBomOff.Fill(DsBomOff, "BomOffer")
+            Using AdapterBomOff As New MySqlDataAdapter("SELECT * FROM Bomoffer", con)
+                AdapterBomOff.Fill(DsBomOff, "BomOffer")
                 tblBomOff = DsBomOff.Tables("BomOffer")
-	        End Using
+            End Using
             DsCus.Clear()
             tblCus.Clear()
             Using AdapterCus As New MySqlDataAdapter("SELECT * FROM Customer", con)
-		        AdapterCus.Fill(DsCus, "Customer")
+                AdapterCus.Fill(DsCus, "Customer")
                 tblCus = DsCus.Tables("Customer")
-	        End Using
-            
+            End Using
+
         End Using
         Dim PrevCustomer As String = ""
         Try
@@ -406,13 +383,13 @@ Public Class FormOffer
         ComboBoxClass.Items.Add("")
         DsClass.Clear()
         tblClass.Clear()
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterClass As New MySqlDataAdapter("SELECT * FROM ComponentClass", con)
-		        AdapterClass.Fill(DsClass, "componentClass")
+            Using AdapterClass As New MySqlDataAdapter("SELECT * FROM ComponentClass", con)
+                AdapterClass.Fill(DsClass, "componentClass")
                 tblClass = DsClass.Tables("componentClass")
-	        End Using
+            End Using
         End Using
         Dim rowResults As DataRow() = tblClass.Select("class like '*'", "class")
         For Each row In rowResults
@@ -428,14 +405,14 @@ Public Class FormOffer
 
         ComboBoxBrandSupplier.Items.Clear()
         ComboBoxBrandSupplier.Items.Add("")
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterBrand As New MySqlDataAdapter("SELECT * FROM Brand", con)
-		        AdapterBrand.Fill(DsBrand, "brand")
-	        End Using
+            Using AdapterBrand As New MySqlDataAdapter("SELECT * FROM Brand", con)
+                AdapterBrand.Fill(DsBrand, "brand")
+            End Using
         End Using
-        
+
         Dim tblBrand As DataTable = DsBrand.Tables("brand")
         Dim rowResults As DataRow() = tblBrand.Select("not buyer = 'SystemLiking'", "supplier")
         For Each row In rowResults
@@ -452,15 +429,14 @@ Public Class FormOffer
         Dim n = 0
         DsBomOff.Clear()
         tblBomOff.Clear()
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterBomOff As New MySqlDataAdapter("SELECT * FROM Bomoffer", con)
-		        AdapterBomOff.Fill(DsBomOff, "BomOffer")
+            Using AdapterBomOff As New MySqlDataAdapter("SELECT * FROM Bomoffer", con)
+                AdapterBomOff.Fill(DsBomOff, "BomOffer")
                 tblBomOff = DsBomOff.Tables("BomOffer")
-	        End Using
+            End Using
         End Using
-        'SEL = "result = '' or name like '*'" & IIf(ComboBoxBomStatusFilter.Text <> "", " AND result = '" & ComboBoxBomStatusFilter.Text & "' ", "") & IIf(ComboBoxCustomerFilter.Text <> "", " AND customer = '" & ComboBoxCustomerFilter.Text & "'", "") & IIf(CheckBoxOpen.Checked, " AND STATUS = 'OPEN'", "") & IIf(CheckEstimed.Checked, " AND bitronpn like '*e*'", "")
         Dim SEL As String = "name like '*'" & IIf(ComboBoxBomStatusFilter.Text <> "", " AND result = '" & ComboBoxBomStatusFilter.Text & "' ", "") & IIf(ComboBoxCustomerFilter.Text <> "", " AND customer = '" & ComboBoxCustomerFilter.Text & "'", "") & IIf(CheckBoxOpen.Checked, " AND STATUS = 'OPEN'", "") & IIf(CheckEstimed.Checked, " AND bitronpn like '*e*'", "")
         Dim rowShow As DataRow() = tblBomOff.Select(SEL, IIf(CheckBoxOrderByDate.Checked, "eta ", IIf(CheckBoxOrderByNumber.Checked, "id", "customer,name")))
         Dim name As String = ""
@@ -475,10 +451,7 @@ Public Class FormOffer
             If row("name").ToString <> name Then
                 Dim childNode As TreeNode = New TreeNode(row("id").ToString & " - " & row("name").ToString & " - ETA: " & row("eta").ToString)
                 childNode.NodeFont = New Font("times new roman", 12, FontStyle.Regular)
-                'If EstimatedFirst = True Then
                 If estimated(row("name").ToString) Then childNode.ForeColor = Color.Red
-
-                'End If
                 If IsNothing(rootNode) Then rootNode = New TreeNode("")
                 If CheckBoxOrderByDate.Checked Then TreeViewBomList.Nodes.Add(childNode)
                 If Not CheckBoxOrderByDate.Checked Then rootNode.Nodes.Add(childNode)
@@ -495,18 +468,16 @@ Public Class FormOffer
     Function estimated(ByVal bomName As String) As Boolean
 
         estimated = False
-        Static Dim tblOff As DataTable
-        Static Dim DsOff As New DataSet
         Try
             Dim i As Integer = tblOff.Rows.Count
         Catch ex As Exception
-            Dim  builder As  New Common.DbConnectionStringBuilder()
+            Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	            Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
-		            AdapterOff.Fill(DsOff, "Offer")
+                Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
+                    AdapterOff.Fill(DsOff, "Offer")
                     tblOff = DsOff.Tables("offer")
-	            End Using
+                End Using
             End Using
         End Try
 
@@ -516,9 +487,6 @@ Public Class FormOffer
         Else
             estimated = False
         End If
-        'DsOff.Dispose()
-        'tblOff.Dispose()
-
     End Function
 
     ' extract brand[oc] in positin n
@@ -601,12 +569,12 @@ Public Class FormOffer
     Function CheckBomExist(ByVal s As String, ByVal refresh As Boolean) As Boolean
 
         Dim DsOff As New DataSet
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
-		        AdapterOff.Fill(DsOff, "Offer")
-	        End Using
+            Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
+                AdapterOff.Fill(DsOff, "Offer")
+            End Using
         End Using
         Dim tblOff As DataTable = DsOff.Tables("offer")
         Dim rowShow As DataRow() = tblOff.Select("name = '" & s & "'")
@@ -652,9 +620,7 @@ Public Class FormOffer
     End Function
 
 
-
     Private Sub TreeViewBomList_AfterSelect(ByVal sender As Object, ByVal e As TreeViewEventArgs) Handles TreeViewBomList.AfterSelect
-
         If currentId() > 0 Then
             UpdateBomFields()
             If controlRight("R") >= 2 Then
@@ -674,7 +640,6 @@ Public Class FormOffer
                 TextBoxQt_V4.Enabled = True
                 TextBoxQt_V5.Enabled = True
                 TextBoxQt_V6.Enabled = True
-
                 TextBoxNote.Enabled = True
                 ComboBoxCustomer.Enabled = True
                 ButtonBomSave.Enabled = True
@@ -706,7 +671,6 @@ Public Class FormOffer
             TextBoxQt_V4.Enabled = False
             TextBoxQt_V5.Enabled = False
             TextBoxQt_V6.Enabled = False
-
             TextBoxNote.Enabled = False
             DateTimePickerBom.Text = ""
             ComboBoxBomCurrency.Text = ""
@@ -785,10 +749,10 @@ Public Class FormOffer
                                                     "',`STATUS` = '" & ComboBoxBomStatus.Text &
                                                     "',`note` = '" & TextBoxNote.Text & "' WHERE `bomOffer`.`id` = " & currentId() & " ;"
                                 TextBoxBomTurnover.Text = Format(Val(Replace(Replace(TextBoxBomTurnover.Text, ".", ""), ",", "")), "#,0.")
-                                Dim  builder As  New Common.DbConnectionStringBuilder()
+                                Dim builder As New Common.DbConnectionStringBuilder()
                                 builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                                 Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                                Dim cmd = New MySqlCommand(sql, con)
+                                    Dim cmd = New MySqlCommand(sql, con)
                                     cmd.ExecuteNonQuery()
                                 End Using
                             Catch ex As Exception
@@ -909,13 +873,13 @@ Public Class FormOffer
             updating = True
             DsBomOff.Clear()
             tblBomOff.Clear()
-            Dim  builder As  New Common.DbConnectionStringBuilder()
+            Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	            Using AdapterBomOff As New MySqlDataAdapter("SELECT * FROM Bomoffer", con)
-		            AdapterBomOff.Fill(DsBomOff, "BomOffer")
+                Using AdapterBomOff As New MySqlDataAdapter("SELECT * FROM Bomoffer", con)
+                    AdapterBomOff.Fill(DsBomOff, "BomOffer")
                     tblBomOff = DsBomOff.Tables("BomOffer")
-	            End Using
+                End Using
             End Using
             Dim rowShow As DataRow() = tblBomOff.Select("id = " & currentId())
             If rowShow.Length > 0 Then
@@ -950,17 +914,15 @@ Public Class FormOffer
     End Sub
 
     Function PercentComplited(ByVal name As String) As Integer
-        Static Dim tblOff As DataTable
-        Static Dim DsOff As New DataSet
 
         If IsNothing(tblOff) Then
-            Dim  builder As  New Common.DbConnectionStringBuilder()
+            Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	            Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
-		            AdapterOff.Fill(DsOff, "Offer")
+                Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
+                    AdapterOff.Fill(DsOff, "Offer")
                     tblOff = DsOff.Tables("offer")
-	            End Using
+                End Using
             End Using
         Else
 
@@ -991,13 +953,6 @@ Public Class FormOffer
         End If
     End Sub
 
-    'Private Sub TreeViewBomList_BeforeSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewCancelEventArgs) Handles TreeViewBomList.BeforeSelect
-    '    session("BomOffer", currentId, False)
-    '    TextBoxBomTime.Text = ""
-    '    OpenSession = False
-    '    ButtonBomSave.BackColor = Color.Green
-    'End Sub
-
     Private Sub TreeViewBomList_GotFocus(ByVal sender As Object, ByVal e As EventArgs) Handles TreeViewBomList.GotFocus
         Try
             TreeViewBomList.SelectedNode.ForeColor = Color.Black
@@ -1009,7 +964,6 @@ Public Class FormOffer
 
 
     Sub ImportExcel()
-        'open the offer template
         Dim excelApp As Object = CreateObject("Excel.Application")
         OpenFileDialog1.InitialDirectory = "c:"
         OpenFileDialog1.Filter = "Access 2007 (*.accdb)|*.accdb"
@@ -1037,7 +991,6 @@ Public Class FormOffer
         If CheckBomExist(TextBoxBomName.Text, True) And Not IsNothing(TreeViewBomList.SelectedNode) Then
             MsgBox("The BOM is present in our system, please delete all component before reload!", MsgBoxStyle.Information)
             Application.DoEvents()
-            '  OfferComponentDelete(TextBoxBomName.Text)
         Else
             replaceBom = True
         End If
@@ -1069,7 +1022,6 @@ Public Class FormOffer
                 Dim tableBom As DataTable = dtset.Tables("table")
                 Try
                     Dim problem = False
-                    ' sintax ceck
                     For Each row In tableBom.Rows
 
                         Dim resultCheck As Boolean = CheckBrandString(s(row("brand").ToString), s(row("id").ToString))
@@ -1149,10 +1101,10 @@ Public Class FormOffer
                                                         Replace((s(row("notegeneric").ToString)), "'", "") & "', '" &
                                                         Replace((s(row("ComponentClass").ToString)), "'", "") & "', '" &
                                                         (s(row("type").ToString)) & "'" & ");"
-                                    Dim  builder As  New Common.DbConnectionStringBuilder()
+                                    Dim builder As New Common.DbConnectionStringBuilder()
                                     builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                                     Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                                    Dim cmd = New MySqlCommand(sql, con)
+                                        Dim cmd = New MySqlCommand(sql, con)
                                         cmd.ExecuteNonQuery()
                                     End Using
                                 Catch ex As Exception
@@ -1181,12 +1133,12 @@ Public Class FormOffer
         StatusComponent = "UNCHECKED"
         If Update = True Or IsNothing(tblOff) Then
             Dim DsOff As New DataSet
-            Dim  builder As  New Common.DbConnectionStringBuilder()
+            Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	            Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
-		            AdapterOff.Fill(DsOff, "Offer")
-	            End Using
+                Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
+                    AdapterOff.Fill(DsOff, "Offer")
+                End Using
             End Using
         End If
 
@@ -1201,12 +1153,12 @@ Public Class FormOffer
 
     Function CheckBomExistID(ByVal id As Long) As Boolean
         Dim DsOff As New DataSet
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
-		        AdapterOff.Fill(DsOff, "Offer")
-	        End Using
+            Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
+                AdapterOff.Fill(DsOff, "Offer")
+            End Using
         End Using
         Dim tblOff As DataTable = DsOff.Tables("offer")
         Dim rowShow As DataRow() = tblOff.Select("id =" & id & "")
@@ -1222,12 +1174,12 @@ Public Class FormOffer
     Function PurchSign(ByVal id As Long) As String
 
         Dim DsOff As New DataSet
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
-		        AdapterOff.Fill(DsOff, "Offer")
-	        End Using
+            Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
+                AdapterOff.Fill(DsOff, "Offer")
+            End Using
         End Using
         Dim tblOff As DataTable = DsOff.Tables("offer")
         Dim rowShow As DataRow() = tblOff.Select("id =" & id & "")
@@ -1241,12 +1193,12 @@ Public Class FormOffer
     Function RndSign(ByVal id As Long) As String
 
         Dim DsOff As New DataSet
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
-		        AdapterOff.Fill(DsOff, "Offer")
-	        End Using
+            Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
+                AdapterOff.Fill(DsOff, "Offer")
+            End Using
         End Using
         Dim tblOff As DataTable = DsOff.Tables("offer")
         Dim rowShow As DataRow() = tblOff.Select("id =" & id & "")
@@ -1265,12 +1217,12 @@ Public Class FormOffer
         Catch ex As Exception
 
         End Try
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterCustomerPrice As New MySqlDataAdapter("SELECT * FROM CustomerPrice", con)
-		        AdapterCustomerPrice.Fill(DsCustomerPrice, "CustomerPrice")
-	        End Using
+            Using AdapterCustomerPrice As New MySqlDataAdapter("SELECT * FROM CustomerPrice", con)
+                AdapterCustomerPrice.Fill(DsCustomerPrice, "CustomerPrice")
+            End Using
         End Using
         tblCustomerPrice = DsCustomerPrice.Tables("CustomerPrice")
         Dim rowShow As DataRow() = tblCustomerPrice.Select("customer = '" & TextBoxComponentCustomer.Text & "'")
@@ -1286,10 +1238,10 @@ Public Class FormOffer
         Dim BOMNAME As String = InputBox("Insert the Bom Name Example" & vbCrLf & "Basic Digit")
         If BOMNAME <> "" And Regex.IsMatch(BOMNAME, "^\w+[a-zA-Z0-9]$", RegexOptions.IgnoreCase) Then
             Try
-                Dim  builder As  New Common.DbConnectionStringBuilder()
+                Dim builder As New Common.DbConnectionStringBuilder()
                 builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                 Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                Dim sql As String = "INSERT INTO `" & (DBName) & "`.`BOMOFFER` (`Name`,`STATUS`) VALUES ('" & UCase(BOMNAME) & "', 'OPEN');"
+                    Dim sql As String = "INSERT INTO `" & (DBName) & "`.`BOMOFFER` (`Name`,`STATUS`) VALUES ('" & UCase(BOMNAME) & "', 'OPEN');"
                     Dim cmd = New MySqlCommand(sql, con)
                     cmd.ExecuteNonQuery()
                 End Using
@@ -1316,13 +1268,13 @@ Public Class FormOffer
 
         Try
             TreeViewComponent.Scrollable = True
-            Dim  builder As  New Common.DbConnectionStringBuilder()
+            Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	            Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
-		            AdapterOff.Fill(DsOff, "Offer")
+                Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
+                    AdapterOff.Fill(DsOff, "Offer")
                     tblOff = DsOff.Tables("Offer")
-	            End Using
+                End Using
             End Using
             Dim sql As String = ("name = '" & TextBoxBomName.Text & IIf(IsNumeric(TextBoxComponentFilter.Text), "' and ( id=" & TextBoxComponentFilter.Text & " or ", "' and ( ") & " ( description like '*" & TextBoxComponentFilter.Text & "*' )) " &
                                  IIf(CheckBoxNoPrice.Checked = True, " and   ( ( Brandprice= '') and ( BitronpnPrice= '') and ( AltPrice= ''))", "") &
@@ -1339,7 +1291,6 @@ Public Class FormOffer
                 Dim rootNode As TreeNode = New TreeNode(row("id") & " - " & LCase(row("Description")))
                 rootNode.NodeFont = New Font("courier new", 10, FontStyle.Regular)
 
-                'TreeViewComponent.ItemHeight = rootNode.NodeFont.GetHeight()
                 Dim StatusComp As String = StatusComponent(row("id"))
                 If StatusComp = ("PRICE OK") Then rootNode.ForeColor = Color.Green
                 If StatusComp = ("R&D CHEKED") Then rootNode.ForeColor = Color.Blue
@@ -1366,9 +1317,6 @@ Public Class FormOffer
             TreeViewComponent.Scrollable = True
             MsgBox("Error in display! " & ex.Message)
         End Try
-        ' TreeViewComponent.EndUpdate()
-
-
     End Sub
 
     ' update the form with component info
@@ -1381,12 +1329,12 @@ Public Class FormOffer
         priceSensitiveChangesBrandAlt = False
 
         Dim DsOff As New DataSet
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
-		        AdapterOff.Fill(DsOff, "Offer")
-	        End Using
+            Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
+                AdapterOff.Fill(DsOff, "Offer")
+            End Using
         End Using
         Dim tblOff As DataTable = DsOff.Tables("Offer")
         Dim rowShow As DataRow() = tblOff.Select("id = " & id)
@@ -1483,13 +1431,13 @@ Public Class FormOffer
 
     Function VersionName(ByVal idBom As Integer, ByVal pos As Integer, Optional ByVal update As Boolean = True) As String
         If update Then
-            Dim  builder As  New Common.DbConnectionStringBuilder()
+            Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	            Using AdapterBomOff As New MySqlDataAdapter("SELECT * FROM Bomoffer", con)
-		            AdapterBomOff.Fill(DsBomOffVer, "BomOffer")
+                Using AdapterBomOff As New MySqlDataAdapter("SELECT * FROM Bomoffer", con)
+                    AdapterBomOff.Fill(DsBomOffVer, "BomOffer")
                     tblBomOffVer = DsBomOffVer.Tables("BomOffer")
-	            End Using
+                End Using
             End Using
         End If
 
@@ -1501,12 +1449,12 @@ Public Class FormOffer
 
     Function volumes(ByVal id As Long, ByVal position As String) As Long
         Dim DsbomOff As New DataSet
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterBomOff As New MySqlDataAdapter("SELECT * FROM Bomoffer", con)
-		        AdapterBomOff.Fill(DsbomOff, "bomOffer")
-	        End Using
+            Using AdapterBomOff As New MySqlDataAdapter("SELECT * FROM Bomoffer", con)
+                AdapterBomOff.Fill(DsbomOff, "bomOffer")
+            End Using
         End Using
         Dim tblBomOff As DataTable = DsbomOff.Tables("bomoffer")
         Dim rowShow As DataRow() = tblBomOff.Select("id = " & id)
@@ -1646,17 +1594,16 @@ Public Class FormOffer
         Dim descr As String = InputBox("Insert Description")
         If descr <> "" Then
             Try
-                Dim  builder As  New Common.DbConnectionStringBuilder()
+                Dim builder As New Common.DbConnectionStringBuilder()
                 builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                 Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                Dim sql As String = "INSERT INTO `" & DBName & "`.`offer` (`description` ,`Name` ) VALUES ('" &
+                    Dim sql As String = "INSERT INTO `" & DBName & "`.`offer` (`description` ,`Name` ) VALUES ('" &
                                     descr & "', '" & TextBoxBomName.Text & "');"
                     Dim cmd As MySqlCommand = New MySqlCommand(sql, con)
                     cmd.ExecuteNonQuery()
                 End Using
                 MsgBox("Component insert, please fill all needs info")
                 updateComponentList()
-                'ValueChangedComponent(Me, e)
             Catch ex As Exception
                 MsgBox("Component insert error " & ex.Message)
             End Try
@@ -1673,16 +1620,15 @@ Public Class FormOffer
             If vbYes = MsgBox("Do you want delete this component?", MsgBoxStyle.YesNo) Then
                 If (session("offer", id, False) = "RESET") Then
                     Try
-                        Dim  builder As  New Common.DbConnectionStringBuilder()
+                        Dim builder As New Common.DbConnectionStringBuilder()
                         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                        Dim sql As String = "DELETE FROM `" & DBName & "`.`offer` WHERE `offer`.`id` = " & id
+                            Dim sql As String = "DELETE FROM `" & DBName & "`.`offer` WHERE `offer`.`id` = " & id
                             Dim cmd = New MySqlCommand(sql, con)
                             cmd.ExecuteNonQuery()
                         End Using
                         MsgBox("Component deleted")
                         updateComponentList()
-                        ' ValueChangedComponent(Me, e)
                     Catch ex As Exception
                         MsgBox("Component insert error " & ex.Message)
                     End Try
@@ -1770,10 +1716,7 @@ Public Class FormOffer
         If updatigComponent = False Then
             priceSensitiveChangesBitronPN = True
         End If
-
     End Sub
-
-
 
     ' value changed function
     Sub ValueChangedComponent(ByVal sender As Object, ByVal e As EventArgs) Handles _
@@ -1890,10 +1833,10 @@ Public Class FormOffer
             Else
                 If (session("bomoffer", currentId, False) = "RESET") Then
                     Try
-                        Dim  builder As  New Common.DbConnectionStringBuilder()
+                        Dim builder As New Common.DbConnectionStringBuilder()
                         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                        Dim sql As String = "DELETE FROM `" & DBName & "`.`bomoffer` WHERE `bomoffer`.`id` = " & currentId()
+                            Dim sql As String = "DELETE FROM `" & DBName & "`.`bomoffer` WHERE `bomoffer`.`id` = " & currentId()
                             Dim cmd = New MySqlCommand(sql, con)
                             cmd.ExecuteNonQuery()
                         End Using
@@ -1912,9 +1855,6 @@ Public Class FormOffer
         End If
 
     End Sub
-
-
-
 
     Private Sub ButtonSaveComp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSaveComp.Click
 
@@ -2006,10 +1946,10 @@ Public Class FormOffer
                                             "',`type` = '" & ComboBoxCompoentType.Text &
                                             "',`status` = '" & StatusCalc() &
                                             "',`noternd` = '" & Replace(TextBoxComponentRNDNote.Text, "'", "") & "' WHERE `Offer`.`id` = " & id & " ;"
-                        Dim  builder As  New Common.DbConnectionStringBuilder()
+                        Dim builder As New Common.DbConnectionStringBuilder()
                         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                        Dim cmd = New MySqlCommand(sql, con)
+                            Dim cmd = New MySqlCommand(sql, con)
                             cmd.ExecuteNonQuery()
                         End Using
 
@@ -2138,9 +2078,7 @@ Public Class FormOffer
         Try
             Process.Start(ParameterTable("DataSheetOfferFolder") & TextBoxComponentDS.Text)
         Catch ex As Exception
-
         End Try
-
 
     End Sub
 
@@ -2181,12 +2119,12 @@ Public Class FormOffer
             Dim DsBrand As New DataSet
 
             ' Search Brand corrispondence
-            Dim  builder As  New Common.DbConnectionStringBuilder()
+            Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	            Using AdapterBrand As New MySqlDataAdapter("SELECT * FROM Brand", con)
-		            AdapterBrand.Fill(DsBrand, "Brand")
-	            End Using
+                Using AdapterBrand As New MySqlDataAdapter("SELECT * FROM Brand", con)
+                    AdapterBrand.Fill(DsBrand, "Brand")
+                End Using
             End Using
             Dim tblBrand As DataTable = DsBrand.Tables("Brand")
             rowShow = tblBrand.Select("Brand = '" & ReplaceCharBrandOC(ComboBoxComponentBrand.Text) & "'")
@@ -2216,7 +2154,6 @@ Public Class FormOffer
                 Next
                 If (Ass < 100 Or Ass > 100) And rowShow.Length > 0 Then
                     ComboBoxComponentProposalPFP.Items.Clear()
-                    'MsgBox("Error in PFP recognize of p/n " & Replace(TextBoxComponentBitronPN.Text, "E", ""))
                     ComboBoxComponentProposalPFP.BackColor = Color.Red
                 Else
                     ComboBoxComponentProposalPFP.BackColor = Color.White
@@ -2235,13 +2172,13 @@ Public Class FormOffer
         Catch ex As Exception
 
         End Try
-        Dim  conBuilder As  New Common.DbConnectionStringBuilder()
+        Dim conBuilder As New Common.DbConnectionStringBuilder()
         conBuilder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(conBuilder("host"), conBuilder("database"), conBuilder("username"), conBuilder("password"))
-	        Using AdapterCustomerPrice As New MySqlDataAdapter("SELECT * FROM CustomerPrice", con)
-		        AdapterCustomerPrice.Fill(DsCustomerPrice, "CustomerPrice")
+            Using AdapterCustomerPrice As New MySqlDataAdapter("SELECT * FROM CustomerPrice", con)
+                AdapterCustomerPrice.Fill(DsCustomerPrice, "CustomerPrice")
                 tblCustomerPrice = DsCustomerPrice.Tables("CustomerPrice")
-	        End Using
+            End Using
         End Using
 
         rowShow = tblCustomerPrice.Select("customer = '" & ComboBoxCustomer.Text & "' and PartNumber = '" & Replace((TextBoxComponentBitronPN.Text), "E", "") & "'", "date")
@@ -2266,7 +2203,6 @@ Public Class FormOffer
             ComboBoxComponentProposalCustomer.Items.Add(row("Price") & " - " & row("currency") & "  Date " & row("date"))
             ComboBoxComponentProposalCustomer.Text = ComboBoxComponentProposalCustomer.Items(0).ToString
         Next
-
 
         Dim price As String = TextBoxComponentPrice.Text
         Dim currency As String = ComboBoxComponentPrice.Text
@@ -2333,14 +2269,12 @@ Public Class FormOffer
         End If
     End Sub
 
-
     Private Sub ButtonComponentALT_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonComponentAltTFT.Click
         If ComboBoxComponentProposalALT.Text <> "" Then
             ComboBoxComponentPriceAlt.Text = Mid(ComboBoxComponentProposalALT.Text, InStr(ComboBoxComponentProposalALT.Text, "-") + 2, 3)
             TextBoxComponentPriceAlt.Text = Mid(ComboBoxComponentProposalALT.Text, 1, InStr(ComboBoxComponentProposalALT.Text, "-") - 2)
         End If
     End Sub
-
 
     Private Sub ButtonComponentBitronPnTRF_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonComponentBitronPnTRF.Click
         If ComboBoxComponentProposalPFP.Text <> "" Then
@@ -2375,18 +2309,18 @@ Public Class FormOffer
 
         End Try
 
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterBrand As New MySqlDataAdapter("SELECT * FROM Brand", con)
-		        AdapterBrand.Fill(DsBrand, "Brand")
+            Using AdapterBrand As New MySqlDataAdapter("SELECT * FROM Brand", con)
+                AdapterBrand.Fill(DsBrand, "Brand")
                 tblBrand = DsBrand.Tables("Brand")
-	        End Using
+            End Using
 
             Using AdapterCustomerPrice As New MySqlDataAdapter("SELECT * FROM CustomerPrice", con)
-		        AdapterCustomerPrice.Fill(DsCustomerPrice, "CustomerPrice")
+                AdapterCustomerPrice.Fill(DsCustomerPrice, "CustomerPrice")
                 tblCustomerPrice = DsCustomerPrice.Tables("CustomerPrice")
-	        End Using
+            End Using
 
             If CheckBox1.Checked = False Then
 
@@ -2424,7 +2358,6 @@ Public Class FormOffer
                     End If
                 End If
 
-
                 ' alternative 
                 If TextBoxComponentPriceAlt.Text <> "" And ComboBoxComponentALTBrand.Text <> "" And InStr(ComboBoxComponentALTBrand.Text, "TBD") <= 0 And InStr(ComboBoxComponentALTBrand.Text, "PACKAGE") <= 0 Then
                     rowShow = tblBrand.Select("Brand = '" & ReplaceCharBrandOC(ComboBoxComponentALTBrand.Text) & "' and currency ='" & ComboBoxComponentPriceAlt.Text &
@@ -2451,8 +2384,6 @@ Public Class FormOffer
                         End If
                     End If
                 End If
-
-
             End If
 
             ' price customer            
@@ -2573,15 +2504,15 @@ Public Class FormOffer
         End Try
 
         Dim rootNode As TreeNode
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterBrand As New MySqlDataAdapter("SELECT * FROM Brand", con)
-		        AdapterBrand.Fill(DsBrand, "brand")
+            Using AdapterBrand As New MySqlDataAdapter("SELECT * FROM Brand", con)
+                AdapterBrand.Fill(DsBrand, "brand")
                 tblBrand = DsBrand.Tables("brand")
-	        End Using
+            End Using
         End Using
-        
+
         Dim rowShow As DataRow() = tblBrand.Select("(not buyer = 'SystemLiking') and (brand like " & IIf(TextBoxBrandRefresh.Text = "", "'*'", "'*" & OnlyChar(TextBoxBrandRefresh.Text) & "*'") & ")", "brand")
 
         For Each row In rowShow
@@ -2616,13 +2547,13 @@ Public Class FormOffer
         End Try
 
         Dim rootNode As TreeNode
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterBrand As New MySqlDataAdapter("SELECT * FROM Brand", con)
-		        AdapterBrand.Fill(DsBrand, "brand")
+            Using AdapterBrand As New MySqlDataAdapter("SELECT * FROM Brand", con)
+                AdapterBrand.Fill(DsBrand, "brand")
                 tblBrand = DsBrand.Tables("brand")
-	        End Using
+            End Using
         End Using
 
         rowShow = tblBrand.Select("(not buyer = 'SystemLiking') and (id = " & TextBoxBrandRefresh.Text & ")", "brand")
@@ -2717,13 +2648,13 @@ Public Class FormOffer
         End Try
         Dim id As Long = Mid(TreeViewBrand.SelectedNode.Text, 1, InStr(TreeViewBrand.SelectedNode.Text, "-") - 2)
 
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterBrand As New MySqlDataAdapter("SELECT * FROM Brand", con)
-		        AdapterBrand.Fill(DsBrand, "brand")
+            Using AdapterBrand As New MySqlDataAdapter("SELECT * FROM Brand", con)
+                AdapterBrand.Fill(DsBrand, "brand")
                 tblBrand = DsBrand.Tables("brand")
-	        End Using
+            End Using
         End Using
 
         rowShow = tblBrand.Select("id =" & id, "brand")
@@ -2792,10 +2723,10 @@ Public Class FormOffer
                                             "',`OfferLink` = '" & Replace(TextBoxBrandLink.Text, "\", "\\") &
                                             "',`qt` = '" & IIf(TextBoxBrandQuantity.Text <> "", DecQt(TextBoxBrandQuantity.Text), "") &
                                             "' WHERE `Brand`.`id` = " & id & " ;"
-                        Dim  builder As  New Common.DbConnectionStringBuilder()
+                        Dim builder As New Common.DbConnectionStringBuilder()
                         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                        Dim cmd = New MySqlCommand(sql, con)
+                            Dim cmd = New MySqlCommand(sql, con)
                             cmd.ExecuteNonQuery()
                         End Using
                     Catch ex As Exception
@@ -2831,17 +2762,16 @@ Public Class FormOffer
             If vbYes = MsgBox("Do you want delete this Brand[OC]?", MsgBoxStyle.YesNo) Then
                 If (session("brand", id, False) = "RESET") Then
                     Try
-                        Dim  builder As  New Common.DbConnectionStringBuilder()
+                        Dim builder As New Common.DbConnectionStringBuilder()
                         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                        Dim sql As String = "DELETE FROM `" & DBName & "`.`Brand` WHERE `Brand`.`id` = " & id
+                            Dim sql As String = "DELETE FROM `" & DBName & "`.`Brand` WHERE `Brand`.`id` = " & id
                             Dim cmd = New MySqlCommand(sql, con)
                             cmd.ExecuteNonQuery()
                         End Using
                         MsgBox("Brand deleted!")
                         updateBrandList()
                         Application.DoEvents()
-                        'ValueChangedBrand(Me, e)
                     Catch ex As Exception
                         MsgBox("Bom deleting error " & ex.Message)
                     End Try
@@ -2893,10 +2823,10 @@ Public Class FormOffer
         Dim descr As String = ReplaceCharBrandOC(InputBox("Insert Brand[OrderingCode] : " & vbCrLf & vbCrLf & "For Example nxp[bav99]"))
         If CheckBrandString(descr, descr) Then
             Try
-                Dim  builder As  New Common.DbConnectionStringBuilder()
+                Dim builder As New Common.DbConnectionStringBuilder()
                 builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                 Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                Dim sql As String = "INSERT INTO `" & DBName & "`.`Brand` (`Brand` ,`buyer` ,`date`) VALUES ('" &
+                    Dim sql As String = "INSERT INTO `" & DBName & "`.`Brand` (`Brand` ,`buyer` ,`date`) VALUES ('" &
                                     descr & "', '" & CreAccount.strUserName & "', '" & date_to_string(Today) & "' ); "
                     Dim cmd = New MySqlCommand(sql, con)
                     cmd.ExecuteNonQuery()
@@ -3029,13 +2959,13 @@ Public Class FormOffer
 
     Sub OfferComponentDelete(ByVal name As String)
         Dim DsOff As New DataSet
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
-		        AdapterOff.Fill(DsOff, "Offer")
-	        End Using
-            
+            Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
+                AdapterOff.Fill(DsOff, "Offer")
+            End Using
+
             Dim tblOff As DataTable = DsOff.Tables("Offer")
             Dim rowShow As DataRow() = tblOff.Select("name = " & name & "'")
             For Each row In rowShow
@@ -3066,15 +2996,13 @@ Public Class FormOffer
     Private Sub ButtonExportXML_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonExportXML.Click
 
         SaveFileDialog1.FileName = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\" & TextBoxBomName.Text & ".xls"
-        
-        'Dim AdapterOff As New MySqlDataAdapter("SELECT * FROM offer where name = '" & TextBoxBomName.Text & "'", MySqlConnection)
         Dim DsOff As New DataSet
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
-		        AdapterOff.Fill(DsOff, "Offer")
-	        End Using
+            Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
+                AdapterOff.Fill(DsOff, "Offer")
+            End Using
         End Using
         Dim tblOff As DataTable = DsOff.Tables("Offer")
 
@@ -3089,7 +3017,6 @@ Public Class FormOffer
         End If
 
     End Sub
-
 
     Private Sub TextBoxComponentBitronPN_textchanged(ByVal sender As Object, ByVal e As EventArgs) Handles TextBoxComponentBitronPN.TextChanged
         sender.Text = UCase(sender.Text)
@@ -3174,7 +3101,6 @@ Public Class FormOffer
             Dim selectedPrice As String, selectedCurrency As String
             Dim DeltaOrcad = ""
             Dim DisableErrorClass = 0
-            ' update the component type qt
             SumBomQt(TextBoxBomName.Text, "SMD_T")
             SumBomQt(TextBoxBomName.Text, "SMD_B")
             SumBomQt(TextBoxBomName.Text, "AX")
@@ -3189,13 +3115,13 @@ Public Class FormOffer
             TextBoxBomv4.Text = ""
             TextBoxBomV5.Text = ""
             TextBoxBomv6.Text = ""
-            Dim  builder As  New Common.DbConnectionStringBuilder()
+            Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	            Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
-		            AdapterOff.Fill(DsOff, "Offer")
-	            End Using
-                
+                Using AdapterOff As New MySqlDataAdapter("SELECT * FROM offer", con)
+                    AdapterOff.Fill(DsOff, "Offer")
+                End Using
+
                 Dim tblOff As DataTable = DsOff.Tables("offer")
                 Dim rowShow As DataRow() = tblOff.Select("name ='" & TextBoxBomName.Text & "'")
                 For Each row In rowShow
@@ -3401,7 +3327,6 @@ Public Class FormOffer
                 End If
 
             Catch ex As Exception
-                ' MessageBox.Show(ex.ToString())
             End Try
         Else
             GetOrcadSupplier = ""
@@ -3458,15 +3383,15 @@ Public Class FormOffer
         Try
             tblMySql.Clear()
             dsMySql.Clear()
-            Dim  conBuilder As  New Common.DbConnectionStringBuilder()
+            Dim conBuilder As New Common.DbConnectionStringBuilder()
             conBuilder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(conBuilder("host"), conBuilder("database"), conBuilder("username"), conBuilder("password"))
-	            Using adapterMySql As New MySqlDataAdapter("SELECT SUM(`qt_v1`) AS `qt_v1`,SUM(`qt_v2`) AS `qt_v2`,SUM(`qt_v3`) AS `qt_v3`,SUM(`qt_v4`) AS `qt_v4`," &
+                Using adapterMySql As New MySqlDataAdapter("SELECT SUM(`qt_v1`) AS `qt_v1`,SUM(`qt_v2`) AS `qt_v2`,SUM(`qt_v3`) AS `qt_v3`,SUM(`qt_v4`) AS `qt_v4`," &
                                             "SUM(`qt_v5`) AS `qt_v5`,SUM(`qt_v6`) AS `qt_v6` FROM `offer` WHERE `name`='" & bom & "' AND `type`='" & type & "'", con)
-		            adapterMySql.Fill(dsMySql, "offer")
+                    adapterMySql.Fill(dsMySql, "offer")
                     tblMySql = dsMySql.Tables("offer")
-	            End Using
-                
+                End Using
+
             End Using
         Catch ex As Exception
             MsgBox(ex.Message)
@@ -3480,10 +3405,10 @@ Public Class FormOffer
         Dim qt_v6 As String = ss(tblMySql.Rows(0).Item("qt_v6").ToString())
 
         Dim str As String = "[1]" & If(qt_v1 <> "", qt_v1, "0") & "[2]" & If(qt_v2 <> "", qt_v2, "0") & "[3]" & If(qt_v3 <> "", qt_v3, "0") & "[4]" & If(qt_v4 <> "", qt_v4, "0") & "[5]" & If(qt_v5 <> "", qt_v5, "0") & "[6]" & If(qt_v6 <> "", qt_v6, "0") & ""
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Dim commandMySql = New MySqlCommand("UPDATE `bomoffer` SET `" & IIf(type = "", "UN", type) & "`='" & str & "'  WHERE `name`='" & bom & "'", con)
+            Dim commandMySql = New MySqlCommand("UPDATE `bomoffer` SET `" & IIf(type = "", "UN", type) & "`='" & str & "'  WHERE `name`='" & bom & "'", con)
             commandMySql.ExecuteNonQuery()
         End Using
     End Sub
@@ -3508,11 +3433,8 @@ Public Class FormOffer
                 Dim bomOfferName As String = TextBoxBomName.Text
                 Dim tblOffer As New DataTable
                 Dim dsOffer As New DataSet
-                'Dim adapterOffer As MySqlDataAdapter
                 Dim tblBomOffer As New DataTable
                 Dim dsBomOffer As New DataSet
-                'Dim adapterBomOffer As MySqlDataAdapter
-
                 Dim i As Integer, j As Integer
 
                 'extract currency and pathoffer from parameterset table
@@ -3548,22 +3470,22 @@ Public Class FormOffer
                 'extract data from OFFER table
                 tblOffer.Clear()
                 dsOffer.Clear()
-                Dim  builder As  New Common.DbConnectionStringBuilder()
+                Dim builder As New Common.DbConnectionStringBuilder()
                 builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                 Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                Using adapterOffer As New MySqlDataAdapter("SELECT `id`,`name`,`bitronpn`,`description`,`brand`,`brandalt`,`qt_v1`,`qt_v2`,`qt_v3`,`qt_v4`,`qt_v5`,`qt_v6`,`reference`," &
+                    Using adapterOffer As New MySqlDataAdapter("SELECT `id`,`name`,`bitronpn`,`description`,`brand`,`brandalt`,`qt_v1`,`qt_v2`,`qt_v3`,`qt_v4`,`qt_v5`,`qt_v6`,`reference`," &
                     "`noternd`,`notepurchasing`,`notegeneric`,`customerpn`,`type`,`Class`,`tum`,`status`,`BitronpnPrice`,`BitronpnCurrency`,`AltPrice`,`AltCurrency`,`customerprice`,`customercurrency`,`Brandprice`,`Brandcurrency`,`deltaavl`,`deltaorcad`,`deltaprice`,`deltapricecurrency` FROM `offer` WHERE `name`='" & bomOfferName & "' order by id", con)
-		                adapterOffer.Fill(dsOffer, "offer")
+                        adapterOffer.Fill(dsOffer, "offer")
                         tblOffer = dsOffer.Tables("offer")
-	                End Using
+                    End Using
 
                     tblBomOffer.Clear()
                     dsBomOffer.Clear()
                     Using adapterBomOffer As New MySqlDataAdapter("SELECT `id`,`eta`,`name`,`currency`,`vol1`,`vol2`,`vol3`,`vol4`,`vol5`,`vol6`,`var1`,`var2`,`var3`,`var4`,`var5`,`var6`,`note`,`customer`,`status`,`smd_t`,`smd_b`,`ax`,`rd`,`p`,`un` FROM `bomoffer` WHERE `name`='" & bomOfferName & "' order by id", con)
-		                'extract data from BOM OFFER table
+                        'extract data from BOM OFFER table
                         adapterBomOffer.Fill(dsBomOffer, "bomoffer")
                         tblBomOffer = dsBomOffer.Tables("bomoffer")
-	                End Using
+                    End Using
                 End Using
                 'copy BOM INFORMATION to DATA worksheet        
                 For i = 0 To tblBomOffer.Columns.Count - 1
@@ -3667,7 +3589,6 @@ Public Class FormOffer
 
     Private Sub Update_Pfp()
         CollectProcess()
-        'open Parti_Fornitori_Prezzi.xls
         ButtonUpdatePfp.BackColor = Color.LightYellow
         Dim xlsApp As Object = CreateObject("Excel.Application")
 
@@ -3678,13 +3599,12 @@ Public Class FormOffer
         Dim xlsWorksheet As Object = xlsWorkbook.Worksheets(1)
         xlsWorksheet.Activate()
 
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
             'empty the PFP table
             Dim commandMySql = New MySqlCommand("TRUNCATE TABLE `" & DBName & "`.`pfp`", con)
             commandMySql.ExecuteNonQuery()
-
             'save the .xls file in .csv format
             Dim tempPath = Path.GetTempPath() & "temp.csv"
             Try
@@ -3701,8 +3621,7 @@ Public Class FormOffer
                 MsgBox(ex.Message)
             End Try
 
-        
-	        'copy data from excel to `pfp`
+            'copy data from excel to `pfp`
             Dim sql As String = "load data local infile '" & Replace(tempPath, "\", "\\") & "' into table `pfp` fields terminated by ','  lines terminated by '\r\n' ignore 1 lines  (`pfidf`,`pepre`,`peval`,`pfpaf`,`pfpan`,`pfpad`,`pelot`,`pedin`,`pedfi`,`pefor`,`forsc`)"
             commandMySql = New MySqlCommand(sql, con)
             commandMySql.ExecuteNonQuery()
@@ -3764,7 +3683,6 @@ Public Class FormOffer
                     value = ConvertPriceCurency(currency, value, "USD")
 
                     If (ass < 100 Or ass > 100) And rowShow.Length > 0 Then
-                        'MsgBox("Pfp not recognized!  " & rowMain("pfidf"))
                     ElseIf ass = 100 Then
                         'write pfpElaborated
                         sql = "INSERT INTO `" & DBName & "`.`pfp_Elaborated` (`bitronpn` ,`value`,`currency`,`datePfp`,`average`,`supplier`,`suppliercode`) VALUES ('" &
@@ -3841,13 +3759,13 @@ Public Class FormOffer
             Catch ex As Exception
 
             End Try
-            Dim  builder As  New Common.DbConnectionStringBuilder()
+            Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	            Using AdapterBrand As New MySqlDataAdapter("SELECT * FROM Brand", con)
-		            AdapterBrand.Fill(DsBrand, "Brand")
+                Using AdapterBrand As New MySqlDataAdapter("SELECT * FROM Brand", con)
+                    AdapterBrand.Fill(DsBrand, "Brand")
                     tblBrand = DsBrand.Tables("Brand")
-	            End Using
+                End Using
             End Using
             BooLinkingChanges = False
         End If
@@ -3866,7 +3784,7 @@ Public Class FormOffer
 
         Dim cmd As New MySqlCommand()
         Dim sql As String
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
             If ReadBrandLiking(brand) <> "MISSING" Then
@@ -3875,10 +3793,10 @@ Public Class FormOffer
                     "`Supplier` = '" & liking & "'" &
                     ", `buyer` = 'SystemLiking'" &
                     " WHERE `Brand`.`brand` = '" & brand & "'"
-                
-	                    cmd = New MySqlCommand(sql, con)
-                        cmd.ExecuteNonQuery()
-                    
+
+                    cmd = New MySqlCommand(sql, con)
+                    cmd.ExecuteNonQuery()
+
                 Catch ex As Exception
                     MsgBox("Mysql brand liking update query error!" & ex.Message, MsgBoxStyle.Critical)
                 End Try
@@ -3981,21 +3899,17 @@ Public Class FormOffer
                 End If
 
                 AllLiked = True
-
                 If ReadBrandLiking(Replace(TextBoxComponentBitronPN.Text, "E", "")) = "MISSING" Then AllLiked = False
             Else
                 ButtonBitronPnLiking.Visible = False
             End If
-
             If AllLiked = True Then
                 ButtonBitronPnLiking.Text = ""
             Else
                 ButtonBitronPnLiking.Text = "?"
             End If
         Catch ex As Exception
-
         End Try
-
     End Sub
 
     Function NextColor(ByVal Mycolor As Color) As String
@@ -4004,7 +3918,6 @@ Public Class FormOffer
         If Mycolor = Color.Green Then NextColor = "YELLOW"
         If Mycolor = Color.Yellow Then NextColor = "RED"
         If Mycolor = Color.Red Then NextColor = "WHITE"
-
     End Function
 
     Private Sub ButtonBitronPnLiking_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBitronPnLiking.Click
@@ -4031,9 +3944,7 @@ Public Class FormOffer
         End If
     End Sub
 
-
     Private Sub ButtonBomSigipCompare_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBomSigipCompare.Click
-
         ' primo tentativo pare non ok, da debaggare
         SigipOfferDifference()
         Application.DoEvents()
@@ -4049,7 +3960,6 @@ Public Class FormOffer
         End If
     End Sub
 
-
     Function SigipOfferDifference() As String
         Dim cmd As New MySqlCommand()
         Dim sql As String
@@ -4057,13 +3967,12 @@ Public Class FormOffer
         Dim DsOff As New DataSet
         Dim DsSigip As New DataSet
         Dim lastSigipPn = ""
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
             Dim AdapterOffMY As New MySqlDataAdapter("SELECT * FROM offer", con)
             AdapterOffMY.Fill(DsOff, "Offer")
             Dim tblOff As DataTable = DsOff.Tables("Offer")
-
             Dim AdapterSigipMY As New MySqlDataAdapter("SELECT * FROM sigip", con)
             AdapterSigipMY.Fill(DsSigip, "sigip")
             Dim tblSigip As DataTable = DsSigip.Tables("sigip")
@@ -4071,67 +3980,60 @@ Public Class FormOffer
             ButtonBomSigipCompare.BackColor = Color.Yellow
             If TextBoxBomName.Text <> "" Then
                 Dim VectorResult As Object = ""
-                    For i = 1 To 6
-                        If TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text <> "" Then
-                            Try
-                                sql = "UPDATE `" & DBName & "`.`offer` SET " &
+                For i = 1 To 6
+                    If TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text <> "" Then
+                        Try
+                            sql = "UPDATE `" & DBName & "`.`offer` SET " &
                                 "`CompareFlag` = 'X'  WHERE `offer`.`name` = '" & TextBoxBomName.Text & "'"
-                                cmd = New MySqlCommand(sql, con)
-                                cmd.ExecuteNonQuery()
-                            Catch ex As Exception
-                                MsgBox("Compare flag delete error error!" & ex.Message, MsgBoxStyle.Critical)
-                            End Try
-
-                            Dim rowShowSigip As DataRow() = tblSigip.Select("bom = '" & TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text & "'", "bitron_pn")
-                            If rowShowSigip.Length > 0 Then
-
-                                For Each RowSigip In rowShowSigip
-
-                                    If lastSigipPn <> RowSigip("bitron_pn").ToString Then
-                                        lastSigipPn = RowSigip("bitron_pn").ToString
-                                        Application.DoEvents()
-                                        rowShowOffer = tblOff.Select("bitronpn='" & RowSigip("bitron_pn").ToString & "' and name = '" & TextBoxBomName.Text & "'")
-                                        Dim TotQt As Double = 0
-                                        For Each RowOffer In rowShowOffer
-                                            TotQt = TotQt + RowOffer("qt_v" & i)
-                                        Next
-                                        If Math.Round(Val(TotQt), 5) <> Math.Round(Val(TotQtSigip(RowSigip("bitron_pn").ToString, TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text, tblSigip))) Then
-                                            VectorResult = VectorResult & TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text &
+                            cmd = New MySqlCommand(sql, con)
+                            cmd.ExecuteNonQuery()
+                        Catch ex As Exception
+                            MsgBox("Compare flag delete error error!" & ex.Message, MsgBoxStyle.Critical)
+                        End Try
+                        Dim rowShowSigip As DataRow() = tblSigip.Select("bom = '" & TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text & "'", "bitron_pn")
+                        If rowShowSigip.Length > 0 Then
+                            For Each RowSigip In rowShowSigip
+                                If lastSigipPn <> RowSigip("bitron_pn").ToString Then
+                                    lastSigipPn = RowSigip("bitron_pn").ToString
+                                    Application.DoEvents()
+                                    rowShowOffer = tblOff.Select("bitronpn='" & RowSigip("bitron_pn").ToString & "' and name = '" & TextBoxBomName.Text & "'")
+                                    Dim TotQt As Double = 0
+                                    For Each RowOffer In rowShowOffer
+                                        TotQt = TotQt + RowOffer("qt_v" & i)
+                                    Next
+                                    If Math.Round(Val(TotQt), 5) <> Math.Round(Val(TotQtSigip(RowSigip("bitron_pn").ToString, TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text, tblSigip))) Then
+                                        VectorResult = VectorResult & TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text &
                                                   " --> " & Mid(RowSigip("bitron_pn").ToString & "                    ", 1, 12) & " " & Mid(RowSigip("des_pn").ToString & "                                        ", 1, 30) & " SIGIP_Qt[" & TotQtSigip(RowSigip("bitron_pn").ToString, TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text, tblSigip) & "] -- Quote Qt[" &
                                                   TotQt & "]" & vbCrLf
-                                        End If
-
-                                        Try
-                                            sql = "UPDATE `" & DBName & "`.`offer` SET " &
-                                            "`CompareFlag` = 'C'  WHERE `offer`.`name` = '" & TextBoxBomName.Text & "' and bitronpn='" & RowSigip("bitron_pn").ToString & "'"
-                                            cmd = New MySqlCommand(sql, con)
-                                            cmd.ExecuteNonQuery()
-                                        Catch ex As Exception
-                                            MsgBox("Compare flag delete error error!" & ex.Message, MsgBoxStyle.Critical)
-                                        End Try
                                     End If
-                                Next
-                                DsOff.Clear()
-                                tblOff.Clear()
-                                AdapterOffMY.Fill(DsOff, "Offer")
-                                rowShowOffer = tblOff.Select("CompareFlag='X' AND name = '" & TextBoxBomName.Text & "'")
+                                    Try
+                                        sql = "UPDATE `" & DBName & "`.`offer` SET " &
+                                            "`CompareFlag` = 'C'  WHERE `offer`.`name` = '" & TextBoxBomName.Text & "' and bitronpn='" & RowSigip("bitron_pn").ToString & "'"
+                                        cmd = New MySqlCommand(sql, con)
+                                        cmd.ExecuteNonQuery()
+                                    Catch ex As Exception
+                                        MsgBox("Compare flag delete error error!" & ex.Message, MsgBoxStyle.Critical)
+                                    End Try
+                                End If
+                            Next
+                            DsOff.Clear()
+                            tblOff.Clear()
+                            AdapterOffMY.Fill(DsOff, "Offer")
+                            rowShowOffer = tblOff.Select("CompareFlag='X' AND name = '" & TextBoxBomName.Text & "'")
 
-                                For Each RowOffer In rowShowOffer
-                                    VectorResult = VectorResult & TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text &
+                            For Each RowOffer In rowShowOffer
+                                VectorResult = VectorResult & TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text &
                                     " --> " & Mid(RowOffer("bitronpn").ToString & "                     ", 1, 12) & " " & Mid(RowOffer("description").ToString & "                                              ", 1, 30) _
                                     & " SIGIP_Qt[0] -- Quote Qt[" &
                                     RowOffer("qt_v" & i).ToString & "]" & vbCrLf
-                                Next
-
-                            Else
-                                VectorResult = VectorResult & " BOM NOT FIND IN SIGIP " & TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text & vbCrLf
-                            End If
+                            Next
+                        Else
+                            VectorResult = VectorResult & " BOM NOT FIND IN SIGIP " & TabControl.TabPages(0).Controls("TextBoxNameV" & i).Text & vbCrLf
                         End If
-                        Application.DoEvents()
-                    Next
-            
+                    End If
+                    Application.DoEvents()
+                Next
                 SigipOfferDifference = VectorResult
-
             End If
         End Using
         ButtonBomSigipCompare.BackColor = Color.Green
@@ -4144,21 +4046,20 @@ Public Class FormOffer
         Dim sql As String
         Dim DsOff As New DataSet
         Dim DsSigip As New DataSet
-
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        
+
             ButtonBomImportSigipBom.BackColor = Color.Yellow
             ButtonBomImportSigipBom.Enabled = False
             Using AdapterOffMY As New MySqlDataAdapter("SELECT * FROM offer", con)
-		        AdapterOffMY.Fill(DsOff, "Offer")
-	        End Using
+                AdapterOffMY.Fill(DsOff, "Offer")
+            End Using
             Dim tblOff As DataTable = DsOff.Tables("Offer")
 
             Using AdapterSigipMY As New MySqlDataAdapter("SELECT * FROM sigip", con)
-		        AdapterSigipMY.Fill(DsSigip, "sigip")
-	        End Using
+                AdapterSigipMY.Fill(DsSigip, "sigip")
+            End Using
             Dim tblSigip As DataTable = DsSigip.Tables("sigip")
 
             Application.DoEvents()
@@ -4176,9 +4077,9 @@ Public Class FormOffer
                                 DsOff.Clear()
                                 tblOff.Clear()
                                 Using AdapterOffMY As New MySqlDataAdapter("SELECT * FROM offer", con)
-		                            AdapterOffMY.Fill(DsOff, "Offer")
+                                    AdapterOffMY.Fill(DsOff, "Offer")
                                     tblOff = DsOff.Tables("Offer")
-	                            End Using
+                                End Using
                                 rowShowOffer = tblOff.Select("bitronpn='" & RowSigip("bitron_pn").ToString & "' and name = '" & TextBoxBomName.Text & "'")
                                 If rowShowOffer.Length > 0 Then
                                     Try
@@ -4211,10 +4112,10 @@ Public Class FormOffer
                 Next
                 DsOff.Clear()
                 tblOff.Clear()
-	            Using AdapterOffMY As New MySqlDataAdapter("SELECT * FROM offer", con)
-		            AdapterOffMY.Fill(DsOff, "Offer")
+                Using AdapterOffMY As New MySqlDataAdapter("SELECT * FROM offer", con)
+                    AdapterOffMY.Fill(DsOff, "Offer")
                     rowShowOffer = tblOff.Select("name = '" & TextBoxBomName.Text & "'")
-	            End Using
+                End Using
                 If rowShowOffer.Length > 0 Then
                     For Each RowOffer In rowShowOffer
                         For i = 1 To 6
@@ -4240,22 +4141,16 @@ Public Class FormOffer
             End If
         End Using
         ButtonBomImportSigipBom.Enabled = True
-
-
     End Sub
 
     Function TotQtSigip(ByVal pn As String, ByVal bom As String, ByVal tblSigip As DataTable) As String
-
         Application.DoEvents()
         Dim rowShowOffer As DataRow() = tblSigip.Select("bom = '" & bom & "' and bitron_pn='" & pn & "'")
-
         TotQtSigip = 0
         For i = 1 To rowShowOffer.Length
             TotQtSigip = Val(TotQtSigip) + Val(rowShowOffer(i - 1).Item("qt").ToString)
         Next
-
     End Function
-
 
     Private Sub ButtonComponentImportOrcad_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonComponentImportOrcad.Click
         ComboBoxComponentBrand.Items.Clear()
@@ -4267,7 +4162,6 @@ Public Class FormOffer
             ComboBoxComponentBrand.Text = ComboBoxComponentBrand.Items(0).ToString
             ValueChangedComponent(Me, e)
         Catch ex As Exception
-
         End Try
     End Sub
 
@@ -4295,52 +4189,44 @@ Public Class FormOffer
             tblBrand.Clear()
             DsBrand.Clear()
         Catch ex As Exception
-
         End Try
         Try
-            Dim  builder As  New Common.DbConnectionStringBuilder()
+            Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	            Using AdapterBrand As New MySqlDataAdapter("SELECT * FROM Brand", con)
-		            AdapterBrand.Fill(DsBrand, "brand")
+                Using AdapterBrand As New MySqlDataAdapter("SELECT * FROM Brand", con)
+                    AdapterBrand.Fill(DsBrand, "brand")
                     tblBrand = DsBrand.Tables("brand")
-	            End Using
-
+                End Using
                 Dim rowShow As DataRow() = tblBrand.Select("(not buyer = 'SystemLiking') and (brand like '" & Mid(Replace(ComboBoxComponentBrand.Text, "[", "[[]"), 1, -1 + Len(Replace(ComboBoxComponentBrand.Text, "[", "[[]"))) & "[]]')", "brand")
-
                 For Each row In rowShow
                     If row("offerlink").ToString <> "" Then
                         Try
                             Process.Start(row("offerlink").ToString)
                         Catch ex As Exception
-
                         End Try
                     Else
                         MsgBox("No Offer stored for this p/n")
                     End If
-
                 Next
             End Using
         Catch ex As Exception
-
         End Try
     End Sub
 
     Private Sub ButtonOpenOfferBrandAlt_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonOpenOfferBrandAlt.Click
-
         Try
             tblBrand.Clear()
             DsBrand.Clear()
         Catch ex As Exception
-
         End Try
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterBrand As New MySqlDataAdapter("SELECT * FROM Brand", con)
-		        AdapterBrand.Fill(DsBrand, "brand")
+            Using AdapterBrand As New MySqlDataAdapter("SELECT * FROM Brand", con)
+                AdapterBrand.Fill(DsBrand, "brand")
                 tblBrand = DsBrand.Tables("brand")
-	        End Using
+            End Using
         End Using
         Dim rowShow As DataRow() = tblBrand.Select("(not buyer = 'SystemLiking') and (brand like '" & Mid(Replace(ComboBoxComponentALTBrand.Text, "[", "[[]"), 1, -1 + Len(Replace(ComboBoxComponentALTBrand.Text, "[", "[[]"))) & "[]]')", "brand")
 
@@ -4349,12 +4235,10 @@ Public Class FormOffer
                 Try
                     Process.Start(row("offerlink").ToString)
                 Catch ex As Exception
-
                 End Try
             Else
                 MsgBox("No Offer stored for this p/n")
             End If
-
         Next
     End Sub
 
@@ -4362,10 +4246,10 @@ Public Class FormOffer
     Private Sub ButtonPredict_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonPredict.Click
 
         Dim DsOff As New DataSet
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-        
+
             Dim AdapterOffMY As New MySqlDataAdapter("SELECT * FROM offer", con)
             AdapterOffMY.Fill(DsOff, "Offer")
             Dim tblOff As DataTable = DsOff.Tables("Offer")
@@ -4405,7 +4289,6 @@ Public Class FormOffer
         End Using
     End Sub
 
-
     Private Sub CheckBoxOrderByNumber_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBoxOrderByNumber.CheckedChanged
         UpdateTreeBomOffer()
     End Sub
@@ -4416,7 +4299,6 @@ Public Class FormOffer
         Else
             TextBoxComponentBitronPN.Text = "Price_Est_" & TextBoxComponentBitronPN.Text
         End If
-
     End Sub
 
     Private Sub CheckBoxEstimation_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBoxEstimation.CheckedChanged
@@ -4433,7 +4315,6 @@ Public Class FormOffer
             ComboBoxComponentALTBrand.Text = ComboBoxComponentALTBrand.Items(0).ToString
             ValueChangedComponent(Me, e)
         Catch ex As Exception
-
         End Try
     End Sub
 
@@ -4447,7 +4328,6 @@ Public Class FormOffer
             ComboBoxComponentALTBrand.Text = ComboBoxComponentALTBrand.Items(0).ToString
             ValueChangedComponent(Me, e)
         Catch ex As Exception
-
         End Try
     End Sub
 
@@ -4464,5 +4344,4 @@ Public Class FormOffer
         UpdateTreeBomOffer()
         ProgressBarBom.Value = 0
     End Sub
-
 End Class

@@ -23,12 +23,12 @@ Public Class FormTypeAdmin
             Using AdapterType As New MySqlDataAdapter("SELECT * FROM doctype", con)
                 AdapterType.Fill(DsType, "doctype")
                 tblDocType = DsType.Tables("doctype")
-	        End Using
+            End Using
             Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", con)
-		        AdapterDoc.Fill(DsDoc, "doc")
+                AdapterDoc.Fill(DsDoc, "doc")
                 tblDoc = DsDoc.Tables("doc")
-	        End Using
-            
+            End Using
+
         End Using
         FillComboFirstType()
         TextBoxPropriety.Text = "S?R?P?Y?C?"
@@ -76,8 +76,8 @@ Public Class FormTypeAdmin
         TextBoxExtension.Text = ""
 
     End Sub
-    ' Function to create new type
 
+    ' Function to create new type
     Private Sub ButtonTypeAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonTypeAdd.Click
         Dim AllOk = False
 
@@ -121,11 +121,11 @@ Public Class FormTypeAdmin
                         Dim builder As New Common.DbConnectionStringBuilder()
                         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                        Using AdapterType As New MySqlDataAdapter("SELECT * FROM doctype", con)
-		                        AdapterType.Update(tblDocType)
-	                        End Using
+                            Using AdapterType As New MySqlDataAdapter("SELECT * FROM doctype", con)
+                                AdapterType.Update(tblDocType)
+                            End Using
                         End Using
-                        
+
                         ComunicationLog("5041") '("Record inserted in database")
                         resetCont()
                         FillComboFirstType()
@@ -157,10 +157,10 @@ Public Class FormTypeAdmin
                 Else
                     returnValue = tblDocType.Select("header='" & HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text) & "'")
                     If returnValue.Length > 0 Then
-                        Dim  builder As  New Common.DbConnectionStringBuilder()
+                        Dim builder As New Common.DbConnectionStringBuilder()
                         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                        Dim sql As String = String.Format("DELETE FROM `{0}`.`doctype` WHERE `doctype`.`header` ='{1}'", DBName, HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text))
+                            Dim sql As String = String.Format("DELETE FROM `{0}`.`doctype` WHERE `doctype`.`header` ='{1}'", DBName, HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text))
                             Dim cmd As MySqlCommand = New MySqlCommand(sql, con)
                             cmd.ExecuteNonQuery()
                         End Using
@@ -177,7 +177,6 @@ Public Class FormTypeAdmin
     End Sub
 
     ' Fill the first type combo box
-
     Sub FillComboFirstType()
         ComboBoxFirstType.Items.Clear()
         Dim strOld = ""
@@ -197,7 +196,6 @@ Public Class FormTypeAdmin
     End Sub
 
     ' calculation of the three header
-
     Function HeaderCalc(ByVal cf As String, ByVal cs As String, ByVal ct As String) As String
         HeaderCalc = Mid(cf, 1, 3)
         If cs <> "-" Then
@@ -214,16 +212,13 @@ Public Class FormTypeAdmin
 
     Function CheckFieldType(ByVal s As String) As Boolean
         Dim Boofilled As Boolean
-
         If s <> "" Then Boofilled = True
-        ' NoNumeric(s) ' can use also numeric
         Dim BooTratSpace As Boolean = TratPositionSpace(s)
         CheckFieldType = BooTratSpace And BooTratSpace And Boofilled
 
     End Function
 
     ' check if all letters isnt numeric
-
     Function NoNumeric(ByVal s As String) As Boolean
         Dim i As Integer
         NoNumeric = True
@@ -233,7 +228,6 @@ Public Class FormTypeAdmin
     End Function
 
     ' Check header position space
-
     Function TratPositionSpace(ByVal s As String) As Boolean
         TratPositionSpace = False
         If Len(s) > 1 Then
@@ -244,7 +238,6 @@ Public Class FormTypeAdmin
     End Function
 
     'Enable all control
-
     Sub EnableControl()
         Dim ct As Control
         For Each ct In Me.Controls
@@ -253,7 +246,6 @@ Public Class FormTypeAdmin
     End Sub
 
     'Disable all control
-
     Sub DisableControl()
         Dim ct As Control
         For Each ct In Me.Controls
@@ -262,17 +254,16 @@ Public Class FormTypeAdmin
     End Sub
 
     ' Find the control properties and extension linked with a specific document type
-
     Sub UpdatePropriety()
         tblDocType.Clear()
         DsType.Clear()
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterType As New MySqlDataAdapter("SELECT * FROM doctype", con)
-		        AdapterType.Fill(DsType, "doctype")
+            Using AdapterType As New MySqlDataAdapter("SELECT * FROM doctype", con)
+                AdapterType.Fill(DsType, "doctype")
                 tblDocType = DsType.Tables("doctype")
-	        End Using
+            End Using
         End Using
 
         Dim returnValue As DataRow() = tblDocType.Select("header='" & HeaderCalc(ComboBoxFirstType.Text, ComboBoxSecondType.Text, ComboBoxThirdType.Text) & "'")
@@ -295,7 +286,6 @@ Public Class FormTypeAdmin
     End Sub
 
     ' comunication function
-
     Sub ComunicationLog(ByVal ComCode As String)
         Dim rsResult As DataRow() = tblError.Select("code='" & ComCode & "'")
         ListBoxLog.Items.Add(ComCode & " -> " & rsResult(0).Item("en").ToString)
@@ -316,23 +306,21 @@ Public Class FormTypeAdmin
 
     End Sub
 
-
     Private Sub Button1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Button1.Click
-        MsgBox("First Type: 3 letters - Description" & vbCrLf & _
-                "Second Type: 3 letters - Description" & vbCrLf & _
-                "Third Type: 3 letters - Description" & " (Example: LAB - Label Specification)" & vbCrLf & _
-                vbCrLf & _
-                "Please fill in the document properties: " & vbCrLf & _
-                "S{X} X=0 Sign not requested, X=1 Sign requested, " & vbCrLf & _
-                "R{X} X=0 Revision not requested, X=1 Revision requested, " & vbCrLf & _
-                "P{X} X=0 No product file, X=1 Product file, " & vbCrLf & _
-                "Y{X} X=0 File not required, X=1 File always required, X is a letter defining a process" & vbCrLf & _
-                "C{X} X=0 Free naming (General_Description), X=1 BitronCode, X=2 BitronCode - Description " & vbCrLf & _
-                "Example: S1R1P1Y1C0" & vbCrLf & _
-                vbCrLf & _
-                "Please fill in the file extension whith possible extensions of document:" & vbCrLf & _
-                "Example:pdf;docx;doc;xls;xlsx;zip;" & vbCrLf & _
+        MsgBox("First Type: 3 letters - Description" & vbCrLf &
+                "Second Type: 3 letters - Description" & vbCrLf &
+                "Third Type: 3 letters - Description" & " (Example: LAB - Label Specification)" & vbCrLf &
+                vbCrLf &
+                "Please fill in the document properties: " & vbCrLf &
+                "S{X} X=0 Sign not requested, X=1 Sign requested, " & vbCrLf &
+                "R{X} X=0 Revision not requested, X=1 Revision requested, " & vbCrLf &
+                "P{X} X=0 No product file, X=1 Product file, " & vbCrLf &
+                "Y{X} X=0 File not required, X=1 File always required, X is a letter defining a process" & vbCrLf &
+                "C{X} X=0 Free naming (General_Description), X=1 BitronCode, X=2 BitronCode - Description " & vbCrLf &
+                "Example: S1R1P1Y1C0" & vbCrLf &
+                vbCrLf &
+                "Please fill in the file extension whith possible extensions of document:" & vbCrLf &
+                "Example:pdf;docx;doc;xls;xlsx;zip;" & vbCrLf &
                 "Each file extension is followed by ';' and no SPACE are allowed between them. " & vbCrLf)
     End Sub
-
 End Class

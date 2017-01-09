@@ -3,22 +3,13 @@ Option Compare Text
 Imports System.Configuration
 Imports MySql.Data.MySqlClient
 
-
 Public Class FormGroup
-
-    'Dim AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", MySqlconnection)
     Dim tblProd As DataTable
     Dim DsProd As New DataSet
-
-    'Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
     Dim tblDoc As DataTable
     Dim DsDoc As New DataSet
-
     Dim dtSelectedColumns As DataTable
-
-
     Dim dictionaryForProd As Dictionary(Of Integer, String)
-
 
     Sub fillList()
         ListViewGRU.Clear()
@@ -57,7 +48,6 @@ Public Class FormGroup
                 End If
             Next
         End If
-
     End Sub
 
     Private Sub FormGroup_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
@@ -69,26 +59,25 @@ Public Class FormGroup
                 tblProd = DsProd.Tables("product")
             End Using
             Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", con)
-		        AdapterDoc.Fill(DsDoc, "doc")
+                AdapterDoc.Fill(DsDoc, "doc")
                 tblDoc = DsDoc.Tables("doc")
-	        End Using
+            End Using
         End Using
         ComboBoxGroup.Text = StrComboBoxGroup
         ComboBoxName.Text = ""
         FillProductList()
-
     End Sub
 
     Sub FillProductList()
         DsProd.Clear()
         tblProd.Clear()
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
-		        AdapterProd.Update(DsProd, "product")
+            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
+                AdapterProd.Update(DsProd, "product")
                 AdapterProd.Fill(DsProd, "product")
-	        End Using
+            End Using
         End Using
         tblProd = DsProd.Tables("product")
         Dim rowShow As DataRow() = tblProd.Select("bitronpn like '*'", "bitronpn asc")
@@ -141,9 +130,7 @@ Public Class FormGroup
             ListViewForProducts.Columns.Add(h)
             i = i + 1
         Next
-
         Dim str(tblProd.Columns.Count - 1) As String
-        'adding Datarows as listview Grids
         For i = 0 To rowShow.Length - 1
             For col = 0 To tblProd.Columns.Count - 1
                 str(col) = UCase(rowShow(i).ItemArray(col).ToString())
@@ -164,7 +151,7 @@ Public Class FormGroup
 
     Private Sub ButtonAddMch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAdd.Click
         Dim sql As String, cmd As MySqlCommand
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
             If ListViewForProducts.SelectedItems.Count > 0 Then
@@ -189,9 +176,9 @@ Public Class FormGroup
                 Me.DsProd.Reset()
                 tblProd.Reset()
                 Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
-		            AdapterProd.Fill(Me.tblProd)
-	            End Using
-                
+                    AdapterProd.Fill(Me.tblProd)
+                End Using
+
                 Me.dictionaryForProd.Clear()
                 For Each productItem As ListViewItem In ListViewForProducts.SelectedItems
                     Dim item = productItem.SubItems.Item(0)
@@ -209,7 +196,7 @@ Public Class FormGroup
     End Sub
 
     Private Sub ButtonRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRemove.Click
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
             If ListViewGRU.SelectedItems.Count > 0 Then
@@ -237,8 +224,8 @@ Public Class FormGroup
                 Me.DsProd.Reset()
                 tblProd.Reset()
                 Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
-		            AdapterProd.Fill(Me.tblProd)
-	            End Using
+                    AdapterProd.Fill(Me.tblProd)
+                End Using
                 Me.dictionaryForProd.Clear()
                 For Each productItem As ListViewItem In ListViewForProducts.SelectedItems
                     Dim item = productItem.SubItems.Item(0)
@@ -259,12 +246,12 @@ Public Class FormGroup
             Me.dictionaryForProd = New Dictionary(Of Integer, String)
             Me.DsProd.Reset()
             tblProd.Reset()
-            Dim  builder As  New Common.DbConnectionStringBuilder()
+            Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	            Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
-		            AdapterProd.Fill(Me.tblProd)
-	            End Using
+                Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product", con)
+                    AdapterProd.Fill(Me.tblProd)
+                End Using
             End Using
             For Each productItem As ListViewItem In ListViewForProducts.SelectedItems
                 Dim item = productItem.SubItems.Item(0)
@@ -290,15 +277,14 @@ Public Class FormGroup
             Dim fileDocExist As String
             Dim fileName As String
             For i = 0 To resultdoc.Length - 1
-                fileDocExist = true
+                fileDocExist = True
                 fileName = resultdoc(i).Item("filename").ToString
                 For Each product In dictionaryForProd
-                    If InStr(product.Value.ToString , fileName) = 0 Then fileDocExist = false
+                    If InStr(product.Value.ToString, fileName) = 0 Then fileDocExist = False
                 Next
                 If fileDocExist = False Then ComboBoxName.Items.Add(resultdoc(i).Item("filename").ToString)
             Next
         Catch ex As Exception
         End Try
     End Sub
-
 End Class

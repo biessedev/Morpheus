@@ -9,7 +9,6 @@ Imports System.Linq
 Imports System.Configuration
 
 Public Class FormSamples
-
     Dim DsDocComp As New DataSet
     Dim tblDocComp As New DataTable
     Dim index As Long = 1
@@ -35,15 +34,11 @@ Public Class FormSamples
     Dim DsNPI As New DataSet
     Dim tblTP As DataTable
     Dim DsTP As New DataSet
-
-
     Dim ConnectionStringOrcad As String
-
     Dim AdapterSql As SqlDataAdapter
     Dim TblSql As New DataTable
     Dim DsSql As New DataSet
     Dim RdaInfo As String, OrderInfo As String
-
     Dim DateStart As New Date
     Dim DateClosed As New Date
     Dim cSelectedID As String
@@ -362,7 +357,6 @@ Public Class FormSamples
                 ElseIf row("statusactivity").ToString <> "OPEN" And row("statusactivity").ToString <> "" Then
                     rootChildren2.ForeColor = Color.LightGray
                 Else
-                    'rootChildren2.ForeColor = currentColor
                 End If
                 rootChildren1.Nodes.Add(rootChildren2)
             End If
@@ -601,7 +595,6 @@ Public Class FormSamples
     End Sub
 
     Private Sub ComboBoxActivityID_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxActivityID.TextChanged
-
         If ComboBoxActivityID.Text <> "" Then
             currentActivityID = Int(Trim(Mid(ComboBoxActivityID.Text, 1, InStr(ComboBoxActivityID.Text, " "))))
         Else
@@ -715,7 +708,6 @@ Public Class FormSamples
     End Sub
 
     Function LastIDActivity() As Integer
-
         Dim DsProd As New DataSet
         Dim activityid = 0
         Dim builder As New Common.DbConnectionStringBuilder()
@@ -732,7 +724,6 @@ Public Class FormSamples
                 activityid = row("idactivity")
             End If
         Next
-
         LastIDActivity = activityid
     End Function
 
@@ -794,13 +785,10 @@ Public Class FormSamples
 
                 Process.Start("explorer.exe", ParameterTable("PathMorpheus") & ParameterTable("PathNPI") & ParameterTable("PathActivityDoc") & ComboBoxActivityID.Text)
 
-
             Catch ex As Exception
                 MsgBox("Directory creation error!" & ex.ToString)
             End Try
-
         End If
-
     End Sub
 
     Function ActivityStatus(ByVal id As Integer) As String
@@ -818,7 +806,6 @@ Public Class FormSamples
         If id Then
             If rowShow.Length Then ActivityStatus = rowShow(0).Item("Statusactivity").ToString
         End If
-
     End Function
 
     Private Sub ComboBoxActivityStatus_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxActivityStatus.TextChanged
@@ -831,26 +818,22 @@ Public Class FormSamples
     End Sub
 
     Sub SaveTree(ByVal myTree As TreeNode, ByVal path As String)
-
         If path <> "" Then
             For Each node In myTree.Nodes
                 WriteTxtFile(path, Replace(node.ToString, "TreeNode:", ""), True)
                 SaveTree(node, path)
             Next
         End If
-
     End Sub
 
 #Region "task"
 
     Private Sub TabControlNPI_TabIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles _
                 TabControlNPI.SelectedIndexChanged, ComboBoxType.SelectedIndexChanged
-
         If InStr(TabControlNPI.SelectedTab.Text, "Task") > 0 Then
             TreeViewTask.Font = New Font("Courier New", 11, FontStyle.Regular)
             If currentActivityID > 0 Then
                 LabelActivityTask.Text = ComboBoxActivityID.Text
-
                 XmlTree.SetTreeView(TreeViewTask)
                 UpdateTreeTask()
                 If controlRight("R") >= 2 Then ButtonSave.Enabled = True
@@ -878,9 +861,7 @@ Public Class FormSamples
                 TextBoxTaskNote.Enabled = False
                 ComboBoxTaskStatus.Enabled = False
                 ComboBoxType.Enabled = False
-
             End If
-
         Else
             Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
@@ -928,24 +909,19 @@ Public Class FormSamples
                 End If
             End Using
             If InStr(TabControlNPI.SelectedTab.Text, "OpenIssue") > 0 Then
-                'If controlRight("R") < 3 Then
                 If controlRight("W") >= 2 Then
                     Btn_Add.Enabled = True
                     Btn_Del.Enabled = True
                     Btn_Save.Enabled = True
                     Btn_UpLoadFile.Enabled = True
-
                 End If
-
             End If
-
         End If
         If Not firstLoad Then
             DeselectRows()
             firstLoad = False
         End If
     End Sub
-
 
     Sub UpdateTreeTask()
         Dim DsProd As New DataSet
@@ -982,9 +958,7 @@ Public Class FormSamples
         TreeViewActivity.HideSelection = False
     End Sub
 
-
     Sub colorNode(ByRef mynode As TreeNode)
-
         mynode.BackColor = Color.White
         mynode.NodeFont = New Font("Courier New", 11, FontStyle.Regular)
         If mynode.Level = 0 Then
@@ -997,18 +971,14 @@ Public Class FormSamples
         For Each nn In mynode.Nodes
             colorNode(nn)
         Next
-
     End Sub
 
     Function percent(ByVal node As TreeNode) As String
         Dim per As Integer, count As Integer
-
         For Each n In node.Nodes
             Try
                 per = per + Int(Trim(Replace(Mid(n.Text, 1, 3), "%", "")))
-
             Catch ex As Exception
-
             End Try
             If Mid(n.Text, 1, 2) <> "NA" Then count = count + 1
         Next
@@ -1089,7 +1059,6 @@ Public Class FormSamples
     End Sub
 
     Private Sub ButtonReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonReset.Click
-
         If currentActivityID > 0 Then
             Dim DsProd As New DataSet
             Dim CanSet As Boolean
@@ -1120,7 +1089,6 @@ Public Class FormSamples
                     TreeViewTask.Nodes.Add(node)
                 Next
             Else
-
                 For Each row In rowShow
                     MsgBox("Section USED " & session("Product", row("Id").ToString, False))
                 Next
@@ -1176,8 +1144,6 @@ Public Class FormSamples
                 Next
             End If
         End If
-
-
     End Sub
 
     Private Sub ButtonDelete_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDelete.Click
@@ -1218,7 +1184,6 @@ Public Class FormSamples
                 Next
             End If
         End If
-
     End Sub
 
     Private Sub TreeViewTask_AfterSelect(ByVal sender As Object, ByVal e As TreeViewEventArgs) Handles TreeViewTask.AfterSelect
@@ -1231,9 +1196,7 @@ Public Class FormSamples
             ComboBoxTaskStatus.Text = UCase(Mid(TreeViewTask.SelectedNode.Text, 1, 4))
             TextBoxTaskNote.Text = (Mid(TreeViewTask.SelectedNode.Text, 36))
         Catch ex As Exception
-
         End Try
-
     End Sub
 
     Private Sub ButtonUpdate_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonUpdate.Click
@@ -1282,21 +1245,17 @@ Public Class FormSamples
     End Sub
 
 #End Region  ' Task 
-
     Sub PrintNode(ByVal FileName As String, ByVal node As TreeNode)
-
         For Each n In node.Nodes
             WriteTxtFile(FileName, n.ToString, True)
             PrintNode(FileName, n)
         Next
-
     End Sub
 
     Private Sub ButtonExport_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonExport.Click
         SaveFileDialog1.DefaultExt = "txt"
         SaveFileDialog1.InitialDirectory = My.Computer.FileSystem.SpecialDirectories.MyDocuments
         SaveFileDialog1.ShowDialog()
-
         Try
             WriteTxtFile(SaveFileDialog1.FileName, ("Product: " & Now), False)
             For Each node In TreeViewActivity.Nodes
@@ -1312,9 +1271,7 @@ Public Class FormSamples
                 PrintNode(SaveFileDialog1.FileName, node)
             Next
         Catch ex As Exception
-
         End Try
-
     End Sub
 
     Private Sub TimerTask_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerTask.Tick
@@ -1395,7 +1352,6 @@ Public Class FormSamples
         MemProcess = ""
         For Each prog As Process In Process.GetProcesses
             MemProcess = MemProcess & ";" & prog.Id
-
         Next
     End Sub
 
@@ -1409,7 +1365,6 @@ Public Class FormSamples
     End Sub
 
     Private Sub ButtonUpdateMagBox_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonUpdateMagBox.Click
-
         Dim DsProd As New DataSet
         Dim BomName = ""
         Dim i = 0
@@ -1477,12 +1432,10 @@ Public Class FormSamples
                 Catch ex As Exception
                     MsgBox("Error in DB... please reset material request!")
                 End Try
-
             Next
 
             ButtonUpdateMagBox.Text = "Deleting data and shift ....."
             Application.DoEvents()
-
             ButtonUpdateMagBox.Text = "Load Orcad Data....."
             Application.DoEvents()
             tblDocComp.Clear()
@@ -1614,13 +1567,10 @@ Public Class FormSamples
                 order = order + Val(row("qta_ord").ToString)
                 OrderInfo = "ORDER_" & row("ordine").ToString & "[" & row("qta_ord").ToString & "];" & OrderInfo
             Next
-
         End If
-
     End Function
 
     Function Rda(ByVal bitronpn As String, ByVal refrash As Boolean) As Single
-
         Static tblRda As DataTable
         Static DsRda As New DataSet
         Dim rowShow As DataRow()
@@ -1631,7 +1581,6 @@ Public Class FormSamples
                 tblRda.Clear()
                 DsRda.Clear()
             Catch ex As Exception
-
             End Try
             Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
@@ -1641,7 +1590,6 @@ Public Class FormSamples
                 End Using
             End Using
             tblRda = DsRda.Tables("Rda")
-
         Else
             Dim prodPlant As String = ParameterTable("plant")
             rowShow = tblRda.Select("RAIDF ='" & bitronpn & "' and RASTB ='" & prodPlant & "' AND ( RASTA ='I' OR  RASTA ='L' OR RASTA ='A' OR RASTA ='C' )")
@@ -1649,24 +1597,19 @@ Public Class FormSamples
                 Rda = Rda + Val(row("RAQT1").ToString) + Val(row("RAQT2").ToString) + Val(row("RAQT3").ToString) + Val(row("RAQT4").ToString) + Val(row("RAQT5").ToString)
                 RdaInfo = "RDA_" & row("ranum").ToString & "_" & row("RASTA").ToString & "[" & Val(row("RAQT1").ToString) + Val(row("RAQT2").ToString) + Val(row("RAQT3").ToString) + Val(row("RAQT4").ToString) + Val(row("RAQT5").ToString) & "];" & RdaInfo
             Next
-
         End If
-
     End Function
 
     Function SigipUsed(ByVal bitronpn As String) As String
-
         SigipUsed = ""
         Dim rowShowSigip As DataRow() = tblSigip.Select("bitron_pn ='" & bitronpn & "' and (active = 'yes')")
 
         For Each rowSigip In rowShowSigip
             SigipUsed = SigipUsed & rowSigip.Item("bom").ToString & " - " & rowSigip.Item("des_bom").ToString & "[" & Val(rowSigip.Item("qt").ToString) & "];"
         Next
-
     End Function
 
     Sub AddRequest(ByVal bitronPN As String, ByVal des_PN As String, ByVal qt As String, ByVal npieces As String, ByVal Bom As String, ByVal des_bom As String, Optional ByVal brand As String = "", Optional ByVal brandAlt As String = "", Optional ByVal Doc As String = "")
-
         Dim strQt As String
         Dim strBomList
         Dim dsMySql As New DataSet
@@ -1735,8 +1678,6 @@ Public Class FormSamples
     End Sub
 
     Public Sub Import_Order()
-
-        'open Saldi_per_ubicazione.xls
         Dim xlsApp As Object = CreateObject("Excel.Application")
         xlsApp.DisplayAlerts = False
         xlsApp.Visible = False
@@ -1759,7 +1700,6 @@ Public Class FormSamples
                 If File.Exists(tempPath) Then
                     File.Delete(tempPath)
                 End If
-
                 xlsWorkbook.SaveAs(tempPath, 6)
                 xlsWorkbook.Close(True)
                 xlsApp.Quit()
@@ -1777,7 +1717,6 @@ Public Class FormSamples
     End Sub
 
     Public Sub Import_WH_Stock()
-
         Dim xlsWorkbook As Object
 
         'open Saldi_per_ubicazione.xls
@@ -1867,7 +1806,6 @@ Public Class FormSamples
     End Sub
 
     Public Function Stock(ByVal bitronpn As String) As Double
-
         Dim dsMySql As New DataSet
         Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
@@ -1876,14 +1814,11 @@ Public Class FormSamples
                 adapterMySql.Fill(dsMySql, "spu")
             End Using
         End Using
-
         Dim tblMySql As DataTable = dsMySql.Tables("spu")
         Return Val(tblMySql.Rows(0).Item("sum").ToString)
-
     End Function
 
     Public Function Stock_W(ByVal bitronpn As String) As Double
-
         Dim dsMySql As New DataSet
         Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
@@ -1892,11 +1827,8 @@ Public Class FormSamples
                 adapterMySql.Fill(dsMySql, "spu")
             End Using
         End Using
-
         Dim tblMySql As DataTable = dsMySql.Tables("spu")
-
         Return Val(tblMySql.Rows(0).Item("sum").ToString)
-
     End Function
 
     Function pfp(ByVal bitronpn As String) As String
@@ -1917,16 +1849,13 @@ Public Class FormSamples
                 End If
                 If ass >= 100 Then Exit For
             End If
-
         Next
         If (ass < 100 Or ass > 100) And rowShow.Length > 0 Then
             pfp = pfp & " " & ("Error in PFP recognize of p/n " & Replace(bitronpn, "E", ""))
         End If
-
     End Function
 
     Function ConvPrice(ByVal Price As String, ByVal batch As String) As String
-
         If batch = "TH" Then
             ConvPrice = Math.Round(Val(Price / 1000), 5)
         ElseIf batch = "EA" Then
@@ -1935,11 +1864,9 @@ Public Class FormSamples
             ConvPrice = 0
             MsgBox("Conversion error for batch " & batch)
         End If
-
     End Function
 
     Function GetOrcadSupplier(ByVal BitronPN As String) As String
-
         GetOrcadSupplier = ""
         Try
             Dim orcadBuilder As New Common.DbConnectionStringBuilder()
@@ -1956,11 +1883,9 @@ Public Class FormSamples
                     GetOrcadSupplier = GetOrcadSupplier & IIf(TblSql.Rows.Item(0)("costruttore" & i).ToString <> "", TblSql.Rows.Item(0)("costruttore" & i).ToString & "[" & TblSql.Rows.Item(0)("orderingcode" & i).ToString & "];", "")
                 Next
             End If
-
         Catch ex As Exception
             MessageBox.Show(ex.ToString())
         End Try
-
     End Function
 
     Function ReplaceChar(ByVal s As String) As String
@@ -1974,12 +1899,10 @@ Public Class FormSamples
             End If
             ReplaceChar = s
         Next
-
     End Function
 
     Function OrcadDoc(ByVal bitronPN As String) As String
         Dim rowShow As DataRow(), rowHC As DataRow()
-
         rowShow = tblDoc.Select("filename like '" & bitronPN & " - *' or filename like '" & bitronPN & "'", "rev DESC")
         If rowShow.Length > 0 And Mid(bitronPN, 1, 2) <> "15" Then
             OrcadDoc = "SRV_DOC - " & rowShow(0)("header").ToString & "_" & rowShow(0)("filename").ToString & "_" & rowShow(0)("rev").ToString & "." & rowShow(0)("extension").ToString
@@ -1999,9 +1922,7 @@ Public Class FormSamples
             Else
                 OrcadDoc = "NO"
             End If
-
         End If
-
     End Function
 
     Private Sub Cob_StatusFill()
@@ -2010,7 +1931,6 @@ Public Class FormSamples
         Cob_Status.Items.Add("ONGOING")
         Cob_Status.Items.Add("CLOSED")
         Cob_Status.Text = ""
-
     End Sub
 
     Private Sub Cob_FilterStatusFill()
@@ -2020,15 +1940,11 @@ Public Class FormSamples
         Cob_FilterStatus.Items.Add("ONGOING")
         Cob_FilterStatus.Items.Add("CLOSED")
         Cob_FilterStatus.Text = ""
-
     End Sub
 
     Private Sub DataBangding(ByVal selectrowNo As Integer)
-
         Dim objCurrencyManager As CurrencyManager
-
         objCurrencyManager = CType(Me.BindingContext(tblNPI), CurrencyManager)
-
         Txt_Index.DataBindings.Clear()
         Txt_BitronPN.DataBindings.Clear()
         Txt_description.DataBindings.Clear()
@@ -2041,11 +1957,8 @@ Public Class FormSamples
         Txt_TempCorrectAction.DataBindings.Clear()
         Txt_FinalCorrectAction.DataBindings.Clear()
         Txt_FilePath.DataBindings.Clear()
-
         DGV_NPI.Update()
-
         objCurrencyManager.Position = selectrowNo
-
         Txt_Index.DataBindings.Add("Text", tblNPI, "ID")
         Txt_BitronPN.DataBindings.Add("Text", tblNPI, "Bitron_PN")
         Txt_description.DataBindings.Add("Text", tblNPI, "BS")
@@ -2055,14 +1968,10 @@ Public Class FormSamples
         Txt_TempCorrectAction.DataBindings.Add("Text", tblNPI, "Temp_corr_action")
         Txt_FinalCorrectAction.DataBindings.Add("Text", tblNPI, "Final_corr_action")
         Cob_Owner.DataBindings.Add("Text", tblNPI, "Owner")
-
         Txt_FilePath.DataBindings.Add("Text", tblNPI, "FilePath")
-
     End Sub
 
-
     Private Sub Btn_Add_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Add.Click
-
         If Trim(Txt_BitronPN.Text) <> "" Then
             Try
 
@@ -2083,16 +1992,13 @@ Public Class FormSamples
             End Try
         Else
             MsgBox("Bitron Product Code can't be empty")
-
         End If
-
         CobFilterBitronPNFill()
         DeselectRows()
     End Sub
 
     Private Sub Btn_Del_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Del.Click
         Dim selectrowNo As Integer = DGV_NPI.CurrentRow.Index
-
         If MsgBox("Are you sure to delete this issue?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
             Try
                 Dim sql As String = " DELETE  From npi_openissue WHERE ID = " & Txt_Index.Text
@@ -2104,22 +2010,16 @@ Public Class FormSamples
                     cmd.ExecuteNonQuery()
                     Call issuefunction(selectrowNo - 1)
                 End Using
-
-
             Catch ex As Exception
                 MsgBox(ex.Message)
             End Try
-
         End If
-
         CobFilterBitronPNFill()
         DeselectRows()
     End Sub
 
     Private Sub Btn_Save_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Save.Click
-
         Dim selectrowNo As Integer = DGV_NPI.CurrentRow.Index
-
         If Trim(Txt_BitronPN.Text) <> "" Then
             Try
                 DateStart = DTP_Date.Value.Date
@@ -2143,20 +2043,16 @@ Public Class FormSamples
         Else
             MsgBox("Bitron Product Code can't be empty")
         End If
-
         CobFilterBitronPNFill()
         DeselectRows()
     End Sub
 
     Private Sub Btn_Search_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Search.Click
-
         Call DGV_Fill()
         DeselectRows()
     End Sub
 
     Private Sub DGV_Fill()
-
-
         Dim Sql = "SELECT * FROM npi_openissue WHERE ID > 0 "
         If (Cob_FilterOwner.Text <> "") Then
             Sql += "And Owner='" & Cob_FilterOwner.Text & "'"
@@ -2164,7 +2060,6 @@ Public Class FormSamples
 
         If (Cob_FilterBS.Text <> "") Then
             Sql += "And BS='" & Cob_FilterBS.Text & "'"
-
         End If
 
         If Cob_FilterBitronPN.Text <> "" Then
@@ -2179,7 +2074,6 @@ Public Class FormSamples
         Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-
             Try
                 DsNPI.Clear()
                 tblNPI.Clear()
@@ -2187,10 +2081,7 @@ Public Class FormSamples
                     AdapterNPICob.Fill(DsNPI, "NPI")
                 End Using
                 tblNPI = DsNPI.Tables("NPI")
-
                 DGV_NPI.DataSource = tblNPI
-
-
             Catch ex As Exception
                 MsgBox(ex.Message)
             End Try
@@ -2198,7 +2089,6 @@ Public Class FormSamples
     End Sub
 
     Public Sub issuefunction(ByVal selectrowNo As Integer)
-
         DsNPI.Clear()
         tblNPI.Clear()
         Dim builder As New Common.DbConnectionStringBuilder()
@@ -2209,25 +2099,18 @@ Public Class FormSamples
             End Using
         End Using
         tblNPI = DsNPI.Tables("NPI")
-
         DGV_NPI.DataSource = tblNPI
-
         If tblNPI.Rows.Count > 0 And selectrowNo > -1 Then
 
             DGV_NPI.Rows(selectrowNo).Selected = True
             Call DataBangding(selectrowNo)
-
         End If
-
     End Sub
 
     Private Sub DGV_NPI_MouseDoubleClick(ByVal sender As Object, ByVal e As MouseEventArgs) Handles DGV_NPI.MouseDoubleClick
-
         If DGV_NPI.SelectedRows.Count = 1 Then
             If controlRight("W") >= 1 Then 'BEC: controlRight("R") >= 1
-
                 Dim fileOpen As String
-
                 fileOpen = downloadFileWinPath(Txt_FilePath.Text)
                 Application.DoEvents()
                 If fileOpen <> "" Then
@@ -2237,46 +2120,34 @@ Public Class FormSamples
             Else
                 MsgBox("No enough right to check the file")
             End If
-
         End If
-
     End Sub
 
 
     Private Sub Btn_UpLoadFile_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_UpLoadFile.Click
-
         If DGV_NPI.Rows.Count > 0 Then
             FormNPIDocMamagement.Show()
             FormNPIDocMamagement.Focus()
-
         Else
             MsgBox("Create an open issue and then link a document!")
         End If
-
     End Sub
 
     Sub FillCobFilterContent()
-
         Cob_FilterOwner.Items.Clear()
         Cob_FilterOwner.Items.Add("")
 
         For Each row In tblCredentials.Rows
-
             Cob_FilterOwner.Items.Add(UCase(row("username").ToString))
-
         Next
         Cob_FilterOwner.Sorted = True
     End Sub
 
     Sub FillCobOwnerContent()
-
         Cob_Owner.Items.Clear()
         Cob_Owner.Items.Add("")
-
         For Each row In tblCredentials.Rows
-
             Cob_Owner.Items.Add(UCase(row("username").ToString))
-
         Next
         Cob_Owner.Sorted = True
     End Sub
@@ -2301,11 +2172,9 @@ Public Class FormSamples
         Else
             MsgBox("FilePath does not exist")
         End If
-
     End Function
 
     Private Sub CobFilterBitronPNFill()
-
         Cob_FilterBitronPN.Items.Clear()
         Cob_FilterBitronPN.Items.Add("")
 
@@ -2324,13 +2193,10 @@ Public Class FormSamples
         For Each row In rowResults
             If Cob_FilterBitronPN.Items.Contains(UCase(row("Bitron_PN").ToString)) = False Then Cob_FilterBitronPN.Items.Add(UCase(row("Bitron_PN").ToString))
         Next
-
         Cob_FilterBitronPN.Sorted = True
-
-
     End Sub
-    Private Sub CobFilterBSFill()
 
+    Private Sub CobFilterBSFill()
         Cob_FilterBS.Items.Clear()
         Cob_FilterBS.Items.Add("")
         Dim builder As New Common.DbConnectionStringBuilder()
@@ -2346,9 +2212,7 @@ Public Class FormSamples
         For Each row In rowResults
             If Cob_FilterBS.Items.Contains(UCase(row("BS").ToString)) = False Then Cob_FilterBS.Items.Add(UCase(row("BS").ToString))
         Next
-
         Cob_FilterBS.Sorted = True
-
     End Sub
 
     Private Sub DTP_Date_ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles DTP_Date.ValueChanged
@@ -2360,9 +2224,6 @@ Public Class FormSamples
             CheckBoxClosed.Checked = False
         End If
     End Sub
-
-
-
 
     Private Function IsNeedUpdate(ByVal id As String) As Boolean
         Dim update As Boolean = False
@@ -2407,7 +2268,6 @@ Public Class FormSamples
                 End If
             End If
         Catch ex As Exception
-
         End Try
         Return update
     End Function
@@ -2451,13 +2311,9 @@ Public Class FormSamples
         Else
             MsgBox("Bitron Product Code can't be empty")
         End If
-
     End Sub
 
     Dim saveUpdate As Boolean = True
-
-
-
 
     Private Sub ClearDataBindings()
         Txt_Index.DataBindings.Clear()
@@ -2503,7 +2359,6 @@ Public Class FormSamples
 
     Private Sub SelectRow()
         Dim newSelectedId As String
-
         If cSelectedID = Nothing Then
             cSelectedID = Me.DGV_NPI.Item(DGV_NPI.Columns("ID").Index, DGV_NPI.SelectedRows(0).Index).Value.ToString()
         End If
@@ -2531,12 +2386,10 @@ Public Class FormSamples
     Private Sub DGV_NPI_MouseUp(sender As Object, e As MouseEventArgs) Handles DGV_NPI.MouseUp
         Try
             Dim hitInfo As DataGridView.HitTestInfo = DGV_NPI.HitTest(e.X, e.Y)
-
             'Click to column Header 
             If hitInfo.RowIndex = -1 Then
                 Return
             End If
-
             If selectedIndex = DGV_NPI.SelectedCells(0).RowIndex And selectedIndex <> -1 Then
                 If DGV_NPI.Rows(selectedIndex).Selected = True Then
                     DeselectRows()
@@ -2545,7 +2398,6 @@ Public Class FormSamples
                 SelectRow()
             End If
         Catch ex As Exception
-
         End Try
     End Sub
 
@@ -2580,7 +2432,6 @@ Public Class FormSamples
                 SelectRow()
             End If
         End If
-
     End Sub
 
     Private Sub moveDown()
@@ -2598,14 +2449,9 @@ Public Class FormSamples
                 SelectRow()
             End If
         End If
-
     End Sub
-
-
-
 
     Private Sub DTP_PlanCloseDate_ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles DTP_PlanCloseDate.ValueChanged
         DateClosed = DTP_PlanCloseDate.Value.Date
     End Sub
-
 End Class

@@ -34,11 +34,8 @@ Public Class FormChangePassword
     Private Sub ButtonSave_Click(sender As Object, e As EventArgs) Handles ButtonSave.Click
         Dim users = tblCred.Select("username = '" & CreAccount.strUserName & "'")
         If users.Length <> 0 Then
-
             If TextBoxOldPass.Text <> "" And TextBoxNewPass.Text.Trim <> "" And TextBoxPassCheck.Text.Trim <> "" Then
-
                 If users(0).Item(1) = TextBoxOldPass.Text And TextBoxNewPass.Text = TextBoxPassCheck.Text Then
-
                     If TextBoxOldPass.Text = TextBoxNewPass.Text Then
                         LabelForValidation.ForeColor = Color.Red
                         LabelForValidation.Text = "New password is the same as old password."
@@ -66,7 +63,6 @@ Public Class FormChangePassword
             End If
         End If
     End Sub
-
 
     Private Sub CheckBoxShowPassword_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxShowPassword.CheckedChanged
         If CheckBoxShowPassword.CheckState = CheckState.Checked Then

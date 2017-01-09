@@ -23,13 +23,13 @@ Public Class FormManageAccounts
     Private Sub fillList()
         DsCred.Clear()
         tblCred.Clear()
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Using AdapterCred As New MySqlDataAdapter("SELECT * FROM Credentials ORDER BY username asc", con)
-		        AdapterCred.Update(DsCred, "credential")
+            Using AdapterCred As New MySqlDataAdapter("SELECT * FROM Credentials ORDER BY username asc", con)
+                AdapterCred.Update(DsCred, "credential")
                 AdapterCred.Fill(DsCred, "credential")
-	        End Using
+            End Using
         End Using
         tblCred = DsCred.Tables("credential")
         Dim users = tblCred.Select()
@@ -57,7 +57,6 @@ Public Class FormManageAccounts
             Dim ii As New ListViewItem(str)
             ListViewForUsers.Items.Add(ii)
         Next
-
     End Sub
 
     Private Sub ButtonSave_Click(sender As Object, e As EventArgs) Handles ButtonSave.Click
@@ -67,10 +66,10 @@ Public Class FormManageAccounts
                 Dim returnValue As Boolean
                 returnValue = Regex.IsMatch(TextBoxForSign.Text.ToUpper.Trim, "R[0-9]J[0-9]E[0-9]B[0-9]Q[0-9]N[0-9]P[0-9]U[0-9]F[0-9]L[0-9]C[0-9]I[0-9]A[0-9]T[0-9]W[0-9]Z[0-9]$")
                 If returnValue = True Then
-                    Dim  builder As  New Common.DbConnectionStringBuilder()
+                    Dim builder As New Common.DbConnectionStringBuilder()
                     builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                     Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                    sql = "UPDATE `" & DBName & "`.`credentials` SET `username` = '" & TextBoxForUsername.Text & "', `password` = '" & TextBoxForPassword.Text & "', `sign` = '" & TextBoxForSign.Text & "' WHERE `username` = '" & ListViewForUsers.SelectedItems.Item(0).SubItems(0).Text & "' AND `password` = '" & ListViewForUsers.SelectedItems.Item(0).SubItems(1).Text & "' ;"
+                        sql = "UPDATE `" & DBName & "`.`credentials` SET `username` = '" & TextBoxForUsername.Text & "', `password` = '" & TextBoxForPassword.Text & "', `sign` = '" & TextBoxForSign.Text & "' WHERE `username` = '" & ListViewForUsers.SelectedItems.Item(0).SubItems(0).Text & "' AND `password` = '" & ListViewForUsers.SelectedItems.Item(0).SubItems(1).Text & "' ;"
                         Dim cmd = New MySqlCommand(sql, con)
                         cmd.ExecuteNonQuery()
                     End Using
@@ -84,13 +83,11 @@ Public Class FormManageAccounts
                 End If
             Catch ex As Exception
             End Try
-
         End If
-
     End Sub
 
     Private Sub ListViewForUsers_ItemSelectionChanged(sender As Object, e As ListViewItemSelectionChangedEventArgs) Handles ListViewForUsers.ItemSelectionChanged
-        If ListViewForUsers.SelectedItems.Count = 1
+        If ListViewForUsers.SelectedItems.Count = 1 Then
             TextBoxForUsername.Text = ListViewForUsers.SelectedItems.Item(0).SubItems(0).Text.ToString()
             TextBoxForPassword.Text = ListViewForUsers.SelectedItems.Item(0).SubItems(1).Text.ToString()
             TextBoxForSign.Text = ListViewForUsers.SelectedItems.Item(0).SubItems(2).Text.ToString()
@@ -101,10 +98,10 @@ Public Class FormManageAccounts
         Dim sql As String
         If ListViewForUsers.SelectedItems.Count = 1 Then
             Try
-                Dim  builder As  New Common.DbConnectionStringBuilder()
+                Dim builder As New Common.DbConnectionStringBuilder()
                 builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                 Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                sql = "DELETE FROM `" & DBName & "`.`credentials` WHERE `Username` = '" & TextBoxForUsername.Text &
+                    sql = "DELETE FROM `" & DBName & "`.`credentials` WHERE `Username` = '" & TextBoxForUsername.Text &
                         "' and `password` = '" & TextBoxForPassword.Text & "' ;"
                     Dim cmd = New MySqlCommand(sql, con)
                     cmd.ExecuteNonQuery()
@@ -118,8 +115,6 @@ Public Class FormManageAccounts
         End If
 
         fillList()
-
-
         TextBoxForUsername.Text = ""
         TextBoxForPassword.Text = ""
         TextBoxForSign.Text = ""
@@ -158,16 +153,14 @@ Public Class FormManageAccounts
     End Sub
 
     Private Function IsUserExist(userName As String) As Boolean
-
         Dim returnValue As Boolean = False
         Dim strQuery As String
-
 
         strQuery = "SELECT COUNT(*)"
         strQuery &= "FROM credentials "
         strQuery &= "WHERE trim(lower(username)) = '" & userName.Trim.ToLower & "'"
 
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
             Using xComm As New MySqlCommand()
@@ -186,8 +179,6 @@ Public Class FormManageAccounts
                 End Try
             End Using
         End Using
-
         Return returnValue
     End Function
-
 End Class

@@ -6,7 +6,6 @@ Imports System.Configuration
 
 Public Class FormTimeShow
     Dim yelloDelay As Integer = 5
-    'Dim AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", MySqlconnection)
     Dim tblTP As DataTable
     Dim DsTP As New DataSet
     Dim tbltp_static As DataTable
@@ -77,26 +76,26 @@ Public Class FormTimeShow
     Function ProjectLeader(ByVal id As String, ByVal refresh As Boolean) As String
 
         ProjectLeader = ""
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	        Try
-		        Dim i As Integer = tbltp_static.Rows.Count
-	        Catch ex As Exception
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tbltp_static = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End Try
+            Try
+                Dim i As Integer = tbltp_static.Rows.Count
+            Catch ex As Exception
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tbltp_static = Dstp_static.Tables("TimeProject")
+                End Using
+            End Try
 
-	        If refresh Then
-		        Dstp_static.Clear()
-		        tbltp_static.Clear()
-		        Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-			        AdapterTP.Fill(Dstp_static, "TimeProject")
-			        tblTP = Dstp_static.Tables("TimeProject")
-		        End Using
-	        End If
+            If refresh Then
+                Dstp_static.Clear()
+                tbltp_static.Clear()
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(Dstp_static, "TimeProject")
+                    tblTP = Dstp_static.Tables("TimeProject")
+                End Using
+            End If
         End Using
 
         Dim rowShow As DataRow() = tbltp_static.Select("Project = '" & id & "'")
@@ -104,7 +103,6 @@ Public Class FormTimeShow
         For Each row In rowShow
             ProjectLeader = row("ProjectLeader").ToString
         Next
-
     End Function
 
     Private Sub TimerShow_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles TimerShow.Tick
@@ -139,7 +137,6 @@ Public Class FormTimeShow
                 Application.DoEvents()
             End Try
         Else
-
         End If
 
         TreeViewProjectList.Focus()
@@ -373,13 +370,8 @@ Public Class FormTimeShow
                             " project = '" & TreeViewProjectList.SelectedNode.Text & "'  and " &
                             IIf(ComboBoxResponsibleFilter.Text = "", "ProjectLeader like '*'  ", "projectleader = '" & ComboBoxResponsibleFilter.Text & "'  ")
         Dim rowShow As DataRow() = tblTP.Select(sql, "project, id")
-
         For Each row In rowShow
-
             Dim rootNode As TreeNode = New TreeNode(Mid(row("taskname").ToString, 1, 42) & Mid("  --------------------------------------------------", 1, 43 - Len(Mid(row("taskname").ToString, 1, 42))) & "> " & row("taskleader").ToString)
-            '  rootNode.NodeFont = New Font("Courier New", 16, FontStyle.Bold)
-
-
             If row("status").ToString = ("CLOSED") Then rootNode.ForeColor = Color.SeaGreen
             If row("status").ToString = ("STANDBY") Then rootNode.ForeColor = Color.Blue
             If row("status").ToString = ("OPEN") Then
@@ -402,20 +394,18 @@ Public Class FormTimeShow
     End Sub
 
     Sub UpdateTreeProjectList(ByVal refresh As Boolean)
-
-        ' TreeViewProjectList.Font = New Font("Courier New", 14, FontStyle.Bold)
         TreeViewProjectList.Nodes.Clear()
 
         If refresh Then
             DsTP.Clear()
             tblTP.Clear()
-            Dim  builder As  New Common.DbConnectionStringBuilder()
+            Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	            Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
-		            AdapterTP.Fill(DsTP, "TimeProject")
+                Using AdapterTP As New MySqlDataAdapter("SELECT * FROM TimeProject", con)
+                    AdapterTP.Fill(DsTP, "TimeProject")
                     tblTP = DsTP.Tables("TimeProject")
-	            End Using
+                End Using
             End Using
         End If
         Dim sql As String = IIf(ComboBoxAreaFilter.Text = "", "area like '*' and ", "area like '" & ComboBoxAreaFilter.Text & "*' and ") &
@@ -431,7 +421,6 @@ Public Class FormTimeShow
 
             If row("project").ToString <> Project Then
                 Dim rootNode As TreeNode = New TreeNode(row("project").ToString)
-
                 TreeViewProjectList.BeginUpdate()
                 TreeViewProjectList.Nodes.Add(rootNode)
                 TreeViewProjectList.EndUpdate()
@@ -446,10 +435,8 @@ Public Class FormTimeShow
             End If
 
             TreeViewProjectList.ResumeLayout()
-
             refresh = False
         Next
-
     End Sub
 
     Sub FillCustomerCombo()
@@ -468,10 +455,8 @@ Public Class FormTimeShow
 
     Sub FillAreaCombo()
         Dim Area = ""
-
         ComboBoxAreaFilter.Items.Clear()
         ComboBoxAreaFilter.Items.Add("")
-
         Dim rowResults As DataRow() = tblTP.Select("project like '*'", "area")
         For Each row In rowResults
             If Area <> row("Area").ToString Then
@@ -499,8 +484,6 @@ Public Class FormTimeShow
     End Sub
 
     Function ProjectStatus(ByVal id As String, ByVal refresh As Boolean) As String
-        Static Dim tbltp As DataTable
-        Static Dim Dstp As New DataSet
         ProjectStatus = "MISSING"
         Dim  builder As  New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
@@ -551,13 +534,11 @@ Public Class FormTimeShow
     End Function
 
     Function DelayAdvanceTime(ByVal id As String, ByVal refresh As Boolean) As Integer
-
         Dim totaltime As Integer = DateDiff("d", string_to_date(ProjectStart(id, False)), string_to_date(ProjectEnd(id, False)))
         DelayAdvanceTime = DateDiff("d", Today, DateAdd("d", Int(totaltime * (ProjectCompleated(id, False)) / 100), string_to_date(ProjectStart(id, False))))
     End Function
 
     Function DelayAdvanceTimeTask(ByVal id As String, ByVal idp As String, ByVal refresh As Boolean) As Integer
-
         Dim totaltime As Integer = DateDiff("d", string_to_date(TaskStart(id, idp, True)), string_to_date(TaskEnd(id, idp, True)))
         DelayAdvanceTimeTask = DateDiff("d", Today, DateAdd("d", Int(totaltime * Val(TaskCompleated(id, idp, False)) / 100), string_to_date(TaskStart(id, idp, False))))
     End Function

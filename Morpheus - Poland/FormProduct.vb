@@ -191,7 +191,7 @@ Public Class FormProduct
                                         "',`dai` = '" & UCase(Trim(TextBoxDAI.Text)) &
                                         "',`mchElement` = '" & (mch) &
                                         "',`DocFlag` = '" & Trim(strControl()) &
-                                        "',`ProductCodePlant` = '" & Trim(TextBoxProductPlant.Text) & "'" & 
+                                        "',`ProductCodePlant` = '" & Trim(TextBoxProductPlant.Text) & "'" &
                                         " WHERE `product`.`BitronPN` = '" & Trim(TextBoxProduct.Text) & "' ;"
                     Dim builder As New Common.DbConnectionStringBuilder()
                     builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
@@ -208,15 +208,12 @@ Public Class FormProduct
                 Catch ex As Exception
                     ComunicationLog("5050") ' Mysql update query error 
                 End Try
-
             Else
                 ComunicationLog("5049") ' please fill all fields before update
             End If
         Else
             ComunicationLog("0043") ' no enough right
         End If
-
-
     End Sub
 
     Sub griddUpdate(ByVal bitronpn As String)
@@ -233,14 +230,11 @@ Public Class FormProduct
         Else
             MsgBox("Need to select the same Bitron PN!")
         End If
-
     End Sub
 
     Private Sub ListView1_ColumnClick1(ByVal sender As Object, ByVal e As ColumnClickEventArgs) Handles ListView1.ColumnClick
-
         Me.ListView1.ListViewItemSorter = New ListViewItemComparer(e.Column)
         ListView1.Sort()
-
     End Sub
 
     Private Sub ListView1_ItemSelectionChanged(ByVal sender As Object, ByVal e As ListViewItemSelectionChangedEventArgs) Handles ListView1.ItemSelectionChanged
@@ -299,7 +293,6 @@ Public Class FormProduct
                 Catch ex As Exception
                     ComunicationLog("5050") ' Mysql delete error 
                 End Try
-
             Else
                 ComunicationLog("5049") ' please fill all field before update
             End If
@@ -333,7 +326,6 @@ Public Class FormProduct
                 Catch ex As Exception
                     ComunicationLog("5050") ' Mysql customer insert error
                 End Try
-
             Else
                 ComunicationLog("5049") ' please fill the box
             End If
@@ -357,7 +349,6 @@ Public Class FormProduct
                 Catch ex As Exception
                     ComunicationLog("5050") ' Mysql delete error 
                 End Try
-
             Else
                 ComunicationLog("5049") ' please fill all field before update
             End If
@@ -392,7 +383,6 @@ Public Class FormProduct
     End Sub
 
     Private Sub ButtonRemoveMch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonRemoveMch.Click
-
         If ListViewMch.Items.Count > 0 Then
             For i = 0 To ListViewMch.Items.Count - 1
                 Try
@@ -403,7 +393,6 @@ Public Class FormProduct
                 End Try
             Next
         End If
-
     End Sub
 
     ' FUNCTION
@@ -694,13 +683,10 @@ Public Class FormProduct
                     If controlRight("F") >= 2 Then FormOpenIssue.ComboBoxGroup.Items.Add("FINANCIAL")
                     If controlRight("B") >= 2 Then FormOpenIssue.ComboBoxGroup.Items.Add("PROCESS ENGINEERING")
                 End If
-
                 FormOpenIssue.ComboBoxGroup.Text = ""
                 FormOpenIssue.Show()
-
             End If
         End If
-
     End Sub
 
     Private Sub ButtonStatusUP_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonStatusUP.Click
@@ -818,7 +804,6 @@ Public Class FormProduct
         Else
             MsgBox("Need W3 level to update status of a product!")
         End If
-
     End Sub
 
     Sub StatusUpdate(ByVal StatusUpdateDate As String)
@@ -935,7 +920,6 @@ Public Class FormProduct
                 Catch ex As Exception
 
                 End Try
-
                 ListBoxLog.Items.Add("Update product list...")
                 updateSigipMark()
 
@@ -962,10 +946,6 @@ Public Class FormProduct
                     MsgBox("Orcad connection problem, HC not filled")
                     ParameterTableWrite("LAST_SIGIP_BOM_UPDATE", "DONE - " & CreAccount.strUserName & " " & Today & " " & " Orcad Error")
                 End If
-
-
-
-                'End If
                 ButtonQuery_Click(Me, e)
                 ListBoxLog.Items.Add("Process END")
                 ListBoxLog.SelectedIndex = ListBoxLog.Items.Count - 1
@@ -1212,9 +1192,7 @@ Public Class FormProduct
 
     End Function
 
-
     Sub updateECRMark()
-
         DsProd.Clear()
         tblProd.Clear()
         Dim builder As New Common.DbConnectionStringBuilder()
@@ -1239,7 +1217,6 @@ Public Class FormProduct
                 For Each resEcr In resultEcr
                     ecr = ecr & resEcr("number").ToString & "[" & IIf(resEcr("confirm").ToString <> "", "C", "W") & "]" & ";"
                 Next
-
                 Try
                     Dim sql As String = "UPDATE `" & DBName & "`.`product` SET `ECR` = '" & ecr & "' WHERE `product`.`BitronPN` = '" & res("bitronpn").ToString & "' ;"
                     Dim cmd = New MySqlCommand(sql, con)

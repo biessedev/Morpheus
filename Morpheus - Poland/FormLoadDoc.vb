@@ -5,13 +5,8 @@ Imports System.Text.RegularExpressions
 Imports MySql.Data.MySqlClient
 
 Public Class FormLoadDoc
-
-    'Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc order by rev desc", MySqlconnection)
-    'Dim AdapterRevNote As New MySqlDataAdapter("SELECT * FROM revNote", MySqlconnection)
-    'Dim AdapterType As New MySqlDataAdapter("SELECT * FROM doctype", MySqlconnection)
     Dim tblDoc As DataTable, tblRevNote As DataTable, tblType As DataTable
     Dim DsDoc As New DataSet, DsRevNote As New DataSet, DsType As New DataSet
-    'Dim builder As MySqlCommandBuilder = New MySqlCommandBuilder(AdapterDoc)
     Dim strSintaxCheck As String
     Dim strRevCheck As String
     Dim intLastRev As Integer
@@ -19,7 +14,6 @@ Public Class FormLoadDoc
 
     Private Sub FormLoadDoc_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
         FormStart.Show()
-
     End Sub
 
     Private Sub FormLoadDoc_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
@@ -41,12 +35,9 @@ Public Class FormLoadDoc
         Catch ex As Exception
             MsgBox(ex.Message, MsgBoxStyle.Information)
         End Try
-
-
     End Sub
 
     Private Sub ButtonBrowse_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonBrowse.Click
-
         If (OpenFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK) Then
             ComunicationLog("5000")  ' Sistem ready
             TextBoxDocName.Text = OpenFileDialog1.FileName
@@ -55,10 +46,7 @@ Public Class FormLoadDoc
             intLastRev = 0
             strSintaxCheck = ""
             strRevCheck = ""
-
             strSintaxCheck = PathSintaxAnalysis()
-            'ComunicationLog(strSintaxCheck)
-
             strRevCheck = RevisionExtract(intLastRev)
             If intLastRev >= 0 Then
                 TextBoxLastRevision.Text = Str(intLastRev)
@@ -81,21 +69,12 @@ Public Class FormLoadDoc
                     EcrControl = False
                 End If
             End If
-
-            'ComunicationLog(strRevCheck)
-
         End If
     End Sub
 
     Private Sub ButtonLoad_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonLoad.Click
         Dim strLoaded As String, tmp As String
-
-        'strRevCheck = RevisionExtract(intLastRev)
-
         If controlRight(Mid(CreFile.Header, 3, 1)) >= 2 Then
-            'Dim returnValue As DataRow()
-            'returnValue = tblType.Select("header = '" & CreFile.Header & "'")
-            'If returnValue.Length > 0 Then
             If strSintaxCheck = "5008" And strRevCheck = "5029" Then
                 If EcrControl Or controlType("E") = 0 Then
                     If intLastRev = -1 Then      ' file not found in DB
@@ -130,26 +109,19 @@ Public Class FormLoadDoc
                                 ComunicationLog("0002") ' File already present in server
                             End If
                         ElseIf (CreFile.Rev > intLastRev) And controlType("R") = 0 Then
-
                             ComunicationLog("1010")
-
                         Else
-
                             ComunicationLog("0015") ' "Revision progression error!"
-
                         End If
                     End If
                 End If
             End If
-            'Else
-            '   ComunicationLog("0055") ' this type not exist
-            'End If
         Else
             ComunicationLog("0043") ' right not enough
         End If
     End Sub
-    ' Load the crefile in the server
 
+    ' Load the crefile in the server
     Function loadCreFile(ByVal ReplaceOnly As Boolean) As String
 
         Dim objFtp = New ftp()
@@ -172,9 +144,7 @@ Public Class FormLoadDoc
                     loadCreFile = "0011" ' Fill in the revision note
                 Else
                     strRes = objFtp.ListDirectory(strPathFtp & "/" & Mid(TextBoxDocName.Text, intPos + 1), strList)
-
                     If strRes <> "5000" Or strRes = "5000" And ReplaceOnly Then
-
                     Else
                         ListBoxLog.Items.Add("File is present in the server, the system will rewrite it!")
                         ReplaceOnly = True
@@ -183,9 +153,7 @@ Public Class FormLoadDoc
                     strRes = objFtp.UploadFile(strPathFtp & "/", Mid(TextBoxDocName.Text, 1, intPos - 1), Mid(TextBoxDocName.Text, intPos + 1))
 
                     If strRes = "5000" Then
-
                         strRes = objFtp.ListDirectory(strPathFtp & "/" & Mid(TextBoxDocName.Text, intPos + 1), strList)
-
                         If Not ReplaceOnly Then
                             Dim myrow As DataRow = tblDoc.NewRow
                             myrow.Item("FileName") = CreFile.FileName
@@ -206,9 +174,6 @@ Public Class FormLoadDoc
                             End If
 
                             tblDoc.Rows.Add(myrow)
-                            'builder.GetUpdateCommand()
-                            'AdapterDoc.Update(tblDoc)
-                            'Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc order by rev desc", MySqlconnection)
                             Dim builder As New Common.DbConnectionStringBuilder()
                             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
@@ -217,23 +182,18 @@ Public Class FormLoadDoc
                                 End Using
                             End Using
                         End If
-
                         loadCreFile = "5027" ' File uploaded 
-
                     Else
                         loadCreFile = "0001" ' Upload file error
                     End If
-
                 End If
             End If
-
         Else
             loadCreFile = "0043" 'You don't have right enough for this operation
         End If
-
     End Function
-    ' Check the sintax of file
 
+    ' Check the sintax of file
     Function PathSintaxAnalysis() As String
 
         Dim BooFileName = False
@@ -241,9 +201,7 @@ Public Class FormLoadDoc
         Dim FileNameCheck As Integer = 0
         Dim RevCheck As Integer = 0
         Dim ExtCheck As Integer = 0
-
         Try
-
             If TextBoxDocName.Text <> "" Then
 
                 Dim intPos As Integer = InStrRev(TextBoxDocName.Text, "\", -1, CompareMethod.Text)
@@ -259,13 +217,11 @@ Public Class FormLoadDoc
                             HeaderCheck = 2
                         End If
                     End If
-
                     Dim strRev As String = Regex.Match(strNomeFile, "(?<=_)\d+(?=.\w+$)").ToString
                     If IsNumeric(strRev) And (Mid(strRev, 1, 1) <> "0" Or strRev = "0") Then   'Check su sintassi della revisione
                         CreFile.Rev = Str(strRev)
                         RevCheck = 1
                     End If
-
                     If HeaderCheck = 1 Then
 
                         CreFile.Extension = Regex.Match(strNomeFile, "(?<=.)\w+$").ToString
@@ -276,23 +232,18 @@ Public Class FormLoadDoc
                         If Not Regex.IsMatch(strNomeFile, "__", RegexOptions.IgnoreCase) Then
                             CreFile.FileName = Mid(strNomeFile, 13, InStrRev(strNomeFile, "_", -1, CompareMethod.Text) - 13)
                             Select Case CreFile.Header
-
                                 Case ParameterTable("plant") & "R_PRO_ECR"                     'Ecr 
-
                                     If CreFile.Rev = 0 Then
                                         BooFileName = Regex.IsMatch(CreFile.FileName, "^\d+ - \w+$", RegexOptions.IgnoreCase)
                                     Else
                                         ComunicationLog("0034")
                                     End If
-
                                 Case ParameterTable("plant") & "R_PRO_TCR"                     'Ecr 
-
                                     If CreFile.Rev = 0 Then
                                         BooFileName = Regex.IsMatch(CreFile.FileName, "^\d+ - \w+$", RegexOptions.IgnoreCase)
                                     Else
                                         ComunicationLog("0034")
                                     End If
-
                                 Case ParameterTable("plant") & "R_PRO_EOR"                     'Ordini EQ
 
                                     If CreFile.Rev = 0 Then
@@ -300,28 +251,19 @@ Public Class FormLoadDoc
                                     Else
                                         ComunicationLog("0034")
                                     End If
-
                                 Case Else
                                     If controlType("C") = 2 Then ' Filename type "15002320 - pcb  ....."
-
                                         BooFileName = Regex.IsMatch(CreFile.FileName, "^[0-9]{8} - \w+$", RegexOptions.IgnoreCase) Or Regex.IsMatch(CreFile.FileName, "^[0-9]{11} - \w+$", RegexOptions.IgnoreCase)
-
                                     ElseIf controlType("C") = 1 Then
-
                                         BooFileName = Regex.IsMatch(CreFile.FileName, "^[0-9]{8}$", RegexOptions.IgnoreCase) Or Regex.IsMatch(CreFile.FileName, "^[0-9]{11}$", RegexOptions.IgnoreCase)
-
                                     ElseIf controlType("C") = 0 Then
-
                                         BooFileName = Regex.IsMatch(CreFile.FileName, "^\w+", RegexOptions.IgnoreCase)
-
                                     End If
-
                             End Select
 
                             FileNameCheck = IIf(BooFileName, 1, 0)
 
                         End If
-
                     Else
                         ExtCheck = 2
                         FileNameCheck = 2
@@ -342,30 +284,20 @@ Public Class FormLoadDoc
                     If PathSintaxAnalysis = "0020" Then
                         If HeaderCheck = 0 Then
                             ComunicationLog("1001")  ' Header syntax error
-                            'ElseIf HeaderCheck = 1 Then
-                            '   ComunicationLog("6001")  ' Header syntax ok
                         ElseIf HeaderCheck = 2 Then
                             ComunicationLog("0055")  ' Header not defined
                         End If
 
                         If FileNameCheck = 0 Then
                             ComunicationLog("1002")  ' File name syntax error
-                            'ElseIf FileNameCheck = 1 Then
-                            '   ComunicationLog("6002")  ' File name syntax ok
-                            'ElseIf FileNameCheck = 2 Then
-                            '   ComunicationLog("1005")  ' Check after header
                         End If
 
                         If RevCheck = 0 Then
                             ComunicationLog("1003")  ' Revision syntax error
-                            'ElseIf RevCheck = 1 Then
-                            '   ComunicationLog("6003")  ' Revision syntax ok
                         End If
 
                         If ExtCheck = 0 Then
                             ComunicationLog("1004")  ' Ext syntax error
-                            'ElseIf ExtCheck = 1 Then
-                            '   ComunicationLog("6004")  ' Ext syntax ok
                         End If
                     End If
                 Else
@@ -413,12 +345,7 @@ Public Class FormLoadDoc
         Try
             If strSintaxCheck = ("5008") Then
                 RevisionExtract = ("5029") ' Revision extract ok
-                'If controlType("C") = 2 Then
-                'returnValue = tblDoc.Select("header='" & CreFile.Header & "' and FileName like '" & Regex.Match(CreFile.FileName, "^\w+").ToString & " - *' and Extension='" & CreFile.Extension & "' ", "rev DESC")
-                'Else
                 returnValue = tblDoc.Select("header='" & CreFile.Header & "' and FileName='" & CreFile.FileName & "' and Extension='" & CreFile.Extension & "' ", "rev DESC")
-                'End If
-
                 If returnValue.Length >= 1 Then
                     rev = returnValue(0).Item("rev")
                 ElseIf returnValue.Length = 0 Then ' No file in DB
@@ -431,8 +358,8 @@ Public Class FormLoadDoc
             RevisionExtract = "0013"
             ComunicationLog("0013") ' Generic exception
         End Try
-
     End Function
+
     Function EnumerateCheck(ByVal typeEcrTcr As String) As Integer
         Dim pos As Integer, i As Integer, maxN As Integer = -1
         If controlType("E") = 1 Then ' enumerate the ECR, TCR and EOR for example
@@ -463,8 +390,6 @@ Public Class FormLoadDoc
         End If
     End Function
 
-    ' Find sign
-    ' If not exist return ""
     Function SignExtract(ByRef sign As String) As String
         Try
             SignExtract = ("5069") ' Sign extract ok
@@ -505,13 +430,11 @@ Public Class FormLoadDoc
     End Sub
 
     ' Fill the combo of revision note
-
     Sub FillComboRevNote()
         Dim row As DataRow
         Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-            'AdapterRevNote = New MySqlDataAdapter("SELECT * FROM RevNote", MySqlConnection)
             Using AdapterRevNote As New MySqlDataAdapter("SELECT * FROM RevNote", con)
                 AdapterRevNote.Fill(DsRevNote, "RevNote")
                 tblRevNote = DsRevNote.Tables("RevNote")
@@ -552,7 +475,6 @@ Public Class FormLoadDoc
 
         Dim objFtp = New ftp()
         Dim strList = ""
-
         objFtp.UserName = strFtpServerUser
         objFtp.Password = strFtpServerPsw
         objFtp.Host = strFtpServerAdd
@@ -560,7 +482,6 @@ Public Class FormLoadDoc
         Dim strPathFtp As String = (Mid(CreFile.Header, 1, 3) & "/" & CreFile.Header)
         Dim strRes As String = objFtp.ListDirectory(strPathFtp, strList)
         Try
-
             If controlType("C") = 2 Then
                 Dim returnValue As DataRow() = tblDoc.Select("header='" & CreFile.Header & "' and FileName like '" & Regex.Match(CreFile.FileName, "^\w+").ToString & "*' and Extension='" & CreFile.Extension & "' ", "rev DESC")
 
@@ -582,13 +503,9 @@ Public Class FormLoadDoc
                     End Try
                 Next
             Else
-
             End If
-
         Catch ex As Exception
             MsgBox("Replace C2 file name error!")
         End Try
-
     End Sub
-
 End Class

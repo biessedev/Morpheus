@@ -1,5 +1,4 @@
-﻿
-Option Explicit On
+﻿Option Explicit On
 Option Compare Text
 
 Imports System.Data.SqlClient
@@ -13,11 +12,8 @@ Imports System.Configuration
 Public Class FormBomUtility
     Dim DsDocComp As New DataSet
     Dim tblDocComp As New DataTable
-    'Dim AdapterPfp As New MySqlDataAdapter("SELECT * FROM Pfp", MySqlconnection)
     Dim tblPfp As DataTable
     Dim DsPfp As New DataSet
-
-    'Dim AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc", MySqlconnection)
     Dim tblDoc As DataTable
     Dim DsDoc As New DataSet
     Dim ConnectionStringOrcad As String
@@ -29,7 +25,6 @@ Public Class FormBomUtility
         MemProcess = ""
         For Each prog As Process In Process.GetProcesses
             MemProcess = MemProcess & ";" & prog.Id
-
         Next
     End Sub
 
@@ -66,7 +61,6 @@ Public Class FormBomUtility
         Catch ex As Exception
 
         End Try
-
         excelApp.quit()
         KillLastExcel()
     End Sub
@@ -132,7 +126,6 @@ Public Class FormBomUtility
                 If idColl > 0 Then
 
                     If coll(collRow, 5) <> avl(i, 5) Then
-                        'MsgBox("avl different for code " & avl(i, 1))
                     End If
 
                 Else
@@ -167,7 +160,6 @@ Public Class FormBomUtility
 
             Dim excelSheetNew As Object = excelWorkbook.Worksheets.add()
             excelSheetNew.name = "Collected"
-
 
             i = 0
             While coll(i, 1) <> ""
@@ -249,12 +241,10 @@ Public Class FormBomUtility
             Else
                 i = i + 1
             End If
-
         End While
     End Function
 
     Sub OpenConnectionSqlOrcad(ByVal strHost As String, ByVal strDatabase As String, ByVal strUserName As String, ByVal strPassword As String)
-
         Try
             ConnectionStringOrcad = "server=" & strHost & ";user id=" & strUserName & ";" & "pwd=" & strPassword & ";" & "database=" & strDatabase & ";Connect Timeout=10;"
             SqlconnectionOrcad = New SqlConnection(ConnectionStringOrcad)
@@ -265,11 +255,9 @@ Public Class FormBomUtility
 
             MessageBox.Show(ex.ToString())
         End Try
-
     End Sub
 
     Sub CloseConnectionSqlOrcad()
-
         Try
             If SqlconnectionOrcad.State = ConnectionState.Closed Then
                 SqlconnectionOrcad.Open()
@@ -277,11 +265,9 @@ Public Class FormBomUtility
         Catch ex As Exception
             MessageBox.Show(ex.ToString())
         End Try
-
     End Sub
 
     Function OrcadDoc(ByVal bitronPN As String) As String
-        ' If "15002423" = bitronPN Then Stop
         Dim rowShow As DataRow() = tblDoc.Select("filename like '" & bitronPN & " - *' or filename like '" & bitronPN & "'", "rev DESC")
         If rowShow.Length > 0 And Mid(bitronPN, 1, 2) <> "15" Then
             OrcadDoc = "SRV_DOC - " & rowShow(0)("header").ToString & "_" & rowShow(0)("filename").ToString & "_" & rowShow(0)("rev").ToString & "." & rowShow(0)("extension").ToString
@@ -301,9 +287,7 @@ Public Class FormBomUtility
             Else
                 OrcadDoc = "NO"
             End If
-
         End If
-
     End Function
 
     Private Sub ButtonMissingPf_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonMissingPf.Click
@@ -326,15 +310,12 @@ Public Class FormBomUtility
             tblDocComp.Clear()
             DsDocComp.Clear()
         Catch ex As Exception
-
         End Try
-
         AdapterDocComp.Fill(DsDocComp, "orcadw.T_orcadcis")
         tblDocComp = DsDocComp.Tables("orcadw.T_orcadcis")
         Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-            'AdapterDoc.SelectCommand = New MySqlCommand("SELECT * FROM DOC;", MySqlconnection)
             Try
                 DsDoc.Clear()
                 tblDoc.Clear()
@@ -345,8 +326,6 @@ Public Class FormBomUtility
                 AdapterDoc.Fill(DsDoc, "doc")
                 tblDoc = DsDoc.Tables("doc")
             End Using
-
-            'AdapterPfp.SelectCommand = New MySqlCommand("SELECT * FROM missing_pf;", MySqlconnection)
             Try
                 DsPfp.Clear()
                 tblPfp.Clear()
@@ -372,7 +351,6 @@ Public Class FormBomUtility
         End Using
         ButtonMissingPf.Text = "Missing Pf update Doc"
     End Sub
-
 
     Private Sub ButtonCompactElux_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonCompactElux.Click
         Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US")
@@ -433,7 +411,6 @@ Public Class FormBomUtility
                 If idColl > 0 Then
 
                     If coll(collRow, 5) <> avl(i, 5) Then
-                        'MsgBox("avl different for code " & avl(i, 1))
                     End If
 
                 Else
@@ -535,10 +512,8 @@ Public Class FormBomUtility
             Me.Focus()
             Me.Show()
             KillLastExcel()
-
         End If
     End Sub
-
 
     Private Function EluxAvl(ByVal brand As String, ByVal oc As String) As String
 
@@ -573,7 +548,5 @@ Public Class FormBomUtility
             EluxAvl = avlElux(k, 1) & "[" & avlElux(k, 2) & "]" & ";" & EluxAvl
             k = k + 1
         End While
-
     End Function
-
 End Class

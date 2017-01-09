@@ -31,7 +31,6 @@ Module PublicFunction
     Public NPIDocName As String
     Public hostName As String
 
-
     Structure credential
         Dim strUserName As String
         Dim strPassword As String
@@ -115,7 +114,6 @@ Module PublicFunction
              formato, myCultureInfo)
     End Function
 
-
     Function s(ByVal sval As Object) As String
         If IsDBNull(sval) Then
             s = ""
@@ -123,7 +121,6 @@ Module PublicFunction
             s = sval
         End If
     End Function
-
 
     Function StrSettingRead(ByVal ComCode As String) As String
         Dim rsResult As DataRow()
@@ -135,12 +132,9 @@ Module PublicFunction
         Else
             StrSettingRead = rsResult(0).Item("en").ToString
         End If
-
     End Function
 
-
     Function intranetHeader(ByVal h As String) As Boolean
-
         If h = ParameterTable("plant") & "R_PRO_GPN" Then intranetHeader = True
         If h = ParameterTable("plant") & "R_PRO_GFX" Then intranetHeader = True
         If h = ParameterTable("plant") & "R_PRO_NFB" Then intranetHeader = True
@@ -149,21 +143,16 @@ Module PublicFunction
         If h = ParameterTable("plant") & "R_PRO_PST" Then intranetHeader = True
         If h = ParameterTable("plant") & "R_PRO_SPG" Then intranetHeader = True
         If h = ParameterTable("plant") & "R_PRO_TDS" Then intranetHeader = True
-
     End Function
 
     Sub WriteCheckTable(ByVal des As String)
-
-        
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
 		    Using AdapterCh As New MySqlDataAdapter("SELECT * FROM mant", con)
 			        AdapterCh.Fill(dsCh, "mant")
 		    End Using
-            
             tblCh = dsCh.Tables("mant")
-
             Dim returnValue As DataRow(), sql As String, cmd As MySqlCommand
             returnValue = tblCh.Select("des = '" & des & "'")
             If returnValue.Length >= 1 Then
@@ -175,7 +164,6 @@ Module PublicFunction
                     cmd = New MySqlCommand(sql, con)
                     cmd.ExecuteNonQuery()
                 Catch ex As Exception
-
                 End Try
             Else
                 Try
@@ -187,12 +175,10 @@ Module PublicFunction
                     dsCh.Clear()
                     tblCh.Clear()
                     Using AdapterCh As New MySqlDataAdapter("SELECT * FROM mant", con)
-			            AdapterCh.Fill(dsCh, "mant")
-		            End Using
+                        AdapterCh.Fill(dsCh, "mant")
+                    End Using
                     tblCh = dsCh.Tables("mant")
-
                 Catch ex As Exception
-
                 End Try
             End If
         End Using
@@ -214,25 +200,21 @@ Module PublicFunction
     End Function
 
     Sub WriteFile(ByVal a As String, ByVal append As Boolean)
-
         ' Create an instance of StreamWriter to write text to a file.
         Using sw = New StreamWriter(Path.GetTempPath & "SrvQueryLog.txt", append)
             ' Add some text to the file.
             sw.WriteLine(a)
             sw.Close()
         End Using
-
     End Sub
 
     Sub WriteTxtFile(ByVal file As String, ByVal text As String, ByVal append As Boolean)
-
         ' Create an instance of StreamWriter to write text to a file.
         Using sw = New StreamWriter(file, append)
             ' Add some text to the file.
             sw.WriteLine(text)
             sw.Close()
         End Using
-
     End Sub
 
     Function ExportListview2Excel(ByVal lstview As ListView) As Boolean
@@ -264,47 +246,35 @@ Module PublicFunction
             Sys.Flush()
             Sys.Dispose()
         Catch ex As Exception
-
         End Try
-
-
     End Function
-
-
 
     Function date_to_string(ByVal Indate As Date) As String
         date_to_string = Indate.Year & "/" & Mid("0" & Indate.Month, Len(Trim(Str(Indate.Month))), 2) & "/" & Mid("0" & Indate.Day, Len(Trim(Str(Indate.Day))), 2)
-
     End Function
 
     Function string_to_date(ByVal Indate As String) As Date
         If Len(Indate) >= 8 Then string_to_date = DateTime.Parse(Indate, CultureInfo_ja_JP.DateTimeFormat)
     End Function
 
-
-
     'Write and get the time of server.
     Function MySqlServerTimeString() As String
-        Dim  builder As  New Common.DbConnectionStringBuilder()
-            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
-            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-            Try 
-            
-		        Dim sql As String = "UPDATE `" & DBName & "`.`parameterset` SET `value` =  NOW() +0 where name = 'sessionTime'"
+        Dim builder As New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            Try
+                Dim sql As String = "UPDATE `" & DBName & "`.`parameterset` SET `value` =  NOW() +0 where name = 'sessionTime'"
                 Dim cmd = New MySqlCommand(sql, con)
                 cmd.ExecuteNonQuery()
-                
             Catch ex As Exception
                 MsgBox("Time Write error!")
             End Try
-
             Dim Ds As New DataSet
             Using Adapter As New MySqlDataAdapter("SELECT * FROM parameterset where name = 'sessionTime'", con)
-			    Adapter.Fill(Ds, "parameterset")
-		    End Using
+                Adapter.Fill(Ds, "parameterset")
+            End Using
         End Using
         MySqlServerTimeString = ParameterTable("sessionTime")
-
     End Function
 
     ' convert in dataTime the server string datatime
@@ -328,7 +298,6 @@ Module PublicFunction
                     SessionTime = tbl.Rows(0).Item("SessionTime").ToString()
                     SessionUser = tbl.Rows(0).Item("SessionUser").ToString()
                 Catch ex As Exception
-
                 End Try
 
                 Dim sql As String = ""
@@ -371,7 +340,6 @@ Module PublicFunction
                         MsgBox("Set session error!")
                     End Try
                 End If
-
             End If
         End Using
     End Function
@@ -419,10 +387,10 @@ Module PublicFunction
     Function ParameterTableWrite(ByVal param As String, ByVal value As String) As String
         ParameterTableWrite = "KO"
         Try
-            Dim  builder As  New Common.DbConnectionStringBuilder()
+            Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-		        Dim sql As String = "UPDATE `" & DBName & "`.`parameterset` SET `value` ='" & value & "' where name = '" & param & "'"
+                Dim sql As String = "UPDATE `" & DBName & "`.`parameterset` SET `value` ='" & value & "' where name = '" & param & "'"
                 Dim cmd = New MySqlCommand(sql, con)
                 cmd.ExecuteNonQuery()
             End Using
@@ -430,9 +398,7 @@ Module PublicFunction
         Catch ex As Exception
             MsgBox("Parametric Write error!   " & ex.Message)
         End Try
-
     End Function
-
 
     Public Class TVTFXException
         Inherits Exception
@@ -443,7 +409,6 @@ Module PublicFunction
             MyBase.New(msg, ex)
         End Sub
     End Class
-
 
     Public Class TreeViewToFromXml
         Private TVTFX_Tree As TreeView
@@ -467,7 +432,6 @@ Module PublicFunction
                 Throw New TVTFXException("TreeView cannot be Nothing")
             End If
         End Sub
-
 
 #Region "Export"
         ''' <summary>
@@ -547,7 +511,6 @@ Module PublicFunction
         Private Sub XmlAddNode(ByVal ActualTreeNode As TreeNode, Optional ByVal ActualNode As XmlNode = Nothing)
             Dim ienum As IEnumerator
             Dim xmlKD As XmlElement
-
             If ActualNode Is Nothing Then
                 xmlKD = TVTFX_XmlDoc.CreateElement(XmlConvert.EncodeName(ActualTreeNode.Text.Replace(":", ";")))
                 TVTFX_XmlDoc.DocumentElement.AppendChild(xmlKD)
@@ -620,7 +583,6 @@ Module PublicFunction
             Dim StartNode As TreeNode = TVTFX_Tree.Nodes(0)
 
             TreeviewAddNode(TVTFX_XmlDoc.DocumentElement, StartNode)
-            'frmTree.ExpandAll()
         End Sub
 
         ''' <summary>
@@ -633,30 +595,23 @@ Module PublicFunction
             Dim xml_SingleNode As XmlNode
             Dim xml_NodeList As XmlNodeList
             Dim trn_Node As TreeNode
-
-
             If TXmlNode.HasChildNodes() Then
                 xml_NodeList = TXmlNode.ChildNodes
-
                 For I = 0 To xml_NodeList.Count - 1
                     xml_SingleNode = TXmlNode.ChildNodes(I)
-
                     TreeViewNode.Nodes.Add(New TreeNode(XmlConvert.DecodeName(xml_SingleNode.Name).Replace(":", ":")))
                     trn_Node = TreeViewNode.Nodes.Item(I)
                     TreeviewAddNode(xml_SingleNode, trn_Node)
                 Next
-
             Else
                 TreeViewNode.Text = (XmlConvert.DecodeName(TXmlNode.Name).Replace(":", ":"))
             End If
-
         End Sub
 
         Public Sub CollectProcess()
             MemProcess = ""
             For Each prog As Process In Process.GetProcesses
                 MemProcess = MemProcess & ";" & prog.Id
-
             Next
         End Sub
 

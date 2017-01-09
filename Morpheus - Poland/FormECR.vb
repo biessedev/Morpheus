@@ -109,11 +109,9 @@ Public Class FormECR
         Catch ex As Exception
             MsgBox(ex.Message)
         End Try
-
     End Sub
 
     Sub UpdateField()
-
         If needSave = True Then
             If MsgBox("Do you want to save?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
                 ButtonSave_Click(Me, EventArgs.Empty)
@@ -197,12 +195,9 @@ Public Class FormECR
             If userDep3 = "B" Then TextBoxStepCost.Text = Result(0).Item("BCost")
 
             If Result(0).Item("EcrCheck").ToString = "YES" Then
-
                 ButtonEcrCheck.BackColor = Color.Green
                 ButtonEcrCheck.Text = "Customer Doc To Bitron ECR Alignment    ---> YES"
-
             Else
-
                 ButtonEcrCheck.BackColor = Color.Red
                 ButtonEcrCheck.Text = "Customer Doc To Bitron ECR Alignment    ---> NO"
             End If
@@ -225,7 +220,6 @@ Public Class FormECR
                 Dim ii As New ListViewItem(str)
                 ListViewProd.Items.Add(ii)
             Next
-
             If InStr(Result(0).Item("confirm").ToString, "CONFIRMED") > 0 Then
                 CheckConfirm.Checked = True
                 CheckConfirm.Visible = False
@@ -233,7 +227,6 @@ Public Class FormECR
                 LabelConfirm.ForeColor = Color.Green
                 LabelConfirm.Text = Replace(Result(0).Item("confirm").ToString, "SENT_", "")
             Else
-
                 If userDep3 = "N" Then
                     CheckConfirm.Visible = True
                     CheckConfirm.Enabled = True
@@ -246,7 +239,6 @@ Public Class FormECR
                     LabelConfirm.ForeColor = Color.Red
                     LabelConfirm.Text = "NOT_CONFIRMED"
                 End If
-
             End If
 
             ButtonData.Text = Result(0).Item("date")
@@ -356,7 +348,6 @@ Public Class FormECR
     End Function
 
     Sub ColorButton(ByVal US As String)
-
         ResetColorButton()
 
         If US = "E" Then ButtonE.BackColor = Color.LightGreen
@@ -387,7 +378,6 @@ Public Class FormECR
             ButtonAdd.Enabled = False
             ComboBoxProd.Enabled = False
         End If
-
     End Sub
 
     Function readField(ByVal field As String, ByVal EcrN As Integer) As String
@@ -403,9 +393,7 @@ Public Class FormECR
                     tblEcr = DsEcr.Tables("ecr")
                 End Using
             End Using
-
         End If
-
         Try
             If EcrN > 0 Then
                 result = tblEcr.Select("number =" & EcrN)
@@ -414,7 +402,6 @@ Public Class FormECR
         Catch ex As Exception
             MsgBox("Error reading ECR:" & EcrN)
         End Try
-
     End Function
 
     Sub WriteField(ByVal field As String, ByVal v As String)
@@ -436,7 +423,6 @@ Public Class FormECR
     End Sub
 
     ' comunication function
-    '
     Sub ComunicationLog(ByVal ComCode As String)
 
         Dim rsResult As DataRow()
@@ -445,7 +431,6 @@ Public Class FormECR
             ComCode = "0051"
             rsResult = tblError.Select("code='" & ComCode & "'")
         End If
-
         ListBoxLog.Items.Add(ComCode & " -> " & rsResult(0).Item("en").ToString)
 
         If Val(ComCode) >= 5000 Then
@@ -453,7 +438,6 @@ Public Class FormECR
         ElseIf Val(ComCode) < 5000 Then
             ListBoxLog.BackColor = Color.OrangeRed
         End If
-
     End Sub
 
     Private Sub ButtonN_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonN.Click
@@ -500,7 +484,6 @@ Public Class FormECR
         End If
         If userDep3 = "" Then
         Else
-
             If userDep3 = but And Me.Controls("Button" & userDep3).BackColor = Color.LightGreen Then
                 ButtonSave.Enabled = True
                 ButtonSaveSend.Enabled = True
@@ -548,7 +531,6 @@ Public Class FormECR
                                 Me.Controls("Button" & but).Text = "APPROVED"
                                 WriteField(but & "sign", Me.Controls("Button" & but).Text)
                                 WriteField("date" & but, date_to_string(Now))
-
                             Else
                                 MsgBox("Please fill in the data!")
                             End If
@@ -563,7 +545,6 @@ Public Class FormECR
                     End If
 
                 ElseIf Me.Controls("Button" & but).Text = "NOT CHECKED" Then
-
                     If but <> "A" Then
                         datepresence = True
                     Else
@@ -571,16 +552,13 @@ Public Class FormECR
                     End If
 
                     If datepresence Then
-
                         If MsgBox("Do you want to mark as 'CHECKED' this ECR?", MsgBoxStyle.YesNo, "ECR Question") = MsgBoxResult.Yes Then
                             Me.Controls("Button" & but).Text = "CHECKED"
                             WriteField(but & "sign", "CHECKED")
                             WriteField("date" & but, date_to_string(Now))
                         End If
-
                     Else
                         MsgBox("Please fill in the data!")
-
                     End If
 
                 ElseIf readDocSign(readField("iddoc", EcrN)) = "" And ParameterTable("SYSTEM_SCHEDULE") <> "RUN" Then   ' signed
@@ -598,9 +576,7 @@ Public Class FormECR
                 Else
                     MsgBox("Already all signed for this ECR, so it is not possible to remove it! Please contact the IT Dept. in case of need.")
                 End If
-
             Else
-
             End If
 
             If userDep3 = but And Not AllSign() Then
@@ -622,7 +598,6 @@ Public Class FormECR
                 TextBoxStepCost.ReadOnly = False
                 RichTextBoxStep.ReadOnly = False
             End If
-
 
         End If
 
@@ -668,14 +643,12 @@ Public Class FormECR
 
     Sub ComboProductFill()
         ComboBoxProd.Items.Clear()
-
         For i = 0 To tblProd.Rows.Count - 1
             ComboBoxProd.Items.Add(tblProd.Rows(i).Item("bitronpn").ToString & " - " & tblProd.Rows(i).Item("name").ToString)
 
         Next
         ComboBoxProd.Sorted = True
     End Sub
-
 
     Private Sub ComboBoxEcr_SelectedValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxEcr.SelectedValueChanged
         UpdateField()
@@ -741,8 +714,8 @@ Public Class FormECR
                 ComunicationLog("0046") 'Now can't modifiy
             End If
         End If
-
     End Sub
+
     Function NoChecked() As Boolean
         If ButtonA.Text = "NOT CHECKED" And
         ButtonU.Text = "NOT CHECKED" And
@@ -776,7 +749,6 @@ Public Class FormECR
         ButtonE.Text = "CHECKED" Or
         ButtonB.Text = "CHECKED" Or
         ButtonP.Text = "CHECKED" Then
-
             SomeNoApproved = True
         End If
     End Function
@@ -810,7 +782,6 @@ Public Class FormECR
     End Function
 
     Sub invalidationProd(ByVal prod As String, ByVal ecrN As Integer)
-
         Dim RowSearchDoc As DataRow()
         Dim RowSearchProd As DataRow()
         Dim builder As New Common.DbConnectionStringBuilder()
@@ -848,7 +819,6 @@ Public Class FormECR
     End Sub
 
     Sub DeinvalidationProd(ByVal prod As String, ByVal ecrN As Integer)
-
         Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
@@ -860,12 +830,10 @@ Public Class FormECR
             Dim RowSearchDoc As DataRow()
             Dim RowSearchProd As DataRow()
             RowSearchProd = tblProd.Select("bitronpn = '" & Trim(prod) & "'")
-
             RowSearchDoc = tblDoc.Select("(filename ='" & RowSearchProd(0).Item("bitronpn").ToString & "' or filename ='" &
             RowSearchProd(0).Item("pcbcode").ToString & "' or filename ='" & RowSearchProd(0).Item("piastracode").ToString & "')")
 
             For Each row In RowSearchDoc
-
                 If InStr(1, row("Ecrpending").ToString, "[" & ecrN & "]", CompareMethod.Text) > 0 Then
                     Dim SQL As String
                     Dim pos As Integer
@@ -902,18 +870,15 @@ Public Class FormECR
         Else
             ComunicationLog("5061") ' fill path
         End If
-
     End Function
 
     Private Sub ButtonOpen_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonOpen.Click
         Dim fileOpen As String
         fileOpen = downloadFileWinPath(ComboBoxEcr.Text)
         If ComboBoxEcr.Text <> "" Then Process.Start(fileOpen)
-
     End Sub
 
     Sub UpdateDate() Handles DateTimePickerL.ValueChanged, DateTimePickerU.ValueChanged, DateTimePickerE.ValueChanged, DateTimePickerQ.ValueChanged, DateTimePickerp.ValueChanged, DateTimePickerR.ValueChanged
-
         Dim maxVal As Date = string_to_date("2000/01/01")
         If ButtonRL.Text <> "" Then If maxVal < string_to_date(ButtonRL.Text) Then maxVal = ButtonRL.Text
         If ButtonUL.Text <> "" Then If maxVal < string_to_date(ButtonUL.Text) Then maxVal = ButtonUL.Text
@@ -931,7 +896,6 @@ Public Class FormECR
         Else
             ButtonData.Text = ""
         End If
-
     End Sub
 
     Private Sub ComboBoxPay_LostFocus(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxPay.LostFocus
@@ -941,7 +905,6 @@ Public Class FormECR
     Private Sub ButtonSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSave.Click
         WriteField(userDep3 & "cost", TextBoxStepCost.Text)
         WriteField(userDep3 & "note", Replace(Replace(RichTextBoxStep.Rtf, "\", "\\"), "'", ""))
-
         needSave = False
         ButtonSave.BackColor = Color.Green
         UpdateField()
@@ -964,7 +927,6 @@ Public Class FormECR
     Private Sub ButtonSaveSend_Click(sender As Object, e As EventArgs) Handles ButtonSaveSend.Click
         WriteField(userDep3 & "cost", TextBoxStepCost.Text)
         WriteField(userDep3 & "note", Replace(Replace(RichTextBoxStep.Rtf, "\", "\\"), "'", ""))
-
         needSave = False
         ButtonSave.BackColor = Color.Green
         UpdateField()
@@ -1098,7 +1060,6 @@ Public Class FormECR
 
     Function readDocSign(ByVal docId As Long) As String
         Dim DsDoc As New DataSet
-
         Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
@@ -1113,7 +1074,6 @@ Public Class FormECR
         Else
             MsgBox("Document not found for ECR" & docId)
         End If
-
     End Function
 
     Private Sub ButtonEcrCheck_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonEcrCheck.Click
@@ -1143,7 +1103,5 @@ Public Class FormECR
         Else
             MsgBox("For approval need to have rights as R&D (R3) and supervisor (J3)! and need to select one ECR!", MsgBoxStyle.Information)
         End If
-
     End Sub
-
 End Class

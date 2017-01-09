@@ -4,10 +4,8 @@ Imports System.Linq
 Imports MySql.Data.MySqlClient
 
 Public Class FormMaterialRequest
-
     Dim tblMaterialRequest As DataTable
     Dim startPoint As Point
-
 
     Private Sub FormMaterialRequest_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim builder As New Common.DbConnectionStringBuilder()
@@ -31,8 +29,6 @@ Public Class FormMaterialRequest
             MessageBox.Show(ex.Message)
         End Try
     End Sub
-
-
 
     Private Sub SetColumnsProperties()
         'Set properties for all columns
@@ -61,9 +57,6 @@ Public Class FormMaterialRequest
         dataGridView.Columns("w_warehouse").Visible = True
 
     End Sub
-
-   
-    
 
     Private Sub dataGridView_SortStringChanged(sender As Object, e As EventArgs) Handles dataGridView.SortStringChanged
         dataGridView.SelectedCells(0).Value = dataGridView.SelectedCells(0).EditedFormattedValue
@@ -112,7 +105,6 @@ Public Class FormMaterialRequest
         ContextMenuStrip.Show(dataGridView, Me.startPoint)
     End Sub
 
-
     Private Sub dataGridView_MouseDown(sender As Object, e As MouseEventArgs) Handles dataGridView.MouseDown
 
         If (e.Button = System.Windows.Forms.MouseButtons.Right) Then
@@ -148,8 +140,6 @@ Public Class FormMaterialRequest
         dataGridView.CleanFilter()
     End Sub
 
-
-
     Private Sub ButtonSave_Click(sender As Object, e As EventArgs) Handles ButtonSave.Click
         dataGridView.CleanFilter()
         Try
@@ -173,10 +163,10 @@ Public Class FormMaterialRequest
             MessageBox.Show(ex.Message)
         End Try
     End Sub
-  
+
     Dim needSave As Boolean = False
     Private Sub dataGridView_CellEndEdit(sender As Object, e As DataGridViewCellEventArgs) Handles dataGridView.CellEndEdit
-        
+
         needSave = True
     End Sub
 

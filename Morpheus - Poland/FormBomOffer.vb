@@ -10,8 +10,6 @@ Public Class FormBomOffer
     Dim myImageList As New ImageList()
     Dim VersionsWithQuatity As Dictionary(Of String, Integer)
 
-
-
     Property SelectedNodes() As ArrayList
         Get
             Return m_coll
@@ -25,23 +23,22 @@ Public Class FormBomOffer
     End Property
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles ButtonImport.Click
-        
         Dim builderBEQS As New Common.DbConnectionStringBuilder()
         builderBEQS.ConnectionString = ConfigurationManager.ConnectionStrings("BEQS").ConnectionString
         Using conBEQS = NewConnectionMySql(builderBEQS("host"), builderBEQS("database"), builderBEQS("username"), builderBEQS("password"))
             For Each offerid As TreeNode In m_coll
                 Dim tblBomOffer As DataTable
                 Dim DsBomOffer As New DataSet
-                Using AdapterBomOffer As New MySqlDataAdapter("select distinct a.BitronPN, max(a.offerId) as offerId, max(a.componentId) as componentId, sum(a.quantity) as RequestQT " & _
-                                                          "  from (select distinct case " & _
-                                                           "    when b.BitronPNMatch = true and b.bitronPn is not null then TRIM(LEADING '0' FROM b.bitronPn) " & _
-                                                            "   else CONCAT('BEQS_' , cast(a.offerId as CHAR(10)), '_' ,  cast(d.componentid as CHAR(10)) ) end as BitronPN, " & _
-                                                            "   b.BitronPNMatch, a.offerId, d.componentid , d.quantity " & _
-                                                            "   from quotegeneralinformation a " & _
-                                                            "   join offerversion c on a.offerId = c.offerId " & _
-                                                            "   join bomdetailed b on a.offerId = b.offerId " & _
-                                                            "   join componentversion d on d.offerid = a.offerid and d.offerversionid = c.offerVersionId and d.componentid = b.componentId " & _
-                                                            "   where a.offerid = " & offerid.Name & " ) a " & _
+                Using AdapterBomOffer As New MySqlDataAdapter("select distinct a.BitronPN, max(a.offerId) as offerId, max(a.componentId) as componentId, sum(a.quantity) as RequestQT " &
+                                                          "  from (select distinct case " &
+                                                           "    when b.BitronPNMatch = true and b.bitronPn is not null then TRIM(LEADING '0' FROM b.bitronPn) " &
+                                                            "   else CONCAT('BEQS_' , cast(a.offerId as CHAR(10)), '_' ,  cast(d.componentid as CHAR(10)) ) end as BitronPN, " &
+                                                            "   b.BitronPNMatch, a.offerId, d.componentid , d.quantity " &
+                                                            "   from quotegeneralinformation a " &
+                                                            "   join offerversion c on a.offerId = c.offerId " &
+                                                            "   join bomdetailed b on a.offerId = b.offerId " &
+                                                            "   join componentversion d on d.offerid = a.offerid and d.offerversionid = c.offerVersionId and d.componentid = b.componentId " &
+                                                            "   where a.offerid = " & offerid.Name & " ) a " &
                                                             " group by a.bitronPn", conBEQS)
                     AdapterBomOffer.Fill(DsBomOffer, "BomOffer")
                     tblBomOffer = DsBomOffer.Tables("BomOffer")
@@ -55,7 +52,7 @@ Public Class FormBomOffer
                         AdapterProd.Fill(DsMaterialRequest, "MaterialRequest")
                         tblMaterialRequest = DsMaterialRequest.Tables("MaterialRequest")
                     End Using
-                
+
                     For Each bom In tblBomOffer.Rows
                         Dim bitronPn As String = ""
                         Dim sqlCommand As String = ""
@@ -64,16 +61,16 @@ Public Class FormBomOffer
                         bitronPn = (From a In tblMaterialRequest.AsEnumerable() Where a.Field(Of String)("BitronPN") = bom("bitronPn") Select a.Field(Of String)("bitronPn")).ToList().FirstOrDefault()
                         Dim qty = bom("RequestQt") * Me.VersionsWithQuatity.Item(offerid.Parent.Text)
                         If bitronPn Is Nothing Then
-                            values = "VALUES(" & _
-                                            "'" & bom("bitronPn") & "'," & _    
-                                            "'" & qty & "'," & _ 
-                                            "'" & offerid.Parent.Text & " - [" & bom("RequestQt") & "]'," & _ 
+                            values = "VALUES(" &
+                                            "'" & bom("bitronPn") & "'," &
+                                            "'" & qty & "'," &
+                                            "'" & offerid.Parent.Text & " - [" & bom("RequestQt") & "]'," &
                                             "'', '', 0, '', 0, 0, '', '', '', '', '', 0, 0, 0, 0, 0, 0, '', 0, '', '' )"
-                            sqlCommand = "INSERT INTO MaterialRequest(bitronPN, RequestQt, BomList, des_pn, Brand, BrandALT, NotePurchasing, WareHouse3D, Delta," & _
-                                                "NoteRnd, pfp, doc, ProductionUsed, DeltaUsedFlag, RequestQt_1, RequestQt_2, RequestQt_3, RequestQt_4, RequestQt_5, STOCK_W," & _
+                            sqlCommand = "INSERT INTO MaterialRequest(bitronPN, RequestQt, BomList, des_pn, Brand, BrandALT, NotePurchasing, WareHouse3D, Delta," &
+                                                "NoteRnd, pfp, doc, ProductionUsed, DeltaUsedFlag, RequestQt_1, RequestQt_2, RequestQt_3, RequestQt_4, RequestQt_5, STOCK_W," &
                                                 "STATUS, w_wareHouse, RDA_ETA, Order_ETA) " & values
 
-                        Else                            
+                        Else
                             sqlCommand = "UPDATE MaterialRequest Set RequestQt = " & qty & ", BomList = CONCAT(BomList, ';" & offerid.Parent.Text & " - [" & bom("RequestQt") & "]') where TRIM(LEADING '0' FROM bitronPn) = '" & bom("bitronPn") & "'"
                         End If
                         Dim cmd = New MySqlCommand(sqlCommand, con)
@@ -81,13 +78,12 @@ Public Class FormBomOffer
                     Next
                 End Using
             Next
-
         End Using
         MessageBox.Show("Import is done!")
         Me.Close()
     End Sub
 
-    Public Sub ShowForm(Versions As Dictionary(Of String, Integer))  
+    Public Sub ShowForm(Versions As Dictionary(Of String, Integer))
         Dim tblBomOffer As DataTable
         Dim builderBEQS As New Common.DbConnectionStringBuilder()
         Dim DsBomOffer As New DataSet
@@ -100,10 +96,10 @@ Public Class FormBomOffer
         builderBEQS.ConnectionString = ConfigurationManager.ConnectionStrings("BEQS").ConnectionString
         Using conBEQS = NewConnectionMySql(builderBEQS("host"), builderBEQS("database"), builderBEQS("username"), builderBEQS("password"))
             For Each item In Versions
-                Using AdapterBomOffer As New MySqlDataAdapter("select distinct bitronpn, a.offerid, c.customerName, b.offerName " & _
-                                                            " from bomdetailed a " & _
-                                                            " join quotegeneralinformation b on a.offerId = b.offerId " & _
-                                                            " join customer c on b.customerId = c.customerId " & _
+                Using AdapterBomOffer As New MySqlDataAdapter("select distinct bitronpn, a.offerid, c.customerName, b.offerName " &
+                                                            " from bomdetailed a " &
+                                                            " join quotegeneralinformation b on a.offerId = b.offerId " &
+                                                            " join customer c on b.customerId = c.customerId " &
                                                             " where bitronpn = " & item.Key, conBEQS)
 
                     AdapterBomOffer.Fill(DsBomOffer, "BomOffer")
@@ -125,8 +121,7 @@ Public Class FormBomOffer
                 End Using
             Next
         End Using
-
-        Me.Show
+        Me.Show()
     End Sub
 
     Private Sub FormBomOffer_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -138,7 +133,6 @@ Public Class FormBomOffer
     End Sub
 
     Private Sub TreeView1_BeforeSelect(sender As Object, e As TreeViewCancelEventArgs) Handles TreeView1.BeforeSelect
-
     End Sub
 
     Private Sub TreeView1_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles TreeView1.AfterSelect
@@ -158,7 +152,6 @@ Public Class FormBomOffer
             m_coll.Add(e.Node)
             PaintSelectedNodes()
         End If
-
     End Sub
 
     Private Sub PaintSelectedNodes()
@@ -174,9 +167,7 @@ Public Class FormBomOffer
     End Sub
 
     Private Sub RemovePaintFromNodes()
-
         If m_coll.Count = 0 Then Return
-
         Dim n0 As TreeNode = CType(m_coll(0), TreeNode)
         Dim back As Color = n0.TreeView.BackColor
         Dim fore As Color = n0.TreeView.ForeColor
@@ -190,14 +181,12 @@ Public Class FormBomOffer
             n.BackColor = back
             n.ForeColor = fore
         Next
-
     End Sub
 
     Private Function isParent(parentNode As TreeNode, childNode As TreeNode) As Boolean
         If parentNode.Equals(childNode) Then
             Return True
         End If
-
         Dim n As TreeNode = childNode
         Dim bFound As Boolean = False
 
@@ -207,7 +196,4 @@ Public Class FormBomOffer
         End While
         Return bFound
     End Function
-
 End Class
-
-
