@@ -1341,7 +1341,7 @@ Public Class FormSamples
             End Try
 
             'copy data from excel to `pfp`
-            Dim sql As String = "load data local infile '" & Replace(tempPath, "\", "\\") & "' into table `pfp` fields terminated by ','  lines terminated by '\r\n' ignore 1 lines  (`pfidf`,`pepre`,`peval`,`pfpaf`,`pfpan`,`pfpad`,`pelot`,`pedin`,`pedfi`,`pefor`,`forsc`)"
+            Dim sql As String = "load data local infile '" & Replace(tempPath, "\", "\\") & "' into table `pfp` CHARACTER SET latin1 fields terminated by ','  lines terminated by '\r\n' ignore 1 lines  (`pfidf`,`pepre`,`peval`,`pfpaf`,`pfpan`,`pfpad`,`pelot`,`pedin`,`pedfi`,`pefor`,`forsc`)"
             commandMySql = New MySqlCommand(sql, con)
             commandMySql.ExecuteNonQuery()
         End Using
@@ -1706,7 +1706,7 @@ Public Class FormSamples
                 Dim generation As Integer = GC.GetGeneration(xlsApp)
                 GC.Collect(generation)
                 'copy data from excel to `pfp`
-                Dim sql As String = "load data local infile '" & Replace(tempPath, "\", "\\") & "' into table `order` fields terminated by ','  lines terminated by '\r\n' ignore 1 lines  (`stab`,`ordine`,`tipoOrd`,`forn`,`RagSoc`,`Stato_Ord`,`Data_Inserimento`,`Acquisitore`,`Num_Item`,`Num_RDA`,`Identif`,`Descr`,`Stato_Item`,`Qta_Ord`,`Qta_Consegnata`,`Qta_Scartata`)"
+                Dim sql As String = "load data local infile '" & Replace(tempPath, "\", "\\") & "' into table `order` CHARACTER SET latin1 fields terminated by ','  lines terminated by '\r\n' ignore 1 lines  (`stab`,`ordine`,`tipoOrd`,`forn`,`RagSoc`,`Stato_Ord`,`Data_Inserimento`,`Acquisitore`,`Num_Item`,`Num_RDA`,`Identif`,`Descr`,`Stato_Item`,`Qta_Ord`,`Qta_Consegnata`,`Qta_Scartata`)"
                 commandMySql = New MySqlCommand(sql, con)
                 commandMySql.ExecuteNonQuery()
 
@@ -1759,7 +1759,7 @@ Public Class FormSamples
             End Try
 
             'copy data from excel to `pfp`
-            Dim sql As String = "load data local infile '" & Replace(tempPath, "\", "\\") & "' into table `spu` fields terminated by ','  lines terminated by '\r\n' ignore 1 lines  (`bitronpn`,`pades`,`sagia`,`samgz`,`saubc`,`paumt`,`pmppa`,`pmcmm`,`paclm`)"
+            Dim sql As String = "load data local infile '" & Replace(tempPath, "\", "\\") & "' into table `spu` CHARACTER SET latin1 fields terminated by ','  lines terminated by '\r\n' ignore 1 lines  (`bitronpn`,`pades`,`sagia`,`samgz`,`saubc`,`paumt`,`pmppa`,`pmcmm`,`paclm`)"
             commandMySql = New MySqlCommand(sql, con)
             commandMySql.ExecuteNonQuery()
         End Using
@@ -1799,7 +1799,7 @@ Public Class FormSamples
             End Try
 
             'copy data from excel to `rda`
-            Dim sql As String = "load data local infile '" & Replace(tempPath, "\", "\\") & "' into table `rda` fields terminated by ','  lines terminated by '\r\n' ignore 1 lines  (`RATRK`,`RASTB`,`RANUM`,`RATIF`,`RAITE`,`RADES`,`RACMA`,`RAIDF`,`RAVSM`,`RAVAL`,`RAUNC`,`RAQT1`,`RAQT2`,`RAQT3`,`RAQT4`,`RAQT5`,`RADT1`,`RADT2`,`RADT3`,`RADT4`,`RADT5`,`RAQTO`,`RAVSC`,`RACOM`,`RAFOR`,`RACDI`,`RACDR`,`RAUSE`,`RADTE`,`RADCV`,`RASTA`,`RAOA1`,`RAECO`,`RALOT`,`RAPGM`,`RABUY`,`RAUAG`,`RAORA`)"
+            Dim sql As String = "load data local infile '" & Replace(tempPath, "\", "\\") & "' into table `rda` CHARACTER SET latin1 fields terminated by ','  lines terminated by '\r\n' ignore 1 lines  (`RATRK`,`RASTB`,`RANUM`,`RATIF`,`RAITE`,`RADES`,`RACMA`,`RAIDF`,`RAVSM`,`RAVAL`,`RAUNC`,`RAQT1`,`RAQT2`,`RAQT3`,`RAQT4`,`RAQT5`,`RADT1`,`RADT2`,`RADT3`,`RADT4`,`RADT5`,`RAQTO`,`RAVSC`,`RACOM`,`RAFOR`,`RACDI`,`RACDR`,`RAUSE`,`RADTE`,`RADCV`,`RASTA`,`RAOA1`,`RAECO`,`RALOT`,`RAPGM`,`RABUY`,`RAUAG`,`RAORA`)"
             commandMySql = New MySqlCommand(sql, con)
             commandMySql.ExecuteNonQuery()
         End Using

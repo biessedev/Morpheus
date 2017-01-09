@@ -3622,7 +3622,7 @@ Public Class FormOffer
             End Try
 
             'copy data from excel to `pfp`
-            Dim sql As String = "load data local infile '" & Replace(tempPath, "\", "\\") & "' into table `pfp` fields terminated by ','  lines terminated by '\r\n' ignore 1 lines  (`pfidf`,`pepre`,`peval`,`pfpaf`,`pfpan`,`pfpad`,`pelot`,`pedin`,`pedfi`,`pefor`,`forsc`)"
+            Dim sql As String = "load data local infile '" & Replace(tempPath, "\", "\\") & "' into table `pfp` CHARACTER SET latin1 fields terminated by ','  lines terminated by '\r\n' ignore 1 lines  (`pfidf`,`pepre`,`peval`,`pfpaf`,`pfpan`,`pfpad`,`pelot`,`pedin`,`pedfi`,`pefor`,`forsc`)"
             commandMySql = New MySqlCommand(sql, con)
             commandMySql.ExecuteNonQuery()
 
