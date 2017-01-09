@@ -1,5 +1,6 @@
 ﻿Imports System.Collections.Generic
 Imports System.Configuration
+Imports System.Data.SqlClient
 Imports System.Linq
 Imports MySql.Data.MySqlClient
 
@@ -94,9 +95,9 @@ Public Class FormBomOffer
         Me.VersionsWithQuatity = Versions
 
         builderBEQS.ConnectionString = ConfigurationManager.ConnectionStrings("BEQS").ConnectionString
-        Using conBEQS = NewConnectionMySql(builderBEQS("host"), builderBEQS("database"), builderBEQS("username"), builderBEQS("password"))
+        Using conBEQS = NewOpenConnectionMySqlOrcad(builderBEQS("host"), builderBEQS("database"), builderBEQS("username"), builderBEQS("password"))
             For Each item In Versions
-                Using AdapterBomOffer As New MySqlDataAdapter("select distinct bitronpn, a.offerid, c.customerName, b.offerName " &
+                Using AdapterBomOffer As New SqlDataAdapter("select distinct bitronpn, a.offerid, c.customerName, b.offerName " &
                                                             " from bomdetailed a " &
                                                             " join quotegeneralinformation b on a.offerId = b.offerId " &
                                                             " join customer c on b.customerId = c.customerId " &
