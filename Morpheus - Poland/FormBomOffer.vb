@@ -26,11 +26,11 @@ Public Class FormBomOffer
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles ButtonImport.Click
         Dim builderBEQS As New Common.DbConnectionStringBuilder()
         builderBEQS.ConnectionString = ConfigurationManager.ConnectionStrings("BEQS").ConnectionString
-        Using conBEQS = NewConnectionMySql(builderBEQS("host"), builderBEQS("database"), builderBEQS("username"), builderBEQS("password"))
+        Using conBEQS = NewOpenConnectionSqlBeqs(builderBEQS("host"), builderBEQS("database"), builderBEQS("username"), builderBEQS("password"))
             For Each offerid As TreeNode In m_coll
                 Dim tblBomOffer As DataTable
                 Dim DsBomOffer As New DataSet
-                Using AdapterBomOffer As New MySqlDataAdapter("select distinct a.BitronPN, max(a.offerId) as offerId, max(a.componentId) as componentId, sum(a.quantity) as RequestQT " &
+                Using AdapterBomOffer As New SqlDataAdapter("select distinct a.BitronPN, max(a.offerId) as offerId, max(a.componentId) as componentId, sum(a.quantity) as RequestQT " &
                                                           "  from (select distinct case " &
                                                            "    when b.BitronPNMatch = true and b.bitronPn is not null then TRIM(LEADING '0' FROM b.bitronPn) " &
                                                             "   else CONCAT('BEQS_' , cast(a.offerId as CHAR(10)), '_' ,  cast(d.componentid as CHAR(10)) ) end as BitronPN, " &
@@ -95,7 +95,7 @@ Public Class FormBomOffer
         Me.VersionsWithQuatity = Versions
 
         builderBEQS.ConnectionString = ConfigurationManager.ConnectionStrings("BEQS").ConnectionString
-        Using conBEQS = NewOpenConnectionMySqlOrcad(builderBEQS("host"), builderBEQS("database"), builderBEQS("username"), builderBEQS("password"))
+        Using conBEQS = NewOpenConnectionSqlBeqs(builderBEQS("host"), builderBEQS("database"), builderBEQS("username"), builderBEQS("password"))
             For Each item In Versions
                 Using AdapterBomOffer As New SqlDataAdapter("select distinct bitronpn, a.offerid, c.customerName, b.offerName " &
                                                             " from bomdetailed a " &

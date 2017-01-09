@@ -78,6 +78,18 @@ Module PublicFunction
         End Try
     End Function
 
+    Public Function NewOpenConnectionSqlBeqs(ByVal strHost As String, ByVal strDatabase As String, ByVal strUserName As String, ByVal strPassword As String) As SqlConnection
+        Dim conn = "server=" & strHost & ";user id=" & strUserName & ";" & "pwd=" & strPassword & ";" & "database=" & strDatabase & ";Connect Timeout=120;"
+        Try
+            Dim mysqlconn = New SqlConnection(conn)
+            mysqlconn.Open()
+            Return mysqlconn
+        Catch ae As MySqlException
+            MessageBox.Show(ae.Message.ToString())
+            Return New SqlConnection()
+        End Try
+    End Function
+
     Function cap7(ByVal s As String) As String
         cap7 = UCase(Mid(s, 1, 7)) & (Mid(s, 8))
     End Function
