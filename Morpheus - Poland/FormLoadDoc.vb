@@ -178,6 +178,8 @@ Public Class FormLoadDoc
                             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
                                 Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM doc order by rev desc", con)
+                                    Dim MySqlCommandBuilder As MySqlCommandBuilder = New MySqlCommandBuilder(AdapterDoc)
+                                    MySqlCommandBuilder.GetUpdateCommand()
                                     AdapterDoc.Update(tblDoc)
                                 End Using
                             End Using
