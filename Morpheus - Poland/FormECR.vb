@@ -912,7 +912,7 @@ Public Class FormECR
 
     Private Function GetDepartamentName(right As String) As String
         Dim departament = ""
-        If ButtonRL.BackColor = Color.LightGreen Then departament = "R&L"
+        If ButtonRL.BackColor = Color.LightGreen Then departament = "R&D"
         If ButtonLL.BackColor = Color.LightGreen Then departament = "Logistic"
         If ButtonUL.BackColor = Color.LightGreen Then departament = "Purchasing"
         If ButtonBL.BackColor = Color.LightGreen Then departament = "Process Engineering"
