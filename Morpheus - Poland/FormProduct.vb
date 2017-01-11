@@ -227,6 +227,8 @@ Public Class FormProduct
             ListView1.SelectedItems.Item(0).SubItems(17).Text = TextBoxLS.Text
             ListView1.SelectedItems.Item(0).SubItems(10).Text = strControl()
             ListView1.SelectedItems.Item(0).SubItems(6).Text = TextBoxDAI.Text
+            ListView1.SelectedItems.Item(0).SubItems(32).Text = TextBoxProductPlant.Text
+
         Else
             MsgBox("Need to select the same Bitron PN!")
         End If
@@ -448,6 +450,7 @@ Public Class FormProduct
         ComboBoxCustomer.Text = ""
         TextBoxDescription.Text = ""
         TextBoxProduct.Text = ""
+        TextBoxProductPlant.Text = ""
         TextBoxPiastra.Text = ""
         TextBoxPcb.Text = ""
         TextBoxLS.Text = ""
