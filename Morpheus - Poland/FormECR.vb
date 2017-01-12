@@ -76,7 +76,7 @@ Public Class FormECR
         If userDep3 = "" Then
             ButtonR_Click(Me, e)
         End If
-
+        CheckBoxOpen.Checked = True
     End Sub
 
     ' Fill the ECR combo with all ECR yet open

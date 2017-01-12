@@ -495,6 +495,7 @@ Public Class FormDownload
         If RadioButtonProductSearch.Checked And Not RadioButtonGeneralSearch.Checked Then
         Else
             RadioButtonProductSearch.Checked = Not RadioButtonGeneralSearch.Checked
+
         End If
     End Sub
 
@@ -1212,6 +1213,7 @@ Public Class FormDownload
             ComboBoxStatus.Enabled = True
             ComboBoxProd.Enabled = True
             CheckGru.Enabled = True
+            CheckGru.Checked = True
             CheckBoxObsolete.Enabled = True
             CheckComp.Enabled = True
             TextBoxCompPn.Enabled = True
