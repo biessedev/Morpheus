@@ -259,28 +259,31 @@ Public Class FormDownload
                                         prodDoc = rowPrdList("bitronpn").ToString
                                         prodPlantDoc = rowPrdList("productcodeplant").ToString
                                         proddocAux = rowPrdList("piastracode").ToString
-                                        Try
-                                            Dim builderGru As New Common.DbConnectionStringBuilder()
-                                            builderGru.ConnectionString = ConfigurationManager.ConnectionStrings("MySqlConnectionGru").ConnectionString
-                                            Using conGru = NewConnectionMySql(builderGru("host"), builderGru("database"), builderGru("username"), builderGru("password"))
+                                        Dim builderGru As New Common.DbConnectionStringBuilder()
+                                        builderGru.ConnectionString = ConfigurationManager.ConnectionStrings("MySqlConnectionGru").ConnectionString
+                                        Using conGru = NewConnectionMySql(builderGru("host"), builderGru("database"), builderGru("username"), builderGru("password"))
+                                            Try
+
                                                 Using AdapterDocGruProd As New MySqlDataAdapter("SELECT * FROM documento where codicepf = '" & prodDoc & "' or codicepf = '" & proddocAux & "'", conGru)
                                                     AdapterDocGruProd.Fill(DsDocGru, "documento")
                                                 End Using
 
-                                                If DsDocGru.Tables("documento").Rows.Count = 0 Then
-                                                    Using AdapterDocGruProd As New MySqlDataAdapter("SELECT * FROM documento where codicepf = '" & prodPlantDoc & "' or codicepf = '" & proddocAux & "'", conGru)
+
+
+                                                tlbDocGru = DsDocGru.Tables("documento")
+                                                If prodDoc = "" Then prodDoc = proddocAux
+                                                If proddocAux = "" Then proddocAux = prodDoc
+                                                RowSearch = tlbDocGru.Select("( codicepf LIKE '" & prodDoc & "' or codicepf LIKE '" & proddocAux & "')  ")
+                                                If RowSearch.Length = 0 Then
+                                                    Using AdapterDocGruProd As New MySqlDataAdapter("SELECT * FROM documento where codicepf = '" & prodPlantDoc & "'", conGru)
                                                         AdapterDocGruProd.Fill(DsDocGru, "documento")
                                                     End Using
+                                                    tlbDocGru = DsDocGru.Tables("documento")
+                                                    RowSearch = tlbDocGru.Select("( codicepf LIKE '" & prodPlantDoc & "')  ")
                                                 End If
-                                            End Using
-
-                                        Catch ex As Exception
-                                        End Try
-                                        tlbDocGru = DsDocGru.Tables("documento")
-                                        If prodDoc = "" Then prodDoc = proddocAux
-                                        If proddocAux = "" Then proddocAux = prodDoc
-                                        RowSearch = tlbDocGru.Select("( codicepf LIKE '" & prodDoc & "' or codicepf LIKE '" & proddocAux & "')  ")
-
+                                            Catch ex As Exception
+                                            End Try
+                                        End Using
                                         Dim dima
                                         Dim sw = False
                                         ProdControl = fControl(rowPrdList("bitronpn").ToString, strPcbCode, strPiastraCode)
@@ -289,7 +292,7 @@ Public Class FormDownload
                                         WriteFile(rowPrdList("bitronpn").ToString & "   " & rowPrdList("name").ToString & " <<-->> " & rowPrdList("status").ToString, True)
                                         For Each row In RowSearch
                                             Application.DoEvents()
-                                            If (row("visto").ToString <> "" And row("data_obso").ToString = "") And (row("codicepf").ToString = prodDoc Or row("codicepf").ToString = proddocAux) Then
+                                            If (row("visto").ToString <> "" And row("data_obso").ToString = "") And (row("codicepf").ToString = prodDoc Or row("codicepf").ToString = proddocAux Or row("codicepf").ToString = prodPlantDoc) Then
 
                                                 Dim ssr(tblDoc.Columns.Count) As String
                                                 ssr(0) = "GRU"
@@ -355,7 +358,7 @@ Public Class FormDownload
 
                                     ProdControl = fControl(rowPrdList("bitronpn").ToString, strPcbCode, strPiastraCode)
                                     RowSearch = tblDoc.Select("header like '" & IIf(Mid(ComboBoxFirstType.Text, 1, 3) = "", "*", Mid(ComboBoxFirstType.Text, 1, 3) & "_") & IIf(Mid(ComboBoxSecondType.Text, 1, 3) = "", "*", Mid(ComboBoxSecondType.Text, 1, 3) & "_") & IIf(Mid(ComboBoxThirdType.Text, 1, 3) = "", "*", Mid(ComboBoxThirdType.Text, 1, 3)) & "' AND (filename like '" &
-                                                ComboBoxProd.Text & "' or filename like '*" & rowPrdList("bitronpn").ToString & "*')", "rev DESC")
+                        ComboBoxProd.Text & "' or filename like '*" & rowPrdList("bitronpn").ToString & "*')", "rev DESC")
                                     FillListView(RowSearch, True, rowPrdList("BITRONPN").ToString)
                                     GroupList = rowPrdList("GROUPLIST").ToString()
 
@@ -364,9 +367,9 @@ Public Class FormDownload
                                         J = InStr(GroupList, "]", CompareMethod.Text)
                                         While J > 0
                                             RowSearch = tblDoc.Select("(HEADER = '" & Mid(GroupList, I, 11) & "' AND filename = '" & Mid(GroupList, I + 12, J - 12 - I) _
-                                             & "') and ( header like '" & IIf(Mid(ComboBoxFirstType.Text, 1, 3) = "", "*", Mid(ComboBoxFirstType.Text, 1, 3) & "_") _
-                                            & IIf(Mid(ComboBoxSecondType.Text, 1, 3) = "", "*", Mid(ComboBoxSecondType.Text, 1, 3) & "_") _
-                                            & IIf(Mid(ComboBoxThirdType.Text, 1, 3) = "", "*", Mid(ComboBoxThirdType.Text, 1, 3)) & "')")
+                     & "') and ( header like '" & IIf(Mid(ComboBoxFirstType.Text, 1, 3) = "", "*", Mid(ComboBoxFirstType.Text, 1, 3) & "_") _
+                    & IIf(Mid(ComboBoxSecondType.Text, 1, 3) = "", "*", Mid(ComboBoxSecondType.Text, 1, 3) & "_") _
+                    & IIf(Mid(ComboBoxThirdType.Text, 1, 3) = "", "*", Mid(ComboBoxThirdType.Text, 1, 3)) & "')")
                                             If RowSearch.Length > 0 Then
                                                 FillListView(RowSearch, True, rowPrdList("BITRONPN").ToString)
                                             End If
@@ -403,9 +406,9 @@ Public Class FormDownload
                                         Dim ResultDoc As DataRow(), ResultProd As DataRow(), mchElement As String
                                         ResultProd = tblDocProd.Select("bitronpn = '" & rowPrdList("BITRONPN").ToString & "'")
                                         If ParameterTable("plant") & "R_PRO_MED" = Mid(ComboBoxFirstType.Text, 1, 3) & "_" & Mid(ComboBoxSecondType.Text, 1, 3) & "_" & Mid(ComboBoxThirdType.Text, 1, 3) Or
-                                        ParameterTable("plant") & "R_PRO_" = Mid(ComboBoxFirstType.Text, 1, 3) & "_" & Mid(ComboBoxSecondType.Text, 1, 3) & "_" & Mid(ComboBoxThirdType.Text, 1, 3) Or
-                                        ParameterTable("plant") & "R__" = Mid(ComboBoxFirstType.Text, 1, 3) & "_" & Mid(ComboBoxSecondType.Text, 1, 3) & "_" & Mid(ComboBoxThirdType.Text, 1, 3) Or
-                                        "__" = Mid(ComboBoxFirstType.Text, 1, 3) & "_" & Mid(ComboBoxSecondType.Text, 1, 3) & "_" & Mid(ComboBoxThirdType.Text, 1, 3) Then
+                ParameterTable("plant") & "R_PRO_" = Mid(ComboBoxFirstType.Text, 1, 3) & "_" & Mid(ComboBoxSecondType.Text, 1, 3) & "_" & Mid(ComboBoxThirdType.Text, 1, 3) Or
+                ParameterTable("plant") & "R__" = Mid(ComboBoxFirstType.Text, 1, 3) & "_" & Mid(ComboBoxSecondType.Text, 1, 3) & "_" & Mid(ComboBoxThirdType.Text, 1, 3) Or
+                "__" = Mid(ComboBoxFirstType.Text, 1, 3) & "_" & Mid(ComboBoxSecondType.Text, 1, 3) & "_" & Mid(ComboBoxThirdType.Text, 1, 3) Then
                                             Dim mech As String = ResultProd(0).Item("mchelement").ToString
 
                                             For I = 0 To Int(Len(mech) / 60) - 1
