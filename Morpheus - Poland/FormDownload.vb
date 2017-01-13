@@ -79,7 +79,6 @@ Public Class FormDownload
                 End Try
             End If
         End Using
-        CheckGru.Checked = False
 
         Dim RowSearchDoc As DataRow()
         Dim builder As New Common.DbConnectionStringBuilder()
