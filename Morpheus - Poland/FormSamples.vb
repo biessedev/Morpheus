@@ -675,7 +675,7 @@ Public Class FormSamples
 
     Private Sub ButtonNewCommit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonNewCommit.Click
         If TextBoxProduct.Text <> "" And productActivity(currentProductCode) = 0 Then
-            Dim strActiv As String = InputBox("Please insert the name of new activity : " & vbCrLf & "PCB_1 -- PCB_ 2 -- Activity Description")
+            Dim strActiv As String = InputBox("Please insert the name of new activity : " & vbCrLf & "PCB1 -- PCB2 -- PCB Description")
             If Regex.IsMatch(strActiv, "^[0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Or
                 Regex.IsMatch(strActiv, "^[0-9]{8} -- [0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Or
                 Regex.IsMatch(strActiv, "^[0-9]{8} -- [0-9]{8} -- [0-9]{8} -- \w+$", RegexOptions.IgnoreCase) Or

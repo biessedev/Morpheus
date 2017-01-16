@@ -50,11 +50,13 @@ Partial Class FormStart
         '
         'ButtonDocManagement
         '
+        Me.ButtonDocManagement.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ButtonDocManagement.BackColor = System.Drawing.Color.Transparent
         Me.ButtonDocManagement.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ButtonDocManagement.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ButtonDocManagement.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.ButtonDocManagement.Image = CType(resources.GetObject("ButtonDocManagement.Image"),System.Drawing.Image)
+        Me.ButtonDocManagement.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonDocManagement.Image = CType(resources.GetObject("ButtonDocManagement.Image"), System.Drawing.Image)
         Me.ButtonDocManagement.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.ButtonDocManagement.Location = New System.Drawing.Point(43, 141)
         Me.ButtonDocManagement.Name = "ButtonDocManagement"
@@ -62,15 +64,17 @@ Partial Class FormStart
         Me.ButtonDocManagement.TabIndex = 0
         Me.ButtonDocManagement.Text = "Document Manager"
         Me.ButtonDocManagement.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonDocManagement.UseVisualStyleBackColor = false
+        Me.ButtonDocManagement.UseVisualStyleBackColor = False
         '
         'ButtonProduct
         '
+        Me.ButtonProduct.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ButtonProduct.BackColor = System.Drawing.Color.Transparent
         Me.ButtonProduct.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ButtonProduct.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ButtonProduct.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.ButtonProduct.Image = CType(resources.GetObject("ButtonProduct.Image"),System.Drawing.Image)
+        Me.ButtonProduct.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonProduct.Image = CType(resources.GetObject("ButtonProduct.Image"), System.Drawing.Image)
         Me.ButtonProduct.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.ButtonProduct.Location = New System.Drawing.Point(43, 187)
         Me.ButtonProduct.Name = "ButtonProduct"
@@ -78,16 +82,18 @@ Partial Class FormStart
         Me.ButtonProduct.TabIndex = 1
         Me.ButtonProduct.Text = "Product Manager"
         Me.ButtonProduct.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonProduct.UseVisualStyleBackColor = false
+        Me.ButtonProduct.UseVisualStyleBackColor = False
         '
         'ButtonECR
         '
+        Me.ButtonECR.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ButtonECR.BackColor = System.Drawing.Color.Transparent
         Me.ButtonECR.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ButtonECR.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ButtonECR.Enabled = false
-        Me.ButtonECR.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.ButtonECR.Image = CType(resources.GetObject("ButtonECR.Image"),System.Drawing.Image)
+        Me.ButtonECR.Enabled = False
+        Me.ButtonECR.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonECR.Image = CType(resources.GetObject("ButtonECR.Image"), System.Drawing.Image)
         Me.ButtonECR.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.ButtonECR.Location = New System.Drawing.Point(43, 233)
         Me.ButtonECR.Name = "ButtonECR"
@@ -95,32 +101,36 @@ Partial Class FormStart
         Me.ButtonECR.TabIndex = 2
         Me.ButtonECR.Text = "ECR"
         Me.ButtonECR.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonECR.UseVisualStyleBackColor = false
+        Me.ButtonECR.UseVisualStyleBackColor = False
         '
         'ButtonAbout
         '
+        Me.ButtonAbout.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ButtonAbout.BackColor = System.Drawing.Color.Transparent
         Me.ButtonAbout.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ButtonAbout.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ButtonAbout.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.ButtonAbout.Image = CType(resources.GetObject("ButtonAbout.Image"),System.Drawing.Image)
+        Me.ButtonAbout.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonAbout.Image = CType(resources.GetObject("ButtonAbout.Image"), System.Drawing.Image)
         Me.ButtonAbout.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonAbout.Location = New System.Drawing.Point(43, 325)
+        Me.ButtonAbout.Location = New System.Drawing.Point(353, 371)
         Me.ButtonAbout.Name = "ButtonAbout"
-        Me.ButtonAbout.Size = New System.Drawing.Size(240, 40)
+        Me.ButtonAbout.Size = New System.Drawing.Size(242, 40)
         Me.ButtonAbout.TabIndex = 3
         Me.ButtonAbout.Text = "About SrvDoc"
         Me.ButtonAbout.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonAbout.UseVisualStyleBackColor = false
+        Me.ButtonAbout.UseVisualStyleBackColor = False
         '
         'ButtonSystem
         '
+        Me.ButtonSystem.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ButtonSystem.BackColor = System.Drawing.Color.Transparent
         Me.ButtonSystem.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ButtonSystem.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ButtonSystem.Enabled = false
-        Me.ButtonSystem.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.ButtonSystem.Image = CType(resources.GetObject("ButtonSystem.Image"),System.Drawing.Image)
+        Me.ButtonSystem.Enabled = False
+        Me.ButtonSystem.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonSystem.Image = CType(resources.GetObject("ButtonSystem.Image"), System.Drawing.Image)
         Me.ButtonSystem.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.ButtonSystem.Location = New System.Drawing.Point(43, 371)
         Me.ButtonSystem.Name = "ButtonSystem"
@@ -128,15 +138,17 @@ Partial Class FormStart
         Me.ButtonSystem.TabIndex = 4
         Me.ButtonSystem.Text = "Server Service "
         Me.ButtonSystem.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonSystem.UseVisualStyleBackColor = false
+        Me.ButtonSystem.UseVisualStyleBackColor = False
         '
         'ButtonTypeEdit
         '
+        Me.ButtonTypeEdit.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ButtonTypeEdit.BackColor = System.Drawing.Color.Transparent
         Me.ButtonTypeEdit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ButtonTypeEdit.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ButtonTypeEdit.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.ButtonTypeEdit.Image = CType(resources.GetObject("ButtonTypeEdit.Image"),System.Drawing.Image)
+        Me.ButtonTypeEdit.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonTypeEdit.Image = CType(resources.GetObject("ButtonTypeEdit.Image"), System.Drawing.Image)
         Me.ButtonTypeEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.ButtonTypeEdit.Location = New System.Drawing.Point(43, 49)
         Me.ButtonTypeEdit.Name = "ButtonTypeEdit"
@@ -144,15 +156,17 @@ Partial Class FormStart
         Me.ButtonTypeEdit.TabIndex = 5
         Me.ButtonTypeEdit.Text = "Doc Type"
         Me.ButtonTypeEdit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonTypeEdit.UseVisualStyleBackColor = false
+        Me.ButtonTypeEdit.UseVisualStyleBackColor = False
         '
         'ButtonLoadDoc
         '
+        Me.ButtonLoadDoc.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ButtonLoadDoc.BackColor = System.Drawing.Color.Transparent
         Me.ButtonLoadDoc.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ButtonLoadDoc.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ButtonLoadDoc.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.ButtonLoadDoc.Image = CType(resources.GetObject("ButtonLoadDoc.Image"),System.Drawing.Image)
+        Me.ButtonLoadDoc.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonLoadDoc.Image = CType(resources.GetObject("ButtonLoadDoc.Image"), System.Drawing.Image)
         Me.ButtonLoadDoc.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.ButtonLoadDoc.Location = New System.Drawing.Point(43, 95)
         Me.ButtonLoadDoc.Name = "ButtonLoadDoc"
@@ -160,90 +174,98 @@ Partial Class FormStart
         Me.ButtonLoadDoc.TabIndex = 6
         Me.ButtonLoadDoc.Text = "Upload Document"
         Me.ButtonLoadDoc.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonLoadDoc.UseVisualStyleBackColor = false
+        Me.ButtonLoadDoc.UseVisualStyleBackColor = False
         '
         'ButtonHelp
         '
         Me.ButtonHelp.BackColor = System.Drawing.Color.Transparent
         Me.ButtonHelp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ButtonHelp.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.ButtonHelp.Image = CType(resources.GetObject("ButtonHelp.Image"),System.Drawing.Image)
+        Me.ButtonHelp.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonHelp.Image = CType(resources.GetObject("ButtonHelp.Image"), System.Drawing.Image)
         Me.ButtonHelp.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonHelp.Location = New System.Drawing.Point(353, 371)
+        Me.ButtonHelp.Location = New System.Drawing.Point(353, 325)
         Me.ButtonHelp.Name = "ButtonHelp"
         Me.ButtonHelp.Size = New System.Drawing.Size(242, 39)
         Me.ButtonHelp.TabIndex = 7
         Me.ButtonHelp.Text = "Help"
         Me.ButtonHelp.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonHelp.UseVisualStyleBackColor = false
+        Me.ButtonHelp.UseVisualStyleBackColor = False
         '
         'ButtonNpi
         '
+        Me.ButtonNpi.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ButtonNpi.BackColor = System.Drawing.Color.Transparent
         Me.ButtonNpi.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ButtonNpi.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ButtonNpi.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.ButtonNpi.Image = CType(resources.GetObject("ButtonNpi.Image"),System.Drawing.Image)
+        Me.ButtonNpi.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonNpi.Image = CType(resources.GetObject("ButtonNpi.Image"), System.Drawing.Image)
         Me.ButtonNpi.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonNpi.Location = New System.Drawing.Point(353, 49)
+        Me.ButtonNpi.Location = New System.Drawing.Point(43, 279)
         Me.ButtonNpi.Name = "ButtonNpi"
-        Me.ButtonNpi.Size = New System.Drawing.Size(242, 40)
+        Me.ButtonNpi.Size = New System.Drawing.Size(240, 40)
         Me.ButtonNpi.TabIndex = 120
         Me.ButtonNpi.Text = "NPI"
         Me.ButtonNpi.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonNpi.UseVisualStyleBackColor = false
+        Me.ButtonNpi.UseVisualStyleBackColor = False
         '
         'ButtonMaterialRequest
         '
+        Me.ButtonMaterialRequest.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ButtonMaterialRequest.BackColor = System.Drawing.Color.Transparent
         Me.ButtonMaterialRequest.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ButtonMaterialRequest.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ButtonMaterialRequest.Enabled = True
-        Me.ButtonMaterialRequest.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.ButtonMaterialRequest.Image = CType(resources.GetObject("ButtonMaterialRequest.Image"),System.Drawing.Image)
+        Me.ButtonMaterialRequest.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonMaterialRequest.Image = CType(resources.GetObject("ButtonMaterialRequest.Image"), System.Drawing.Image)
         Me.ButtonMaterialRequest.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonMaterialRequest.Location = New System.Drawing.Point(353, 187)
+        Me.ButtonMaterialRequest.Location = New System.Drawing.Point(43, 325)
         Me.ButtonMaterialRequest.Name = "ButtonMaterialRequest"
-        Me.ButtonMaterialRequest.Size = New System.Drawing.Size(242, 40)
+        Me.ButtonMaterialRequest.Size = New System.Drawing.Size(240, 40)
         Me.ButtonMaterialRequest.TabIndex = 121
         Me.ButtonMaterialRequest.Text = "Material Request"
         Me.ButtonMaterialRequest.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonMaterialRequest.UseVisualStyleBackColor = false
+        Me.ButtonMaterialRequest.UseVisualStyleBackColor = False
         '
         'ButtonCommit
         '
+        Me.ButtonCommit.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ButtonCommit.BackColor = System.Drawing.Color.Transparent
         Me.ButtonCommit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ButtonCommit.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ButtonCommit.Enabled = false
-        Me.ButtonCommit.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.ButtonCommit.Image = CType(resources.GetObject("ButtonCommit.Image"),System.Drawing.Image)
-        Me.ButtonCommit.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonCommit.Location = New System.Drawing.Point(353, 141)
+        Me.ButtonCommit.Enabled = False
+        Me.ButtonCommit.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonCommit.Image = CType(resources.GetObject("ButtonCommit.Image"), System.Drawing.Image)
+        Me.ButtonCommit.ImageAlign = System.Drawing.ContentAlignment.BottomRight
+        Me.ButtonCommit.Location = New System.Drawing.Point(43, 417)
         Me.ButtonCommit.Name = "ButtonCommit"
-        Me.ButtonCommit.Size = New System.Drawing.Size(242, 40)
+        Me.ButtonCommit.Size = New System.Drawing.Size(240, 42)
         Me.ButtonCommit.TabIndex = 122
         Me.ButtonCommit.Text = "Commit"
         Me.ButtonCommit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonCommit.UseVisualStyleBackColor = false
-        Me.ButtonCommit.Visible = false
+        Me.ButtonCommit.UseVisualStyleBackColor = False
+        Me.ButtonCommit.Visible = False
         '
         'ButtonEq
         '
+        Me.ButtonEq.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ButtonEq.BackColor = System.Drawing.Color.Transparent
         Me.ButtonEq.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ButtonEq.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ButtonEq.Enabled = false
-        Me.ButtonEq.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.ButtonEq.Image = CType(resources.GetObject("ButtonEq.Image"),System.Drawing.Image)
+        Me.ButtonEq.Enabled = False
+        Me.ButtonEq.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonEq.Image = CType(resources.GetObject("ButtonEq.Image"), System.Drawing.Image)
         Me.ButtonEq.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonEq.Location = New System.Drawing.Point(353, 95)
+        Me.ButtonEq.Location = New System.Drawing.Point(353, 233)
         Me.ButtonEq.Name = "ButtonEq"
         Me.ButtonEq.Size = New System.Drawing.Size(242, 40)
         Me.ButtonEq.TabIndex = 123
         Me.ButtonEq.Text = "Equipments"
         Me.ButtonEq.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonEq.UseVisualStyleBackColor = false
+        Me.ButtonEq.UseVisualStyleBackColor = False
+        Me.ButtonEq.Visible = False
         '
         'PictureBox1
         '
@@ -254,101 +276,108 @@ Partial Class FormStart
         Me.PictureBox1.Size = New System.Drawing.Size(101, 32)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox1.TabIndex = 232
-        Me.PictureBox1.TabStop = false
+        Me.PictureBox1.TabStop = False
         '
         'ButtonMould
         '
+        Me.ButtonMould.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ButtonMould.BackColor = System.Drawing.Color.Transparent
         Me.ButtonMould.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ButtonMould.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ButtonMould.Enabled = false
-        Me.ButtonMould.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.ButtonMould.Image = CType(resources.GetObject("ButtonMould.Image"),System.Drawing.Image)
+        Me.ButtonMould.Enabled = False
+        Me.ButtonMould.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonMould.Image = CType(resources.GetObject("ButtonMould.Image"), System.Drawing.Image)
         Me.ButtonMould.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonMould.Location = New System.Drawing.Point(43, 279)
+        Me.ButtonMould.Location = New System.Drawing.Point(353, 417)
         Me.ButtonMould.Name = "ButtonMould"
-        Me.ButtonMould.Size = New System.Drawing.Size(240, 40)
+        Me.ButtonMould.Size = New System.Drawing.Size(242, 42)
         Me.ButtonMould.TabIndex = 234
         Me.ButtonMould.Text = "IFP Management"
         Me.ButtonMould.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonMould.UseVisualStyleBackColor = false
+        Me.ButtonMould.UseVisualStyleBackColor = False
+        Me.ButtonMould.Visible = False
         '
         'TableLayoutPanel1
         '
         Me.TableLayoutPanel1.BackColor = System.Drawing.Color.Transparent
         Me.TableLayoutPanel1.ColumnCount = 5
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 246!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 64!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 248!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 6!))
-        Me.TableLayoutPanel1.Controls.Add(Me.ButtonAbout, 1, 7)
-        Me.TableLayoutPanel1.Controls.Add(Me.ButtonMould, 1, 6)
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 246.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 64.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 248.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 6.0!))
+        Me.TableLayoutPanel1.Controls.Add(Me.ButtonRunning, 2, 8)
+        Me.TableLayoutPanel1.Controls.Add(Me.ButtonSystem, 1, 8)
+        Me.TableLayoutPanel1.Controls.Add(Me.ButtonMaterialRequest, 1, 7)
+        Me.TableLayoutPanel1.Controls.Add(Me.ButtonHelp, 3, 7)
+        Me.TableLayoutPanel1.Controls.Add(Me.ButtonNpi, 1, 6)
         Me.TableLayoutPanel1.Controls.Add(Me.ButtonECR, 1, 5)
         Me.TableLayoutPanel1.Controls.Add(Me.ButtonProduct, 1, 4)
         Me.TableLayoutPanel1.Controls.Add(Me.ButtonDocManagement, 1, 3)
         Me.TableLayoutPanel1.Controls.Add(Me.ButtonLoadDoc, 1, 2)
         Me.TableLayoutPanel1.Controls.Add(Me.ButtonTypeEdit, 1, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.ButtonMaterialRequest, 3, 4)
-        Me.TableLayoutPanel1.Controls.Add(Me.ButtonCommit, 3, 3)
-        Me.TableLayoutPanel1.Controls.Add(Me.ButtonEq, 3, 2)
-        Me.TableLayoutPanel1.Controls.Add(Me.ButtonNpi, 3, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.ButtonSystem, 1, 8)
-        Me.TableLayoutPanel1.Controls.Add(Me.ButtonProjectShow, 3, 6)
-        Me.TableLayoutPanel1.Controls.Add(Me.ButtonTiming, 3, 5)
-        Me.TableLayoutPanel1.Controls.Add(Me.ButtonRunning, 2, 8)
-        Me.TableLayoutPanel1.Controls.Add(Me.ButtonHelp, 3, 8)
-        Me.TableLayoutPanel1.Controls.Add(Me.ButtonBom, 3, 7)
-        Me.TableLayoutPanel1.Controls.Add(Me.ButtonCrypted, 1, 9)
-        Me.TableLayoutPanel1.Controls.Add(Me.ButtonChangePassword, 3, 9)
+        Me.TableLayoutPanel1.Controls.Add(Me.ButtonTiming, 3, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.ButtonProjectShow, 3, 2)
+        Me.TableLayoutPanel1.Controls.Add(Me.ButtonBom, 3, 3)
+        Me.TableLayoutPanel1.Controls.Add(Me.ButtonAbout, 3, 8)
+        Me.TableLayoutPanel1.Controls.Add(Me.ButtonMould, 3, 9)
+        Me.TableLayoutPanel1.Controls.Add(Me.ButtonCommit, 1, 9)
+        Me.TableLayoutPanel1.Controls.Add(Me.ButtonCrypted, 3, 4)
+        Me.TableLayoutPanel1.Controls.Add(Me.ButtonChangePassword, 3, 6)
+        Me.TableLayoutPanel1.Controls.Add(Me.ButtonEq, 3, 5)
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(27, 25)
         Me.TableLayoutPanel1.Margin = New System.Windows.Forms.Padding(2)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 10
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.0!))
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(656, 462)
         Me.TableLayoutPanel1.TabIndex = 235
         '
         'ButtonProjectShow
         '
+        Me.ButtonProjectShow.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ButtonProjectShow.BackColor = System.Drawing.Color.Transparent
         Me.ButtonProjectShow.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ButtonProjectShow.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ButtonProjectShow.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.ButtonProjectShow.Image = CType(resources.GetObject("ButtonProjectShow.Image"),System.Drawing.Image)
+        Me.ButtonProjectShow.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonProjectShow.Image = CType(resources.GetObject("ButtonProjectShow.Image"), System.Drawing.Image)
         Me.ButtonProjectShow.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonProjectShow.Location = New System.Drawing.Point(353, 279)
+        Me.ButtonProjectShow.Location = New System.Drawing.Point(353, 95)
         Me.ButtonProjectShow.Name = "ButtonProjectShow"
         Me.ButtonProjectShow.Size = New System.Drawing.Size(242, 40)
         Me.ButtonProjectShow.TabIndex = 236
         Me.ButtonProjectShow.Text = "Project Timing Show"
         Me.ButtonProjectShow.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonProjectShow.UseVisualStyleBackColor = false
+        Me.ButtonProjectShow.UseVisualStyleBackColor = False
         '
         'ButtonTiming
         '
+        Me.ButtonTiming.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ButtonTiming.BackColor = System.Drawing.Color.Transparent
         Me.ButtonTiming.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ButtonTiming.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ButtonTiming.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.ButtonTiming.Image = CType(resources.GetObject("ButtonTiming.Image"),System.Drawing.Image)
+        Me.ButtonTiming.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonTiming.Image = CType(resources.GetObject("ButtonTiming.Image"), System.Drawing.Image)
         Me.ButtonTiming.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonTiming.Location = New System.Drawing.Point(353, 233)
+        Me.ButtonTiming.Location = New System.Drawing.Point(353, 49)
         Me.ButtonTiming.Name = "ButtonTiming"
         Me.ButtonTiming.Size = New System.Drawing.Size(242, 40)
         Me.ButtonTiming.TabIndex = 237
         Me.ButtonTiming.Text = "Project Timing"
         Me.ButtonTiming.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonTiming.UseVisualStyleBackColor = false
+        Me.ButtonTiming.UseVisualStyleBackColor = False
         '
         'ButtonRunning
         '
@@ -359,47 +388,49 @@ Partial Class FormStart
         Me.ButtonRunning.Name = "ButtonRunning"
         Me.ButtonRunning.Size = New System.Drawing.Size(60, 42)
         Me.ButtonRunning.TabIndex = 235
-        Me.ButtonRunning.UseVisualStyleBackColor = false
+        Me.ButtonRunning.UseVisualStyleBackColor = False
         '
         'ButtonBom
         '
+        Me.ButtonBom.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ButtonBom.BackColor = System.Drawing.Color.Transparent
         Me.ButtonBom.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ButtonBom.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ButtonBom.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.ButtonBom.Image = CType(resources.GetObject("ButtonBom.Image"),System.Drawing.Image)
+        Me.ButtonBom.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonBom.Image = CType(resources.GetObject("ButtonBom.Image"), System.Drawing.Image)
         Me.ButtonBom.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonBom.Location = New System.Drawing.Point(353, 325)
+        Me.ButtonBom.Location = New System.Drawing.Point(353, 141)
         Me.ButtonBom.Name = "ButtonBom"
         Me.ButtonBom.Size = New System.Drawing.Size(242, 40)
         Me.ButtonBom.TabIndex = 238
         Me.ButtonBom.Text = "Bom Tools"
         Me.ButtonBom.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonBom.UseVisualStyleBackColor = false
+        Me.ButtonBom.UseVisualStyleBackColor = False
         '
         'ButtonCrypted
         '
         Me.ButtonCrypted.BackColor = System.Drawing.Color.Transparent
         Me.ButtonCrypted.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ButtonCrypted.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.ButtonCrypted.Image = CType(resources.GetObject("ButtonCrypted.Image"),System.Drawing.Image)
+        Me.ButtonCrypted.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonCrypted.Image = CType(resources.GetObject("ButtonCrypted.Image"), System.Drawing.Image)
         Me.ButtonCrypted.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonCrypted.Location = New System.Drawing.Point(43, 417)
+        Me.ButtonCrypted.Location = New System.Drawing.Point(353, 187)
         Me.ButtonCrypted.Name = "ButtonCrypted"
         Me.ButtonCrypted.Size = New System.Drawing.Size(240, 39)
         Me.ButtonCrypted.TabIndex = 239
         Me.ButtonCrypted.Text = "Create Crypted Signature"
         Me.ButtonCrypted.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonCrypted.UseVisualStyleBackColor = false
+        Me.ButtonCrypted.UseVisualStyleBackColor = False
         '
         'ButtonChangePassword
         '
         Me.ButtonChangePassword.BackColor = System.Drawing.Color.Transparent
         Me.ButtonChangePassword.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ButtonChangePassword.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ButtonChangePassword.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ButtonChangePassword.ForeColor = System.Drawing.SystemColors.ControlText
         Me.ButtonChangePassword.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonChangePassword.Location = New System.Drawing.Point(353, 417)
+        Me.ButtonChangePassword.Location = New System.Drawing.Point(353, 279)
         Me.ButtonChangePassword.Name = "ButtonChangePassword"
         Me.ButtonChangePassword.Size = New System.Drawing.Size(242, 39)
         Me.ButtonChangePassword.TabIndex = 242

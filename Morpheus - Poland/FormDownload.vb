@@ -513,7 +513,7 @@ Public Class FormDownload
         objFtp.Host = strFtpServerAdd
 
         Dim sql As String, cmd As MySqlCommand, rev As Integer
-        If MsgBox("Are you sure to delete a document?" & vbCrLf & "Please consider that when you delete a file with revisione greater than 0, automatically you will validate the " _
+        If MsgBox("Are you sure to delete a document?" & vbCrLf & "Please consider that when you delete a file with revision greater than 0, automatically you will validate the " _
                   & "file in the server with previous revision index!!! Please care about this.", MsgBoxStyle.YesNo, "SRVDOC - File delete") = vbYes Then
             If ListView1.CheckedItems.Count = 1 Then
                 RevisionExtract(rev, ListView1.CheckedItems(0).SubItems(1).Text(), ListView1.CheckedItems(0).SubItems(2).Text(), ListView1.CheckedItems(0).SubItems(4).Text())
@@ -589,7 +589,7 @@ Public Class FormDownload
                 ElseIf (ListView1.CheckedItems(i).SubItems(0).Text) = "HC" Then
                     ListBoxLog.Items.Add("Download HC....")
                     ListBoxLog.Items.Add(ListView1.CheckedItems(i).SubItems(1).Text & "_" & ListView1.CheckedItems(i).SubItems(2).Text() & "_" & ListView1.CheckedItems(i).SubItems(3).Text() & "." & ListView1.CheckedItems(i).SubItems(4).Text())
-                    My.Computer.Network.DownloadFile("http://" & ip & "/orcad/carica_file_pdf.php?cod_comp=" & Mid(ListView1.CheckedItems(i).SubItems(11).Text, 20), TextBoxFilePath.Text & "\" & objRegEx.Replace(ListView1.CheckedItems(i).SubItems(2).Text, "") & ".pdf", "", "", False, 10000, True)
+                    My.Computer.Network.DownloadFile("http://" & ip & "/orcad/carica_file_pdf.php?cod_comp=" & Mid(ListView1.CheckedItems(i).SubItems(11).Text, 19), TextBoxFilePath.Text & "\" & objRegEx.Replace(ListView1.CheckedItems(i).SubItems(2).Text, "") & ".pdf", "", "", False, 10000, True)
                     ComunicationLog("5076")
                     ListBoxLog.Items.Add("")
                 ElseIf IsNumeric((ListView1.CheckedItems(i).SubItems(0).Text)) Then
@@ -1029,12 +1029,12 @@ Public Class FormDownload
                     MsgBox("Document not present in Bitron Intranet. Error in Intranet DB")
                 End Try
             ElseIf ListView1.SelectedItems.Item(0).SubItems(0).Text = "HC" Then
-                Process.Start("IExplore.exe", "http://" & ip & "/orcad/gest.php?cod_comp=" & Mid(ListView1.SelectedItems.Item(0).SubItems(11).Text, 20))
+                Process.Start("IExplore.exe", "http://" & ip & "/orcad/gest.php?cod_comp=" & Mid(ListView1.SelectedItems.Item(0).SubItems(11).Text, 19))
                 Application.DoEvents()
                 Dim dsstr As String
                 For i = 0 To 9
                     If i <> 1 Then
-                        dsstr = ds(Mid(ListView1.SelectedItems.Item(0).SubItems(11).Text, 20), i)
+                        dsstr = ds(Mid(ListView1.SelectedItems.Item(0).SubItems(11).Text, 19), i)
                         Try
                             If dsstr <> "" Then Process.Start("IExplore.exe", dsstr)
                         Catch ex As Exception
