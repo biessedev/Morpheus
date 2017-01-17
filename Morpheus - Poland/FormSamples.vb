@@ -1461,7 +1461,7 @@ Public Class FormSamples
             ButtonUpdateMagBox.Text = "Start calculation ..."
             Application.DoEvents()
             Dim beqsVersions As String = ""
-            'Dim dictionaryVersionsQuatity As New Dictionary(Of String, Integer) // do not delete this comment
+            Dim dictionaryVersionsQuatity As New Dictionary(Of String, Integer) ' do not delete this comment
             For Each row In rowShow
                 i = i + 1
                 If Val(row("NPIECES").ToString) > 0 Then
@@ -1475,16 +1475,16 @@ Public Class FormSamples
                         Next
                     ElseIf row("bomlocation").ToString() = "BEQS" Then
                         ' TODO: Add business logic
-                        'dictionaryVersionsQuatity.Add(row("bitronpn"), row("npieces"))  // do not delete this comment
+                        dictionaryVersionsQuatity.Add(row("bitronpn"), row("npieces"))  ' do not delete this comment
                     Else
                         MsgBox("For this product BOM not assigned! " & row("bitronpn").ToString & "  " & row("name").ToString)
                     End If
                 End If
             Next
 
-            'If dictionaryVersionsQuatity.Count > 0 Then // do not delete this comment
-            'FormBomOffer.ShowForm(dictionaryVersionsQuatity) // do not delete this comment
-            'End If // do not delete this comment
+            If dictionaryVersionsQuatity.Count > 0 Then ' do Not delete this comment
+                FormBomOffer.ShowForm(dictionaryVersionsQuatity) ' Do Not delete this comment
+            End If ' Do Not delete this comment
 
 
             sql = "DELETE FROM `" & DBName & "`.`materialRequest` WHERE `materialRequest`.`REQUESTQT` = 0 AND `materialRequest`.`REQUESTQT_1` = 0 AND `materialRequest`.`REQUESTQT_2` = 0 AND  `materialRequest`.`REQUESTQT_3` = 0 AND `materialRequest`.`REQUESTQT_4` = 0 AND  `materialRequest`.`REQUESTQT_5` = 0"

@@ -101,7 +101,7 @@ Public Class FormBomOffer
                                                             " from bomdetailed a " &
                                                             " join quotegeneralinformation b on a.offerId = b.offerId " &
                                                             " join customer c on b.customerId = c.customerId " &
-                                                            " where bitronpn = " & item.Key, conBEQS)
+                                                            " where bitronpn = '" & item.Key & "'", conBEQS)
 
                     AdapterBomOffer.Fill(DsBomOffer, "BomOffer")
                     tblBomOffer = DsBomOffer.Tables("BomOffer")
@@ -118,7 +118,9 @@ Public Class FormBomOffer
                         OfferNode.ImageIndex = 1
                         VersionNode.Nodes.Add(OfferNode)
                     Next
-                    TreeView1.Nodes.Add(VersionNode)
+                    If VersionNode.Nodes.Count > 0 Then
+                        TreeView1.Nodes.Add(VersionNode)
+                    End If
                 End Using
             Next
         End Using
