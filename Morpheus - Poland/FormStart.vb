@@ -77,6 +77,7 @@ Public Class FormStart
         FormSamples.Show()
         FormSamples.Focus()
         FormSamples.Text = FormSamples.Text & " <>  Welcome : " & CreAccount.strUserName
+
     End Sub
 
     Private Sub ButtonMaterialReques_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonMaterialRequest.Click
