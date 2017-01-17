@@ -39,12 +39,12 @@ Partial Class FormBomOffer
         '
         'ButtonImport
         '
-        Me.ButtonImport.Location = New System.Drawing.Point(447, 406)
+        Me.ButtonImport.Location = New System.Drawing.Point(447, 404)
         Me.ButtonImport.Name = "ButtonImport"
         Me.ButtonImport.Size = New System.Drawing.Size(145, 33)
         Me.ButtonImport.TabIndex = 2
         Me.ButtonImport.Text = "Import"
-        Me.ButtonImport.UseVisualStyleBackColor = true
+        Me.ButtonImport.UseVisualStyleBackColor = True
         '
         'TreeView1
         '
@@ -55,15 +55,15 @@ Partial Class FormBomOffer
         '
         'FormBomOffer
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(604, 451)
+        Me.ClientSize = New System.Drawing.Size(596, 445)
         Me.Controls.Add(Me.TreeView1)
         Me.Controls.Add(Me.ButtonImport)
         Me.Controls.Add(Me.Label1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
-        Me.MaximizeBox = false
-        Me.MaximumSize = New System.Drawing.Size(612, 475)
+        Me.MaximizeBox = False
+        Me.MaximumSize = New System.Drawing.Size(612, 484)
         Me.MinimizeBox = false
         Me.MinimumSize = New System.Drawing.Size(612, 475)
         Me.Name = "FormBomOffer"
