@@ -883,6 +883,10 @@ Public Class FormProduct
     End Sub
 
     Private Sub ButtonSIGIP_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSIGIP.Click
+
+        Dim tblSigipUpdateColumns = New DataTable()
+        Dim dsSigipUpdateColumns = New DataSet()
+
         If controlRight("R") >= 2 And controlRight("J") >= 2 Then
 
             If InStr(ParameterTable("LAST_SIGIP_BOM_UPDATE"), "DONE", CompareMethod.Text) > 0 Then
@@ -895,6 +899,8 @@ Public Class FormProduct
                 Catch ex As Exception
 
                 End Try
+
+
                 Dim builder As New Common.DbConnectionStringBuilder()
                 builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                 Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
@@ -902,6 +908,14 @@ Public Class FormProduct
                         AdapterSigip.Fill(DsSigip, "sigip")
                         tblSigip = DsSigip.Tables("sigip")
                     End Using
+
+                    'Save active, bom, doc columns before delete, into tblSigipUpdateColumns
+                    Using adapterSigipUpdateColumns As New MySqlDataAdapter("SELECT DISTINCT bitron_pn, bom, active, doc, OrcadSupplier " &
+                                                                            "FROM sigip where (active Is Not null And active != '') or  (doc is not null and doc != '') or (OrcadSupplier is not null and OrcadSupplier != '') ", con)
+                        adapterSigipUpdateColumns.Fill(dsSigipUpdateColumns, "sigipUpdateColumns")
+                        tblSigipUpdateColumns = dsSigipUpdateColumns.Tables("sigipUpdateColumns")
+                    End Using
+
 
                     Try
                         Dim sql As String = "DELETE FROM `" & DBName & "`.`sigip` "
@@ -911,18 +925,31 @@ Public Class FormProduct
                     Catch ex As Exception
                         ComunicationLog("5050") ' Mysql delete error 
                     End Try
+
+                    Try
+                        Dim fileName As String() = Directory.GetFiles(selectedPath & "\", "PELE15PT-BITUSR12-" & Date.Now.ToString("yyyyMMdd") & ".csv")
+                        If fileName.Length = 0 Then
+                            MsgBox("The filename " & "PELE15PT-BITUSR12-" & Date.Now.ToString("yyyyMMdd") & ".csv" & " does not exist in " & selectedPath & " directory")
+                        Else
+                            InsertSigipBomCSV(fileName(0))
+
+                            'update columns active, bom, doc with old value, if them are blank
+                            For Each row In tblSigipUpdateColumns.Rows
+                                Dim sql As String = "UPDATE `" & DBName & "`.`sigip` set active =  '" & row("active") & "' ," &
+                                    " doc =  '" & row("doc") & "' , " &
+                                    " OrcadSupplier = '" & row("OrcadSupplier") & "' " &
+                                    " where bitron_pn = '" & Replace(ReplaceChar(row("bitron_pn")), "-", "") & "' and bom = '" & Replace(row("bom"), "'", "") & "'"
+
+                                Dim cmd = New MySqlCommand(sql, con)
+                                cmd.ExecuteNonQuery()
+                            Next
+
+                        End If
+
+                    Catch ex As Exception
+
+                    End Try
                 End Using
-                Try
-                    Dim fileName As String() = Directory.GetFiles(selectedPath & "\", "PELE15PT-BITUSR12-" & Date.Now.ToString("yyyyMMdd") & ".csv")
-                    If fileName.Length = 0 Then
-                        MsgBox("The filename " & "PELE15PT-BITUSR12-" & Date.Now.ToString("yyyyMMdd") &  ".csv" & " does not exist in " & selectedPath & " directory")
-                    Else
-                        InsertSigipBomCSV(fileName(0))
-                    End If
-
-                Catch ex As Exception
-
-                End Try
                 ListBoxLog.Items.Add("Update product list...")
                 updateSigipMark()
 
