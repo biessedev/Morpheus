@@ -23,6 +23,7 @@ Public Class FormStart
     Private Sub ButtonProduct_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonProduct.Click
         FormProduct.Show()
         FormProduct.Focus()
+
         FormProduct.Text = FormProduct.Text & " <>  Welcome : " & CreAccount.strUserName
     End Sub
 
