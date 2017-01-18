@@ -18,6 +18,7 @@ Public Class FormAdministration
     Dim DsDoc As New DataSet, DsDocType As New DataSet, DsEcr As New DataSet, DsProd As New DataSet, Dsmail As New DataSet
     Dim userDep3 As String
     Dim cmd As New MySqlCommand()
+    Dim notDeletedFiles As List(Of String) = New List(Of String)
 
     Private Sub FormAdministration_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
         FormStart.Show()
@@ -782,14 +783,14 @@ Public Class FormAdministration
         objFtp.Host = strFtpServerAdd
 
         TimerECR.Stop()
+        DsDoc.Clear()
+        tblDoc.Clear()
         Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
             Using AdapterDoc As New MySqlDataAdapter("SELECT * FROM DOC ", con)
                 AdapterDoc.Fill(DsDoc, "doc")
             End Using
-            DsDoc.Clear()
-            tblDoc.Clear()
 
             tblDoc = DsDoc.Tables("doc")
 
@@ -857,10 +858,39 @@ Public Class FormAdministration
                 End Try
             Next
         End Using
+
+        Me.notDeletedFiles = New List(Of String)
         ExploreFile("/")
+        If notDeletedFiles.Count Then
+            ShowMessageBoxWithDetails(notDeletedFiles)
+        End If
+
         ComunicationLog("5075")
         ButtonCompare.Text = "Compare File DB"
         TimerECR.Start()
+    End Sub
+
+    Private Sub ShowMessageBoxWithDetails(notDeletedFiles As List(Of String))
+        Dim dialogTypeName = "System.Windows.Forms.PropertyGridInternal.GridErrorDlg"
+        Dim dialogType = (GetType(Windows.Forms.Form)).Assembly.GetType(dialogTypeName)
+
+        ' Create dialog instance.
+        Dim dialog = TryCast(Activator.CreateInstance(dialogType, New PropertyGrid()), Form)
+
+        ' Populate relevant properties on the dialog instance.
+        Dim strNotDeletedFiles = String.Join(vbCrLf & vbCrLf, notDeletedFiles)
+        dialog.Text = "Not Deleted Files"
+        dialogType.GetProperty("Details").SetValue(dialog, strNotDeletedFiles, Nothing)
+        dialogType.GetProperty("Message").SetValue(dialog, "Some unallowed files had been found." & vbCrLf & vbCrLf, Nothing)
+
+        Dim okBtn = dialog.Controls.Find("okBtn", True)
+        okBtn(0).Visible = False
+
+        Dim cancelBtn = dialog.Controls.Find("cancelBtn", True)
+        cancelBtn(0).Text = okBtn(0).Text
+
+        ' Display dialog.
+        Dim result = dialog.ShowDialog()
     End Sub
 
     Private Sub ButtonDelDup_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonDelDup.Click
@@ -959,35 +989,39 @@ Public Class FormAdministration
             Else 'file
 
                 Dim file As String = Mid(strRec, 49).Trim
+                Try
+                    Dim header As String = strDir.Split("/").Last
+                    Dim Extension As String = file.Split(".").Last.Trim
+                    Dim rev As String = file.Split("_").Last.Replace(Extension, "").Replace(".", "").Trim
+                    Dim FileName As String = file.Substring(0, (file.Length - Extension.Length - rev.Length - 2))
+                    FileName = If(header = "", FileName, FileName.Replace(header, ""))
+                    FileName = FileName.Substring(1, FileName.Length - 1)
 
-                Dim header As String = strDir.Split("/").Last
-                Dim Extension As String = file.Split(".").Last.Trim
-                Dim rev As String = file.Split("_").Last.Replace(Extension, "").Replace(".", "").Trim
-                Dim FileName As String = file.Substring(0, (file.Length - Extension.Length - rev.Length - 2))
-                FileName = FileName.Replace(header, "")
-                FileName = FileName.Substring(1, FileName.Length - 1)
+                    Dim RowSearch As DataRow() = tblDoc.Select("header='" & header &
+                                                               "' and FileName='" & FileName &
+                                                               "' and rev=" & rev &
+                                                               " and Extension='" & Extension & "' ")
+                    If RowSearch.Length = 1 Then
 
-                Dim RowSearch As DataRow() = tblDoc.Select("header='" & header &
-                                                           "' and FileName='" & FileName &
-                                                           "' and rev=" & rev &
-                                                           " and Extension='" & Extension & "' ")
-                If RowSearch.Length = 1 Then
+                    ElseIf RowSearch.Length > 1 Then ' db error
+                        ComunicationLog("0052")
+                    Else  ' record not find
+                        If CheckBoxDeleteFile.Checked = True Then
 
-                ElseIf RowSearch.Length > 1 Then ' db error
-                    ComunicationLog("0052")
-                Else  ' record not find
-                    If CheckBoxDeleteFile.Checked = True Then
-
-                        If MsgBox("Do you want to delete the file: " & file, MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-                            strRes = objFtp.DeleteFile(strDir, ("/" & file).Replace(vbCr, "").Replace(vbLf, "").Trim)
-                            If strRes = "5000" Then
-                                ComunicationLog("5073")
-                            Else
-                                ComunicationLog("0056")
+                            If MsgBox("Do you want to delete the file: " & file, MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+                                strRes = objFtp.DeleteFile(strDir, ("/" & file).Replace(vbCr, "").Replace(vbLf, "").Trim)
+                                If strRes = "5000" Then
+                                    ComunicationLog("5073")
+                                Else
+                                    ComunicationLog("0056")
+                                End If
                             End If
                         End If
                     End If
-                End If
+
+                Catch ex As Exception
+                    notDeletedFiles.Add(strFtpServerAdd & strDir & "/" & file)
+                End Try
             End If
             posI = posL + 1
             posL = InStr(posL + 1, strList, vbCrLf, CompareMethod.Text)

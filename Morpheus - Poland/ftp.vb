@@ -111,7 +111,7 @@ Public Class ftp
         If (path = Nothing Or path = "") Then
             path = "/"
         End If
-
+        '_Host = "localhost/"
         _FtpRequest = CType(WebRequest.Create("ftp://" + _Host + path), FtpWebRequest)
 
         _FtpRequest.Credentials = New NetworkCredential(_UserName, _Password)
