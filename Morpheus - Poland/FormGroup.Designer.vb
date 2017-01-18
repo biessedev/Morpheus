@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class FormGroup
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,9 +20,9 @@ Partial Class FormGroup
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("")
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("")
         Me.ButtonRemove = New System.Windows.Forms.Button()
         Me.ButtonAdd = New System.Windows.Forms.Button()
         Me.ComboBoxGroup = New System.Windows.Forms.ComboBox()
@@ -34,14 +34,16 @@ Partial Class FormGroup
         Me.ListViewForProducts = New System.Windows.Forms.ListView()
         Me.LabelForProductList = New System.Windows.Forms.Label()
         Me.LabelForDocuments = New System.Windows.Forms.Label()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'ButtonRemove
         '
         Me.ButtonRemove.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ButtonRemove.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ButtonRemove.Location = New System.Drawing.Point(441, 396)
+        Me.ButtonRemove.Location = New System.Drawing.Point(583, 396)
         Me.ButtonRemove.Name = "ButtonRemove"
         Me.ButtonRemove.Size = New System.Drawing.Size(92, 22)
         Me.ButtonRemove.TabIndex = 222
@@ -52,7 +54,7 @@ Partial Class FormGroup
         '
         Me.ButtonAdd.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ButtonAdd.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ButtonAdd.Location = New System.Drawing.Point(741, 395)
+        Me.ButtonAdd.Location = New System.Drawing.Point(747, 396)
         Me.ButtonAdd.Name = "ButtonAdd"
         Me.ButtonAdd.Size = New System.Drawing.Size(82, 22)
         Me.ButtonAdd.TabIndex = 221
@@ -121,17 +123,18 @@ Partial Class FormGroup
         '
         'ListViewGRU
         '
-        Me.ListViewGRU.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+        Me.ListViewGRU.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ListViewGRU.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ListViewGRU.FullRowSelect = True
         Me.ListViewGRU.GridLines = True
-        ListViewItem2.StateImageIndex = 0
-        Me.ListViewGRU.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
-        Me.ListViewGRU.Location = New System.Drawing.Point(441, 140)
+        ListViewItem1.StateImageIndex = 0
+        Me.ListViewGRU.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
+        Me.ListViewGRU.Location = New System.Drawing.Point(407, 23)
         Me.ListViewGRU.MinimumSize = New System.Drawing.Size(382, 249)
         Me.ListViewGRU.Name = "ListViewGRU"
-        Me.ListViewGRU.Size = New System.Drawing.Size(391, 249)
+        Me.ListViewGRU.Size = New System.Drawing.Size(398, 249)
         Me.ListViewGRU.TabIndex = 225
         Me.ListViewGRU.UseCompatibleStateImageBehavior = False
         Me.ListViewGRU.View = System.Windows.Forms.View.Details
@@ -145,10 +148,10 @@ Partial Class FormGroup
         Me.ListViewForProducts.FullRowSelect = True
         Me.ListViewForProducts.GridLines = True
         Me.ListViewForProducts.HideSelection = False
-        Me.ListViewForProducts.Location = New System.Drawing.Point(24, 140)
+        Me.ListViewForProducts.Location = New System.Drawing.Point(3, 23)
         Me.ListViewForProducts.MinimumSize = New System.Drawing.Size(382, 249)
         Me.ListViewForProducts.Name = "ListViewForProducts"
-        Me.ListViewForProducts.Size = New System.Drawing.Size(382, 249)
+        Me.ListViewForProducts.Size = New System.Drawing.Size(398, 249)
         Me.ListViewForProducts.TabIndex = 233
         Me.ListViewForProducts.UseCompatibleStateImageBehavior = False
         Me.ListViewForProducts.View = System.Windows.Forms.View.Details
@@ -156,7 +159,7 @@ Partial Class FormGroup
         'LabelForProductList
         '
         Me.LabelForProductList.AutoSize = True
-        Me.LabelForProductList.Location = New System.Drawing.Point(21, 114)
+        Me.LabelForProductList.Location = New System.Drawing.Point(3, 0)
         Me.LabelForProductList.Name = "LabelForProductList"
         Me.LabelForProductList.Size = New System.Drawing.Size(59, 13)
         Me.LabelForProductList.TabIndex = 234
@@ -165,24 +168,41 @@ Partial Class FormGroup
         'LabelForDocuments
         '
         Me.LabelForDocuments.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.LabelForDocuments.AutoSize = True
-        Me.LabelForDocuments.Location = New System.Drawing.Point(438, 114)
+        Me.LabelForDocuments.Location = New System.Drawing.Point(407, 0)
         Me.LabelForDocuments.Name = "LabelForDocuments"
-        Me.LabelForDocuments.Size = New System.Drawing.Size(61, 13)
+        Me.LabelForDocuments.Size = New System.Drawing.Size(61, 20)
         Me.LabelForDocuments.TabIndex = 235
         Me.LabelForDocuments.Text = "Documents"
+        '
+        'TableLayoutPanel1
+        '
+        Me.TableLayoutPanel1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TableLayoutPanel1.ColumnCount = 2
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel1.Controls.Add(Me.LabelForProductList, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.ListViewForProducts, 0, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.ListViewGRU, 1, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.LabelForDocuments, 1, 0)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(24, 115)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 2
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(808, 275)
+        Me.TableLayoutPanel1.TabIndex = 236
         '
         'FormGroup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(973, 429)
-        Me.Controls.Add(Me.LabelForDocuments)
-        Me.Controls.Add(Me.ListViewForProducts)
-        Me.Controls.Add(Me.LabelForProductList)
+        Me.ClientSize = New System.Drawing.Size(981, 441)
+        Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Controls.Add(Me.PictureBox1)
-        Me.Controls.Add(Me.ListViewGRU)
         Me.Controls.Add(Me.ComboBoxName)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.ButtonRemove)
@@ -193,6 +213,8 @@ Partial Class FormGroup
         Me.Name = "FormGroup"
         Me.Text = "Product Documentation Management"
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.TableLayoutPanel1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -208,6 +230,5 @@ Partial Class FormGroup
     Friend WithEvents ListViewForProducts As ListView
     Friend WithEvents LabelForProductList As Label
     Friend WithEvents LabelForDocuments As Label
-
-
+    Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
 End Class
