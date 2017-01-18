@@ -955,7 +955,7 @@ Public Class FormProduct
 
                 ListBoxLog.Items.Add("Update product cost...")
                 UpdateBomCost()
-                MsgBox("Import Sigip BOM is Done")
+
                 Dim OrcadDBAds = ParameterTable("OrcadDBAdr")
                 Dim OrcadDBName = ParameterTable("OrcadDBName")
                 Dim OrcadDBUserName = ParameterTable("OrcadDBUser")
