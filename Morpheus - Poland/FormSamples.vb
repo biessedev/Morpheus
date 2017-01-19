@@ -1823,7 +1823,7 @@ Public Class FormSamples
         Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-            Using adapterMySql As New MySqlDataAdapter(String.Format("SELECT SUM(`sagia`) AS sum FROM `{0}`.`spu` WHERE (samgz='D' or samgz='8' ) and `bitronpn`='{1}'", DBName, bitronpn), con)
+            Using adapterMySql As New MySqlDataAdapter(String.Format("SELECT SUM(`sagia`) AS sum FROM `{0}`.`spu` WHERE (" & ParameterTable("StockFunctionWhereClause") & " ) and `bitronpn`='{1}'", DBName, bitronpn), con)
                 adapterMySql.Fill(dsMySql, "spu")
             End Using
         End Using
