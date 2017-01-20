@@ -167,6 +167,9 @@
     <WarningsAsErrors>
     </WarningsAsErrors>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\morpheus_icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AdvancedDataGridView">
       <HintPath>.\AdvancedDataGridView.dll</HintPath>
@@ -183,6 +186,7 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
@@ -623,6 +627,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\check-icon.png" />
+    <Content Include="Resources\morpheus_icon.ico" />
     <Content Include="Resources\uncheck-icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
