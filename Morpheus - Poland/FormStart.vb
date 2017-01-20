@@ -1,4 +1,5 @@
-﻿Imports System.Linq
+﻿Imports System.Deployment.Application
+Imports System.Linq
 
 Public Class FormStart
 
@@ -44,6 +45,10 @@ Public Class FormStart
     End Sub
 
     Private Sub FormStart_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+        If (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed) Then
+            Label1.Text = "Morpheus Software [Build revision: " & ApplicationDeployment.CurrentDeployment.CurrentVersion.Major & "." & ApplicationDeployment.CurrentDeployment.CurrentVersion.Minor & ApplicationDeployment.CurrentDeployment.CurrentVersion.Build & "." & ApplicationDeployment.CurrentDeployment.CurrentVersion.Revision & "]"
+            Label1.Visible = True
+        End If
         FormCredentials.Hide()
         Application.DoEvents()
         If controlRight("A") >= 3 Or controlRight("E") >= 3 Or controlRight("N") >= 3 Or controlRight("L") >= 3 Or controlRight("P") >= 3 Or controlRight("Q") >= 3 Or controlRight("R") >= 3 Or controlRight("U") >= 3 Then ButtonECR.Enabled = True

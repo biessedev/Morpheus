@@ -38,15 +38,16 @@ Partial Class FormStart
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.ButtonMould = New System.Windows.Forms.Button()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.ButtonProjectShow = New System.Windows.Forms.Button()
-        Me.ButtonTiming = New System.Windows.Forms.Button()
         Me.ButtonRunning = New System.Windows.Forms.Button()
+        Me.ButtonTiming = New System.Windows.Forms.Button()
+        Me.ButtonProjectShow = New System.Windows.Forms.Button()
         Me.ButtonBom = New System.Windows.Forms.Button()
         Me.ButtonCrypted = New System.Windows.Forms.Button()
         Me.ButtonChangePassword = New System.Windows.Forms.Button()
-        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.TableLayoutPanel1.SuspendLayout
-        Me.SuspendLayout
+        Me.Label1 = New System.Windows.Forms.Label()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TableLayoutPanel1.SuspendLayout()
+        Me.SuspendLayout()
         '
         'ButtonDocManagement
         '
@@ -343,23 +344,16 @@ Partial Class FormStart
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(656, 462)
         Me.TableLayoutPanel1.TabIndex = 235
         '
-        'ButtonProjectShow
+        'ButtonRunning
         '
-        Me.ButtonProjectShow.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ButtonProjectShow.BackColor = System.Drawing.Color.Transparent
-        Me.ButtonProjectShow.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ButtonProjectShow.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ButtonProjectShow.Image = CType(resources.GetObject("ButtonProjectShow.Image"), System.Drawing.Image)
-        Me.ButtonProjectShow.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ButtonProjectShow.Location = New System.Drawing.Point(353, 95)
-        Me.ButtonProjectShow.Name = "ButtonProjectShow"
-        Me.ButtonProjectShow.Size = New System.Drawing.Size(242, 40)
-        Me.ButtonProjectShow.TabIndex = 236
-        Me.ButtonProjectShow.Text = "Project Timing Show"
-        Me.ButtonProjectShow.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonProjectShow.UseVisualStyleBackColor = False
+        Me.ButtonRunning.BackColor = System.Drawing.Color.LimeGreen
+        Me.ButtonRunning.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ButtonRunning.Location = New System.Drawing.Point(288, 370)
+        Me.ButtonRunning.Margin = New System.Windows.Forms.Padding(2)
+        Me.ButtonRunning.Name = "ButtonRunning"
+        Me.ButtonRunning.Size = New System.Drawing.Size(60, 42)
+        Me.ButtonRunning.TabIndex = 235
+        Me.ButtonRunning.UseVisualStyleBackColor = False
         '
         'ButtonTiming
         '
@@ -379,16 +373,23 @@ Partial Class FormStart
         Me.ButtonTiming.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.ButtonTiming.UseVisualStyleBackColor = False
         '
-        'ButtonRunning
+        'ButtonProjectShow
         '
-        Me.ButtonRunning.BackColor = System.Drawing.Color.LimeGreen
-        Me.ButtonRunning.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ButtonRunning.Location = New System.Drawing.Point(288, 370)
-        Me.ButtonRunning.Margin = New System.Windows.Forms.Padding(2)
-        Me.ButtonRunning.Name = "ButtonRunning"
-        Me.ButtonRunning.Size = New System.Drawing.Size(60, 42)
-        Me.ButtonRunning.TabIndex = 235
-        Me.ButtonRunning.UseVisualStyleBackColor = False
+        Me.ButtonProjectShow.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ButtonProjectShow.BackColor = System.Drawing.Color.Transparent
+        Me.ButtonProjectShow.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.ButtonProjectShow.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonProjectShow.Image = CType(resources.GetObject("ButtonProjectShow.Image"), System.Drawing.Image)
+        Me.ButtonProjectShow.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ButtonProjectShow.Location = New System.Drawing.Point(353, 95)
+        Me.ButtonProjectShow.Name = "ButtonProjectShow"
+        Me.ButtonProjectShow.Size = New System.Drawing.Size(242, 40)
+        Me.ButtonProjectShow.TabIndex = 236
+        Me.ButtonProjectShow.Text = "Project Timing Show"
+        Me.ButtonProjectShow.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.ButtonProjectShow.UseVisualStyleBackColor = False
         '
         'ButtonBom
         '
@@ -436,26 +437,38 @@ Partial Class FormStart
         Me.ButtonChangePassword.TabIndex = 242
         Me.ButtonChangePassword.Text = "Change Password"
         Me.ButtonChangePassword.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonChangePassword.UseVisualStyleBackColor = false
+        Me.ButtonChangePassword.UseVisualStyleBackColor = False
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(519, 538)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(39, 13)
+        Me.Label1.TabIndex = 236
+        Me.Label1.Text = "Label1"
+        Me.Label1.Visible = False
         '
         'FormStart
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"),System.Drawing.Image)
+        Me.BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), System.Drawing.Image)
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ClientSize = New System.Drawing.Size(761, 560)
+        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
-        Me.MaximizeBox = false
+        Me.MaximizeBox = False
         Me.Name = "FormStart"
         Me.Text = "3D PLM - Product Lifecycle Management"
-        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).EndInit
-        Me.TableLayoutPanel1.ResumeLayout(false)
-        Me.ResumeLayout(false)
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.ResumeLayout(False)
+        Me.PerformLayout()
 
-End Sub
+    End Sub
     Friend WithEvents ButtonDocManagement As System.Windows.Forms.Button
     Friend WithEvents ButtonProduct As System.Windows.Forms.Button
     Friend WithEvents ButtonECR As System.Windows.Forms.Button
@@ -477,4 +490,5 @@ End Sub
     Friend WithEvents ButtonBom As System.Windows.Forms.Button
     Friend WithEvents ButtonCrypted As System.Windows.Forms.Button
     Friend WithEvents ButtonChangePassword As Button
+    Friend WithEvents Label1 As Label
 End Class
