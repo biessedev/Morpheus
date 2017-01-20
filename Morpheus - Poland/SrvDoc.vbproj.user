@@ -11,7 +11,7 @@
     </ErrorReportUrlHistory>
     <FallbackCulture>it-IT</FallbackCulture>
     <VerifyUploadedFiles>false</VerifyUploadedFiles>
-    <ProjectView>ProjectFiles</ProjectView>
+    <ProjectView>ShowAllFiles</ProjectView>
     <ReferencePath>C:\Programmi\Business Objects\Common\2.8\managed\</ReferencePath>
     <EnableSecurityDebugging>false</EnableSecurityDebugging>
   </PropertyGroup>
