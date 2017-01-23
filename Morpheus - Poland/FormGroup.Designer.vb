@@ -35,39 +35,39 @@ Partial Class FormGroup
         Me.LabelForProductList = New System.Windows.Forms.Label()
         Me.LabelForDocuments = New System.Windows.Forms.Label()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.TableLayoutPanel1.SuspendLayout()
-        Me.SuspendLayout()
+        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.TableLayoutPanel1.SuspendLayout
+        Me.SuspendLayout
         '
         'ButtonRemove
         '
-        Me.ButtonRemove.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ButtonRemove.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonRemove.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.ButtonRemove.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonRemove.Location = New System.Drawing.Point(583, 396)
         Me.ButtonRemove.Name = "ButtonRemove"
         Me.ButtonRemove.Size = New System.Drawing.Size(92, 22)
         Me.ButtonRemove.TabIndex = 222
         Me.ButtonRemove.Text = "Remove"
-        Me.ButtonRemove.UseVisualStyleBackColor = True
+        Me.ButtonRemove.UseVisualStyleBackColor = true
         '
         'ButtonAdd
         '
-        Me.ButtonAdd.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ButtonAdd.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonAdd.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.ButtonAdd.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.ButtonAdd.Location = New System.Drawing.Point(747, 396)
         Me.ButtonAdd.Name = "ButtonAdd"
         Me.ButtonAdd.Size = New System.Drawing.Size(82, 22)
         Me.ButtonAdd.TabIndex = 221
         Me.ButtonAdd.Text = "Add"
-        Me.ButtonAdd.UseVisualStyleBackColor = True
+        Me.ButtonAdd.UseVisualStyleBackColor = true
         '
         'ComboBoxGroup
         '
-        Me.ComboBoxGroup.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ComboBoxGroup.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.ComboBoxGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBoxGroup.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ComboBoxGroup.FormattingEnabled = True
+        Me.ComboBoxGroup.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ComboBoxGroup.FormattingEnabled = true
         Me.ComboBoxGroup.Location = New System.Drawing.Point(24, 29)
         Me.ComboBoxGroup.Name = "ComboBoxGroup"
         Me.ComboBoxGroup.Size = New System.Drawing.Size(808, 21)
@@ -75,9 +75,9 @@ Partial Class FormGroup
         '
         'Label10
         '
-        Me.Label10.AutoSize = True
+        Me.Label10.AutoSize = true
         Me.Label10.BackColor = System.Drawing.Color.Transparent
-        Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label10.Location = New System.Drawing.Point(21, 13)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(54, 13)
@@ -86,11 +86,11 @@ Partial Class FormGroup
         '
         'ComboBoxName
         '
-        Me.ComboBoxName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ComboBoxName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.ComboBoxName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBoxName.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ComboBoxName.FormattingEnabled = True
+        Me.ComboBoxName.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ComboBoxName.FormattingEnabled = true
         Me.ComboBoxName.Location = New System.Drawing.Point(24, 81)
         Me.ComboBoxName.Name = "ComboBoxName"
         Me.ComboBoxName.Size = New System.Drawing.Size(808, 21)
@@ -98,11 +98,11 @@ Partial Class FormGroup
         '
         'Label1
         '
-        Me.Label1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Label1.AutoSize = True
+        Me.Label1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.Label1.AutoSize = true
         Me.Label1.BackColor = System.Drawing.Color.Transparent
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.Label1.Location = New System.Drawing.Point(21, 65)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(54, 13)
@@ -111,7 +111,7 @@ Partial Class FormGroup
         '
         'PictureBox1
         '
-        Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.PictureBox1.Image = Global.MORPHEUS.My.Resources.Resources.BitronLogo
         Me.PictureBox1.Location = New System.Drawing.Point(863, 386)
         Me.PictureBox1.Margin = New System.Windows.Forms.Padding(2)
@@ -119,16 +119,16 @@ Partial Class FormGroup
         Me.PictureBox1.Size = New System.Drawing.Size(101, 32)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox1.TabIndex = 232
-        Me.PictureBox1.TabStop = False
+        Me.PictureBox1.TabStop = false
         '
         'ListViewGRU
         '
-        Me.ListViewGRU.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ListViewGRU.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ListViewGRU.FullRowSelect = True
-        Me.ListViewGRU.GridLines = True
+        Me.ListViewGRU.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.ListViewGRU.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.ListViewGRU.FullRowSelect = true
+        Me.ListViewGRU.GridLines = true
         ListViewItem1.StateImageIndex = 0
         Me.ListViewGRU.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.ListViewGRU.Location = New System.Drawing.Point(407, 23)
@@ -136,29 +136,29 @@ Partial Class FormGroup
         Me.ListViewGRU.Name = "ListViewGRU"
         Me.ListViewGRU.Size = New System.Drawing.Size(398, 249)
         Me.ListViewGRU.TabIndex = 225
-        Me.ListViewGRU.UseCompatibleStateImageBehavior = False
+        Me.ListViewGRU.UseCompatibleStateImageBehavior = false
         Me.ListViewGRU.View = System.Windows.Forms.View.Details
         '
         'ListViewForProducts
         '
         Me.ListViewForProducts.Activation = System.Windows.Forms.ItemActivation.OneClick
-        Me.ListViewForProducts.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ListViewForProducts.FullRowSelect = True
-        Me.ListViewForProducts.GridLines = True
-        Me.ListViewForProducts.HideSelection = False
+        Me.ListViewForProducts.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.ListViewForProducts.FullRowSelect = true
+        Me.ListViewForProducts.GridLines = true
+        Me.ListViewForProducts.HideSelection = false
         Me.ListViewForProducts.Location = New System.Drawing.Point(3, 23)
         Me.ListViewForProducts.MinimumSize = New System.Drawing.Size(382, 249)
         Me.ListViewForProducts.Name = "ListViewForProducts"
         Me.ListViewForProducts.Size = New System.Drawing.Size(398, 249)
         Me.ListViewForProducts.TabIndex = 233
-        Me.ListViewForProducts.UseCompatibleStateImageBehavior = False
+        Me.ListViewForProducts.UseCompatibleStateImageBehavior = false
         Me.ListViewForProducts.View = System.Windows.Forms.View.Details
         '
         'LabelForProductList
         '
-        Me.LabelForProductList.AutoSize = True
+        Me.LabelForProductList.AutoSize = true
         Me.LabelForProductList.Location = New System.Drawing.Point(3, 0)
         Me.LabelForProductList.Name = "LabelForProductList"
         Me.LabelForProductList.Size = New System.Drawing.Size(59, 13)
@@ -167,9 +167,9 @@ Partial Class FormGroup
         '
         'LabelForDocuments
         '
-        Me.LabelForDocuments.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.LabelForDocuments.AutoSize = True
+        Me.LabelForDocuments.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.LabelForDocuments.AutoSize = true
         Me.LabelForDocuments.Location = New System.Drawing.Point(407, 0)
         Me.LabelForDocuments.Name = "LabelForDocuments"
         Me.LabelForDocuments.Size = New System.Drawing.Size(61, 20)
@@ -178,12 +178,12 @@ Partial Class FormGroup
         '
         'TableLayoutPanel1
         '
-        Me.TableLayoutPanel1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TableLayoutPanel1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.TableLayoutPanel1.ColumnCount = 2
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50!))
         Me.TableLayoutPanel1.Controls.Add(Me.LabelForProductList, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.ListViewForProducts, 0, 1)
         Me.TableLayoutPanel1.Controls.Add(Me.ListViewGRU, 1, 1)
@@ -191,14 +191,14 @@ Partial Class FormGroup
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(24, 115)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 2
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100!))
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(808, 275)
         Me.TableLayoutPanel1.TabIndex = 236
         '
         'FormGroup
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(981, 441)
         Me.Controls.Add(Me.TableLayoutPanel1)
@@ -212,13 +212,13 @@ Partial Class FormGroup
         Me.MinimumSize = New System.Drawing.Size(989, 468)
         Me.Name = "FormGroup"
         Me.Text = "Product Documentation Management"
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.TableLayoutPanel1.PerformLayout()
-        Me.ResumeLayout(False)
-        Me.PerformLayout()
+        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).EndInit
+        Me.TableLayoutPanel1.ResumeLayout(false)
+        Me.TableLayoutPanel1.PerformLayout
+        Me.ResumeLayout(false)
+        Me.PerformLayout
 
-    End Sub
+End Sub
     Friend WithEvents ButtonRemove As System.Windows.Forms.Button
     Friend WithEvents ButtonAdd As System.Windows.Forms.Button
     Friend WithEvents ComboBoxGroup As System.Windows.Forms.ComboBox
