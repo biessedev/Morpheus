@@ -1,6 +1,6 @@
 Imports System
 Imports System.Net
-imports System.IO
+Imports System.IO
 
 Public Class ftp
 
@@ -45,7 +45,7 @@ Public Class ftp
             Return _Host
         End Get
         Set
-            _Host = value
+            _Host = Value
         End Set
     End Property
 
@@ -57,7 +57,7 @@ Public Class ftp
             Return _UserName
         End Get
         Set
-            _UserName = value
+            _UserName = Value
         End Set
     End Property
 
@@ -69,7 +69,7 @@ Public Class ftp
             Return _Password
         End Get
         Set
-            _Password = value
+            _Password = Value
         End Set
     End Property
 
@@ -81,7 +81,7 @@ Public Class ftp
             Return _UseSSL
         End Get
         Set
-            _UseSSL = value
+            _UseSSL = Value
         End Set
     End Property
 
@@ -103,6 +103,47 @@ Public Class ftp
             RemoveDir = "OK"
         Catch ex As Exception
             RemoveDir = ex.Message
+        End Try
+
+    End Function
+
+
+    Public Function CheckFile(ByVal path As String, ByRef strList As String) As String
+        If (path = Nothing Or path = "") Then
+            path = "/"
+        End If
+        '_Host = "localhost/"
+        _FtpRequest = CType(WebRequest.Create("ftp://" + _Host + path + strList), FtpWebRequest)
+
+        _FtpRequest.Credentials = New NetworkCredential(_UserName, _Password)
+        _FtpRequest.Method = WebRequestMethods.Ftp.ListDirectoryDetails
+        _FtpRequest.KeepAlive = False
+        _FtpRequest.EnableSsl = _UseSSL
+        _FtpRequest.Proxy = Nothing
+
+        Try
+
+            _FtpResponse = CType(_FtpRequest.GetResponse(), FtpWebResponse)
+
+            Dim liststring = ""
+
+            Try
+                Dim sr = New StreamReader(_FtpResponse.GetResponseStream(), Text.Encoding.UTF8)
+                liststring = sr.ReadToEnd()
+                sr.Close()
+                _FtpResponse.Close()
+                CheckFile = "5000"
+                strList = liststring
+            Catch ex As WebException
+                Console.WriteLine(CType(ex.Response, FtpWebResponse).StatusDescription)
+                _FtpResponse.Close()
+                CheckFile = "0010"
+                strList = liststring
+            End Try
+
+
+        Catch ex As Exception
+            CheckFile = "0010" ' Error in list file directory
         End Try
 
     End Function

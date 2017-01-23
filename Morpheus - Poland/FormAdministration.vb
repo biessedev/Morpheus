@@ -805,26 +805,26 @@ Public Class FormAdministration
                     Dim strListDir As String = row("header").ToString & "_" & row("filename").ToString _
                                                & "_" & row("rev").ToString & "." & row("extension").ToString
 
-                    Dim strRes As String = objFtp.ListDirectory(strPathFtp & "/", strListDir)
+                    Dim strRes As String = objFtp.CheckFile(strPathFtp & "/", strListDir)
 
                     If strRes <> "5000" Then
-                        strRes = objFtp.ListDirectory(strPathFtp & "/", strListDir)
+                        strRes = objFtp.CheckFile(strPathFtp & "/", strListDir)
                     End If
 
                     If strRes <> "5000" Then
-                        strRes = objFtp.ListDirectory(strPathFtp & "/", strListDir)
+                        strRes = objFtp.CheckFile(strPathFtp & "/", strListDir)
                     End If
 
                     If strRes <> "5000" Then
-                        strRes = objFtp.ListDirectory(strPathFtp & "/", strListDir)
+                        strRes = objFtp.CheckFile(strPathFtp & "/", strListDir)
                     End If
 
                     If strRes <> "5000" Then
-                        strRes = objFtp.ListDirectory(strPathFtp & "/", strListDir)
+                        strRes = objFtp.CheckFile(strPathFtp & "/", strListDir)
                     End If
 
                     If strRes <> "5000" Then
-                        strRes = objFtp.ListDirectory(strPathFtp & "/", strListDir)
+                        strRes = objFtp.CheckFile(strPathFtp & "/", strListDir)
                     End If
 
                     If strRes <> "5000" Then
