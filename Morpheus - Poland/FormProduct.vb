@@ -611,7 +611,7 @@ Public Class FormProduct
             Next
             Dim ii As New ListViewItem(str)
             ListView1.Items.Add(ii)
-            
+
             ListView1.Items(ListView1.Items.Count - 1).BackColor = Color.White
 
             If ListView1.Items(ListView1.Items.Count - 1).SubItems(14).Text <> "" Then
@@ -1156,9 +1156,9 @@ Public Class FormProduct
             Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-                Dim productsQuery  = From a In dt.AsEnumerable()   
-                                     Join b In ListView1.Items On  b.SubItems(3).Text equals Replace(ReplaceChar(a.Field(Of String)("Assieme")), "-", "").TrimStart("0"c)
-                                     Select a Distinct
+                Dim productsQuery = From a In dt.AsEnumerable()
+                                    Join b In ListView1.Items On b.SubItems(3).Text Equals Replace(ReplaceChar(a.Field(Of String)("Assieme")), "-", "").TrimStart("0"c)
+                                    Select a Distinct
                 For Each row In productsQuery
                     bom = If(dt.Columns.Contains("Assieme"), Replace(ReplaceChar(row("Assieme")), "-", "").TrimStart("0"c), "")
                     des_bom = If(dt.Columns.Contains("Descrizione"), row("Descrizione"), "")
@@ -1190,20 +1190,20 @@ Public Class FormProduct
                         "'" & doc & "'," &
                         "'" & orcadSupplier & "'" &
                             ")," & sqlValues
-                        If index Mod 100 = 0 Then
-                            sqlCommand = Mid(sqlValues, 1, Len(sqlValues) - 1)
-                            sqlCommand = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`, `active`, `doc`, `OrcadSupplier`) VALUES " & sqlCommand & ";"
-                            Dim cmd = New MySqlCommand(sqlCommand, con)
-                            cmd.ExecuteNonQuery()
-                            sqlValues = ""
-                        End If
-                        index = index + 1
+                    If index Mod 100 = 0 Then
+                        sqlCommand = Mid(sqlValues, 1, Len(sqlValues) - 1)
+                        sqlCommand = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`, `active`, `doc`, `OrcadSupplier`) VALUES " & sqlCommand & ";"
+                        Dim cmd = New MySqlCommand(sqlCommand, con)
+                        cmd.ExecuteNonQuery()
+                        sqlValues = ""
+                    End If
+                    index = index + 1
                 Next
                 sqlCommand = Mid(sqlValues, 1, Len(sqlValues) - 1)
                 sqlCommand = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`, `active`, `doc`, `OrcadSupplier`) VALUES " & sqlCommand & ";"
                 Dim cmdLast = New MySqlCommand(sqlCommand, con)
                 cmdLast.ExecuteNonQuery()
-                
+
 
             End Using
         Catch ex As Exception
@@ -1411,7 +1411,6 @@ Public Class FormProduct
 
 
     Function GetOrcadSupplier(ByVal BitronPN As String) As String
-        GetOrcadSupplier = ""
         Try
             Dim AdapterSql As New SqlDataAdapter("SELECT * FROM orcadw.T_orcadcis where ( valido = 'valido') and codice_bitron = '" & BitronPN & "'", SqlconnectionOrcad)
             TblSql.Clear()
@@ -1420,6 +1419,7 @@ Public Class FormProduct
             TblSql = DsSql.Tables("orcadw.T_orcadcis")
 
             If TblSql.Rows.Count > 0 Then
+                GetOrcadSupplier = IIf(TblSql.Rows.Item(0)("costruttore").ToString <> "", TblSql.Rows.Item(0)("costruttore").ToString & "[" & TblSql.Rows.Item(0)("orderingcode").ToString & "];", "")
                 For i = 2 To 9
                     GetOrcadSupplier = GetOrcadSupplier & IIf(TblSql.Rows.Item(0)("costruttore" & i).ToString <> "", TblSql.Rows.Item(0)("costruttore" & i).ToString & "[" & TblSql.Rows.Item(0)("orderingcode" & i).ToString & "];", "")
                 Next
