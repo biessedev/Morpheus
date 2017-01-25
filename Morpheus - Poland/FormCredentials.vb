@@ -59,7 +59,7 @@ Public Class FormCredentials
         Application.Exit()
     End Sub
 
-    Private Sub FormCredentials_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+     Private Sub FormCredentials_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Dim builder As New Common.DbConnectionStringBuilder()
         For Each conn As ConnectionStringSettings In ConfigurationManager.ConnectionStrings
             builder.Clear()
@@ -68,7 +68,21 @@ Public Class FormCredentials
                 ComboBoxHost.Items.Add(conn.Name & " - " & builder("host"))
             End If
         Next
-        ComboBoxHost.SelectedIndex = 0
+        Dim index = 0
+        For Each item as ConnectionStringSettings in ConfigurationManager.ConnectionStrings
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(item.Name).ConnectionString
+            Try
+                If(builder("default") = "true" and builder("connectionType") = "MainConnections") Then
+                    index = ComboBoxHost.FindStringExact(item.Name & " - " & builder("host"))
+                    ComboBoxHost.SelectedIndex = index
+                    Exit For
+                End If
+            Catch ex As Exception
+
+            End Try
+        Next
+
+        ComboBoxHost.SelectedIndex = index
         TextBoxUserName.Text = ""
         TextBoxPassword.Text = ""
         LabelHost.Text = "Host: " '& builder("host")
