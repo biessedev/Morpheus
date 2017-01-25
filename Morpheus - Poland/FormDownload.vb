@@ -91,7 +91,7 @@ Public Class FormDownload
         tblBom = DsBom.Tables("sigip")
         RowSearchDoc = tblBom.Select("doc=''")
         If RowSearchDoc.Length > 0 Then
-            MsgBox("Is possible missing result please refresh sigip bom import")
+            MsgBox("Please import Sigip BOM, some results are missing!")
         End If
 
         trdFinish = True
