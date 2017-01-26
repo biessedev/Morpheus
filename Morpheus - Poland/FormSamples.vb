@@ -467,7 +467,7 @@ Public Class FormSamples
         If currentProductCode <> "" Then
             tblProd.Select("bitronpn='" & mycurrentProductCode & "'", "etd desc")
             ComboBoxBomLocation.Items.Add("SIGIP")
-            'ComboBoxBomLocation.Items.Add("BEQS")
+            ComboBoxBomLocation.Items.Add("BEQS")
         End If
     End Sub
 
