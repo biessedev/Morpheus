@@ -198,17 +198,29 @@ Module PublicFunction
 
     Function user() As String
         user = ""
-        If controlRight("E") = 3 Then user = "E"
-        If controlRight("L") = 3 Then user = "L"
-        If controlRight("P") = 3 Then user = "P"
-        If controlRight("Q") = 3 Then user = "Q"
-        If controlRight("R") = 3 Then user = "R"
-        If controlRight("U") = 3 Then user = "U"
+
         If controlRight("A") = 3 Then user = "A"
-        If controlRight("N") = 3 Then user = "N"
+
         If controlRight("C") = 3 Then user = "C"
+
+        If controlRight("E") = 3 Then user = "E"
+
+        If controlRight("L") = 3 Then user = "L"
+
+        If controlRight("P") = 3 Then user = "P"
+
+        If controlRight("Q") = 3 Then user = "Q"
+
+        If controlRight("R") = 3 Then user = "R"
+
+        If controlRight("U") = 3 Then user = "U"
+
+        If controlRight("N") = 3 Then user = "N"
+
         If controlRight("F") = 3 Then user = "F"
+
         If controlRight("B") = 3 Then user = "B"
+
     End Function
 
     Sub WriteFile(ByVal a As String, ByVal append As Boolean)
