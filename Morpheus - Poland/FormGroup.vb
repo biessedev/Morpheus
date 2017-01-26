@@ -15,8 +15,8 @@ Public Class FormGroup
 		ListViewGRU.Clear()
 		If dictionaryForProd.Count > 0 Then
 			Dim hname As New ColumnHeader
-			hname.Text = "Product Bitron Code"
-			hname.Width = 110
+            hname.Text = "Final Product Code"
+            hname.Width = 110
 			ListViewGRU.Columns.Add(hname)
 		End If
 		Dim h As New ColumnHeader
