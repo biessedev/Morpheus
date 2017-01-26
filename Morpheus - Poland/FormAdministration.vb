@@ -722,23 +722,23 @@ Public Class FormAdministration
 
         Try
             If DayOfWeek.Saturday <> dt.DayOfWeek And DayOfWeek.Sunday <> dt.DayOfWeek And (dt.Hour > 8 And dt.Hour < 20) Then
-                Dim rowEcr As DataRow() = tblEcr.Select("number = '" & Necr & "'")
-                Dim parsedDate
-                Dim dateList As New List(Of DateTime)
-                dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("date"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
-                dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("dateR"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
-                dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("dateU"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
-                dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("dateL"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
-                dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("dateB"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
-                dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("dateE"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
-                dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("dateN"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
-                dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("dateQ"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
-                dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("dateP"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
-                dateList.Sort()
-                dateList.Reverse()
+                'Dim rowEcr As DataRow() = tblEcr.Select("number = '" & Necr & "'")
+                'Dim parsedDate
+                'Dim dateList As New List(Of DateTime)
+                'dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("date"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                'dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("dateR"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                'dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("dateU"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                'dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("dateL"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                'dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("dateB"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                'dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("dateE"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                'dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("dateN"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                'dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("dateQ"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                'dateList.Add(If(DateTime.TryParse(rowEcr(0).Item("dateP"), parsedDate), parsedDate, Date.Parse("1/1/2012 12:00:00 AM")))
+                'dateList.Sort()
+                'dateList.Reverse()
 
-                If (InStr(freqTo, "[" & Necr & "]", CompareMethod.Text) <= 0) Or
-                  ((InStr(freqTo, "[" & Necr & "]", CompareMethod.Text) > 0) And (DateDiff(DateInterval.Day, dateList.ElementAt(0), DateTime.Now) >= 3)) Then
+                If (InStr(freqTo, "[" & Necr & "]", CompareMethod.Text) <= 0) Then
+                    'Or                   ((InStr(freqTo, "[" & Necr & "]", CompareMethod.Text) > 0) And (DateDiff(DateInterval.Day, dateList.ElementAt(0), DateTime.Now) >= 3)) Then
                     client.Send(msg)
                     MailSent = True
                     ListBoxLog.Items.Add("E mail sent: " & SubText & "  " & Mid(msg.To.Item(0).ToString, 1, 45) & " ....")
