@@ -893,6 +893,7 @@ Public Class FormProduct
 
                 ParameterTableWrite("LAST_SIGIP_BOM_UPDATE", "START - " & CreAccount.strUserName & " " & Today)
                 Dim selectedPath As String = ParameterTable("PathMorpheus") & ParameterTable("PathNPI") & ParameterTable("SIGIP_BOM_FOLDER")
+                'selectedPath = "d:\"
                 Try
                     DsSigip.Clear()
                     tblSigip.Clear()
@@ -927,9 +928,9 @@ Public Class FormProduct
                     End Try
 
                     Try
-                        Dim fileName As String() = Directory.GetFiles(selectedPath & "\", "PELE15PT-BITUSR12-" & Date.Now.ToString("yyyyMMdd") & ".csv")
+                        Dim fileName As String() = Directory.GetFiles(selectedPath & "\", "PELE15PT-BITUSR12-" & Date.Now.AddDays(-1).ToString("yyyyMMdd") & ".csv")
                         If fileName.Length = 0 Then
-                            MsgBox("The filename " & "PELE15PT-BITUSR12-" & Date.Now.ToString("yyyyMMdd") & ".csv" & " does not exist in " & selectedPath & " directory")
+                            MsgBox("The filename " & "PELE15PT-BITUSR12-" & Date.Now.AddDays(-1).ToString("yyyyMMdd") & ".csv" & " does not exist in " & selectedPath & " directory")
                         Else
                             InsertSigipBomCSV(fileName(0))
 

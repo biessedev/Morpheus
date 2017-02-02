@@ -124,7 +124,9 @@ Public Class FormBomOffer
                 End Using
             Next
         End Using
-        Me.Show()
+        If TreeView1.Nodes.Count <> 0 Then
+            Me.Show()
+        End If
     End Sub
 
     Private Sub FormBomOffer_Load(sender As Object, e As EventArgs) Handles MyBase.Load
