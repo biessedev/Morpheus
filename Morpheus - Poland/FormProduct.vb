@@ -892,7 +892,7 @@ Public Class FormProduct
             If InStr(ParameterTable("LAST_SIGIP_BOM_UPDATE"), "DONE", CompareMethod.Text) > 0 Then
 
                 ParameterTableWrite("LAST_SIGIP_BOM_UPDATE", "START - " & CreAccount.strUserName & " " & Today)
-                Dim selectedPath As String = ParameterTable("PathMorpheus") & ParameterTable("PathNPI") & ParameterTable("SIGIP_BOM_FOLDER")
+                Dim selectedPath As String = ParameterTable("SIGIP_BOM_FOLDER")
                 'selectedPath = "d:\"
                 Try
                     DsSigip.Clear()
@@ -928,9 +928,9 @@ Public Class FormProduct
                     End Try
 
                     Try
-                        Dim fileName As String() = Directory.GetFiles(selectedPath & "\", "PELE15PT-BITUSR12-" & Date.Now.AddDays(-1).ToString("yyyyMMdd") & ".csv")
+                        Dim fileName As String() = Directory.GetFiles(selectedPath & "\", "PELE15PT-BITUSR12-" & Date.Now.ToString("yyyyMMdd") & ".csv")
                         If fileName.Length = 0 Then
-                            MsgBox("The filename " & "PELE15PT-BITUSR12-" & Date.Now.AddDays(-1).ToString("yyyyMMdd") & ".csv" & " does not exist in " & selectedPath & " directory")
+                            MsgBox("The filename " & "PELE15PT-BITUSR12-" & Date.Now.ToString("yyyyMMdd") & ".csv" & " does not exist in " & selectedPath & " directory")
                         Else
                             InsertSigipBomCSV(fileName(0))
 
@@ -1157,9 +1157,13 @@ Public Class FormProduct
             Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-                Dim productsQuery = From a In dt.AsEnumerable()
+
+                Dim planParameter = Replace(ReplaceChar(ParameterTable("plant")), "-", "")
+                
+                Dim productsQuery = From a In dt.AsEnumerable().Where(Function(x) Replace(ReplaceChar(x.Field(Of String)("Stabilimento")), "-", "").TrimStart("0"c) = planParameter)
                                     Join b In ListView1.Items On b.SubItems(3).Text Equals Replace(ReplaceChar(a.Field(Of String)("Assieme")), "-", "").TrimStart("0"c)
                                     Select a Distinct
+
                 For Each row In productsQuery
                     bom = If(dt.Columns.Contains("Assieme"), Replace(ReplaceChar(row("Assieme")), "-", "").TrimStart("0"c), "")
                     des_bom = If(dt.Columns.Contains("Descrizione"), row("Descrizione"), "")
