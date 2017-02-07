@@ -30,20 +30,26 @@ Public Class FormBomOffer
             For Each offerid As TreeNode In m_coll
                 Dim tblBomOffer As DataTable
                 Dim DsBomOffer As New DataSet
-                Using AdapterBomOffer As New SqlDataAdapter("select distinct a.BitronPN, max(a.offerId) as offerId, max(a.componentId) as componentId, sum(a.quantity) as RequestQT " &
-                                                          "  from (select distinct case " &
-                                                           "    when b.BitronPNMatch = true and b.bitronPn is not null then TRIM(LEADING '0' FROM b.bitronPn) " &
-                                                            "   else CONCAT('BEQS_' , cast(a.offerId as CHAR(10)), '_' ,  cast(d.componentid as CHAR(10)) ) end as BitronPN, " &
-                                                            "   b.BitronPNMatch, a.offerId, d.componentid , d.quantity " &
-                                                            "   from quotegeneralinformation a " &
-                                                            "   join offerversion c on a.offerId = c.offerId " &
-                                                            "   join bomdetailed b on a.offerId = b.offerId " &
-                                                            "   join componentversion d on d.offerid = a.offerid and d.offerversionid = c.offerVersionId and d.componentid = b.componentId " &
-                                                            "   where a.offerid = " & offerid.Name & " ) a " &
-                                                            " group by a.bitronPn", conBEQS)
-                    AdapterBomOffer.Fill(DsBomOffer, "BomOffer")
-                    tblBomOffer = DsBomOffer.Tables("BomOffer")
-                End Using
+                Try
+
+
+                    Using AdapterBomOffer As New SqlDataAdapter("select distinct a.BitronPN, max(a.offerId) as offerId, max(a.componentId) as componentId, sum(a.quantity) as RequestQT " &
+                                                              "  from (select distinct case " &
+                                                               "    when b.BitronPNMatch = 'true' and b.bitronPn is not null then SUBSTRING(b.bitronPn, PATINDEX('%[^0 ]%', b.bitronPn + ' '), LEN(b.bitronPn)) " &
+                                                                "   else 'BEQS_' + cast(a.offerId as varchar(10)) + '_' +  cast(d.componentid as CHAR(10))  end as BitronPN, " &
+                                                                "   b.BitronPNMatch, a.offerId, d.componentid , d.quantity " &
+                                                                "   from quotegeneralinformation a " &
+                                                                "   join offerversion c on a.offerId = c.offerId " &
+                                                                "   join bomdetailed b on a.offerId = b.offerId " &
+                                                                "   join componentversion d on d.offerid = a.offerid and d.offerversionid = c.offerVersionId and d.componentid = b.componentId " &
+                                                                "   where a.offerid = " & offerid.Name & " ) a " &
+                                                                " group by a.bitronPn", conBEQS)
+                        AdapterBomOffer.Fill(DsBomOffer, "BomOffer")
+                        tblBomOffer = DsBomOffer.Tables("BomOffer")
+                    End Using
+                Catch ex As Exception
+                    MsgBox(ex.Message)
+                End Try
                 Dim DsMaterialRequest As New DataSet
                 Dim tblMaterialRequest As DataTable
                 Dim builder As New Common.DbConnectionStringBuilder()
