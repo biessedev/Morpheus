@@ -273,7 +273,7 @@ Public Class FormDownload
                                                 If prodDoc = "" Then prodDoc = proddocAux
                                                 If proddocAux = "" Then proddocAux = prodDoc
                                                 RowSearch = tlbDocGru.Select("( codicepf LIKE '" & prodDoc & "' or codicepf LIKE '" & proddocAux & "')  ")
-                                                If RowSearch.Length = 0 Then
+                                                If tlbDocGru.Rows.Count = 0 Then
                                                     Using AdapterDocGruProd As New MySqlDataAdapter("SELECT * FROM documento where codicepf = '" & prodPlantDoc & "'", conGru)
                                                         AdapterDocGruProd.Fill(DsDocGru, "documento")
                                                     End Using
@@ -289,7 +289,7 @@ Public Class FormDownload
                                         Dim listLengh As Long = ListView1.Items.Count
                                         Dim Inconsistent As Object = False
                                         WriteFile(rowPrdList("bitronpn").ToString & "   " & rowPrdList("name").ToString & " <<-->> " & rowPrdList("status").ToString, True)
-                                        For Each row In RowSearch
+                                        For Each row In tlbDocGru.Rows
                                             Application.DoEvents()
                                             If (row("visto").ToString <> "" And row("data_obso").ToString = "") And (row("codicepf").ToString = prodDoc Or row("codicepf").ToString = proddocAux Or row("codicepf").ToString = prodPlantDoc) Then
 
@@ -304,7 +304,7 @@ Public Class FormDownload
                                                 ListView1.Items.Add(kk)
                                                 ListView1.Items(ListView1.Items.Count - 1).BackColor = Color.Aqua
 
-                                                For Each rowCk In RowSearch
+                                                For Each rowCk In tlbDocGru.Rows
                                                     Application.DoEvents()
                                                     If InStr(rowCk("allegato").ToString, "ECR", CompareMethod.Text) = 0 And
                                                         InStr(rowCk("allegato").ToString, "RMP", CompareMethod.Text) = 0 And (rowCk("data_obso").ToString = "" And rowCk("visto").ToString <> "" And row("visto").ToString <> "" And row("data_obso").ToString = "") Then
