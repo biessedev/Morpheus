@@ -928,9 +928,9 @@ Public Class FormProduct
                     End Try
 
                     Try
-                        Dim fileName As String() = Directory.GetFiles(selectedPath & "\", "PELE15PT-BITUSR12-" & Date.Now.ToString("yyyyMMdd") & ".csv")
+                        Dim fileName As String() = Directory.GetFiles(selectedPath & "\", "PELE15PT-BITUSER-" & Date.Now.ToString("yyyyMMdd") & ".csv")
                         If fileName.Length = 0 Then
-                            MsgBox("The filename " & "PELE15PT-BITUSR12-" & Date.Now.ToString("yyyyMMdd") & ".csv" & " does not exist in " & selectedPath & " directory")
+                            MsgBox("The filename " & "PELE15PT-BITUSER-" & Date.Now.ToString("yyyyMMdd") & ".csv" & " does not exist in " & selectedPath & " directory")
                         Else
                             InsertSigipBomCSV(fileName(0))
 
