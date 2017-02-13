@@ -928,9 +928,9 @@ Public Class FormProduct
                     End Try
 
                     Try
-                        Dim fileName As String() = Directory.GetFiles(selectedPath & "\", "PELE15PT-BITUSER-" & Date.Now.AddDays(-1).ToString("yyyyMMdd") & ".csv")
+                        Dim fileName As String() = Directory.GetFiles(selectedPath & "\", "PELE15PT-BITUSER-" & Date.Now.ToString("yyyyMMdd") & ".csv")
                         If fileName.Length = 0 Then
-                            MsgBox("The filename " & "PELE15PT-BITUSER-" & Date.Now.AddDays(-1).ToString("yyyyMMdd") & ".csv" & " does not exist in " & selectedPath & " directory")
+                            MsgBox("The filename " & "PELE15PT-BITUSER-" & Date.Now.ToString("yyyyMMdd") & ".csv" & " does not exist in " & selectedPath & " directory")
                         Else
                             InsertSigipBomCSV(fileName(0))
 
@@ -1159,7 +1159,7 @@ Public Class FormProduct
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
 
                 Dim planParameter = Replace(ReplaceChar(ParameterTable("plant")), "-", "")
-                
+
                 Dim productsQuery = From a In dt.AsEnumerable().Where(Function(x) Replace(ReplaceChar(x.Field(Of String)("Stabilimento")), "-", "").TrimStart("0"c) = planParameter)
                                     Join b In ListView1.Items On b.SubItems(3).Text Equals Replace(ReplaceChar(a.Field(Of String)("Assieme")), "-", "").TrimStart("0"c)
                                     Select a Distinct
@@ -1204,11 +1204,12 @@ Public Class FormProduct
                     End If
                     index = index + 1
                 Next
-                sqlCommand = Mid(sqlValues, 1, Len(sqlValues) - 1)
-                sqlCommand = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`, `active`, `doc`, `OrcadSupplier`) VALUES " & sqlCommand & ";"
-                Dim cmdLast = New MySqlCommand(sqlCommand, con)
-                cmdLast.ExecuteNonQuery()
-
+                If (Len(sqlValues) > 0) Then
+                    sqlCommand = Mid(sqlValues, 1, Len(sqlValues) - 1)
+                    sqlCommand = "INSERT INTO `" & DBName & "`.`sigip` (`id` ,`bom`,`DES_bom`,`NR`,`QT` ,`price` ,`currency`,`liv`,`acq_fab` ,`bitron_pn` ,`DES_PN`,`mdi`,`mdo`,`amm`,`spe`,`mdi_t`,`mdo_t`,`amm_t`,`spe_t`, `active`, `doc`, `OrcadSupplier`) VALUES " & sqlCommand & ";"
+                    Dim cmdLast = New MySqlCommand(sqlCommand, con)
+                    cmdLast.ExecuteNonQuery()
+                End If
 
             End Using
         Catch ex As Exception
