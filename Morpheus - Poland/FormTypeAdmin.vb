@@ -122,6 +122,8 @@ Public Class FormTypeAdmin
                         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
                             Using AdapterType As New MySqlDataAdapter("SELECT * FROM doctype", con)
+                                Dim MySqlCommandBuilder As MySqlCommandBuilder = New MySqlCommandBuilder(AdapterType)
+                                MySqlCommandBuilder.GetUpdateCommand()
                                 AdapterType.Update(tblDocType)
                             End Using
                         End Using
