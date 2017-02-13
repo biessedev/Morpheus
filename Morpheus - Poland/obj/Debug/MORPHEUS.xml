@@ -37,7 +37,17 @@ MORPHEUS
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:MORPHEUS.My.Resources.Resources.BitronLogo">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:MORPHEUS.My.Resources.Resources.BitronPoland">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:MORPHEUS.My.Resources.Resources.check_icon">
 <summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
@@ -63,6 +73,11 @@ MORPHEUS
 </summary>
 </member>
 <member name="P:MORPHEUS.My.Resources.Resources.traffic_lights_yellow">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:MORPHEUS.My.Resources.Resources.uncheck_icon">
 <summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
