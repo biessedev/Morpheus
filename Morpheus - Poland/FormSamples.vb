@@ -1624,7 +1624,7 @@ Public Class FormSamples
             Dim tblMySql As DataTable = dsMySql.Tables("materialrequest")
             Dim stockvalue As Double = Str(Stock(bitronPN))
             If tblMySql.Rows.Count < 1 Then
-                strBomList = des_bom & "[" & Trim(Str(IIf(qt = Int(qt), Int(qt), Math.Round(Val(qt), 5)))) & "]"
+                strBomList = des_bom & "[" & Trim(Str(IIf(qt = Int(qt), Convert.ToInt32(qt), Math.Round(Val(qt), 5)))) & "]"
                 sql = "INSERT INTO `" & DBName & "`.`materialrequest` (`DeltaUsedFlag`,`ProductionUsed`,`bitronPN`,`des_pn`,`Brand`,`BrandALT`,`pfp`,`warehouse3d`,`Delta`,`RequestQt`,`BomList`,`doc`) VALUES ('" & IIf(SigipUsed(bitronPN) <> "" Or
                 (stockvalue - Val(strQt)) < Val(strQt) * 0.1, "YES", "NO") & "','" & SigipUsed(bitronPN) & "','" & bitronPN & "','" & des_PN & "','" & brand & "','" & brandAlt & "','" & pfp(bitronPN) & "','" & stockvalue & "','" &
                  stockvalue - Val(Str(Val(qt) * Val(npieces))) & "','" & Trim(Str(Val(qt) * Val(npieces))) & "','" & strBomList & "','" & Doc & "')"
@@ -1637,7 +1637,7 @@ Public Class FormSamples
                     Dim j As Integer = InStr(i, strBomList, "]", CompareMethod.Text)
                     strBomList = Mid(strBomList, 1, i) & Trim(Str(Val(Mid(strBomList, i + 1, j - 1 - i)) + Val(qt))) & Mid(strBomList, j)
                 Else
-                    strBomList = tblMySql.Rows.Item(0)("BomList") & ";" & des_bom & "[" & Trim(Str(IIf(qt = Int(qt), Int(qt), Math.Round(Val(qt), 5)))) & "]"
+                    strBomList = tblMySql.Rows.Item(0)("BomList") & ";" & des_bom & "[" & Trim(Str(IIf(qt = Int(qt), Convert.ToInt32(qt), Math.Round(Val(qt), 5)))) & "]"
                     If Mid(strBomList, 1, 1) = ";" Then strBomList = Mid(strBomList, 2)
                 End If
                 sql = "UPDATE `materialrequest` SET `w_warehouse`=" & Val(Stock_W(bitronPN)) & ", `RequestQt`='" & strQt & "',`BomList`='" & strBomList & "',`brandALT`='" & brandAlt & "',`brand`='" & brand & "',`pfp`='" & pfp(bitronPN) & "',`doc`='" & Doc & "',`warehouse3d`='" & stockvalue & "',`Delta`='" & stockvalue - Val(strQt) & "',`ProductionUsed`='" & SigipUsed(bitronPN) & "',`DeltaUsedFlag`='" & IIf(SigipUsed(bitronPN) <> "" Or (stockvalue - Val(strQt)) < Val(strQt) * 0.1, "YES", "NO") & "' WHERE `bitronpn`='" & bitronPN & "'"
