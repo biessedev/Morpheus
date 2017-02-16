@@ -1398,9 +1398,11 @@ Public Class FormProduct
 
             End While
             Try
-                cmd = New MySqlCommand(sql, con)
-                cmd.ExecuteNonQuery()
-                sql = ""
+                If sql <> "" Then
+                    cmd = New MySqlCommand(sql, con)
+                    cmd.ExecuteNonQuery()
+                    sql = ""
+                End If
             Catch ex As Exception
                 ComunicationLog("5050") ' Mysql update query error 
                 allOK = False
