@@ -1468,7 +1468,7 @@ Public Class FormSamples
                     If Val(row("NPIECES").ToString) > 0 Then
                         If row("bomlocation").ToString = "SIGIP" Then
                             Dim rowShowSigip As DataRow() = tblSigip.Select("bom ='" & row("bitronpn").ToString & "' and (acq_fab = 'acq' Or acq_fab = 'acv')")
-                            If rowShowSigip.Length = 0 Then MsgBox("Bom not found in SIGIP: " & row("bitronpn").ToString & BomName)
+                            If rowShowSigip.Length = 0 Then MsgBox("Bom not found in SIGIP: " & row("bitronpn").ToString & " [origin: SIGIP]")
                             For Each rowSigip In rowShowSigip
                                 ButtonUpdateMagBox.Text = "Udpate: " & Math.Round(100 * i / rowShow.Length, 0) & "%"
                                 Application.DoEvents()
