@@ -1462,27 +1462,32 @@ Public Class FormSamples
             Application.DoEvents()
             Dim beqsVersions As String = ""
             Dim dictionaryVersionsQuatity As New Dictionary(Of String, Integer) ' do not delete this comment
-            For Each row In rowShow
-                i = i + 1
-                If Val(row("NPIECES").ToString) > 0 Then
-                    If row("bomlocation").ToString = "SIGIP" Then
-                        Dim rowShowSigip As DataRow() = tblSigip.Select("bom ='" & row("bitronpn").ToString & "' and (acq_fab = 'acq' Or acq_fab = 'acv')")
-                        If rowShowSigip.Length = 0 Then MsgBox("Bom not found in SIGIP: " & row("bitronpn").ToString & BomName)
-                        For Each rowSigip In rowShowSigip
-                            ButtonUpdateMagBox.Text = "Udpate: " & Math.Round(100 * i / rowShow.Length, 0) & "%"
-                            Application.DoEvents()
-                            If Val(rowSigip("qt").ToString) * Val(row("npieces").ToString) > 0 Then AddRequest(rowSigip("bitron_pn").ToString, rowSigip("des_pn").ToString, rowSigip("qt").ToString, row("npieces").ToString, rowSigip("bom").ToString, rowSigip("bom").ToString & " - " & rowSigip("des_bom").ToString, , , rowSigip("doc").ToString)
-                        Next
-                    ElseIf row("bomlocation").ToString() = "BEQS" Then
-                        ' TODO: Add business logic
-                        If currentProductCode = row("bitronpn") Then
-                            dictionaryVersionsQuatity.Add(row("bitronpn"), row("npieces"))  ' do not delete this comment
+            Try
+                For Each row In rowShow
+                    i = i + 1
+                    If Val(row("NPIECES").ToString) > 0 Then
+                        If row("bomlocation").ToString = "SIGIP" Then
+                            Dim rowShowSigip As DataRow() = tblSigip.Select("bom ='" & row("bitronpn").ToString & "' and (acq_fab = 'acq' Or acq_fab = 'acv')")
+                            If rowShowSigip.Length = 0 Then MsgBox("Bom not found in SIGIP: " & row("bitronpn").ToString & BomName)
+                            For Each rowSigip In rowShowSigip
+                                ButtonUpdateMagBox.Text = "Udpate: " & Math.Round(100 * i / rowShow.Length, 0) & "%"
+                                Application.DoEvents()
+                                If Val(rowSigip("qt").ToString) * Val(row("npieces").ToString) > 0 Then AddRequest(rowSigip("bitron_pn").ToString, rowSigip("des_pn").ToString, rowSigip("qt").ToString, row("npieces").ToString, rowSigip("bom").ToString, rowSigip("bom").ToString & " - " & rowSigip("des_bom").ToString, , , rowSigip("doc").ToString)
+                            Next
+                        ElseIf row("bomlocation").ToString() = "BEQS" Then
+                            ' TODO: Add business logic
+                            If currentProductCode = row("bitronpn") Then
+                                dictionaryVersionsQuatity.Add(row("bitronpn"), row("npieces"))  ' do not delete this comment
+                            End If
+                        Else
+                            MsgBox("For this product BOM not assigned! " & row("bitronpn").ToString & "  " & row("name").ToString)
                         End If
-                    Else
-                        MsgBox("For this product BOM not assigned! " & row("bitronpn").ToString & "  " & row("name").ToString)
                     End If
-                End If
-            Next
+                Next
+            Catch ex As Exception
+                MsgBox(ex.Message)
+            End Try
+            
 
             If dictionaryVersionsQuatity.Count > 0 Then ' do Not delete this comment
                 FormBomOffer.ShowForm(dictionaryVersionsQuatity) ' Do Not delete this comment
