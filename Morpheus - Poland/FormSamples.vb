@@ -1472,7 +1472,12 @@ Public Class FormSamples
                             For Each rowSigip In rowShowSigip
                                 ButtonUpdateMagBox.Text = "Udpate: " & Math.Round(100 * i / rowShow.Length, 0) & "%"
                                 Application.DoEvents()
-                                If Val(rowSigip("qt").ToString) * Val(row("npieces").ToString) > 0 Then AddRequest(rowSigip("bitron_pn").ToString, rowSigip("des_pn").ToString, rowSigip("qt"), row("npieces").ToString, rowSigip("bom").ToString, rowSigip("bom").ToString & " - " & rowSigip("des_bom").ToString, , , rowSigip("doc").ToString)
+                                Dim qtStr = Replace(rowSigip("qt"), ",000000000", "")
+                                qtStr = Replace(qtStr, ".000000000", "")
+                                Dim qt = Convert.ToDouble(qtStr)
+                                If qt * Val(row("npieces").ToString) > 0 Then
+                                    AddRequest(rowSigip("bitron_pn").ToString, rowSigip("des_pn").ToString, qt, row("npieces").ToString, rowSigip("bom").ToString, rowSigip("bom").ToString & " - " & rowSigip("des_bom").ToString, , , rowSigip("doc").ToString)
+                                End If
                             Next
                         ElseIf row("bomlocation").ToString() = "BEQS" Then
                             ' TODO: Add business logic
