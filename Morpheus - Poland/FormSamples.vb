@@ -1472,7 +1472,7 @@ Public Class FormSamples
                             For Each rowSigip In rowShowSigip
                                 ButtonUpdateMagBox.Text = "Udpate: " & Math.Round(100 * i / rowShow.Length, 0) & "%"
                                 Application.DoEvents()
-                                If Val(rowSigip("qt").ToString) * Val(row("npieces").ToString) > 0 Then AddRequest(rowSigip("bitron_pn").ToString, rowSigip("des_pn").ToString, rowSigip("qt").ToString, row("npieces").ToString, rowSigip("bom").ToString, rowSigip("bom").ToString & " - " & rowSigip("des_bom").ToString, , , rowSigip("doc").ToString)
+                                If Val(rowSigip("qt").ToString) * Val(row("npieces").ToString) > 0 Then AddRequest(rowSigip("bitron_pn").ToString, rowSigip("des_pn").ToString, rowSigip("qt"), row("npieces").ToString, rowSigip("bom").ToString, rowSigip("bom").ToString & " - " & rowSigip("des_bom").ToString, , , rowSigip("doc").ToString)
                             Next
                         ElseIf row("bomlocation").ToString() = "BEQS" Then
                             ' TODO: Add business logic
@@ -1616,7 +1616,7 @@ Public Class FormSamples
         Next
     End Function
 
-    Sub AddRequest(ByVal bitronPN As String, ByVal des_PN As String, ByVal qt As String, ByVal npieces As String, ByVal Bom As String, ByVal des_bom As String, Optional ByVal brand As String = "", Optional ByVal brandAlt As String = "", Optional ByVal Doc As String = "")
+    Sub AddRequest(ByVal bitronPN As String, ByVal des_PN As String, ByVal qt As Double, ByVal npieces As String, ByVal Bom As String, ByVal des_bom As String, Optional ByVal brand As String = "", Optional ByVal brandAlt As String = "", Optional ByVal Doc As String = "")
         Dim strQt As String
         Dim strBomList
         Dim dsMySql As New DataSet
@@ -1629,7 +1629,7 @@ Public Class FormSamples
             Dim tblMySql As DataTable = dsMySql.Tables("materialrequest")
             Dim stockvalue As Double = Str(Stock(bitronPN))
             If tblMySql.Rows.Count < 1 Then
-                strBomList = des_bom & "[" & Trim(Str(IIf(qt = Int(qt), Convert.ToInt32(Replace(qt, ",", "")), Math.Round(Val(qt), 5)))) & "]"
+                strBomList = des_bom & "[" & Trim(Str(IIf(qt = Int(qt), qt, Math.Round(Val(qt), 5)))) & "]"
                 sql = "INSERT INTO `" & DBName & "`.`materialrequest` (`DeltaUsedFlag`,`ProductionUsed`,`bitronPN`,`des_pn`,`Brand`,`BrandALT`,`pfp`,`warehouse3d`,`Delta`,`RequestQt`,`BomList`,`doc`) VALUES ('" & IIf(SigipUsed(bitronPN) <> "" Or
                 (stockvalue - Val(strQt)) < Val(strQt) * 0.1, "YES", "NO") & "','" & SigipUsed(bitronPN) & "','" & bitronPN & "','" & des_PN & "','" & brand & "','" & brandAlt & "','" & pfp(bitronPN) & "','" & stockvalue & "','" &
                  stockvalue - Val(Str(Val(qt) * Val(npieces))) & "','" & Trim(Str(Val(qt) * Val(npieces))) & "','" & strBomList & "','" & Doc & "')"
@@ -1642,7 +1642,7 @@ Public Class FormSamples
                     Dim j As Integer = InStr(i, strBomList, "]", CompareMethod.Text)
                     strBomList = Mid(strBomList, 1, i) & Trim(Str(Val(Mid(strBomList, i + 1, j - 1 - i)) + Val(qt))) & Mid(strBomList, j)
                 Else
-                    strBomList = tblMySql.Rows.Item(0)("BomList") & ";" & des_bom & "[" & Trim(Str(IIf(qt = Int(qt), Convert.ToInt32(Replace(qt, ",", "")), Math.Round(Val(qt), 5)))) & "]"
+                    strBomList = tblMySql.Rows.Item(0)("BomList") & ";" & des_bom & "[" & Trim(Str(IIf(qt = Int(qt), qt, Math.Round(Val(qt), 5)))) & "]"
                     If Mid(strBomList, 1, 1) = ";" Then strBomList = Mid(strBomList, 2)
                 End If
                 sql = "UPDATE `materialrequest` SET `w_warehouse`=" & Val(Stock_W(bitronPN)) & ", `RequestQt`='" & strQt & "',`BomList`='" & strBomList & "',`brandALT`='" & brandAlt & "',`brand`='" & brand & "',`pfp`='" & pfp(bitronPN) & "',`doc`='" & Doc & "',`warehouse3d`='" & stockvalue & "',`Delta`='" & stockvalue - Val(strQt) & "',`ProductionUsed`='" & SigipUsed(bitronPN) & "',`DeltaUsedFlag`='" & IIf(SigipUsed(bitronPN) <> "" Or (stockvalue - Val(strQt)) < Val(strQt) * 0.1, "YES", "NO") & "' WHERE `bitronpn`='" & bitronPN & "'"
