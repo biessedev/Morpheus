@@ -1381,7 +1381,7 @@ Public Class FormProduct
 
                         End If
                         sql = sql & "UPDATE `" & DBName & "`.`sigip` SET `OrcadSupplier` = '" & GetOrcadSupplier(row("bitron_pn").ToString) & "' , `doc` = '" & doc & "' WHERE `sigip`.`bitron_pn` = '" & row("bitron_pn").ToString & "' ; "
-                        If Len(sql) > 1000 Then
+                        If Len(sql) > 0 Then
                             Try
                                 cmd = New MySqlCommand(sql, con)
                                 cmd.ExecuteNonQuery()
