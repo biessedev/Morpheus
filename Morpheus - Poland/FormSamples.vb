@@ -147,6 +147,7 @@ Public Class FormSamples
                 FillTaskType()
 
                 Cob_StatusFill()
+                Cob_BitronPNFill()
                 Cob_FilterStatusFill()
                 FillCobOwnerContent()
                 FillCobFilterContent()
@@ -241,6 +242,8 @@ Public Class FormSamples
         End Try
         firstLoad = False
     End Sub
+
+   
 
     ' update the tree viewer
     Sub UpdateTreeSample()
@@ -1945,6 +1948,25 @@ Public Class FormSamples
         Cob_Status.Text = ""
     End Sub
 
+    Private Sub Cob_BitronPNFill()
+        Dim DsProducts As DataSet = New DataSet()
+        Dim tbProducts As DataTable
+
+        Dim builder As New Common.DbConnectionStringBuilder()
+        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+            Using AdapterProducts As New MySqlDataAdapter("SELECT distinct bitronPN FROM Product", con)
+                AdapterProducts.Fill(DsProducts, "Product")
+                tbProducts = DsProducts.Tables("Product")
+            End Using
+        End Using
+
+        For Each row In tbProducts.Rows
+            Cob_BitronPN.Items.Add(row("bitronPN"))
+        Next
+            
+    End Sub
+
     Private Sub Cob_FilterStatusFill()
         Cob_FilterStatus.Items.Clear()
         Cob_FilterStatus.Items.Add("")
@@ -1958,7 +1980,7 @@ Public Class FormSamples
         Dim objCurrencyManager As CurrencyManager
         objCurrencyManager = CType(Me.BindingContext(tblNPI), CurrencyManager)
         Txt_Index.DataBindings.Clear()
-        Txt_BitronPN.DataBindings.Clear()
+        Cob_BitronPN.DataBindings.Clear()
         Txt_description.DataBindings.Clear()
         Cob_Owner.DataBindings.Clear()
         Txt_Area.DataBindings.Clear()
@@ -1972,7 +1994,7 @@ Public Class FormSamples
         DGV_NPI.Update()
         objCurrencyManager.Position = selectrowNo
         Txt_Index.DataBindings.Add("Text", tblNPI, "ID")
-        Txt_BitronPN.DataBindings.Add("Text", tblNPI, "Bitron_PN")
+        Cob_BitronPN.DataBindings.Add("Text", tblNPI, "Bitron_PN")
         Txt_description.DataBindings.Add("Text", tblNPI, "BS")
         Txt_IssueDescription.DataBindings.Add("Text", tblNPI, "Issue_description")
         Txt_Area.DataBindings.Add("Text", tblNPI, "Area")
@@ -1984,13 +2006,13 @@ Public Class FormSamples
     End Sub
 
     Private Sub Btn_Add_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Add.Click
-        If Trim(Txt_BitronPN.Text) <> "" Then
+        If Trim(Cob_BitronPN.Text) <> "" Then
             Try
 
                 DateStart = DTP_Date.Value.Date
                 DateClosed = DTP_PlanCloseDate.Value.Date
                 Dim Sql As String = "INSERT INTO npi_openissue (BS,DATE,Issue_description,Bitron_PN,Area,Owner,Temp_corr_action,Final_corr_action,ETC,Status,FilePath ) VALUES ('" &
-                                    Txt_description.Text & "','" & DateStart.ToString("yyyy-MM-dd") & "','" & Txt_IssueDescription.Text & "','" & Txt_BitronPN.Text & "','" & Txt_Area.Text & "','" &
+                                    Txt_description.Text & "','" & DateStart.ToString("yyyy-MM-dd") & "','" & Txt_IssueDescription.Text & "','" & Cob_BitronPN.Text & "','" & Txt_Area.Text & "','" &
                                     Cob_Owner.Text & "','" & Txt_TempCorrectAction.Text & "','" & Txt_FinalCorrectAction.Text & "','" & DateClosed.ToString("yyyy-MM-dd") & "','" & Cob_Status.Text & "','" & Txt_FilePath.Text & "');"
                 Dim builder As New Common.DbConnectionStringBuilder()
                 builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
@@ -2032,13 +2054,13 @@ Public Class FormSamples
 
     Private Sub Btn_Save_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Save.Click
         Dim selectrowNo As Integer = DGV_NPI.CurrentRow.Index
-        If Trim(Txt_BitronPN.Text) <> "" Then
+        If Trim(Cob_BitronPN.Text) <> "" Then
             Try
                 DateStart = DTP_Date.Value.Date
                 DateClosed = DTP_PlanCloseDate.Value.Date
 
                 Dim sql As String = "UPDATE npi_openissue SET BS = '" & Txt_description.Text & "',DATE = '" & DateStart.ToString("yyyy-MM-dd") & "',Issue_description ='" &
-                                    Txt_IssueDescription.Text & "',Bitron_PN = '" & Txt_BitronPN.Text & "',Area = '" & Txt_Area.Text & "',Owner = '" & Cob_Owner.Text & "',Temp_corr_action = '" &
+                                    Txt_IssueDescription.Text & "',Bitron_PN = '" & Cob_BitronPN.Text & "',Area = '" & Txt_Area.Text & "',Owner = '" & Cob_Owner.Text & "',Temp_corr_action = '" &
                                     Txt_TempCorrectAction.Text & "',Final_corr_action = '" & Txt_FinalCorrectAction.Text & "',ETC = '" & DateClosed.ToString("yyyy-MM-dd") & "',Status = '" &
                                     Cob_Status.Text & "',FilePath ='" & Txt_FilePath.Text & "' WHERE ID = '" & Txt_Index.Text & "'"
                 Dim builder As New Common.DbConnectionStringBuilder()
@@ -2329,7 +2351,7 @@ Public Class FormSamples
 
     Private Sub ClearDataBindings()
         Txt_Index.DataBindings.Clear()
-        Txt_BitronPN.DataBindings.Clear()
+        Cob_BitronPN.DataBindings.Clear()
         Txt_description.DataBindings.Clear()
         Cob_Owner.DataBindings.Clear()
         Txt_Area.DataBindings.Clear()
@@ -2342,7 +2364,7 @@ Public Class FormSamples
         Txt_FilePath.DataBindings.Clear()
 
         Txt_Index.Text = ""
-        Txt_BitronPN.Text = ""
+        Cob_BitronPN.Text = ""
         Txt_description.Text = ""
         Cob_Owner.Text = ""
         Txt_Area.Text = ""
@@ -2459,6 +2481,27 @@ Public Class FormSamples
 
                 DGV_NPI.Rows(index + 1).Selected = True
                 SelectRow()
+            End If
+        End If
+    End Sub
+    
+    
+
+    Private Sub Cob_BitronPN_MouseUp(sender As Object, e As MouseEventArgs) Handles Cob_BitronPN.MouseUp
+        Dim DsProducts As DataSet = New DataSet()
+        Dim tbProducts As DataTable
+
+        If Cob_BitronPN.SelectedIndex >= 0 Then
+            Dim builder As New Common.DbConnectionStringBuilder()
+            builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+            Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+                Using AdapterProducts As New MySqlDataAdapter("SELECT distinct bitronPN, name FROM Product Where bitronPN = '" & Cob_BitronPN.Text & "'", con)
+                    AdapterProducts.Fill(DsProducts, "Product")
+                    tbProducts = DsProducts.Tables("Product")
+                End Using
+            End Using
+            If tbProducts.Rows.Count > 0
+                Txt_description.Text = tbProducts.Rows(0)("name")
             End If
         End If
     End Sub
