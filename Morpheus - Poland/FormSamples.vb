@@ -1978,31 +1978,37 @@ Public Class FormSamples
 
     Private Sub DataBangding(ByVal selectrowNo As Integer)
         Dim objCurrencyManager As CurrencyManager
-        objCurrencyManager = CType(Me.BindingContext(tblNPI), CurrencyManager)
-        Txt_Index.DataBindings.Clear()
-        Cob_BitronPN.DataBindings.Clear()
-        Txt_description.DataBindings.Clear()
-        Cob_Owner.DataBindings.Clear()
-        Txt_Area.DataBindings.Clear()
-        Cob_Status.DataBindings.Clear()
-        DTP_Date.DataBindings.Clear()
-        DTP_PlanCloseDate.DataBindings.Clear()
-        Txt_IssueDescription.DataBindings.Clear()
-        Txt_TempCorrectAction.DataBindings.Clear()
-        Txt_FinalCorrectAction.DataBindings.Clear()
-        Txt_FilePath.DataBindings.Clear()
-        DGV_NPI.Update()
-        objCurrencyManager.Position = selectrowNo
-        Txt_Index.DataBindings.Add("Text", tblNPI, "ID")
-        Cob_BitronPN.DataBindings.Add("Text", tblNPI, "Bitron_PN")
-        Txt_description.DataBindings.Add("Text", tblNPI, "BS")
-        Txt_IssueDescription.DataBindings.Add("Text", tblNPI, "Issue_description")
-        Txt_Area.DataBindings.Add("Text", tblNPI, "Area")
-        Cob_Status.DataBindings.Add("Text", tblNPI, "Status")
-        Txt_TempCorrectAction.DataBindings.Add("Text", tblNPI, "Temp_corr_action")
-        Txt_FinalCorrectAction.DataBindings.Add("Text", tblNPI, "Final_corr_action")
-        Cob_Owner.DataBindings.Add("Text", tblNPI, "Owner")
-        Txt_FilePath.DataBindings.Add("Text", tblNPI, "FilePath")
+        Try
+            objCurrencyManager = CType(Me.BindingContext(tblNPI), CurrencyManager)
+            Txt_Index.DataBindings.Clear()
+            Cob_BitronPN.DataBindings.Clear()
+            Txt_description.DataBindings.Clear()
+            Cob_Owner.DataBindings.Clear()
+            Txt_Area.DataBindings.Clear()
+            Cob_Status.DataBindings.Clear()
+            DTP_Date.DataBindings.Clear()
+            DTP_PlanCloseDate.DataBindings.Clear()
+            Txt_IssueDescription.DataBindings.Clear()
+            Txt_TempCorrectAction.DataBindings.Clear()
+            Txt_FinalCorrectAction.DataBindings.Clear()
+            Txt_FilePath.DataBindings.Clear()
+            DGV_NPI.Update()
+            objCurrencyManager.Position = selectrowNo
+            Txt_Index.DataBindings.Add("Text", tblNPI, "ID")
+            Cob_BitronPN.DataBindings.Add("Text", tblNPI, "Bitron_PN")
+            Txt_description.DataBindings.Add("Text", tblNPI, "BS")
+            Txt_IssueDescription.DataBindings.Add("Text", tblNPI, "Issue_description")
+            Txt_Area.DataBindings.Add("Text", tblNPI, "Area")
+            Cob_Status.DataBindings.Add("Text", tblNPI, "Status")
+            Txt_TempCorrectAction.DataBindings.Add("Text", tblNPI, "Temp_corr_action")
+            Txt_FinalCorrectAction.DataBindings.Add("Text", tblNPI, "Final_corr_action")
+            Cob_Owner.DataBindings.Add("Text", tblNPI, "Owner")
+            Txt_FilePath.DataBindings.Add("Text", tblNPI, "FilePath")
+
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+
     End Sub
 
     Private Sub Btn_Add_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Btn_Add.Click
@@ -2397,7 +2403,7 @@ Public Class FormSamples
             cSelectedID = Me.DGV_NPI.Item(DGV_NPI.Columns("ID").Index, DGV_NPI.SelectedRows(0).Index).Value.ToString()
         End If
         selectedIndex = DGV_NPI.SelectedRows(0).Index
-        DataBangding(selectedIndex)
+        Call DataBangding(selectedIndex)
 
         Btn_Del.Enabled = True
         Btn_Save.Enabled = True
@@ -2415,9 +2421,15 @@ Public Class FormSamples
             End If
         End If
         cSelectedID = newSelectedId
+
+        Dim closeDate = DGV_NPI.SelectedRows(0).Cells("PlanedClosedDate").Value
+        Dim startDate = DGV_NPI.SelectedRows(0).Cells("StartDate").Value
+        DTP_PlanCloseDate.Value = New Date(closeDate.Year, closeDate.Month, closeDate.Day)
+        DTP_Date.Value = New Date(startDate.Year, startDate.Month, startDate.Day)
     End Sub
 
     Private Sub DGV_NPI_MouseUp(sender As Object, e As MouseEventArgs) Handles DGV_NPI.MouseUp
+
         Try
             Dim hitInfo As DataGridView.HitTestInfo = DGV_NPI.HitTest(e.X, e.Y)
             'Click to column Header 
@@ -2484,10 +2496,10 @@ Public Class FormSamples
             End If
         End If
     End Sub
-    
-    
 
-    Private Sub Cob_BitronPN_MouseUp(sender As Object, e As MouseEventArgs) Handles Cob_BitronPN.MouseUp
+
+
+    Private Sub Cob_BitronPN_DropDownClosed(sender As Object, e As EventArgs) Handles Cob_BitronPN.DropDownClosed
         Dim DsProducts As DataSet = New DataSet()
         Dim tbProducts As DataTable
 
@@ -2495,12 +2507,12 @@ Public Class FormSamples
             Dim builder As New Common.DbConnectionStringBuilder()
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-                Using AdapterProducts As New MySqlDataAdapter("SELECT distinct bitronPN, name FROM Product Where bitronPN = '" & Cob_BitronPN.Text & "'", con)
+                Using AdapterProducts As New MySqlDataAdapter("SELECT distinct bitronPN, name FROM Product Where bitronPN = '" & Cob_BitronPN.SelectedItem & "'", con)
                     AdapterProducts.Fill(DsProducts, "Product")
                     tbProducts = DsProducts.Tables("Product")
                 End Using
             End Using
-            If tbProducts.Rows.Count > 0
+            If tbProducts.Rows.Count > 0 Then
                 Txt_description.Text = tbProducts.Rows(0)("name")
             End If
         End If
