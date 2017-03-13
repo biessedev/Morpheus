@@ -1011,6 +1011,7 @@ Public Class FormECR
         Try
             client.Send(msg)
             MailSent = True
+            MessageBox.Show("Email sent successfully")
         Catch ex As Exception
             ListBoxLog.Items.Add("Mail not sent...!!!")
         End Try
