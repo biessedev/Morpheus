@@ -2032,6 +2032,7 @@ Public Class FormSamples
             End Try
         Else
             MsgBox("Bitron Product Code can't be empty")
+            Return
         End If
         CobFilterBitronPNFill()
         DeselectRows()
@@ -2082,6 +2083,7 @@ Public Class FormSamples
             End Try
         Else
             MsgBox("Bitron Product Code can't be empty")
+            Return
         End If
         CobFilterBitronPNFill()
         DeselectRows()
