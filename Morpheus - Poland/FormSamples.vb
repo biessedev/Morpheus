@@ -243,7 +243,7 @@ Public Class FormSamples
         firstLoad = False
     End Sub
 
-   
+
 
     ' update the tree viewer
     Sub UpdateTreeSample()
@@ -1495,7 +1495,7 @@ Public Class FormSamples
             Catch ex As Exception
                 MsgBox(ex.Message)
             End Try
-            
+
 
             If dictionaryVersionsQuatity.Count > 0 Then ' do Not delete this comment
                 FormBomOffer.ShowForm(dictionaryVersionsQuatity) ' Do Not delete this comment
@@ -1964,7 +1964,7 @@ Public Class FormSamples
         For Each row In tbProducts.Rows
             Cob_BitronPN.Items.Add(row("bitronPN"))
         Next
-            
+
     End Sub
 
     Private Sub Cob_FilterStatusFill()
@@ -2516,6 +2516,26 @@ Public Class FormSamples
                 Txt_description.Text = tbProducts.Rows(0)("name")
             End If
         End If
+    End Sub
+
+    Private Sub TabControlNPI_Selecting(sender As Object, e As TabControlCancelEventArgs) Handles TabControlNPI.Selecting
+        If IsNeedUpdate(cSelectedID) Then
+            Dim msgBoxResult As MsgBoxResult
+            msgBoxResult = MsgBox("Do you want to save the changes?", vbYesNo)
+            If msgBoxResult = MsgBoxResult.Yes Then
+                SaveUpdates(cSelectedID)
+            End If
+        End If
+        If selectedIndex = -1 Then
+            If Cob_BitronPN.Text <> "" Then
+                Dim msgBoxResult As MsgBoxResult
+                msgBoxResult = MsgBox("Do you want to add the issue?", vbYesNo)
+                If msgBoxResult = MsgBoxResult.Yes Then
+                    Btn_Add_Click(sender, e)
+                End If
+            End If
+        End If
+
     End Sub
 
     Private Sub DTP_PlanCloseDate_ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles DTP_PlanCloseDate.ValueChanged

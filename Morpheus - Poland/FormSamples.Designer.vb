@@ -24,13 +24,13 @@ Partial Class FormSamples
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormSamples))
-        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("ETD 2012/01/01 - 50 PCS - 30412020 CENT.ELETT.CHALLANGER FEKA 1.1 ")
-        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("User new digit", New System.Windows.Forms.TreeNode() {TreeNode1})
-        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Node2")
-        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Electrolux", New System.Windows.Forms.TreeNode() {TreeNode2, TreeNode3})
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("ETD 2012/01/01 - 50 PCS - 30412020 CENT.ELETT.CHALLANGER FEKA 1.1 ")
+        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("User new digit", New System.Windows.Forms.TreeNode() {TreeNode5})
+        Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Node2")
+        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Electrolux", New System.Windows.Forms.TreeNode() {TreeNode6, TreeNode7})
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.TabControlNPI = New System.Windows.Forms.TabControl()
         Me.TabPageActivity = New System.Windows.Forms.TabPage()
         Me.ButtonUpdateMagBox = New System.Windows.Forms.Button()
@@ -545,15 +545,15 @@ Partial Class FormSamples
         Me.TreeViewActivity.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TreeViewActivity.Location = New System.Drawing.Point(10, 31)
         Me.TreeViewActivity.Name = "TreeViewActivity"
-        TreeNode1.Name = "Node3"
-        TreeNode1.Text = "ETD 2012/01/01 - 50 PCS - 30412020 CENT.ELETT.CHALLANGER FEKA 1.1 "
-        TreeNode2.Name = "Node1"
-        TreeNode2.Text = "User new digit"
-        TreeNode3.Name = "Node2"
-        TreeNode3.Text = "Node2"
-        TreeNode4.Name = "Node0"
-        TreeNode4.Text = "Electrolux"
-        Me.TreeViewActivity.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode4})
+        TreeNode5.Name = "Node3"
+        TreeNode5.Text = "ETD 2012/01/01 - 50 PCS - 30412020 CENT.ELETT.CHALLANGER FEKA 1.1 "
+        TreeNode6.Name = "Node1"
+        TreeNode6.Text = "User new digit"
+        TreeNode7.Name = "Node2"
+        TreeNode7.Text = "Node2"
+        TreeNode8.Name = "Node0"
+        TreeNode8.Text = "Electrolux"
+        Me.TreeViewActivity.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode8})
         Me.TreeViewActivity.Size = New System.Drawing.Size(922, 386)
         Me.TreeViewActivity.TabIndex = 104
         '
@@ -1069,8 +1069,8 @@ Partial Class FormSamples
         'BS
         '
         Me.BS.DataPropertyName = "BS"
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.BS.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BS.DefaultCellStyle = DataGridViewCellStyle4
         Me.BS.HeaderText = "Description"
         Me.BS.Name = "BS"
         Me.BS.Width = 120
@@ -1104,8 +1104,8 @@ Partial Class FormSamples
         'StartDate
         '
         Me.StartDate.DataPropertyName = "DATE"
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.StartDate.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle5.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.StartDate.DefaultCellStyle = DataGridViewCellStyle5
         Me.StartDate.HeaderText = "StartDate"
         Me.StartDate.Name = "StartDate"
         Me.StartDate.Width = 120
@@ -1133,8 +1133,8 @@ Partial Class FormSamples
         'Status
         '
         Me.Status.DataPropertyName = "Status"
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Status.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle6.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Status.DefaultCellStyle = DataGridViewCellStyle6
         Me.Status.HeaderText = "Status"
         Me.Status.Name = "Status"
         '
@@ -1172,20 +1172,20 @@ Partial Class FormSamples
         Me.GroupBox1.Controls.Add(Me.Txt_Index)
         Me.GroupBox1.Controls.Add(Me.Txt_BS)
         Me.GroupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.GroupBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.GroupBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox1.Location = New System.Drawing.Point(4, 5)
         Me.GroupBox1.Margin = New System.Windows.Forms.Padding(2)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Padding = New System.Windows.Forms.Padding(2)
         Me.GroupBox1.Size = New System.Drawing.Size(605, 265)
         Me.GroupBox1.TabIndex = 0
-        Me.GroupBox1.TabStop = false
+        Me.GroupBox1.TabStop = False
         '
         'Txt_Area
         '
         Me.Txt_Area.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.Txt_Area.FormattingEnabled = true
-        Me.Txt_Area.Items.AddRange(New Object() {"NPI", "SMD", "RX/AX", "Process", "Testing", "Varnish", "Quality", "Time and Methods", "Logistic", "Purchasing"})
+        Me.Txt_Area.FormattingEnabled = True
+        Me.Txt_Area.Items.AddRange(New Object() {"NPI", "SMD", "RX/AX", "Process", "Testing", "Varnish", "Quality", "Time and Methods", "Logistic", "Purchasing", "RnD"})
         Me.Txt_Area.Location = New System.Drawing.Point(11, 71)
         Me.Txt_Area.Margin = New System.Windows.Forms.Padding(2)
         Me.Txt_Area.Name = "Txt_Area"
