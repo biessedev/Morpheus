@@ -192,95 +192,54 @@ Public Class FormAdministration
             If readDocSign(row("iddoc").ToString, refresh) = "" Then
 
                 If row("ecrcheck").ToString <> "YES" Then
-                    mailSender("ECR_" & "VerifyTo", "ECR_" & "VerifyCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please VERIFY the Ecr: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
+                    mailSender("ECR_" & "VerifyTo", "ECR_" & "VerifyCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please VERIFY the ECR: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
                 End If
 
                 Dim us As Object = "R"
                 If ((row(us & "sign").ToString = "NOT CHECKED") And (row("ecrcheck").ToString = "YES")) Then
-                    mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the Ecr: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
+                    mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the ECR: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
                 End If
 
                 us = "L"
-                If row(us & "sign").ToString = "NOT CHECKED" And
-                    row("ecrcheck").ToString = "YES" And
-                    row("Rsign").ToString <> "NOT CHECKED" Then
-                    mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the Ecr: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
+                If ((row(us & "sign").ToString = "NOT CHECKED") And (row("ecrcheck").ToString = "YES")) Then
+                    mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the ECR: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
                 End If
 
                 us = "U"
-                If row(us & "sign").ToString = "NOT CHECKED" And
-                    row("ecrcheck").ToString = "YES" And
-                    row("Rsign").ToString <> "NOT CHECKED" And
-                    row("Lsign").ToString <> "NOT CHECKED" Then
-                    mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the Ecr: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
+                If ((row(us & "sign").ToString = "NOT CHECKED") And (row("ecrcheck").ToString = "YES")) Then
+                    mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the ECR: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
                 End If
 
                 us = "B"
-                If row(us & "sign").ToString = "NOT CHECKED" And
-                    row("ecrcheck").ToString = "YES" And
-                    row("Rsign").ToString <> "NOT CHECKED" And
-                    row("Lsign").ToString <> "NOT CHECKED" And
-                    row("Usign").ToString <> "NOT CHECKED" Then
-                    mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the Ecr: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
+                If ((row(us & "sign").ToString = "NOT CHECKED") And (row("ecrcheck").ToString = "YES")) Then
+                    mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the ECR: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
                 End If
 
                 us = "E"
-                If row(us & "sign").ToString = "NOT CHECKED" And
-                    row("ecrcheck").ToString = "YES" And
-                    row("Rsign").ToString <> "NOT CHECKED" And
-                    row("Lsign").ToString <> "NOT CHECKED" And
-                    row("Usign").ToString <> "NOT CHECKED" Then
-                    mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the Ecr: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
+                If ((row(us & "sign").ToString = "NOT CHECKED") And (row("ecrcheck").ToString = "YES")) Then
+                    mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the ECR: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
                 End If
 
                 us = "N"
-                If row(us & "sign").ToString = "NOT CHECKED" And
-                    row("ecrcheck").ToString = "YES" And
-                    row("Rsign").ToString <> "NOT CHECKED" And
-                    row("Lsign").ToString <> "NOT CHECKED" And
-                    row("Usign").ToString <> "NOT CHECKED" And
-                    row("Bsign").ToString <> "NOT CHECKED" And
-                    row("Esign").ToString <> "NOT CHECKED" Then
-                    mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the Ecr: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
+                If ((row(us & "sign").ToString = "NOT CHECKED") And (row("ecrcheck").ToString = "YES")) Then
+                    mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the ECR: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
                 End If
 
                 us = "P"
-                If row(us & "sign").ToString = "NOT CHECKED" And
-                    row("ecrcheck").ToString = "YES" And
-                    row("Rsign").ToString <> "NOT CHECKED" And
-                    row("Lsign").ToString <> "NOT CHECKED" And
-                    row("Usign").ToString <> "NOT CHECKED" And
-                    row("Bsign").ToString <> "NOT CHECKED" And
-                    row("Esign").ToString <> "NOT CHECKED" And
-                    row("Nsign").ToString <> "NOT CHECKED" Then
-                    mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the Ecr: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
+                If ((row(us & "sign").ToString = "NOT CHECKED") And (row("ecrcheck").ToString = "YES")) Then
+                    mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the ECR: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
                 End If
 
                 us = "Q"
-                If row(us & "sign").ToString = "NOT CHECKED" And
-                    row("ecrcheck").ToString = "YES" And
-                    row("Rsign").ToString <> "NOT CHECKED" And
-                    row("Lsign").ToString <> "NOT CHECKED" And
-                    row("Usign").ToString <> "NOT CHECKED" And
-                    row("Bsign").ToString <> "NOT CHECKED" And
-                    row("Esign").ToString <> "NOT CHECKED" And
-                    row("Nsign").ToString <> "NOT CHECKED" Then
-                    mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the Ecr: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
+                If ((row(us & "sign").ToString = "NOT CHECKED") And (row("ecrcheck").ToString = "YES")) Then
+                    mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the ECR: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
                 End If
 
                 us = "A"
-                If row(us & "sign").ToString = "NOT CHECKED" And
-                    row("ecrcheck").ToString = "YES" And
-                    row("Rsign").ToString <> "NOT CHECKED" And
-                    row("Lsign").ToString <> "NOT CHECKED" And
-                    row("Usign").ToString <> "NOT CHECKED" And
-                    row("Bsign").ToString <> "NOT CHECKED" And
-                    row("Esign").ToString <> "NOT CHECKED" And
-                    row("Nsign").ToString <> "NOT CHECKED" And
-                    row("Psign").ToString <> "NOT CHECKED" And
-                    row("Qsign").ToString <> "NOT CHECKED" Then
-                    mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the Ecr: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
+                If ((row(us & "sign").ToString = "NOT CHECKED") And (row("ecrcheck").ToString = "YES")) Then
+                    mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the ECR: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
                 End If
+
 
                 Dim dt As Date = string_to_date((row("date").ToString))
 

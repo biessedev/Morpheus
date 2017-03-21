@@ -526,22 +526,22 @@ Public Class FormECR
                         Else
                             datepresence = True
                         End If
-                        If SomeNoChecked() = False Then
-                            If datepresence Then
-                                Me.Controls("Button" & but).Text = "APPROVED"
-                                WriteField(but & "sign", Me.Controls("Button" & but).Text)
-                                WriteField("date" & but, date_to_string(Now))
-                            Else
-                                MsgBox("Please fill in the data!")
-                            End If
+                        'If SomeNoChecked() = False Then
+                        If datepresence Then
+                            Me.Controls("Button" & but).Text = "APPROVED"
+                            WriteField(but & "sign", Me.Controls("Button" & but).Text)
+                            WriteField("date" & but, date_to_string(Now))
                         Else
-                            MsgBox("It is not possible to approve if there is some dept. that has not yet CHECKED!")
-                            If MsgBox("Do you want to remove your CHECKED?", MsgBoxStyle.YesNo, "ECR Question") = MsgBoxResult.Yes Then
-                                WriteField(but & "sign", "NOT CHECKED")
-                                Me.Controls("Button" & but).Text = "NOT CHECKED"
-                                WriteField("date" & but, date_to_string(Now))
-                            End If
+                            MsgBox("Please fill in the data!")
                         End If
+                        'Else
+                        '    MsgBox("It is not possible to approve if there is some dept. that has not yet CHECKED!")
+                        '    If MsgBox("Do you want to remove your CHECKED?", MsgBoxStyle.YesNo, "ECR Question") = MsgBoxResult.Yes Then
+                        '        WriteField(but & "sign", "NOT CHECKED")
+                        '        Me.Controls("Button" & but).Text = "NOT CHECKED"
+                        '        WriteField("date" & but, date_to_string(Now))
+                        '    End If
+                        'End If
                     End If
 
                 ElseIf Me.Controls("Button" & but).Text = "NOT CHECKED" Then
