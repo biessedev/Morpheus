@@ -2292,16 +2292,19 @@ Public Class FormSamples
                     Exit For
                 End If
             Next
+
+
+
             If DGV_NPI.Rows(rowId).Cells("ID").Value.ToString() = rowDB("ID").ToString() Then
                 If DGV_NPI.Rows(rowId).Cells("BS").Value = rowDB("BS").ToString() And
-                    DGV_NPI.Rows(rowId).Cells("StartDate").Value = rowDB("DATE") And
+                    DTP_Date.Value = rowDB("DATE").Value And
                     DGV_NPI.Rows(rowId).Cells("IssueDescription").Value = rowDB("Issue_description").ToString() And
                     DGV_NPI.Rows(rowId).Cells("BitronPN").Value = rowDB("Bitron_PN").ToString() And
                     DGV_NPI.Rows(rowId).Cells("Area").Value = rowDB("Area").ToString() And
                     DGV_NPI.Rows(rowId).Cells("Owner").Value = rowDB("Owner").ToString() And
                     DGV_NPI.Rows(rowId).Cells("TEMPCorrectAction").Value = rowDB("Temp_corr_action").ToString() And
                     DGV_NPI.Rows(rowId).Cells("FinalCorrectAction").Value = rowDB("Final_corr_action").ToString() And
-                    DGV_NPI.Rows(rowId).Cells("PlanedClosedDate").Value = rowDB("ETC") And
+                    DTP_PlanCloseDate.Value = rowDB("ETC").Value And
                     DGV_NPI.Rows(rowId).Cells("Status").Value = rowDB("Status").ToString() And
                     DGV_NPI.Rows(rowId).Cells("FilePath").Value = rowDB("FilePath").ToString() Then
                     update = False
@@ -2325,8 +2328,9 @@ Public Class FormSamples
         Next
         If Trim(DGV_NPI.Rows(rowId).Cells("BitronPN").Value) <> "" Then
             Try
-                Dim startDate = DGV_NPI.Rows(rowId).Cells("StartDate").Value
-                Dim etc = DGV_NPI.Rows(rowId).Cells("PlanedClosedDate").Value
+                Dim startDate = DTP_Date.Value
+                Dim etc = DTP_PlanCloseDate.Value
+
                 Dim sql As String = "UPDATE npi_openissue SET BS = '" & DGV_NPI.Rows(rowId).Cells("BS").Value &
                                     "',DATE = '" & startDate.Year & "-" & startDate.Month & "-" & startDate.Day &
                                     "',Issue_description ='" & DGV_NPI.Rows(rowId).Cells("IssueDescription").Value &
@@ -2353,6 +2357,8 @@ Public Class FormSamples
         Else
             MsgBox("Bitron Product Code can't be empty")
         End If
+        CobFilterBitronPNFill()
+        DeselectRows()
     End Sub
 
     Dim saveUpdate As Boolean = True
@@ -2537,7 +2543,7 @@ Public Class FormSamples
                 End If
             End If
         End If
-
+        cSelectedID = Nothing
     End Sub
 
     Private Sub DTP_PlanCloseDate_ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles DTP_PlanCloseDate.ValueChanged
