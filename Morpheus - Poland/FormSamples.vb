@@ -1774,7 +1774,8 @@ Public Class FormSamples
             End Try
 
             'copy data from excel to `pfp`
-            Dim sql As String = "load data local infile '" & Replace(tempPath, "\", "\\") & "' into table `spu` CHARACTER SET latin1 fields terminated by ','  lines terminated by '\r\n' ignore 1 lines  (`bitronpn`,`pades`,`sagia`,`samgz`,`saubc`,`paumt`,`pmppa`,`pmcmm`,`paclm`)"
+            Dim sql As String = "load data local infile '" & Replace(tempPath, "\", "\\") & "' into table `spu` CHARACTER SET latin1 fields terminated by ',' lines terminated by '\r\n' ignore 1 lines (`pmstb`,`bitronpn`,`pades`,`sagia`,`samgz`,`saubc`,`paumt`,`pmppa`,`pmcmm`,`paclm`)"
+            'Dim sql As String = "load data local infile '" & Replace(tempPath, "\", "\\") & "' into table `spu` CHARACTER SET latin1 fields terminated by ','  lines terminated by '\r\n' ignore 1 lines  (`bitronpn`,`pades`,`sagia`,`samgz`,`saubc`,`paumt`,`pmppa`,`pmcmm`,`paclm`)"
             commandMySql = New MySqlCommand(sql, con)
             commandMySql.ExecuteNonQuery()
         End Using
