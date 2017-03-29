@@ -103,11 +103,11 @@ Public Class FormBomOffer
         builderBEQS.ConnectionString = ConfigurationManager.ConnectionStrings("BEQS").ConnectionString
         Using conBEQS = NewOpenConnectionSqlBeqs(builderBEQS("host"), builderBEQS("database"), builderBEQS("username"), builderBEQS("password"))
             For Each item In Versions
-                Using AdapterBomOffer As New SqlDataAdapter("select distinct bitronpn, a.offerid, c.customerName, b.offerName " &
-                                                            " from bomdetailed a " &
-                                                            " join quotegeneralinformation b on a.offerId = b.offerId " &
-                                                            " join customer c on b.customerId = c.customerId " &
-                                                            " where bitronpn = '" & item.Key & "'", conBEQS)
+                Using AdapterBomOffer As New SqlDataAdapter("select a.offerversionname, a.offerId, c.customerName, b.offerName " &
+                                                              "  from offerVersion a " &
+                                                              "  join quotegeneralinformation b on a.offerId = b.offerId " &
+                                                             "   join customer c on b.customerId = c.customerId " &
+                                                              "  where offerversionname = '" & item.Key & "'", conBEQS)
 
                     AdapterBomOffer.Fill(DsBomOffer, "BomOffer")
                     tblBomOffer = DsBomOffer.Tables("BomOffer")
