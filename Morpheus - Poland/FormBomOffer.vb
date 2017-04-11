@@ -66,7 +66,7 @@ Public Class FormBomOffer
                         Dim values As String = ""
 
                         bitronPn = (From a In tblMaterialRequest.AsEnumerable() Where a.Field(Of String)("BitronPN") = bom("bitronPn") Select a.Field(Of String)("bitronPn")).ToList().FirstOrDefault()
-                        Dim qty = bom("RequestQt") * Me.VersionsWithQuatity.Item(offerid.Parent.Text)
+                        Dim qty = Me.VersionsWithQuatity.Item(offerid.Parent.Text)
                         If bitronPn Is Nothing Then
                             values = "VALUES(" &
                                             "'" & bom("bitronPn") & "'," &
@@ -78,7 +78,15 @@ Public Class FormBomOffer
                                                 "STATUS, w_wareHouse, RDA_ETA, Order_ETA) " & values
 
                         Else
-                            sqlCommand = "UPDATE MaterialRequest Set RequestQt = " & qty & ", BomList = CONCAT(BomList, ';" & offerid.Parent.Text & " - [" & bom("RequestQt") & "]') where TRIM(LEADING '0' FROM bitronPn) = '" & bom("bitronPn") & "'"
+                            sqlCommand = "UPDATE 
+                                            MaterialRequest 
+                                          SET 
+                                            RequestQt = " & qty & ", 
+                                            BomList = CASE IFNULL(BomList, '')
+                                                        WHEN '' THEN '" & offerid.Parent.Text & " - [" & bom("RequestQt") & "]'" & "    
+                                                        ELSE CONCAT(BomList, ';" & offerid.Parent.Text & " - [" & bom("RequestQt") & "]') 
+                                                      END
+                                          WHERE TRIM(LEADING '0' FROM bitronPn) = '" & bom("bitronPn") & "'"
                         End If
                         Dim cmd = New MySqlCommand(sqlCommand, con)
                         cmd.ExecuteNonQuery()

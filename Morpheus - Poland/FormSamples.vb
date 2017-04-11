@@ -1649,6 +1649,9 @@ Public Class FormSamples
                     i = InStr(i + 1, strBomList, "[", CompareMethod.Text)
                     Dim j As Integer = InStr(i, strBomList, "]", CompareMethod.Text)
                     strBomList = Mid(strBomList, 1, i) & Trim(Str(Val(Mid(strBomList, i + 1, j - 1 - i)) + Val(qt))) & Mid(strBomList, j)
+                ElseIf tblMySql.Rows.Item(0)("BomList").ToString = "" Then
+                    strBomList = des_bom & "[" & Trim(Str(IIf(qt = Int(qt), qt, Math.Round(Val(qt), 5)))) & "]"
+                    If Mid(strBomList, 1, 1) = ";" Then strBomList = Mid(strBomList, 2)
                 Else
                     strBomList = tblMySql.Rows.Item(0)("BomList") & ";" & des_bom & "[" & Trim(Str(IIf(qt = Int(qt), qt, Math.Round(Val(qt), 5)))) & "]"
                     If Mid(strBomList, 1, 1) = ";" Then strBomList = Mid(strBomList, 2)
