@@ -2157,7 +2157,7 @@ Public Class FormSamples
         If DGV_NPI.SelectedRows.Count = 1 Then
             If controlRight("W") >= 1 Then 'BEC: controlRight("R") >= 1
                 Dim fileOpen As String
-                fileOpen = downloadFileWinPath(Txt_FilePath.Text)
+                fileOpen = downloadFileWinPath(DGV_NPI.SelectedRows.Item(0).Cells.Item(11).Value.ToString())
                 Application.DoEvents()
                 If fileOpen <> "" Then
                     Process.Start(fileOpen)
@@ -2301,14 +2301,14 @@ Public Class FormSamples
 
             If DGV_NPI.Rows(rowId).Cells("ID").Value.ToString() = rowDB("ID").ToString() Then
                 If DGV_NPI.Rows(rowId).Cells("BS").Value = rowDB("BS").ToString() And
-                    DTP_Date.Value = rowDB("DATE").Value And
+                    DGV_NPI.Rows(rowId).Cells("DATE").Value = rowDB("DATE").Value And
                     DGV_NPI.Rows(rowId).Cells("IssueDescription").Value = rowDB("Issue_description").ToString() And
                     DGV_NPI.Rows(rowId).Cells("BitronPN").Value = rowDB("Bitron_PN").ToString() And
                     DGV_NPI.Rows(rowId).Cells("Area").Value = rowDB("Area").ToString() And
                     DGV_NPI.Rows(rowId).Cells("Owner").Value = rowDB("Owner").ToString() And
                     DGV_NPI.Rows(rowId).Cells("TEMPCorrectAction").Value = rowDB("Temp_corr_action").ToString() And
                     DGV_NPI.Rows(rowId).Cells("FinalCorrectAction").Value = rowDB("Final_corr_action").ToString() And
-                    DTP_PlanCloseDate.Value = rowDB("ETC").Value And
+                    DGV_NPI.Rows(rowId).Cells("ETC").Value = rowDB("ETC").Value And
                     DGV_NPI.Rows(rowId).Cells("Status").Value = rowDB("Status").ToString() And
                     DGV_NPI.Rows(rowId).Cells("FilePath").Value = rowDB("FilePath").ToString() Then
                     update = False
