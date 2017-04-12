@@ -1158,7 +1158,7 @@ Public Class FormProduct
             builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
             Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
 
-                Dim planParameter = Replace(ReplaceChar(ParameterTable("plant")), "-", "")
+                Dim planParameter = Replace(ReplaceChar(ParameterTable("plant")), "-", "").TrimStart("0"c)
 
                 Dim productsQuery = From a In dt.AsEnumerable().Where(Function(x) Replace(ReplaceChar(x.Field(Of String)("Stabilimento")), "-", "").TrimStart("0"c) = planParameter)
                                     Join b In ListView1.Items On b.SubItems(3).Text Equals Replace(ReplaceChar(a.Field(Of String)("Assieme")), "-", "").TrimStart("0"c)

@@ -66,7 +66,7 @@ Public Class FormBomOffer
                         Dim values As String = ""
 
                         bitronPn = (From a In tblMaterialRequest.AsEnumerable() Where a.Field(Of String)("BitronPN") = bom("bitronPn") Select a.Field(Of String)("bitronPn")).ToList().FirstOrDefault()
-                        Dim qty = Me.VersionsWithQuatity.Item(offerid.Parent.Text)
+                        Dim qty = bom("RequestQt") * Me.VersionsWithQuatity.Item(offerid.Parent.Text)
                         If bitronPn Is Nothing Then
                             values = "VALUES(" &
                                             "'" & bom("bitronPn") & "'," &
