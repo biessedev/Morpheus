@@ -51,9 +51,8 @@ Public Class FormStart
         End If
         FormCredentials.Hide()
         Application.DoEvents()
-        If controlRight("A") >= 3 Or controlRight("E") >= 3 Or controlRight("N") >= 3 Or controlRight("L") >= 3 Or controlRight("P") >= 3 Or controlRight("Q") >= 3 Or controlRight("R") >= 3 Or controlRight("U") >= 3 Then ButtonECR.Enabled = True
-        If controlRight("L") >= 2 Or controlRight("B") >= 2 Or controlRight("R") >= 2 Then ButtonECR.Enabled = True
-        If controlRight("R") >= 2 Then ButtonNpi.Enabled = True
+        If controlRight("A") >= 1 Or controlRight("R") >= 1 Or controlRight("U") >= 1 Or controlRight("L") >= 1 Or controlRight("B") >= 1 Or controlRight("E") >= 1 Or controlRight("N") >= 1 Or controlRight("P") >= 1 Or controlRight("Q") >= 1 Then ButtonECR.Enabled = True
+        If controlRight("W") >= 2 Then ButtonNpi.Enabled = True
 
         If controlRight("R") >= 2 Then ButtonCommit.Enabled = True
         If controlRight("Z") = 3 Then ButtonSystem.Enabled = True
@@ -63,8 +62,8 @@ Public Class FormStart
         ButtonRunning.BackColor = Color.Green
         If DateDiff("d", string_to_date(ParameterTable("LAST_AUTOMATIC_SCHEDULER")), Today) > 1 Then ButtonRunning.BackColor = Color.Red
 
-        If (controlRight("R") >= 3) Then
-            ButtonChangePassword.Text = "Manage Users Accounts"
+        If (controlRight("A") >= 3) Then
+            ButtonChangePassword.Text = "Manage User Accounts"
         End If
         ButtonChangePassword.Enabled = True
 

@@ -561,16 +561,16 @@ Public Class FormSamples
                             End If
 
                         Catch ex As Exception
-                            MsgBox("Mysql update query error!")
+                            MsgBox("MySQL Update query failed!")
                         End Try
                     Else
-                        MsgBox("Failed update!")
+                        MsgBox("Update failed!")
                     End If
                 Else
                     MsgBox("More products selected!")
                 End If
             Else
-                MsgBox("Need to set the product and the activity before pushing Save!")
+                MsgBox("Need to set the product and the activity before pressing Save!")
             End If
             Using AdapterProd As New MySqlDataAdapter("SELECT * FROM Product order by customer, statusActivity ,etd", con)
                 AdapterProd.Fill(DsProd, "Product")
@@ -1473,7 +1473,7 @@ Public Class FormSamples
                             Dim rowShowSigip As DataRow() = tblSigip.Select("bom ='" & row("bitronpn").ToString & "' and (acq_fab = 'acq' Or acq_fab = 'acv')")
                             If rowShowSigip.Length = 0 Then MsgBox("BOM not found: " & row("bitronpn").ToString & " [origin: SIGIP]")
                             For Each rowSigip In rowShowSigip
-                                ButtonUpdateMagBox.Text = "Udpate: " & Math.Round(100 * i / rowShow.Length, 0) & "%"
+                                ButtonUpdateMagBox.Text = "Update: " & Math.Round(100 * i / rowShow.Length, 0) & "%"
                                 Application.DoEvents()
                                 Dim qtStr = Replace(rowSigip("qt"), ",000000000", "")
                                 qtStr = Replace(qtStr, ".000000000", "")
@@ -1552,7 +1552,7 @@ Public Class FormSamples
             tblMySql.Dispose()
             tblMySql.Dispose()
         End Using
-        ButtonUpdateMagBox.Text = "Udpate Material Request"
+        ButtonUpdateMagBox.Text = "Update Material Request"
     End Sub
 
     Function order(ByVal bitronpn As String, ByVal refrash As Boolean) As Single

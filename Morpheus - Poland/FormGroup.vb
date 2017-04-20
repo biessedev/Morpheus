@@ -235,8 +235,8 @@ Public Class FormGroup
 							cmd.ExecuteNonQuery()
 							dictionaryForProd.Item(productNumber) = GroupList
 						Catch ex As Exception
-							MsgBox("Deletion failed!")
-						End Try
+                            MsgBox("MySQL Update query failed!")
+                        End Try
 						i += 1
 					Next
 					trans.Commit()

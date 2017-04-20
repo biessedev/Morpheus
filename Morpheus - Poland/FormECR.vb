@@ -143,56 +143,59 @@ Public Class FormECR
         Result = tblEcr.Select("number = " & EcrN)
 
         If readField("EcrCheck", Val(Mid(ComboBoxEcr.Text, 1, pos))) = "YES" Then
-            ButtonE.Enabled = True
-            ButtonP.Enabled = True
-            ButtonQ.Enabled = True
             ButtonR.Enabled = True
             ButtonU.Enabled = True
-            ButtonA.Enabled = True
-            ButtonN.Enabled = True
             ButtonL.Enabled = True
+            ButtonE.Enabled = True
             ButtonB.Enabled = True
+            ButtonN.Enabled = True
+            ButtonP.Enabled = True
+            ButtonQ.Enabled = True
+            ButtonA.Enabled = True
+
         Else
-            ButtonE.Enabled = False
-            ButtonL.Enabled = False
-            ButtonP.Enabled = False
-            ButtonQ.Enabled = False
             ButtonR.Enabled = False
             ButtonU.Enabled = False
-            ButtonA.Enabled = False
-            ButtonN.Enabled = False
+            ButtonL.Enabled = False
             ButtonB.Enabled = False
+            ButtonE.Enabled = False
+            ButtonP.Enabled = False
+            ButtonQ.Enabled = False
+            ButtonN.Enabled = False
+            ButtonA.Enabled = False
+
         End If
 
         If Result.Length > 0 Then
-            ButtonE.Text = Result(0).Item("Esign")
-            ButtonL.Text = Result(0).Item("Lsign")
-            ButtonP.Text = Result(0).Item("Psign")
-            ButtonQ.Text = Result(0).Item("Qsign")
+
             ButtonR.Text = Result(0).Item("Rsign")
             ButtonU.Text = Result(0).Item("Usign")
-            ButtonA.Text = Result(0).Item("Asign")
-            ButtonN.Text = Result(0).Item("Nsign")
+            ButtonL.Text = Result(0).Item("Lsign")
             ButtonB.Text = Result(0).Item("Bsign")
+            ButtonE.Text = Result(0).Item("Esign")
+            ButtonP.Text = Result(0).Item("Psign")
+            ButtonQ.Text = Result(0).Item("Qsign")
+            ButtonN.Text = Result(0).Item("Nsign")
+            ButtonA.Text = Result(0).Item("Asign")
 
-            If userDep3 = "E" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Enote")
-            If userDep3 = "L" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Lnote")
-            If userDep3 = "P" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Pnote")
-            If userDep3 = "Q" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Qnote")
             If userDep3 = "R" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Rnote")
             If userDep3 = "U" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Unote")
-            If userDep3 = "A" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Anote")
-            If userDep3 = "N" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("nnote")
+            If userDep3 = "L" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Lnote")
             If userDep3 = "B" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Bnote")
+            If userDep3 = "E" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Enote")
+            If userDep3 = "P" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Pnote")
+            If userDep3 = "Q" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Qnote")
+            If userDep3 = "N" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("nnote")
+            If userDep3 = "A" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Anote")
 
-            If userDep3 = "E" Then TextBoxStepCost.Text = Result(0).Item("ECost")
-            If userDep3 = "L" Then TextBoxStepCost.Text = Result(0).Item("LCost")
-            If userDep3 = "P" Then TextBoxStepCost.Text = Result(0).Item("PCost")
-            If userDep3 = "Q" Then TextBoxStepCost.Text = Result(0).Item("QCost")
             If userDep3 = "R" Then TextBoxStepCost.Text = Result(0).Item("RCost")
             If userDep3 = "U" Then TextBoxStepCost.Text = Result(0).Item("UCost")
-            If userDep3 = "N" Then TextBoxStepCost.Text = Result(0).Item("NCost")
+            If userDep3 = "L" Then TextBoxStepCost.Text = Result(0).Item("LCost")
             If userDep3 = "B" Then TextBoxStepCost.Text = Result(0).Item("BCost")
+            If userDep3 = "E" Then TextBoxStepCost.Text = Result(0).Item("ECost")
+            If userDep3 = "N" Then TextBoxStepCost.Text = Result(0).Item("NCost")
+            If userDep3 = "P" Then TextBoxStepCost.Text = Result(0).Item("PCost")
+            If userDep3 = "Q" Then TextBoxStepCost.Text = Result(0).Item("QCost")
 
             If Result(0).Item("EcrCheck").ToString = "YES" Then
                 ButtonEcrCheck.BackColor = Color.Green
@@ -202,9 +205,9 @@ Public Class FormECR
                 ButtonEcrCheck.Text = "Customer Doc To Bitron ECR Alignment    ---> NO"
             End If
 
-            TextBoxTotalCost.Text = Int(Val(Result(0).Item("ECost")) + Val(Result(0).Item("LCost")) +
-            Val(Result(0).Item("PCost")) + Val(Result(0).Item("NCost")) + Val(Result(0).Item("QCost")) + Val(Result(0).Item("RCost")) +
-            Val(Result(0).Item("UCost")) + Val(Result(0).Item("BCost")))
+            TextBoxTotalCost.Text = Int(Val(Result(0).Item("Rcost")) + Val(Result(0).Item("Ucost")) +
+            Val(Result(0).Item("Lcost")) + Val(Result(0).Item("Bcost")) + Val(Result(0).Item("Ecost")) + Val(Result(0).Item("Ncost")) +
+            Val(Result(0).Item("Pcost")) + Val(Result(0).Item("Qcost")))
             Dim valuecost As Double = Val(TextBoxTotalCost.Text)
             TextBoxTotalCost.Text = valuecost.ToString("0,0", CultureInfo.InvariantCulture)
             ComboBoxPay.Text = Result(0).Item("cuspay")
@@ -242,20 +245,20 @@ Public Class FormECR
             End If
 
             ButtonData.Text = Result(0).Item("date")
-            ButtonRL.Text = Result(0).Item("dater")
-            ButtonUL.Text = Result(0).Item("dateu")
-            ButtonQL.Text = Result(0).Item("dateq")
-            ButtonEL.Text = Result(0).Item("datee")
-            ButtonLL.Text = Result(0).Item("datel")
-            ButtonPL.Text = Result(0).Item("datep")
-            ButtonNL.Text = Result(0).Item("dateN")
-            ButtonBL.Text = Result(0).Item("dateB")
+            ButtonRL.Text = Result(0).Item("dateR")
+            ButtonUL.Text = Result(0).Item("dateU")
+            ButtonQL.Text = Result(0).Item("dateL")
+            ButtonEL.Text = Result(0).Item("dateB")
+            ButtonLL.Text = Result(0).Item("dateE")
+            ButtonPL.Text = Result(0).Item("dateN")
+            ButtonNL.Text = Result(0).Item("dateP")
+            ButtonBL.Text = Result(0).Item("dateQ")
 
         End If
+
         If Not AllSign() Then UpdateDate()
         Try
             If Not AllSign() Then
-
                 ComboBoxPay.Enabled = True
                 If userDep3 <> "A" Then Me.Controls("Button" & userDep3 & "L").Enabled = True
 
@@ -264,6 +267,7 @@ Public Class FormECR
                 If userDep3 <> "A" Then Me.Controls("DateTimePicker" & userDep3).Visible = False
                 If userDep3 <> "A" Then Me.Controls("Button" & userDep3 & "L").Enabled = False
             End If
+
         Catch ex As Exception
 
         End Try
@@ -282,6 +286,7 @@ Public Class FormECR
             LabelApproved.ForeColor = Color.Green
             LabelApproved.Text = "APPROVED"
         End If
+
         If userDep3 = "A" Then
             TextBoxStepCost.ReadOnly = True
             ButtonCalc.Enabled = False
@@ -302,24 +307,24 @@ Public Class FormECR
         End If
 
         AllSign = True
-        If InStr(1, readField("Esign", EcrN), "APPROVED", CompareMethod.Text) > 0 Or
-            InStr(1, readField("Lsign", EcrN), "APPROVED", CompareMethod.Text) > 0 Or
-            InStr(1, readField("Psign", EcrN), "APPROVED", CompareMethod.Text) > 0 Or
-            InStr(1, readField("Asign", EcrN), "APPROVED", CompareMethod.Text) > 0 Or
-            InStr(1, readField("Qsign", EcrN), "APPROVED", CompareMethod.Text) > 0 Or
-            InStr(1, readField("Rsign", EcrN), "APPROVED", CompareMethod.Text) > 0 Or
-            InStr(1, readField("Nsign", EcrN), "APPROVED", CompareMethod.Text) > 0 Or
+        If InStr(1, readField("Rsign", EcrN), "APPROVED", CompareMethod.Text) > 0 Or
             InStr(1, readField("Usign", EcrN), "APPROVED", CompareMethod.Text) > 0 Or
+            InStr(1, readField("Lsign", EcrN), "APPROVED", CompareMethod.Text) > 0 Or
             InStr(1, readField("Bsign", EcrN), "APPROVED", CompareMethod.Text) > 0 Or
-            InStr(1, readField("Esign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
-            InStr(1, readField("Lsign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
-            InStr(1, readField("Psign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
-            InStr(1, readField("Asign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
-            InStr(1, readField("Qsign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
+            InStr(1, readField("Esign", EcrN), "APPROVED", CompareMethod.Text) > 0 Or
+            InStr(1, readField("Nsign", EcrN), "APPROVED", CompareMethod.Text) > 0 Or
+            InStr(1, readField("Psign", EcrN), "APPROVED", CompareMethod.Text) > 0 Or
+            InStr(1, readField("Qsign", EcrN), "APPROVED", CompareMethod.Text) > 0 Or
+            InStr(1, readField("Asign", EcrN), "APPROVED", CompareMethod.Text) > 0 Or
             InStr(1, readField("Rsign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
-            InStr(1, readField("Nsign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
+            InStr(1, readField("Usign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
+            InStr(1, readField("Lsign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
             InStr(1, readField("Bsign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
-            InStr(1, readField("Usign", EcrN), "CHECKED", CompareMethod.Text) > 0 Then
+            InStr(1, readField("Esign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
+            InStr(1, readField("Nsign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
+            InStr(1, readField("Psign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
+            InStr(1, readField("Qsign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
+            InStr(1, readField("Asign", EcrN), "CHECKED", CompareMethod.Text) > 0 Then
             AllSign = False
         End If
     End Function
@@ -334,15 +339,15 @@ Public Class FormECR
         End If
 
         AllApproved = True
-        If InStr(1, readField("Esign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
+        If InStr(1, readField("Rsign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
+            InStr(1, readField("Usign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
             InStr(1, readField("Lsign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
-            InStr(1, readField("Psign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
-            InStr(1, readField("Asign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
-            InStr(1, readField("Qsign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
-            InStr(1, readField("Rsign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
-            InStr(1, readField("Nsign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
             InStr(1, readField("Bsign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
-            InStr(1, readField("Usign", EcrN), "CHECKED", CompareMethod.Text) > 0 Then
+            InStr(1, readField("Esign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
+            InStr(1, readField("Nsign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
+            InStr(1, readField("Psign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
+            InStr(1, readField("Qsign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
+            InStr(1, readField("Asign", EcrN), "CHECKED", CompareMethod.Text) > 0 Then
             AllApproved = False
         End If
     End Function
@@ -350,24 +355,24 @@ Public Class FormECR
     Sub ColorButton(ByVal US As String)
         ResetColorButton()
 
-        If US = "E" Then ButtonE.BackColor = Color.LightGreen
-        If US = "L" Then ButtonL.BackColor = Color.LightGreen
-        If US = "P" Then ButtonP.BackColor = Color.LightGreen
-        If US = "Q" Then ButtonQ.BackColor = Color.LightGreen
         If US = "R" Then ButtonR.BackColor = Color.LightGreen
         If US = "U" Then ButtonU.BackColor = Color.LightGreen
-        If US = "A" Then ButtonA.BackColor = Color.LightGreen
-        If US = "N" Then ButtonN.BackColor = Color.LightGreen
+        If US = "L" Then ButtonL.BackColor = Color.LightGreen
         If US = "B" Then ButtonB.BackColor = Color.LightGreen
+        If US = "E" Then ButtonE.BackColor = Color.LightGreen
+        If US = "N" Then ButtonN.BackColor = Color.LightGreen
+        If US = "P" Then ButtonP.BackColor = Color.LightGreen
+        If US = "Q" Then ButtonQ.BackColor = Color.LightGreen
+        If US = "A" Then ButtonA.BackColor = Color.LightGreen
 
-        If userDep3 = "E" Then ButtonEL.BackColor = Color.LightGreen
-        If userDep3 = "L" Then ButtonLL.BackColor = Color.LightGreen
-        If userDep3 = "P" Then ButtonPL.BackColor = Color.LightGreen
-        If userDep3 = "Q" Then ButtonQL.BackColor = Color.LightGreen
         If userDep3 = "R" Then ButtonRL.BackColor = Color.LightGreen
         If userDep3 = "U" Then ButtonUL.BackColor = Color.LightGreen
-        If userDep3 = "N" Then ButtonNL.BackColor = Color.LightGreen
+        If userDep3 = "L" Then ButtonLL.BackColor = Color.LightGreen
         If userDep3 = "B" Then ButtonBL.BackColor = Color.LightGreen
+        If userDep3 = "E" Then ButtonEL.BackColor = Color.LightGreen
+        If userDep3 = "N" Then ButtonNL.BackColor = Color.LightGreen
+        If userDep3 = "P" Then ButtonPL.BackColor = Color.LightGreen
+        If userDep3 = "Q" Then ButtonQL.BackColor = Color.LightGreen
 
         If controlRight("R") = 3 And controlRight("J") = 3 Then
             ButtonRemove.Enabled = True
@@ -400,7 +405,7 @@ Public Class FormECR
                 readField = result(0).Item(field).ToString
             End If
         Catch ex As Exception
-            MsgBox("Error reading ECR:" & EcrN)
+            MsgBox("Error in the reading of ECR:" & EcrN)
         End Try
     End Function
 
@@ -439,33 +444,32 @@ Public Class FormECR
             ListBoxLog.BackColor = Color.OrangeRed
         End If
     End Sub
-
+    Private Sub ButtonR_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonR.Click
+        ManagePushButton("R")
+    End Sub
+    Private Sub ButtonU_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonU.Click
+        ManagePushButton("U")
+    End Sub
+    Private Sub ButtonL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonL.Click
+        ManagePushButton("L")
+    End Sub
+    Private Sub ButtonB_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonB.Click
+        ManagePushButton("B")
+    End Sub
+    Private Sub ButtonE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonE.Click
+        ManagePushButton("E")
+    End Sub
     Private Sub ButtonN_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonN.Click
         ManagePushButton("N")
     End Sub
     Private Sub ButtonP_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonP.Click
         ManagePushButton("P")
     End Sub
-    Private Sub ButtonL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonL.Click
-        ManagePushButton("L")
-    End Sub
-    Private Sub ButtonA_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonA.Click
-        ManagePushButton("A")
-    End Sub
-    Private Sub ButtonR_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonR.Click
-        ManagePushButton("R")
-    End Sub
-    Private Sub ButtonE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonE.Click
-        ManagePushButton("E")
-    End Sub
     Private Sub ButtonQ_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonQ.Click
         ManagePushButton("Q")
     End Sub
-    Private Sub ButtonU_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonU.Click
-        ManagePushButton("U")
-    End Sub
-    Private Sub ButtonB_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonB.Click
-        ManagePushButton("B")
+    Private Sub ButtonA_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonA.Click
+        ManagePushButton("A")
     End Sub
 
     Sub ManagePushButton(ByVal but As String)
@@ -482,6 +486,7 @@ Public Class FormECR
             ButtonSave.Visible = False
             ButtonSaveSend.Visible = False
         End If
+
         If userDep3 = "" Then
         Else
             If userDep3 = but And Me.Controls("Button" & userDep3).BackColor = Color.LightGreen Then
@@ -489,22 +494,17 @@ Public Class FormECR
                 ButtonSaveSend.Enabled = True
                 If Me.Controls("Button" & but).Text = "APPROVED" Then
                     If MsgBox("Do you want to sign this ECR?", MsgBoxStyle.YesNo, "ECR Question") = MsgBoxResult.Yes Then
-
-                        If but <> "A" Then
-                            datepresence = True
-                        Else
-                            datepresence = True
-                        End If
+                        datepresence = True
                         If SomeNoApproved() = False Then
                             If datepresence Then
                                 Me.Controls("Button" & but).Text = CreAccount.strUserName & "[" & date_to_string(Now) & "]"
                                 WriteField(but & "sign", Me.Controls("Button" & but).Text)
                                 WriteField("date" & but, date_to_string(Now))
                             Else
-                                MsgBox("Please fill the data!")
+                                MsgBox("Please fill in the data!")
                             End If
                         Else
-                            MsgBox("It is not possible to sign if there is some dept that has not yet APPROVED!")
+                            MsgBox("It is not possible to sign if there is some dept. that has not yet approved!")
                             If MsgBox("Do you want to remove your approval?", MsgBoxStyle.YesNo, "ECR Question") = MsgBoxResult.Yes Then
                                 If Not AllApproved() Then
                                     WriteField(but & "sign", "CHECKED")
@@ -512,7 +512,7 @@ Public Class FormECR
                                     WriteField("date" & but, date_to_string(Now))
 
                                 Else
-                                    ListBoxLog.Items.Add("You can't remove your APPROVE anymore!")
+                                    ListBoxLog.Items.Add("You can't remove your approval anymore!")
                                 End If
                             End If
                         End If
@@ -521,11 +521,7 @@ Public Class FormECR
                 ElseIf Me.Controls("Button" & but).Text = "CHECKED" Then
                     If MsgBox("Do you want to approve this ECR?", MsgBoxStyle.YesNo, "ECR Question") = MsgBoxResult.Yes Then
 
-                        If but <> "A" Then
-                            datepresence = True
-                        Else
-                            datepresence = True
-                        End If
+                        datepresence = True
                         'If SomeNoChecked() = False Then
                         If datepresence Then
                             Me.Controls("Button" & but).Text = "APPROVED"
@@ -545,12 +541,8 @@ Public Class FormECR
                     End If
 
                 ElseIf Me.Controls("Button" & but).Text = "NOT CHECKED" Then
-                    If but <> "A" Then
-                        datepresence = True
-                    Else
-                        datepresence = True
-                    End If
 
+                    datepresence = True
                     If datepresence Then
                         If MsgBox("Do you want to mark as 'CHECKED' this ECR?", MsgBoxStyle.YesNo, "ECR Question") = MsgBoxResult.Yes Then
                             Me.Controls("Button" & but).Text = "CHECKED"
@@ -562,19 +554,18 @@ Public Class FormECR
                     End If
 
                 ElseIf readDocSign(readField("iddoc", EcrN)) = "" And ParameterTable("SYSTEM_SCHEDULE") <> "RUN" Then   ' signed
-                    If MsgBox("Do you want to remove your sign?", MsgBoxStyle.YesNo, "ECR Question") = MsgBoxResult.Yes Then
+                    If MsgBox("Do you want to remove your signature?", MsgBoxStyle.YesNo, "ECR Question") = MsgBoxResult.Yes Then
                         If Not AllSign() Then
                             WriteField(but & "sign", "NOT CHECKED")
                             Me.Controls("Button" & but).Text = "NOT CHECKED"
                             WriteField("date" & but, date_to_string(Now))
 
-
                         Else
-                            ListBoxLog.Items.Add("You can't remove your sign anymore!")
+                            ListBoxLog.Items.Add("You can't remove your signature anymore!")
                         End If
                     End If
                 Else
-                    MsgBox("Already all signed for this ECR, so it is not possible to remove it! Please contact the IT Dept. in case of need.")
+                    MsgBox("ThiS ECR has been already signed from all departments, then it is not possible to remove it! Please contact the IT Dept. in case of need.")
                 End If
             Else
             End If
@@ -592,7 +583,6 @@ Public Class FormECR
                 TextBoxStepCost.ReadOnly = True
                 ButtonCalc.Enabled = False
             End If
-
 
             If userDep3 = "N" Then
                 TextBoxStepCost.ReadOnly = False
@@ -616,14 +606,14 @@ Public Class FormECR
         RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & readField(but & "note", EcrN)
         TextBoxStepCost.Text = readField(but & "cost", EcrN)
         UpdateDate()
-        ButtonRL.Text = readField("dater", EcrN)
-        ButtonUL.Text = readField("dateu", EcrN)
-        ButtonQL.Text = readField("dateq", EcrN)
-        ButtonEL.Text = readField("datee", EcrN)
-        ButtonLL.Text = readField("datel", EcrN)
-        ButtonPL.Text = readField("datep", EcrN)
-        ButtonNL.Text = readField("dateN", EcrN)
+        ButtonRL.Text = readField("dateR", EcrN)
+        ButtonUL.Text = readField("dateU", EcrN)
+        ButtonLL.Text = readField("dateL", EcrN)
         ButtonBL.Text = readField("dateB", EcrN)
+        ButtonEL.Text = readField("dateE", EcrN)
+        ButtonNL.Text = readField("dateN", EcrN)
+        ButtonPL.Text = readField("dateP", EcrN)
+        ButtonQL.Text = readField("dateQ", EcrN)
         ButtonSave.BackColor = Color.Green
         ButtonSaveSend.BackColor = Color.Green
         needSave = False
@@ -718,37 +708,38 @@ Public Class FormECR
 
     Function NoChecked() As Boolean
         If ButtonA.Text = "NOT CHECKED" And
-        ButtonU.Text = "NOT CHECKED" And
         ButtonR.Text = "NOT CHECKED" And
+        ButtonU.Text = "NOT CHECKED" And
         ButtonL.Text = "NOT CHECKED" And
-        ButtonQ.Text = "NOT CHECKED" And
-        ButtonN.Text = "NOT CHECKED" And
-        ButtonE.Text = "NOT CHECKED" And
         ButtonB.Text = "NOT CHECKED" And
-        ButtonP.Text = "NOT CHECKED" Then
+        ButtonE.Text = "NOT CHECKED" And
+        ButtonN.Text = "NOT CHECKED" And
+        ButtonP.Text = "NOT CHECKED" And
+        ButtonQ.Text = "NOT CHECKED" Then
             NoChecked = True
         End If
     End Function
+
     Function SomeNoApproved() As Boolean
         SomeNoApproved = False
         If ButtonA.Text = "NOT CHECKED" Or
-        ButtonU.Text = "NOT CHECKED" Or
         ButtonR.Text = "NOT CHECKED" Or
+        ButtonU.Text = "NOT CHECKED" Or
         ButtonL.Text = "NOT CHECKED" Or
-        ButtonQ.Text = "NOT CHECKED" Or
-        ButtonN.Text = "NOT CHECKED" Or
-        ButtonE.Text = "NOT CHECKED" Or
-        ButtonP.Text = "NOT CHECKED" Or
         ButtonB.Text = "NOT CHECKED" Or
+        ButtonE.Text = "NOT CHECKED" Or
+        ButtonN.Text = "NOT CHECKED" Or
+        ButtonP.Text = "NOT CHECKED" Or
+        ButtonQ.Text = "NOT CHECKED" Or
         ButtonA.Text = "CHECKED" Or
-        ButtonU.Text = "CHECKED" Or
         ButtonR.Text = "CHECKED" Or
+        ButtonU.Text = "CHECKED" Or
         ButtonL.Text = "CHECKED" Or
-        ButtonQ.Text = "CHECKED" Or
-        ButtonN.Text = "CHECKED" Or
-        ButtonE.Text = "CHECKED" Or
         ButtonB.Text = "CHECKED" Or
-        ButtonP.Text = "CHECKED" Then
+        ButtonE.Text = "CHECKED" Or
+        ButtonN.Text = "CHECKED" Or
+        ButtonP.Text = "CHECKED" Or
+        ButtonQ.Text = "CHECKED" Then
             SomeNoApproved = True
         End If
     End Function
@@ -756,14 +747,14 @@ Public Class FormECR
     Function SomeNoChecked() As Boolean
         SomeNoChecked = False
         If ButtonA.Text = "NOT CHECKED" Or
-        ButtonU.Text = "NOT CHECKED" Or
         ButtonR.Text = "NOT CHECKED" Or
+        ButtonU.Text = "NOT CHECKED" Or
         ButtonL.Text = "NOT CHECKED" Or
-        ButtonQ.Text = "NOT CHECKED" Or
-        ButtonN.Text = "NOT CHECKED" Or
-        ButtonE.Text = "NOT CHECKED" Or
         ButtonB.Text = "NOT CHECKED" Or
-        ButtonP.Text = "NOT CHECKED" Then
+        ButtonE.Text = "NOT CHECKED" Or
+        ButtonN.Text = "NOT CHECKED" Or
+        ButtonP.Text = "NOT CHECKED" Or
+        ButtonQ.Text = "NOT CHECKED" Then
             SomeNoChecked = True
         End If
     End Function
@@ -771,14 +762,14 @@ Public Class FormECR
     Function NoCheckedOthers(ByVal but As String) As Boolean
         NoCheckedOthers = True
         If but <> "R" Then NoCheckedOthers = NoCheckedOthers And ButtonR.Text = "NOT CHECKED"
-        If but <> "E" Then NoCheckedOthers = NoCheckedOthers And ButtonE.Text = "NOT CHECKED"
         If but <> "U" Then NoCheckedOthers = NoCheckedOthers And ButtonU.Text = "NOT CHECKED"
+        If but <> "L" Then NoCheckedOthers = NoCheckedOthers And ButtonL.Text = "NOT CHECKED"
+        If but <> "B" Then NoCheckedOthers = NoCheckedOthers And ButtonB.Text = "NOT CHECKED"
+        If but <> "N" Then NoCheckedOthers = NoCheckedOthers And ButtonN.Text = "NOT CHECKED"
+        If but <> "E" Then NoCheckedOthers = NoCheckedOthers And ButtonE.Text = "NOT CHECKED"
         If but <> "P" Then NoCheckedOthers = NoCheckedOthers And ButtonP.Text = "NOT CHECKED"
         If but <> "Q" Then NoCheckedOthers = NoCheckedOthers And ButtonQ.Text = "NOT CHECKED"
-        If but <> "L" Then NoCheckedOthers = NoCheckedOthers And ButtonL.Text = "NOT CHECKED"
         If but <> "A" Then NoCheckedOthers = NoCheckedOthers And ButtonA.Text = "NOT CHECKED"
-        If but <> "N" Then NoCheckedOthers = NoCheckedOthers And ButtonN.Text = "NOT CHECKED"
-        If but <> "B" Then NoCheckedOthers = NoCheckedOthers And ButtonB.Text = "NOT CHECKED"
     End Function
 
     Sub invalidationProd(ByVal prod As String, ByVal ecrN As Integer)
@@ -883,13 +874,12 @@ Public Class FormECR
         If ButtonRL.Text <> "" Then If maxVal < string_to_date(ButtonRL.Text) Then maxVal = ButtonRL.Text
         If ButtonUL.Text <> "" Then If maxVal < string_to_date(ButtonUL.Text) Then maxVal = ButtonUL.Text
         If ButtonLL.Text <> "" Then If maxVal < string_to_date(ButtonLL.Text) Then maxVal = ButtonLL.Text
-        If ButtonQL.Text <> "" Then If maxVal < string_to_date(ButtonQL.Text) Then maxVal = ButtonQL.Text
-        If ButtonEL.Text <> "" Then If maxVal < string_to_date(ButtonEL.Text) Then maxVal = ButtonEL.Text
-        If ButtonPL.Text <> "" Then If maxVal < string_to_date(ButtonPL.Text) Then maxVal = ButtonPL.Text
-        If ButtonNL.Text <> "" Then If maxVal < string_to_date(ButtonNL.Text) Then maxVal = ButtonNL.Text
         If ButtonBL.Text <> "" Then If maxVal < string_to_date(ButtonBL.Text) Then maxVal = ButtonBL.Text
+        If ButtonEL.Text <> "" Then If maxVal < string_to_date(ButtonEL.Text) Then maxVal = ButtonEL.Text
+        If ButtonNL.Text <> "" Then If maxVal < string_to_date(ButtonNL.Text) Then maxVal = ButtonNL.Text
+        If ButtonPL.Text <> "" Then If maxVal < string_to_date(ButtonPL.Text) Then maxVal = ButtonPL.Text
+        If ButtonQL.Text <> "" Then If maxVal < string_to_date(ButtonQL.Text) Then maxVal = ButtonQL.Text
         If maxVal < Now Then maxVal = Now
-
         If maxVal <> string_to_date("2000/01/01") Then
             ButtonData.Text = date_to_string(maxVal)
             WriteField("date", date_to_string(maxVal))
@@ -913,8 +903,8 @@ Public Class FormECR
     Private Function GetDepartamentName(right As String) As String
         Dim departament = ""
         If ButtonRL.BackColor = Color.LightGreen Then departament = "R&D"
-        If ButtonLL.BackColor = Color.LightGreen Then departament = "Logistic"
         If ButtonUL.BackColor = Color.LightGreen Then departament = "Purchasing"
+        If ButtonLL.BackColor = Color.LightGreen Then departament = "Logistic"
         If ButtonBL.BackColor = Color.LightGreen Then departament = "Process Engineering"
         If ButtonEL.BackColor = Color.LightGreen Then departament = "Testing Engineering"
         If ButtonNL.BackColor = Color.LightGreen Then departament = "Quality"
@@ -922,7 +912,6 @@ Public Class FormECR
         If ButtonQL.BackColor = Color.LightGreen Then departament = "Time and Methods"
         Return departament
     End Function
-
 
     Private Sub ButtonSaveSend_Click(sender As Object, e As EventArgs) Handles ButtonSaveSend.Click
         WriteField(userDep3 & "cost", TextBoxStepCost.Text)
@@ -1001,7 +990,7 @@ Public Class FormECR
                 msg.Attachments.Add(Allegato)
                 msg.Body = bodyText
             Else
-                msg.Body = "ATTENTION... FILE NOT SENT BY MAIL FOR EXCESSIVE DIMENSION. PLEASE DOWNLOAD FROM SERVER!!!" & vbCrLf & vbCrLf & bodyText
+                msg.Body = "ATTENTION...FILE NOT SENT BY EMAIL FOR EXCESSIVE DIMENSION. PLEASE DOWNLOAD FROM SERVER!!!" & vbCrLf & vbCrLf & bodyText
             End If
         Else
             msg.Body = bodyText
@@ -1011,24 +1000,23 @@ Public Class FormECR
         Try
             client.Send(msg)
             MailSent = True
-            MessageBox.Show("Email sent successfully")
+            MessageBox.Show("Email has been sent successfully!")
         Catch ex As Exception
-            ListBoxLog.Items.Add("Mail not sent...!!!")
+            ListBoxLog.Items.Add("Email has not been sent!")
         End Try
     End Function
-
 
     Private Sub CheckConfirm_Click(ByVal sender As Object, ByVal e As EventArgs) Handles CheckConfirm.Click
         If CheckConfirm.Checked = True Then
             If AllSign() Then
-                If vbYes = MsgBox("Are you sure to confirm the ECR? After the automatic notification you can't stop it.", MsgBoxStyle.YesNo, "SrvDoc ECR confirm of Introducing") Then
+                If vbYes = MsgBox("Are you sure to confirm the ECR? After the automatic notification you can't stop it.", MsgBoxStyle.YesNo, "Confirmation of ECR introduction") Then
                     WriteField("Confirm", "CONFIRMED")
                     CheckConfirm.Visible = False
                 Else
                     CheckConfirm.Checked = False
                 End If
             Else
-                MsgBox("Need that ECR is signed!")
+                MsgBox("ECR needs to be signed!")
             End If
         End If
         UpdateField()
@@ -1073,7 +1061,7 @@ Public Class FormECR
         If Res.Length > 0 Then
             readDocSign = Res(0).Item("sign").ToString
         Else
-            MsgBox("Document not found for ECR" & docId)
+            MsgBox("ECR document not found: " & docId)
         End If
     End Function
 
@@ -1088,7 +1076,7 @@ Public Class FormECR
                         ButtonEcrCheck.Text = "Customer Doc To Bitron ECR Alignment    ---> NO"
                         WriteField("EcrCheck", "NO")
                     Else
-                        MsgBox("For removing the approval first need to remove the EcrSign for R&D", MsgBoxStyle.Information)
+                        MsgBox("To remove the approval first need to remove the 'CHECK' for R&D!", MsgBoxStyle.Information)
                     End If
 
                 End If
@@ -1102,7 +1090,7 @@ Public Class FormECR
                 End If
             End If
         Else
-            MsgBox("For approval need to have rights as R&D (R3) and supervisor (J3)! and need to select one ECR!", MsgBoxStyle.Information)
+            MsgBox("To approve need to have rights as R&D (R3) and supervisor (J3)! and need to select one ECR!", MsgBoxStyle.Information)
         End If
     End Sub
 End Class

@@ -138,7 +138,7 @@ Public Class FormOpenIssue
                 End Using
                 selectedIndex = -1
             Catch ex As Exception
-                MsgBox("Deletion failed!")
+                MsgBox("MySQL Update query failed!")
             End Try
         Else
             MsgBox("Select an Open Issue!")
@@ -182,7 +182,7 @@ Public Class FormOpenIssue
                 ComboBoxGroup.SelectedIndex = 0
                 ButtonUpdate.Enabled = False
             Catch ex As Exception
-                MsgBox("Update failed!")
+                MsgBox("MySQL Update query failed!")
             End Try
         Else
             MsgBox("Select an Open Issue!")

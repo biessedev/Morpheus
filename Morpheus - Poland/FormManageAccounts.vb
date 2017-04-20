@@ -108,7 +108,7 @@ Public Class FormManageAccounts
                 End Using
                 MsgBox("User has been successfully deleted!", vbOKOnly)
             Catch ex As Exception
-                MsgBox("Deletion failed!")
+                MsgBox("MySQL Delete query failed!")
             End Try
         Else
             MsgBox("Select an User!")
