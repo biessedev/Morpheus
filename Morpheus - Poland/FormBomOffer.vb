@@ -33,7 +33,7 @@ Public Class FormBomOffer
                 Try
 
 
-                    Using AdapterBomOffer As New SqlDataAdapter("select distinct a.BitronPN, max(a.offerId) as offerId, max(a.componentId) as componentId, sum(a.quantity) as RequestQT " &
+                    Using AdapterBomOffer As New SqlDataAdapter("select distinct a.BitronPN, max(a.offerId) as offerId, max(a.componentId) as componentId, max(a.quantity) as RequestQT " &
                                                               "  from (select distinct case " &
                                                                "    when b.BitronPNMatch = 'true' and b.bitronPn is not null then SUBSTRING(b.bitronPn, PATINDEX('%[^0 ]%', b.bitronPn + ' '), LEN(b.bitronPn)) " &
                                                                 "   else 'BEQS_' + cast(a.offerId as varchar(10)) + '_' +  cast(d.componentid as CHAR(10))  end as BitronPN, " &
