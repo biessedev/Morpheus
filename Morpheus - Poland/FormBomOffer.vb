@@ -32,18 +32,18 @@ Public Class FormBomOffer
                 Dim DsBomOffer As New DataSet
                 Try
 
-
-                    Using AdapterBomOffer As New SqlDataAdapter("select distinct a.BitronPN, max(a.offerId) as offerId, max(a.componentId) as componentId, max(a.quantity) as RequestQT " &
+                    'Query to retrieve components quantity from BEQS:
+                    'It s necessary to have the OfferID, OfferVersionName And ComponentID to retrieve the correct quantity in BEQS ComponentVersion table
+                    Using AdapterBomOffer As New SqlDataAdapter("select a.BitronPN, a.offerId as offerId, a.componentId as componentId, a.quantity as RequestQT " &
                                                               "  from (select distinct case " &
                                                                "    when b.BitronPNMatch = 'true' and b.bitronPn is not null then SUBSTRING(b.bitronPn, PATINDEX('%[^0 ]%', b.bitronPn + ' '), LEN(b.bitronPn)) " &
                                                                 "   else 'BEQS_' + cast(a.offerId as varchar(10)) + '_' +  cast(d.componentid as CHAR(10))  end as BitronPN, " &
                                                                 "   b.BitronPNMatch, a.offerId, d.componentid , d.quantity " &
                                                                 "   from quotegeneralinformation a " &
-                                                                "   join offerversion c on a.offerId = c.offerId " &
+                                                                "   join offerversion c on a.offerId = c.offerId and c.offerVersionName = " & offerid.Parent.Text & " " &
                                                                 "   join bomdetailed b on a.offerId = b.offerId " &
                                                                 "   join componentversion d on d.offerid = a.offerid and d.offerversionid = c.offerVersionId and d.componentid = b.componentId " &
-                                                                "   where a.offerid = " & offerid.Name & " ) a " &
-                                                                " group by a.bitronPn", conBEQS)
+                                                                "   where a.offerid = " & offerid.Name & " ) a", conBEQS)
                         AdapterBomOffer.Fill(DsBomOffer, "BomOffer")
                         tblBomOffer = DsBomOffer.Tables("BomOffer")
                     End Using
