@@ -97,6 +97,9 @@ Public Class FormManageAccounts
     Private Sub ButtonRemove_Click(sender As Object, e As EventArgs) Handles ButtonRemove.Click
         Dim sql As String
         If ListViewForUsers.SelectedItems.Count = 1 Then
+            If MessageBox.Show("Are you sure to remove the account?", "Attention!", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = DialogResult.No Then
+                Return
+            End If
             Try
                 Dim builder As New Common.DbConnectionStringBuilder()
                 builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
