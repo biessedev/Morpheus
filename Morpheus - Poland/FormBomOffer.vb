@@ -78,15 +78,18 @@ Public Class FormBomOffer
                                                 "STATUS, w_wareHouse, RDA_ETA, Order_ETA) " & values
 
                         Else
-                            sqlCommand = "UPDATE 
-                                            MaterialRequest 
-                                          SET 
-                                            RequestQt = " & qty & ", 
-                                            BomList = CASE IFNULL(BomList, '')
-                                                        WHEN '' THEN '" & offerid.Parent.Text & " - [" & bom("RequestQt") & "]'" & "    
-                                                        ELSE CONCAT(BomList, ';" & offerid.Parent.Text & " - [" & bom("RequestQt") & "]') 
-                                                      END
-                                          WHERE TRIM(LEADING '0' FROM bitronPn) = '" & bom("bitronPn") & "'"
+                            'sqlCommand = "UPDATE 
+                            '               MaterialRequest 
+                            '              SET 
+                            '                RequestQt = " & qty & ", 
+                            '                BomList = CASE IFNULL(BomList, '')
+                            '                            WHEN '' THEN '" & offerid.Parent.Text & " - [" & bom("RequestQt") & "]'" & "    
+                            '                            ELSE CONCAT(BomList, ';" & offerid.Parent.Text & " - [" & bom("RequestQt") & "]') 
+                            '                          END
+                            '              WHERE TRIM(LEADING '0' FROM bitronPn) = '" & bom("bitronPn") & "'"
+
+                            sqlCommand = "UPDATE MaterialRequest SET RequestQt = " & qty & ", BomList = CASE IFNULL(BomList, '') WHEN '' THEN '" & offerid.Parent.Text & " - [" & bom("RequestQt") & "]'" & " ELSE CONCAT(BomList, ';" & offerid.Parent.Text & " - [" & bom("RequestQt") & "]') End WHERE TRIM(LEADING '0' FROM bitronPn) = '" & bom("bitronPn") & "'"
+
                         End If
                         Dim cmd = New MySqlCommand(sqlCommand, con)
                         cmd.ExecuteNonQuery()
