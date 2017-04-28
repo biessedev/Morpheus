@@ -1484,9 +1484,9 @@ Public Class FormSamples
                             Next
                         ElseIf row("bomlocation").ToString() = "BEQS" Then
                             ' TODO: Add business logic
-                            If currentProductCode = row("bitronpn") Then
-                                dictionaryVersionsQuatity.Add(row("bitronpn"), row("npieces"))  ' do not delete this comment
-                            End If
+                            'If currentProductCode = row("bitronpn") Then
+                            dictionaryVersionsQuatity.Add(row("bitronpn"), row("npieces"))  ' do not delete this comment
+                            'End If
                         Else
                             MsgBox("For this product BOM not assigned! " & row("bitronpn").ToString & "  " & row("name").ToString)
                         End If
