@@ -150,11 +150,12 @@ Public Class FormECR
             ButtonR.Enabled = True
             ButtonU.Enabled = True
             ButtonL.Enabled = True
-            ButtonE.Enabled = True
             ButtonB.Enabled = True
+            ButtonE.Enabled = True
             ButtonN.Enabled = True
             ButtonP.Enabled = True
             ButtonQ.Enabled = True
+            ButtonS.Enabled = True
             ButtonA.Enabled = True
         Else
             ButtonR.Enabled = False
@@ -162,23 +163,24 @@ Public Class FormECR
             ButtonL.Enabled = False
             ButtonB.Enabled = False
             ButtonE.Enabled = False
+            ButtonN.Enabled = False
             ButtonP.Enabled = False
             ButtonQ.Enabled = False
-            ButtonN.Enabled = False
+            ButtonS.Enabled = False
             ButtonA.Enabled = False
 
         End If
 
         If Result.Length > 0 Then
-
             ButtonR.Text = Result(0).Item("Rsign")
             ButtonU.Text = Result(0).Item("Usign")
             ButtonL.Text = Result(0).Item("Lsign")
             ButtonB.Text = Result(0).Item("Bsign")
             ButtonE.Text = Result(0).Item("Esign")
+            ButtonN.Text = Result(0).Item("Nsign")
             ButtonP.Text = Result(0).Item("Psign")
             ButtonQ.Text = Result(0).Item("Qsign")
-            ButtonN.Text = Result(0).Item("Nsign")
+            ButtonS.Text = Result(0).Item("Ssign")
             ButtonA.Text = Result(0).Item("Asign")
 
             If userDep3 = "R" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Rnote")
@@ -186,9 +188,10 @@ Public Class FormECR
             If userDep3 = "L" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Lnote")
             If userDep3 = "B" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Bnote")
             If userDep3 = "E" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Enote")
+            If userDep3 = "N" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Nnote")
             If userDep3 = "P" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Pnote")
             If userDep3 = "Q" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Qnote")
-            If userDep3 = "N" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("nnote")
+            If userDep3 = "S" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Snote")
             If userDep3 = "A" Then RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & Result(0).Item("Anote")
 
             If userDep3 = "R" Then TextBoxStepCost.Text = Result(0).Item("RCost")
@@ -199,6 +202,7 @@ Public Class FormECR
             If userDep3 = "N" Then TextBoxStepCost.Text = Result(0).Item("NCost")
             If userDep3 = "P" Then TextBoxStepCost.Text = Result(0).Item("PCost")
             If userDep3 = "Q" Then TextBoxStepCost.Text = Result(0).Item("QCost")
+            If userDep3 = "S" Then TextBoxStepCost.Text = Result(0).Item("SCost")
 
             If Result(0).Item("EcrCheck").ToString = "YES" Then
                 ButtonEcrCheck.BackColor = Color.Green
@@ -208,9 +212,7 @@ Public Class FormECR
                 ButtonEcrCheck.Text = "Customer Doc To Bitron ECR Alignment    ---> NO"
             End If
 
-            TextBoxTotalCost.Text = Int(Val(Result(0).Item("Rcost")) + Val(Result(0).Item("Ucost")) +
-            Val(Result(0).Item("Lcost")) + Val(Result(0).Item("Bcost")) + Val(Result(0).Item("Ecost")) + Val(Result(0).Item("Ncost")) +
-            Val(Result(0).Item("Pcost")) + Val(Result(0).Item("Qcost")))
+            TextBoxTotalCost.Text = Int(Val(Result(0).Item("Rcost")) + Val(Result(0).Item("Ucost")) + Val(Result(0).Item("Lcost")) + Val(Result(0).Item("Bcost")) + Val(Result(0).Item("Ecost")) + Val(Result(0).Item("Ncost")) + Val(Result(0).Item("Pcost")) + Val(Result(0).Item("Qcost")) + Val(Result(0).Item("Scost")))
             Dim valuecost As Double = Val(TextBoxTotalCost.Text)
             TextBoxTotalCost.Text = valuecost.ToString("0,0", CultureInfo.InvariantCulture)
             ComboBoxPay.Text = Result(0).Item("cuspay")
@@ -248,15 +250,17 @@ Public Class FormECR
             End If
 
             ButtonData.Text = Result(0).Item("date")
-            ButtonRL.Text = Result(0).Item("dateR")
-            ButtonUL.Text = Result(0).Item("dateU")
-            ButtonQL.Text = Result(0).Item("dateL")
-            ButtonEL.Text = Result(0).Item("dateB")
-            ButtonLL.Text = Result(0).Item("dateE")
-            ButtonPL.Text = Result(0).Item("dateN")
-            ButtonNL.Text = Result(0).Item("dateP")
-            ButtonBL.Text = Result(0).Item("dateQ")
 
+            'update dates (with DB values) on every Date Button
+            ButtonRL.Text = If(ButtonR.Text.Trim() = "NOT CHECKED", "", Result(0).Item("dateR"))
+            ButtonUL.Text = If(ButtonU.Text.Trim() = "NOT CHECKED", "", Result(0).Item("dateU"))
+            ButtonLL.Text = If(ButtonL.Text.Trim() = "NOT CHECKED", "", Result(0).Item("dateL"))
+            ButtonBL.Text = If(ButtonB.Text.Trim() = "NOT CHECKED", "", Result(0).Item("dateB"))
+            ButtonEL.Text = If(ButtonE.Text.Trim() = "NOT CHECKED", "", Result(0).Item("dateE"))
+            ButtonPL.Text = If(ButtonP.Text.Trim() = "NOT CHECKED", "", Result(0).Item("dateP"))
+            ButtonNL.Text = If(ButtonN.Text.Trim() = "NOT CHECKED", "", Result(0).Item("dateN"))
+            ButtonQL.Text = If(ButtonQ.Text.Trim() = "NOT CHECKED", "", Result(0).Item("dateQ"))
+            ButtonSL.Text = If(ButtonS.Text.Trim() = "NOT CHECKED", "", Result(0).Item("dateS"))
         End If
 
         If Not AllSign() Then UpdateDate()
@@ -318,6 +322,7 @@ Public Class FormECR
             InStr(1, readField("Nsign", EcrN), "APPROVED", CompareMethod.Text) > 0 Or
             InStr(1, readField("Psign", EcrN), "APPROVED", CompareMethod.Text) > 0 Or
             InStr(1, readField("Qsign", EcrN), "APPROVED", CompareMethod.Text) > 0 Or
+            InStr(1, readField("Ssign", EcrN), "APPROVED", CompareMethod.Text) > 0 Or
             InStr(1, readField("Asign", EcrN), "APPROVED", CompareMethod.Text) > 0 Or
             InStr(1, readField("Rsign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
             InStr(1, readField("Usign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
@@ -327,6 +332,7 @@ Public Class FormECR
             InStr(1, readField("Nsign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
             InStr(1, readField("Psign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
             InStr(1, readField("Qsign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
+            InStr(1, readField("Ssign", EcrN), "CHECKED", CompareMethod.Text) > 0 Or
             InStr(1, readField("Asign", EcrN), "CHECKED", CompareMethod.Text) > 0 Then
             AllSign = False
         End If
@@ -366,6 +372,7 @@ Public Class FormECR
         If US = "N" Then ButtonN.BackColor = Color.LightGreen
         If US = "P" Then ButtonP.BackColor = Color.LightGreen
         If US = "Q" Then ButtonQ.BackColor = Color.LightGreen
+        If US = "S" Then ButtonS.BackColor = Color.LightGreen
         If US = "A" Then ButtonA.BackColor = Color.LightGreen
 
         If userDep3 = "R" Then ButtonRL.BackColor = Color.LightGreen
@@ -376,6 +383,7 @@ Public Class FormECR
         If userDep3 = "N" Then ButtonNL.BackColor = Color.LightGreen
         If userDep3 = "P" Then ButtonPL.BackColor = Color.LightGreen
         If userDep3 = "Q" Then ButtonQL.BackColor = Color.LightGreen
+        If userDep3 = "S" Then ButtonSL.BackColor = Color.LightGreen
 
         If controlRight("R") = 3 And controlRight("J") = 3 Then
             ButtonRemove.Enabled = True
@@ -479,6 +487,12 @@ Public Class FormECR
         ManagePushButton("Q")
         CheckScheduledDateShouldChange()
     End Sub
+
+    Private Sub ButtonS_Click(sender As Object, e As EventArgs) Handles ButtonS.Click
+        ManagePushButton("S")
+        CheckScheduledDateShouldChange()
+    End Sub
+
     Private Sub ButtonA_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonA.Click
         ManagePushButton("A")
     End Sub
@@ -508,7 +522,7 @@ Public Class FormECR
                         datepresence = True
                         If SomeNoApproved() = False Then
                             If datepresence Then
-                                Me.Controls("Button" & but).Text = CreAccount.strUserName & "[" & date_to_string(Now) & "]"
+                                Me.Controls("Button" & but).Text = CreAccount.strUserName
                                 WriteField(but & "sign", Me.Controls("Button" & but).Text)
                                 WriteField("date" & but, date_to_string(Now))
                             Else
@@ -521,11 +535,18 @@ Public Class FormECR
                                     WriteField(but & "sign", "CHECKED")
                                     Me.Controls("Button" & but).Text = "CHECKED"
                                     WriteField("date" & but, date_to_string(Now))
-
                                 Else
                                     ListBoxLog.Items.Add("You can't remove your approval anymore!")
                                 End If
                             End If
+                        End If
+                    ElseIf MsgBox("Do you want to remove the approval?", MsgBoxStyle.YesNo, "ECR Question") = MsgBoxResult.Yes Then
+                        If Not AllApproved() Then
+                            WriteField(but & "sign", "CHECKED")
+                            Me.Controls("Button" & but).Text = "CHECKED"
+                            WriteField("date" & but, date_to_string(Now))
+                        Else
+                            ListBoxLog.Items.Add("You can't remove your approval anymore!")
                         End If
                     End If
 
@@ -548,7 +569,11 @@ Public Class FormECR
                         '        Me.Controls("Button" & but).Text = "NOT CHECKED"
                         '        WriteField("date" & but, date_to_string(Now))
                         '    End If
-                        'End If
+                        'End If 
+                    ElseIf MsgBox("Do you want to remove the status CHECKED?", MsgBoxStyle.YesNo, "ECR Question") = MsgBoxResult.Yes Then
+                        WriteField(but & "sign", "NOT CHECKED")
+                        Me.Controls("Button" & but).Text = "NOT CHECKED"
+                        WriteField("date" & but, date_to_string(Now))
                     End If
 
                 ElseIf Me.Controls("Button" & but).Text = "NOT CHECKED" Then
@@ -570,7 +595,6 @@ Public Class FormECR
                             WriteField(but & "sign", "NOT CHECKED")
                             Me.Controls("Button" & but).Text = "NOT CHECKED"
                             WriteField("date" & but, date_to_string(Now))
-
                         Else
                             ListBoxLog.Items.Add("You can't remove your signature anymore!")
                         End If
@@ -617,29 +641,33 @@ Public Class FormECR
         RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & readField(but & "note", EcrN)
         TextBoxStepCost.Text = readField(but & "cost", EcrN)
         UpdateDate()
-        ButtonRL.Text = readField("dateR", EcrN)
-        ButtonUL.Text = readField("dateU", EcrN)
-        ButtonLL.Text = readField("dateL", EcrN)
-        ButtonBL.Text = readField("dateB", EcrN)
-        ButtonEL.Text = readField("dateE", EcrN)
-        ButtonNL.Text = readField("dateN", EcrN)
-        ButtonPL.Text = readField("dateP", EcrN)
-        ButtonQL.Text = readField("dateQ", EcrN)
+
+        'update dates (with DB values) on every Date Button
+        ButtonRL.Text = If(ButtonR.Text.Trim() = "NOT CHECKED", "", readField("dateR", EcrN))
+        ButtonUL.Text = If(ButtonU.Text.Trim() = "NOT CHECKED", "", readField("dateU", EcrN))
+        ButtonLL.Text = If(ButtonL.Text.Trim() = "NOT CHECKED", "", readField("dateL", EcrN))
+        ButtonBL.Text = If(ButtonB.Text.Trim() = "NOT CHECKED", "", readField("dateB", EcrN))
+        ButtonEL.Text = If(ButtonE.Text.Trim() = "NOT CHECKED", "", readField("dateE", EcrN))
+        ButtonPL.Text = If(ButtonP.Text.Trim() = "NOT CHECKED", "", readField("dateP", EcrN))
+        ButtonNL.Text = If(ButtonN.Text.Trim() = "NOT CHECKED", "", readField("dateN", EcrN))
+        ButtonQL.Text = If(ButtonQ.Text.Trim() = "NOT CHECKED", "", readField("dateQ", EcrN))
+        ButtonSL.Text = If(ButtonS.Text.Trim() = "NOT CHECKED", "", readField("dateS", EcrN))
+
         ButtonSave.BackColor = Color.Green
         ButtonSaveSend.BackColor = Color.Green
         needSave = False
     End Sub
-
     Sub ResetColorButton()
-        ButtonE.BackColor = Color.LightGray
-        ButtonL.BackColor = Color.LightGray
-        ButtonP.BackColor = Color.LightGray
-        ButtonQ.BackColor = Color.LightGray
         ButtonR.BackColor = Color.LightGray
         ButtonU.BackColor = Color.LightGray
-        ButtonA.BackColor = Color.LightGray
-        ButtonN.BackColor = Color.LightGray
+        ButtonL.BackColor = Color.LightGray
         ButtonB.BackColor = Color.LightGray
+        ButtonE.BackColor = Color.LightGray
+        ButtonN.BackColor = Color.LightGray
+        ButtonP.BackColor = Color.LightGray
+        ButtonQ.BackColor = Color.LightGray
+        ButtonS.BackColor = Color.LightGray
+        ButtonA.BackColor = Color.LightGray
     End Sub
 
     Sub ComboProductFill()
@@ -655,14 +683,15 @@ Public Class FormECR
         pos = InStr(1, ComboBoxEcr.Text, "-", CompareMethod.Text)
         EcrN = Val(Mid(ComboBoxEcr.Text, 1, pos))
 
-        ComboBoxRD.SelectedItem = readField("leadTimeR", EcrN)
-        ComboBoxLogistic.SelectedItem = readField("leadTimeL", EcrN)
-        ComboBoxPurchasing.SelectedItem = readField("leadTimeU", EcrN)
-        ComboBoxProcessEngineering.SelectedItem = readField("leadTimeB", EcrN)
-        ComboBoxTestingEngineering.SelectedItem = readField("leadTimeE", EcrN)
-        ComboBoxQuality.SelectedItem = readField("leadTimeN", EcrN)
-        ComboBoxProduction.SelectedItem = readField("leadTimeP", EcrN)
-        ComboBoxTimeAndMethods.SelectedItem = readField("leadTimeQ", EcrN)
+        ComboBoxR.SelectedItem = readField("leadTimeR", EcrN)
+        ComboBoxL.SelectedItem = readField("leadTimeL", EcrN)
+        ComboBoxU.SelectedItem = readField("leadTimeU", EcrN)
+        ComboBoxB.SelectedItem = readField("leadTimeB", EcrN)
+        ComboBoxE.SelectedItem = readField("leadTimeE", EcrN)
+        ComboBoxN.SelectedItem = readField("leadTimeN", EcrN)
+        ComboBoxP.SelectedItem = readField("leadTimeP", EcrN)
+        ComboBoxQ.SelectedItem = readField("leadTimeQ", EcrN)
+        ComboBoxS.SelectedItem = readField("leadTimeS", EcrN)
     End Sub
 
     Sub ChangeScheduledDate()
@@ -674,6 +703,7 @@ Public Class FormECR
         Dim dateNL As String = ButtonNL.Text.Trim()
         Dim datePL As String = ButtonPL.Text.Trim()
         Dim dateQL As String = ButtonQL.Text.Trim()
+        Dim dateSL As String = ButtonSL.Text.Trim()
 
         Dim dates As List(Of DateTime) = New List(Of DateTime)
         If Not String.IsNullOrEmpty(dateRL) Then
@@ -700,10 +730,13 @@ Public Class FormECR
         If Not String.IsNullOrEmpty(dateQL) Then
             dates.Add(Convert.ToDateTime(dateQL))
         End If
+        If Not String.IsNullOrEmpty(dateSL) Then
+            dates.Add(Convert.ToDateTime(dateSL))
+        End If
 
         If dates.Count > 0 Then
             Dim maxDate = dates.Max()
-            Dim weeksToAdd As Integer() = {ComboBoxRD.SelectedItem, ComboBoxLogistic.SelectedItem, ComboBoxPurchasing.SelectedItem, ComboBoxProcessEngineering.SelectedItem, ComboBoxTestingEngineering.SelectedItem, ComboBoxQuality.SelectedItem, ComboBoxProduction.SelectedItem, ComboBoxTimeAndMethods.SelectedItem}
+            Dim weeksToAdd As Integer() = {ComboBoxR.SelectedItem, ComboBoxL.SelectedItem, ComboBoxU.SelectedItem, ComboBoxB.SelectedItem, ComboBoxE.SelectedItem, ComboBoxN.SelectedItem, ComboBoxP.SelectedItem, ComboBoxQ.SelectedItem, ComboBoxS.SelectedItem}
             Dim maxLeadTime = weeksToAdd.Max()
             ButtonData.Text = date_to_string(maxDate.AddDays(maxLeadTime * 7))
 
@@ -712,9 +745,9 @@ Public Class FormECR
     End Sub
 
     Sub CheckScheduledDateShouldChange()
-        If (ButtonR.Text.Trim() = "CHECKED" And ButtonL.Text.Trim() = "CHECKED" And ButtonU.Text.Trim() = "CHECKED" And ButtonB.Text.Trim() = "CHECKED" And ButtonE.Text.Trim() = "CHECKED" And ButtonN.Text.Trim() = "CHECKED" And ButtonP.Text.Trim() = "CHECKED" And ButtonQ.Text.Trim() = "CHECKED") Then
+        If (ButtonR.Text.Trim() = "CHECKED" And ButtonL.Text.Trim() = "CHECKED" And ButtonU.Text.Trim() = "CHECKED" And ButtonB.Text.Trim() = "CHECKED" And ButtonE.Text.Trim() = "CHECKED" And ButtonN.Text.Trim() = "CHECKED" And ButtonP.Text.Trim() = "CHECKED" And ButtonQ.Text.Trim() = "CHECKED" And ButtonS.Text.Trim() = "CHECKED") Then
             ChangeScheduledDate()
-        ElseIf ButtonR.Text.Trim() = "APPROVED" Or ButtonL.Text.Trim() = "APPROVED" Or ButtonU.Text.Trim() = "APPROVED" Or ButtonB.Text.Trim() = "APPROVED" Or ButtonE.Text.Trim() = "APPROVED" Or ButtonN.Text.Trim() = "APPROVED" Or ButtonP.Text.Trim() = "APPROVED" Or ButtonQ.Text.Trim() = "APPROVED" Then
+        ElseIf ButtonR.Text.Trim() = "APPROVED" Or ButtonL.Text.Trim() = "APPROVED" Or ButtonU.Text.Trim() = "APPROVED" Or ButtonB.Text.Trim() = "APPROVED" Or ButtonE.Text.Trim() = "APPROVED" Or ButtonN.Text.Trim() = "APPROVED" Or ButtonP.Text.Trim() = "APPROVED" Or ButtonQ.Text.Trim() = "APPROVED" Or ButtonS.Text.Trim() = "APPROVED" Then
             ChangeScheduledDate()
         ElseIf (ButtonR.Text.Trim() <> "NOT CHECKED" And ButtonR.Text.Trim() <> "CHECKED" And ButtonR.Text.Trim() <> "APPROVED") Or
             (ButtonL.Text.Trim() <> "NOT CHECKED" And ButtonL.Text.Trim() <> "CHECKED" And ButtonL.Text.Trim() <> "APPROVED") Or
@@ -723,7 +756,8 @@ Public Class FormECR
             (ButtonE.Text.Trim() <> "NOT CHECKED" And ButtonE.Text.Trim() <> "CHECKED" And ButtonE.Text.Trim() <> "APPROVED") Or
             (ButtonN.Text.Trim() <> "NOT CHECKED" And ButtonN.Text.Trim() <> "CHECKED" And ButtonN.Text.Trim() <> "APPROVED") Or
             (ButtonP.Text.Trim() <> "NOT CHECKED" And ButtonP.Text.Trim() <> "CHECKED" And ButtonP.Text.Trim() <> "APPROVED") Or
-            (ButtonQ.Text.Trim() <> "NOT CHECKED" And ButtonQ.Text.Trim() <> "CHECKED" And ButtonQ.Text.Trim() <> "APPROVED") Then
+            (ButtonQ.Text.Trim() <> "NOT CHECKED" And ButtonQ.Text.Trim() <> "CHECKED" And ButtonQ.Text.Trim() <> "APPROVED") Or
+            (ButtonS.Text.Trim() <> "NOT CHECKED" And ButtonS.Text.Trim() <> "CHECKED" And ButtonS.Text.Trim() <> "APPROVED") Then
             ChangeScheduledDate()
         Else
             LabelComputeScheduledDate.Text = ""
@@ -807,7 +841,8 @@ Public Class FormECR
         ButtonE.Text = "NOT CHECKED" And
         ButtonN.Text = "NOT CHECKED" And
         ButtonP.Text = "NOT CHECKED" And
-        ButtonQ.Text = "NOT CHECKED" Then
+        ButtonQ.Text = "NOT CHECKED" And
+        ButtonS.Text = "NOT CHECKED" Then
             NoChecked = True
         End If
     End Function
@@ -823,6 +858,7 @@ Public Class FormECR
         ButtonN.Text = "NOT CHECKED" Or
         ButtonP.Text = "NOT CHECKED" Or
         ButtonQ.Text = "NOT CHECKED" Or
+        ButtonS.Text = "NOT CHECKED" Or
         ButtonA.Text = "CHECKED" Or
         ButtonR.Text = "CHECKED" Or
         ButtonU.Text = "CHECKED" Or
@@ -831,7 +867,8 @@ Public Class FormECR
         ButtonE.Text = "CHECKED" Or
         ButtonN.Text = "CHECKED" Or
         ButtonP.Text = "CHECKED" Or
-        ButtonQ.Text = "CHECKED" Then
+        ButtonQ.Text = "CHECKED" Or
+        ButtonS.Text = "CHECKED" Then
             SomeNoApproved = True
         End If
     End Function
@@ -846,7 +883,8 @@ Public Class FormECR
         ButtonE.Text = "NOT CHECKED" Or
         ButtonN.Text = "NOT CHECKED" Or
         ButtonP.Text = "NOT CHECKED" Or
-        ButtonQ.Text = "NOT CHECKED" Then
+        ButtonQ.Text = "NOT CHECKED" Or
+        ButtonS.Text = "NOT CHECKED" Then
             SomeNoChecked = True
         End If
     End Function
@@ -861,6 +899,7 @@ Public Class FormECR
         If but <> "E" Then NoCheckedOthers = NoCheckedOthers And ButtonE.Text = "NOT CHECKED"
         If but <> "P" Then NoCheckedOthers = NoCheckedOthers And ButtonP.Text = "NOT CHECKED"
         If but <> "Q" Then NoCheckedOthers = NoCheckedOthers And ButtonQ.Text = "NOT CHECKED"
+        If but <> "S" Then NoCheckedOthers = NoCheckedOthers And ButtonS.Text = "NOT CHECKED"
         If but <> "A" Then NoCheckedOthers = NoCheckedOthers And ButtonA.Text = "NOT CHECKED"
     End Function
 
@@ -961,7 +1000,7 @@ Public Class FormECR
         If ComboBoxEcr.Text <> "" Then Process.Start(fileOpen)
     End Sub
 
-    Sub UpdateDate() Handles DateTimePickerL.ValueChanged, DateTimePickerU.ValueChanged, DateTimePickerE.ValueChanged, DateTimePickerQ.ValueChanged, DateTimePickerp.ValueChanged, DateTimePickerR.ValueChanged
+    Sub UpdateDate() Handles DateTimePickerL.ValueChanged, DateTimePickerU.ValueChanged, DateTimePickerE.ValueChanged, DateTimePickerQ.ValueChanged, DateTimePickerp.ValueChanged, DateTimePickerR.ValueChanged, DateTimePickerS.ValueChanged
         Dim maxVal As Date = string_to_date("2000/01/01")
         If ButtonRL.Text <> "" Then If maxVal < string_to_date(ButtonRL.Text) Then maxVal = ButtonRL.Text
         If ButtonUL.Text <> "" Then If maxVal < string_to_date(ButtonUL.Text) Then maxVal = ButtonUL.Text
@@ -971,6 +1010,7 @@ Public Class FormECR
         If ButtonNL.Text <> "" Then If maxVal < string_to_date(ButtonNL.Text) Then maxVal = ButtonNL.Text
         If ButtonPL.Text <> "" Then If maxVal < string_to_date(ButtonPL.Text) Then maxVal = ButtonPL.Text
         If ButtonQL.Text <> "" Then If maxVal < string_to_date(ButtonQL.Text) Then maxVal = ButtonQL.Text
+        If ButtonSL.Text <> "" Then If maxVal < string_to_date(ButtonSL.Text) Then maxVal = ButtonSL.Text
         If maxVal < Now Then maxVal = Now
         If maxVal <> string_to_date("2000/01/01") Then
             ButtonData.Text = date_to_string(maxVal)
@@ -987,14 +1027,15 @@ Public Class FormECR
     Private Sub ButtonSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSave.Click
         WriteField(userDep3 & "cost", TextBoxStepCost.Text)
         WriteField(userDep3 & "note", Replace(Replace(RichTextBoxStep.Rtf, "\", "\\"), "'", ""))
-        WriteField("leadTimeR", Integer.Parse(ComboBoxRD.SelectedItem))
-        WriteField("leadTimeU", Integer.Parse(ComboBoxPurchasing.SelectedItem))
-        WriteField("leadTimeL", Integer.Parse(ComboBoxLogistic.SelectedItem))
-        WriteField("leadTimeB", Integer.Parse(ComboBoxProcessEngineering.SelectedItem))
-        WriteField("leadTimeE", Integer.Parse(ComboBoxTestingEngineering.SelectedItem))
-        WriteField("leadTimeN", Integer.Parse(ComboBoxQuality.SelectedItem))
-        WriteField("leadTimeP", Integer.Parse(ComboBoxProduction.SelectedItem))
-        WriteField("leadTimeQ", Integer.Parse(ComboBoxTimeAndMethods.SelectedItem))
+        WriteField("leadTimeR", Integer.Parse(ComboBoxR.SelectedItem))
+        WriteField("leadTimeU", Integer.Parse(ComboBoxU.SelectedItem))
+        WriteField("leadTimeL", Integer.Parse(ComboBoxL.SelectedItem))
+        WriteField("leadTimeB", Integer.Parse(ComboBoxB.SelectedItem))
+        WriteField("leadTimeE", Integer.Parse(ComboBoxE.SelectedItem))
+        WriteField("leadTimeN", Integer.Parse(ComboBoxN.SelectedItem))
+        WriteField("leadTimeP", Integer.Parse(ComboBoxP.SelectedItem))
+        WriteField("leadTimeQ", Integer.Parse(ComboBoxQ.SelectedItem))
+        WriteField("leadTimeS", Integer.Parse(ComboBoxS.SelectedItem))
         needSave = False
         ButtonSave.BackColor = Color.Green
         UpdateField()
@@ -1010,20 +1051,22 @@ Public Class FormECR
         If ButtonNL.BackColor = Color.LightGreen Then departament = "Quality"
         If ButtonPL.BackColor = Color.LightGreen Then departament = "Production"
         If ButtonQL.BackColor = Color.LightGreen Then departament = "Time And Methods"
+        If ButtonSL.BackColor = Color.LightGreen Then departament = "Environment And Safety"
         Return departament
     End Function
 
     Private Sub ButtonSaveSend_Click(sender As Object, e As EventArgs) Handles ButtonSaveSend.Click
         WriteField(userDep3 & "cost", TextBoxStepCost.Text)
         WriteField(userDep3 & "note", Replace(Replace(RichTextBoxStep.Rtf, "\", "\\"), "'", ""))
-        WriteField("leadTimeR", Integer.Parse(ComboBoxRD.SelectedItem))
-        WriteField("leadTimeU", Integer.Parse(ComboBoxPurchasing.SelectedItem))
-        WriteField("leadTimeL", Integer.Parse(ComboBoxLogistic.SelectedItem))
-        WriteField("leadTimeB", Integer.Parse(ComboBoxProcessEngineering.SelectedItem))
-        WriteField("leadTimeE", Integer.Parse(ComboBoxTestingEngineering.SelectedItem))
-        WriteField("leadTimeN", Integer.Parse(ComboBoxQuality.SelectedItem))
-        WriteField("leadTimeP", Integer.Parse(ComboBoxProduction.SelectedItem))
-        WriteField("leadTimeQ", Integer.Parse(ComboBoxTimeAndMethods.SelectedItem))
+        WriteField("leadTimeR", Integer.Parse(ComboBoxR.SelectedItem))
+        WriteField("leadTimeU", Integer.Parse(ComboBoxU.SelectedItem))
+        WriteField("leadTimeL", Integer.Parse(ComboBoxL.SelectedItem))
+        WriteField("leadTimeB", Integer.Parse(ComboBoxB.SelectedItem))
+        WriteField("leadTimeE", Integer.Parse(ComboBoxE.SelectedItem))
+        WriteField("leadTimeN", Integer.Parse(ComboBoxN.SelectedItem))
+        WriteField("leadTimeP", Integer.Parse(ComboBoxP.SelectedItem))
+        WriteField("leadTimeQ", Integer.Parse(ComboBoxQ.SelectedItem))
+        WriteField("leadTimeS", Integer.Parse(ComboBoxS.SelectedItem))
         needSave = False
         ButtonSave.BackColor = Color.Green
         UpdateField()
@@ -1031,8 +1074,8 @@ Public Class FormECR
         Dim bodyText As String, subject As String
         bodyText = "Automatic SrvDoc Message:" & vbLf & vbLf & GetDepartamentName(userDep3) & " Note: " & RichTextBoxStep.Text
         subject = "ECR Note Change Notification:    " & ComboBoxEcr.Text
-        SendMail("ECR_VerifyTo; ECR_R_SignTo; ECR_U_SignTo; ECR_L_SignTo; ECR_B_SignTo; ECR_E_SignTo; ECR_N_SignTo; ECR_P_SignTo; ECR_Q_SignTo",
-                 "ECR_VerifyCopy; ECR_R_SignCopy; ECR_U_SignCopy; ECR_L_SignCopy; ECR_B_SignCopy; ECR_E_SignCopy; ECR_N_SignCopy; ECR_P_SignCopy; ECR_Q_SignCopy;",
+        SendMail("ECR_VerifyTo; ECR_R_SignTo; ECR_U_SignTo; ECR_L_SignTo; ECR_B_SignTo; ECR_E_SignTo; ECR_N_SignTo; ECR_P_SignTo; ECR_Q_SignTo; ECR_S_SignTo",
+                 "ECR_VerifyCopy; ECR_R_SignCopy; ECR_U_SignCopy; ECR_L_SignCopy; ECR_B_SignCopy; ECR_E_SignCopy; ECR_N_SignCopy; ECR_P_SignCopy; ECR_Q_SignCopy; ECR_S_SignCopy;",
                  bodyText, subject)
 
     End Sub
@@ -1114,35 +1157,39 @@ Public Class FormECR
         End Try
     End Function
 
-    Private Sub ComboBoxRD_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxRD.SelectionChangeCommitted
+    Private Sub ComboBoxR_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxR.SelectionChangeCommitted
         CheckScheduledDateShouldChange()
     End Sub
 
-    Private Sub ComboBoxLogistic_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxLogistic.SelectionChangeCommitted
+    Private Sub ComboBoxU_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxU.SelectionChangeCommitted
         CheckScheduledDateShouldChange()
     End Sub
 
-    Private Sub ComboBoxPurchasing_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxPurchasing.SelectionChangeCommitted
+    Private Sub ComboBoxL_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxL.SelectionChangeCommitted
         CheckScheduledDateShouldChange()
     End Sub
 
-    Private Sub ComboBoxProcessEngineering_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxProcessEngineering.SelectionChangeCommitted
+    Private Sub ComboBoxB_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxB.SelectionChangeCommitted
         CheckScheduledDateShouldChange()
     End Sub
 
-    Private Sub ComboBoxTestingEngineering_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxTestingEngineering.SelectionChangeCommitted
+    Private Sub ComboBoxE_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxE.SelectionChangeCommitted
         CheckScheduledDateShouldChange()
     End Sub
 
-    Private Sub ComboBoxQuality_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxQuality.SelectionChangeCommitted
+    Private Sub ComboBoxN_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxN.SelectionChangeCommitted
         CheckScheduledDateShouldChange()
     End Sub
 
-    Private Sub ComboBoxProduction_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxProduction.SelectionChangeCommitted
+    Private Sub ComboBoxP_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxP.SelectionChangeCommitted
         CheckScheduledDateShouldChange()
     End Sub
 
-    Private Sub ComboBoxTimeAndMethods_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxTimeAndMethods.SelectionChangeCommitted
+    Private Sub ComboBoxQ_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxQ.SelectionChangeCommitted
+        CheckScheduledDateShouldChange()
+    End Sub
+
+    Private Sub ComboBoxS_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxS.SelectionChangeCommitted
         CheckScheduledDateShouldChange()
     End Sub
 

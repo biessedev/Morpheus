@@ -72,10 +72,11 @@ Public Class FormBomOffer
                                             "'" & bom("bitronPn") & "'," &
                                             "'" & qty & "'," &
                                             "'" & offerid.Parent.Text & " - [" & bom("RequestQt") & "]'," &
-                                            "'', '', 0, '', 0, 0, '', '', '', '', '', 0, 0, 0, 0, 0, 0, '', 0, '', '' )"
-                            sqlCommand = "INSERT INTO MaterialRequest(bitronPN, RequestQt, BomList, des_pn, Brand, BrandALT, NotePurchasing, WareHouse3D, Delta," &
-                                                "NoteRnd, pfp, doc, ProductionUsed, DeltaUsedFlag, RequestQt_1, RequestQt_2, RequestQt_3, RequestQt_4, RequestQt_5, STOCK_W," &
-                                                "STATUS, w_wareHouse, RDA_ETA, Order_ETA) " & values
+                                            "'', '', 0, '', 0, 0, '', '', '', '', '', 0, 0, 0, 0, 0, 0, '', 0, 0, '', '' )"
+
+                            sqlCommand = "INSERT INTO MaterialRequest(bitronPN, RequestQt, BomList, des_pn, Brand, BrandALT, NotePurchasing, Warehouse_01, Delta," &
+                                                "NoteRnd, pfp, doc, ProductionUsed, DeltaUsedFlag, RequestQt_1, RequestQt_2, RequestQt_3, RequestQt_4, RequestQt_5, Warehouse_62," &
+                                                "STATUS, Warehouse_68,Warehouse_65, RDA_ETA, Order_ETA) " & values
 
                         Else
                             'sqlCommand = "UPDATE 

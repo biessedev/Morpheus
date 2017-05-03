@@ -1417,11 +1417,11 @@ Public Class FormSamples
             Dim adapterMySql = New MySqlDataAdapter(sql, con)
             adapterMySql.Fill(dsMySql, "materialrequest")
             Dim tblMySql As DataTable = dsMySql.Tables("materialrequest")
-            ButtonUpdateMagBox.Text = "Deleting data and shift....."
+            ButtonUpdateMagBox.Text = "Deleting data and shift ....."
             Application.DoEvents()
             For Each rowShowMy In tblMySql.Rows
 
-                sql = "UPDATE `materialrequest` SET `warehouse3d`='',`RequestQt`=0, `BomList`='',`delta`='',`DeltaUsedFlag`=''," &
+                sql = "UPDATE `materialrequest` SET `Warehouse_01`='', `Warehouse_62`='', `Warehouse_68`='', `Warehouse_65`='', `RequestQt`=0, `BomList`='', `delta`='', `DeltaUsedFlag`='', " &
                         "`RequestQt_1`=" & rowShowMy("RequestQt").ToString & "," &
                         "`RequestQt_2`=" & rowShowMy("RequestQt_1").ToString & "," &
                         "`RequestQt_3`=" & rowShowMy("RequestQt_2").ToString & "," &
@@ -1433,13 +1433,13 @@ Public Class FormSamples
                     commandMySql = New MySqlCommand(sql, con)
                     commandMySql.ExecuteNonQuery()
                 Catch ex As Exception
-                    MsgBox("Error in DB... please reset material request!")
+                    MsgBox("Error in DB ... please reset material request!")
                 End Try
             Next
 
             ButtonUpdateMagBox.Text = "Deleting data and shift ....."
             Application.DoEvents()
-            ButtonUpdateMagBox.Text = "Load Orcad Data....."
+            ButtonUpdateMagBox.Text = "Load Orcad Data ....."
             Application.DoEvents()
             tblDocComp.Clear()
             DsDocComp.Clear()
@@ -1484,9 +1484,9 @@ Public Class FormSamples
                             Next
                         ElseIf row("bomlocation").ToString() = "BEQS" Then
                             ' TODO: Add business logic
-                            'If currentProductCode = row("bitronpn") Then
-                            dictionaryVersionsQuatity.Add(row("bitronpn"), row("npieces"))  ' do not delete this comment
-                            'End If
+                            If currentProductCode = row("bitronpn") Then
+                                dictionaryVersionsQuatity.Add(row("bitronpn"), row("npieces"))  ' do not delete this comment
+                            End If
                         Else
                             MsgBox("For this product BOM not assigned! " & row("bitronpn").ToString & "  " & row("name").ToString)
                         End If
@@ -1508,7 +1508,7 @@ Public Class FormSamples
                 commandMySql = New MySqlCommand(sql, con)
                 commandMySql.ExecuteNonQuery()
             Catch ex As Exception
-                MsgBox("Error in DB... please reset material request!")
+                MsgBox("Error in DB ... please reset material request!")
             End Try
 
             Dim InOrder As Single = order("", True)
@@ -1532,7 +1532,7 @@ Public Class FormSamples
                         commandMySql = New MySqlCommand(sql, con)
                         commandMySql.ExecuteNonQuery()
                     Catch ex As Exception
-                        MsgBox("Error in DB... please reset material request!")
+                        MsgBox("Error in DB ... please reset material request!")
                     End Try
                 End If
                 Application.DoEvents()
@@ -1546,7 +1546,7 @@ Public Class FormSamples
                     commandMySql = New MySqlCommand(sql, con)
                     commandMySql.ExecuteNonQuery()
                 Catch ex As Exception
-                    MsgBox("Error in DB... please reset material request!")
+                    MsgBox("Error in DB ... please reset material request!")
                 End Try
             Next
             tblMySql.Dispose()
@@ -1635,13 +1635,17 @@ Public Class FormSamples
             Dim adapterMySql = New MySqlDataAdapter(sql, con)
             adapterMySql.Fill(dsMySql, "materialrequest")
             Dim tblMySql As DataTable = dsMySql.Tables("materialrequest")
-            Dim stockvalue As Double = Str(Stock(bitronPN))
+
+            Dim stockvalue As Double = Str(Stock(bitronPN, ParameterTable("plant")))
+
             If tblMySql.Rows.Count < 1 Then
                 strBomList = des_bom & "[" & Trim(Str(IIf(qt = Int(qt), qt, Math.Round(Val(qt), 5)))) & "]"
-                sql = "INSERT INTO `" & DBName & "`.`materialrequest` (`DeltaUsedFlag`,`ProductionUsed`,`bitronPN`,`des_pn`,`Brand`,`BrandALT`,`pfp`,`warehouse3d`,`Delta`,`RequestQt`,`BomList`,`doc`) VALUES ('" & IIf(SigipUsed(bitronPN) <> "" Or
-                (stockvalue - Val(strQt)) < Val(strQt) * 0.1, "YES", "NO") & "','" & SigipUsed(bitronPN) & "','" & bitronPN & "','" & des_PN & "','" & brand & "','" & brandAlt & "','" & pfp(bitronPN) & "','" & stockvalue & "','" &
-                 stockvalue - Val(Str(Val(qt) * Val(npieces))) & "','" & Trim(Str(Val(qt) * Val(npieces))) & "','" & strBomList & "','" & Doc & "')"
+
+                sql = "INSERT INTO `" & DBName & "`.`materialrequest` (`DeltaUsedFlag`,`ProductionUsed`,`bitronPN`,`des_pn`,`Brand`,`BrandALT`,`pfp`,`Warehouse_01`,`Warehouse_62`,`Warehouse_68`,`Warehouse_65`,`Delta`,`RequestQt`,`BomList`,`doc`) VALUES ('" & IIf(SigipUsed(bitronPN) <> "" Or (stockvalue - Val(strQt)) < Val(strQt) * 0.1, "YES", "NO") & "','" & SigipUsed(bitronPN) & "','" & bitronPN & "','" & des_PN & "','" & brand & "','" & brandAlt & "','" & pfp(bitronPN) & "'," & Val(Stock(bitronPN, "01")) & "," & Val(Stock(bitronPN, 62)) & "," & Val(Stock(bitronPN, 68)) & "," & Val(Stock(bitronPN, 65)) & ",'" &
+                stockvalue - Val(Str(Val(qt) * Val(npieces))) & "','" & Trim(Str(Val(qt) * Val(npieces))) & "','" & strBomList & "','" & Doc & "');"
+
             Else
+
                 strQt = Trim(Str(Val(tblMySql.Rows.Item(0)("requestqt")) + Str(Val(qt) * Val(npieces))))
                 strBomList = tblMySql.Rows.Item(0)("BomList").ToString
                 If strBomList.Contains(Bom) And strBomList <> "" Then
@@ -1656,13 +1660,16 @@ Public Class FormSamples
                     strBomList = tblMySql.Rows.Item(0)("BomList") & ";" & des_bom & "[" & Trim(Str(IIf(qt = Int(qt), qt, Math.Round(Val(qt), 5)))) & "]"
                     If Mid(strBomList, 1, 1) = ";" Then strBomList = Mid(strBomList, 2)
                 End If
-                sql = "UPDATE `materialrequest` SET `w_warehouse`=" & Val(Stock_W(bitronPN)) & ", `RequestQt`='" & strQt & "',`BomList`='" & strBomList & "',`brandALT`='" & brandAlt & "',`brand`='" & brand & "',`pfp`='" & pfp(bitronPN) & "',`doc`='" & Doc & "',`warehouse3d`='" & stockvalue & "',`Delta`='" & stockvalue - Val(strQt) & "',`ProductionUsed`='" & SigipUsed(bitronPN) & "',`DeltaUsedFlag`='" & IIf(SigipUsed(bitronPN) <> "" Or (stockvalue - Val(strQt)) < Val(strQt) * 0.1, "YES", "NO") & "' WHERE `bitronpn`='" & bitronPN & "'"
+
+                sql = "UPDATE `materialrequest` SET `Warehouse_01`=" & Val(Stock(bitronPN, "01")) & ",`Warehouse_62`=" & Val(Stock(bitronPN, 62)) & ",`Warehouse_68`=" & Val(Stock(bitronPN, 68)) & ",`Warehouse_65`=" & Val(Stock(bitronPN, 65)) & ",`RequestQt`='" & strQt & "',`BomList`='" & strBomList & "',`brandALT`='" & brandAlt & "',`brand`='" & brand & "',`pfp`='" & pfp(bitronPN) & "',`doc`='" & Doc & "',`Delta`='" & stockvalue - Val(strQt) & "',`ProductionUsed`='" & SigipUsed(bitronPN) & "',`DeltaUsedFlag`='" & IIf(SigipUsed(bitronPN) <> "" Or (stockvalue - Val(strQt)) < Val(strQt) * 0.1, "YES", "NO") & "' WHERE `bitronpn`='" & bitronPN & "'"
+
             End If
+
             Try
                 Dim commandMySql = New MySqlCommand(sql, con)
                 commandMySql.ExecuteNonQuery()
             Catch ex As Exception
-                MsgBox("Error in DB... please reset material request!")
+                MsgBox("Error in DB ... please reset material request!")
             End Try
         End Using
 
@@ -1824,31 +1831,58 @@ Public Class FormSamples
         End Using
     End Sub
 
-    Public Function Stock(ByVal bitronpn As String) As Double
+    Public Function Stock(ByVal bitronCode As String, ByVal productionPlant As String) As Double
         Dim dsMySql As New DataSet
         Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-            Using adapterMySql As New MySqlDataAdapter("SELECT SUM(`sagia`) AS sum FROM `" & DBName & "`.`spu` WHERE (samgz='D' or samgz='8') and `bitronpn`='" & bitronpn & "'", con)
-                adapterMySql.Fill(dsMySql, "spu")
-            End Using
+            'Using adapterMySql As New MySqlDataAdapter(String.Format("SELECT SUM(`sagia`) AS sum FROM `" & DBName & "`.`spu` WHERE (" & ParameterTable("StockFunctionWhereClause") & " ) and bitronpn= '" & bitronCode & "' and pmstb= '" & productionPlant & "' "), con)
+            '    adapterMySql.Fill(dsMySql, "spu")
+            'End Using
+            Select Case productionPlant
+                Case "01"
+                    Using adapterMySql As New MySqlDataAdapter(String.Format("SELECT SUM(`sagia`) AS sum FROM `" & DBName & "`.`spu` WHERE (samgz='D' or samgz='W') and bitronpn= '" & bitronCode & "' and pmstb= '" & productionPlant & "' "), con)
+                        adapterMySql.Fill(dsMySql, "spu")
+                    End Using
+                Case "62"
+                    Using adapterMySql As New MySqlDataAdapter(String.Format("SELECT SUM(`sagia`) AS sum FROM `" & DBName & "`.`spu` WHERE (samgz='D' or samgz='8') and bitronpn= '" & bitronCode & "' and pmstb= '" & productionPlant & "' "), con)
+                        adapterMySql.Fill(dsMySql, "spu")
+                    End Using
+                Case "68"
+                    Using adapterMySql As New MySqlDataAdapter(String.Format("SELECT SUM(`sagia`) AS sum FROM `" & DBName & "`.`spu` WHERE samgz='M' and bitronpn= '" & bitronCode & "' and pmstb= '" & productionPlant & "' "), con)
+                        adapterMySql.Fill(dsMySql, "spu")
+                    End Using
+                Case "65"
+                    Using adapterMySql As New MySqlDataAdapter(String.Format("SELECT SUM(`sagia`) AS sum FROM `" & DBName & "`.`spu` WHERE samgz='C' and bitronpn= '" & bitronCode & "' and pmstb= '" & productionPlant & "' "), con)
+                        adapterMySql.Fill(dsMySql, "spu")
+                    End Using
+            End Select
         End Using
         Dim tblMySql As DataTable = dsMySql.Tables("spu")
         Return Val(tblMySql.Rows(0).Item("sum").ToString)
     End Function
 
-    Public Function Stock_W(ByVal bitronpn As String) As Double
-        Dim dsMySql As New DataSet
-        Dim builder As New Common.DbConnectionStringBuilder()
-        builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
-        Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-            Using adapterMySql As New MySqlDataAdapter(String.Format("SELECT SUM(`sagia`) AS sum FROM `{0}`.`spu` WHERE (" & ParameterTable("StockFunctionWhereClause") & " ) and `bitronpn`='{1}'", DBName, bitronpn), con)
-                adapterMySql.Fill(dsMySql, "spu")
-            End Using
-        End Using
-        Dim tblMySql As DataTable = dsMySql.Tables("spu")
-        Return Val(tblMySql.Rows(0).Item("sum").ToString)
-    End Function
+
+
+
+
+
+
+
+
+
+    'Public Function Stock_W(ByVal bitronpn As String) As Double
+    '    Dim dsMySql As New DataSet
+    '    Dim builder As New Common.DbConnectionStringBuilder()
+    '    builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
+    '    Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
+    '  Using adapterMySql As New MySqlDataAdapter(String.Format("SELECT SUM(`sagia`) AS sum FROM `{0}`.`spu` WHERE (" & ParameterTable("StockFunctionWhereClause") & " ) and `bitronpn`='{1}'", DBName, bitronpn), con)
+    '            adapterMySql.Fill(dsMySql, "spu")
+    '        End Using
+    '    End Using
+    '    Dim tblMySql As DataTable = dsMySql.Tables("spu")
+    '    Return Val(tblMySql.Rows(0).Item("sum").ToString)
+    'End Function
 
     Function pfp(ByVal bitronpn As String) As String
         pfp = ""

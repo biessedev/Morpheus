@@ -43,8 +43,6 @@ Public Class FormMaterialRequest
         dataGridView.Columns("NotePurchasing").DefaultCellStyle.BackColor = Color.Beige
         dataGridView.Columns("BitronPN").Visible = True
         dataGridView.Columns("Des_PN").Visible = True
-        dataGridView.Columns("Brand").Visible = True
-        dataGridView.Columns("BrandALT").Visible = True
         dataGridView.Columns("RequestQT").Visible = True
         dataGridView.Columns("Bomlist").Visible = True
         dataGridView.Columns("NoteRnd").Visible = True
@@ -54,8 +52,10 @@ Public Class FormMaterialRequest
         dataGridView.Columns("doc").Visible = True
         dataGridView.Columns("ProductionUsed").Visible = True
         dataGridView.Columns("Status").Visible = True
-        dataGridView.Columns("w_warehouse").Visible = True
-
+        dataGridView.Columns("Warehouse_01").Visible = True
+        dataGridView.Columns("Warehouse_62").Visible = True
+        dataGridView.Columns("Warehouse_68").Visible = True
+        dataGridView.Columns("Warehouse_65").Visible = True
     End Sub
 
     Private Sub dataGridView_SortStringChanged(sender As Object, e As EventArgs) Handles dataGridView.SortStringChanged

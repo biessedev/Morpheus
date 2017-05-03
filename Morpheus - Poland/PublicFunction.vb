@@ -161,9 +161,9 @@ Module PublicFunction
         Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-		    Using AdapterCh As New MySqlDataAdapter("SELECT * FROM mant", con)
-			        AdapterCh.Fill(dsCh, "mant")
-		    End Using
+            Using AdapterCh As New MySqlDataAdapter("SELECT * FROM mant", con)
+                AdapterCh.Fill(dsCh, "mant")
+            End Using
             tblCh = dsCh.Tables("mant")
             Dim returnValue As DataRow(), sql As String, cmd As MySqlCommand
             returnValue = tblCh.Select("des = '" & des & "'")
@@ -220,6 +220,8 @@ Module PublicFunction
         If controlRight("F") = 3 Then user = "F"
 
         If controlRight("B") = 3 Then user = "B"
+
+        If controlRight("S") = 3 Then user = "S"
 
     End Function
 
@@ -309,7 +311,7 @@ Module PublicFunction
     ' SETTA RESETTA SESSIONE
     Function session(ByVal bomName As String, ByVal id As Long, ByVal setT_clearF As Boolean) As String
         session = "ID_0"
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
             If id <> 0 Then
@@ -368,15 +370,14 @@ Module PublicFunction
         End Using
     End Function
 
-
     Function DeltaSessionTime(ByVal TableName As String, ByVal id As Long) As Integer
         Dim Ds As New DataSet
-        Dim  builder As  New Common.DbConnectionStringBuilder()
+        Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-		        Using Adapter As New MySqlDataAdapter("SELECT * FROM " & TableName & " where id = " & id, con)
-			        Adapter.Fill(Ds, TableName)
-		        End Using
+            Using Adapter As New MySqlDataAdapter("SELECT * FROM " & TableName & " where id = " & id, con)
+                Adapter.Fill(Ds, TableName)
+            End Using
         End Using
         Dim tbl As DataTable = Ds.Tables(TableName)
         Dim SessionTime As String = tbl.Rows(0).Item("SessionTime").ToString()
