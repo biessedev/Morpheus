@@ -252,15 +252,15 @@ Public Class FormECR
             ButtonData.Text = Result(0).Item("date")
 
             'update dates (with DB values) on every Date Button
-            ButtonRL.Text = Result(0).Item("dateR")
-            ButtonUL.Text = Result(0).Item("dateU")
-            ButtonLL.Text = Result(0).Item("dateL")
-            ButtonBL.Text = Result(0).Item("dateB")
-            ButtonEL.Text = Result(0).Item("dateE")
-            ButtonPL.Text = Result(0).Item("dateP")
-            ButtonNL.Text = Result(0).Item("dateN")
-            ButtonQL.Text = Result(0).Item("dateQ")
-            ButtonSL.Text = Result(0).Item("dateS")
+            ButtonRL.Text = If(ButtonR.Text.Trim() = "NOT CHECKED", "", Result(0).Item("dateR"))
+            ButtonUL.Text = If(ButtonU.Text.Trim() = "NOT CHECKED", "", Result(0).Item("dateU"))
+            ButtonLL.Text = If(ButtonL.Text.Trim() = "NOT CHECKED", "", Result(0).Item("dateL"))
+            ButtonBL.Text = If(ButtonB.Text.Trim() = "NOT CHECKED", "", Result(0).Item("dateB"))
+            ButtonEL.Text = If(ButtonE.Text.Trim() = "NOT CHECKED", "", Result(0).Item("dateE"))
+            ButtonPL.Text = If(ButtonP.Text.Trim() = "NOT CHECKED", "", Result(0).Item("dateP"))
+            ButtonNL.Text = If(ButtonN.Text.Trim() = "NOT CHECKED", "", Result(0).Item("dateN"))
+            ButtonQL.Text = If(ButtonQ.Text.Trim() = "NOT CHECKED", "", Result(0).Item("dateQ"))
+            ButtonSL.Text = If(ButtonS.Text.Trim() = "NOT CHECKED", "", Result(0).Item("dateS"))
         End If
 
         If Not AllSign() Then UpdateDate()
@@ -643,15 +643,16 @@ Public Class FormECR
         UpdateDate()
 
         'update dates (with DB values) on every Date Button
-        ButtonRL.Text = readField("dateR", EcrN)
-        ButtonUL.Text = readField("dateU", EcrN)
-        ButtonLL.Text = readField("dateL", EcrN)
-        ButtonBL.Text = readField("dateB", EcrN)
-        ButtonEL.Text = readField("dateE", EcrN)
-        ButtonPL.Text = readField("dateP", EcrN)
-        ButtonNL.Text = readField("dateN", EcrN)
-        ButtonQL.Text = readField("dateQ", EcrN)
-        ButtonSL.Text = readField("dateS", EcrN)
+        ButtonRL.Text = If(ButtonR.Text.Trim() = "NOT CHECKED", "", readField("dateR", EcrN))
+        ButtonUL.Text = If(ButtonU.Text.Trim() = "NOT CHECKED", "", readField("dateU", EcrN))
+        ButtonLL.Text = If(ButtonL.Text.Trim() = "NOT CHECKED", "", readField("dateL", EcrN))
+        ButtonBL.Text = If(ButtonB.Text.Trim() = "NOT CHECKED", "", readField("dateB", EcrN))
+        ButtonEL.Text = If(ButtonE.Text.Trim() = "NOT CHECKED", "", readField("dateE", EcrN))
+        ButtonPL.Text = If(ButtonP.Text.Trim() = "NOT CHECKED", "", readField("dateP", EcrN))
+        ButtonNL.Text = If(ButtonN.Text.Trim() = "NOT CHECKED", "", readField("dateN", EcrN))
+        ButtonQL.Text = If(ButtonQ.Text.Trim() = "NOT CHECKED", "", readField("dateQ", EcrN))
+        ButtonSL.Text = If(ButtonS.Text.Trim() = "NOT CHECKED", "", readField("dateS", EcrN))
+
 
         ButtonSave.BackColor = Color.Green
         ButtonSaveSend.BackColor = Color.Green
