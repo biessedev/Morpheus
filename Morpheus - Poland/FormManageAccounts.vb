@@ -64,7 +64,7 @@ Public Class FormManageAccounts
         If TextBoxForUsername.Text <> "" And TextBoxForPassword.Text <> "" And TextBoxForSign.Text <> "" And ListViewForUsers.SelectedItems.Count > 0 Then
             Try
                 Dim returnValue As Boolean
-                returnValue = Regex.IsMatch(TextBoxForSign.Text.ToUpper.Trim, "R[0-9]J[0-9]E[0-9]B[0-9]Q[0-9]N[0-9]P[0-9]U[0-9]F[0-9]L[0-9]C[0-9]I[0-9]A[0-9]T[0-9]W[0-9]Z[0-9]$")
+                returnValue = Regex.IsMatch(TextBoxForSign.Text.ToUpper.Trim, "R[0-9]J[0-9]E[0-9]B[0-9]Q[0-9]N[0-9]P[0-9]U[0-9]F[0-9]L[0-9]S[0-9]C[0-9]I[0-9]A[0-9]T[0-9]W[0-9]Z[0-9]$")
                 If returnValue = True Then
                     Dim builder As New Common.DbConnectionStringBuilder()
                     builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
@@ -128,7 +128,7 @@ Public Class FormManageAccounts
         If TextBoxForUsername.Text <> "" And TextBoxForPassword.Text <> "" And TextBoxForSign.Text <> "" Then
             Try
                 Dim returnValue As Boolean
-                returnValue = Regex.IsMatch(TextBoxForSign.Text.ToUpper.Trim, "R[0-9]J[0-9]E[0-9]B[0-9]Q[0-9]N[0-9]P[0-9]U[0-9]F[0-9]L[0-9]C[0-9]I[0-9]A[0-9]T[0-9]W[0-9]Z[0-9]$")
+                returnValue = Regex.IsMatch(TextBoxForSign.Text.ToUpper.Trim, "R[0-9]J[0-9]E[0-9]B[0-9]Q[0-9]N[0-9]P[0-9]U[0-9]F[0-9]L[0-9]S[0-9]C[0-9]I[0-9]A[0-9]T[0-9]W[0-9]Z[0-9]$")
                 If returnValue = True Then
                     If IsUserExist(TextBoxForUsername.Text.Trim.ToLower) = False Then
                         Dim builder As New Common.DbConnectionStringBuilder()

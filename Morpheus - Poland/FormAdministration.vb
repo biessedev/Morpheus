@@ -58,6 +58,8 @@ Public Class FormAdministration
         dep.Add("P")
         dep.Add("Q")
         dep.Add("F")
+        dep.Add("S")
+
     End Sub
 
     Private Sub ButtonSchedule_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSchedule.Click
@@ -169,9 +171,9 @@ Public Class FormAdministration
                 If EcrN > 0 And RowEcr.Length = 0 And InStr(row("filename").ToString, "template", CompareMethod.Text) <= 0 Then
                     Try
                         filename = row("filename").ToString & "_" & row("rev").ToString & "." & row("extension").ToString
-                        sql = "INSERT INTO `" & DBName & "`.`ecr` (`nnote` ,`number` ,`description` ,`date`,`Usign`,`nsign`,`Lsign`,`Asign`,`Qsign`,`Esign`,`Rsign`,`Psign`,`Bsign`,`DocInvalid`,`IdDoc`) VALUES (" &
+                        sql = "INSERT INTO `" & DBName & "`.`ecr` (`nnote` ,`number` ,`description` ,`date`,`Usign`,`nsign`,`Lsign`,`Asign`,`Qsign`,`Esign`,`Rsign`,`Psign`,`Bsign`,`Ssign`,`DocInvalid`,`IdDoc`,`CLCV`) VALUES (" &
                         Replace("'{\rtf1\fbidis\ansi\ansicpg1252\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}{\f1\fswiss\fprq2\fcharset0 Calibri;}}{\colortbl ;\red23\green54\blue93;}\viewkind4\uc1\pard\ltrpar\sl360\slmult1\cf1\lang1040\f0\fs22\par\par\par\par\ul\b\i\f1 Confirmation AREA\par\lang1033\ulnone\b0\i0 Time and First serial number / Fiche:\par\par\par\parOther Annotation:\f0\par\pard\ltrpar\cf0\lang1040\fs24\par\par\par\par}', ", "\", "\\") _
-                        & EcrN & ", '" & filename & "', '" & "01/01/2000" & "', 'NOT CHECKED' , 'NOT CHECKED', 'NOT CHECKED', 'System[automatic]', 'NOT CHECKED', 'NOT CHECKED', 'NOT CHECKED', 'NOT CHECKED','NOT CHECKED', 'NO',  " & row("id").ToString & " );"
+                        & EcrN & ", '" & filename & "', '" & "01/01/2000" & "', 'NOT CHECKED' , 'NOT CHECKED', 'NOT CHECKED', 'System[automatic]', 'NOT CHECKED', 'NOT CHECKED', 'NOT CHECKED', 'NOT CHECKED', 'NOT CHECKED','NOT CHECKED', 'NO', " & row("id").ToString & ",'NO');"
                         cmd = New MySqlCommand(sql, con)
                         cmd.ExecuteNonQuery()
 
@@ -240,6 +242,10 @@ Public Class FormAdministration
                     mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the ECR: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
                 End If
 
+                us = "S"
+                If ((row(us & "sign").ToString = "NOT CHECKED") And (row("ecrcheck").ToString = "YES")) Then
+                    mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the ECR: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
+                End If
 
                 Dim dt As Date = string_to_date((row("date").ToString))
 
@@ -251,6 +257,7 @@ Public Class FormAdministration
                 row("Nsign").ToString <> "NOT CHECKED" And
                 row("Psign").ToString <> "NOT CHECKED" And
                 row("Qsign").ToString <> "NOT CHECKED" And
+                row("Ssign").ToString <> "NOT CHECKED" And
                 DateDiff(DateInterval.Day, Now, dt) < 2 Then
 
                     us = "A"
@@ -297,6 +304,12 @@ Public Class FormAdministration
                     If row(us & "sign").ToString = "CHECKED" Then
                         mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please APPROVE the Ecr: " & " " & row("description").ToString, "ECR Approval Request " & row("description").ToString, row("number").ToString & "A")
                     End If
+
+                    us = "S"
+                    If row(us & "sign").ToString = "CHECKED" Then
+                        mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please APPROVE the Ecr: " & " " & row("description").ToString, "ECR Approval Request " & row("description").ToString, row("number").ToString & "A")
+                    End If
+
                 End If
 
                 If InStr(row("Rsign").ToString & row("Usign").ToString & row("Lsign").ToString & row("Bsign").ToString & row("Esign").ToString & row("Nsign").ToString & row("Psign").ToString & row("Qsign").ToString & row("Asign").ToString, "CHECKED", CompareMethod.Text) <= 0 And
@@ -346,6 +359,12 @@ Public Class FormAdministration
                     If row(us & "sign").ToString = "APPROVED" Then
                         mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please SIGN the Ecr: " & " " & row("description").ToString, "ECR Sign Request " & row("description").ToString, row("number").ToString & "S")
                     End If
+
+                    us = "S"
+                    If row(us & "sign").ToString = "APPROVED" Then
+                        mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please SIGN the Ecr: " & " " & row("description").ToString, "ECR Sign Request " & row("description").ToString, row("number").ToString & "S")
+                    End If
+
                 End If
             End If
             refresh = False
@@ -356,7 +375,7 @@ Public Class FormAdministration
         Dim sql As String, refresh = True
         Dim RowSearchEcr As DataRow() = tblEcr.Select("docInvalid = 'NO'", "number")
         For Each row In RowSearchEcr
-            If InStr(row("Rsign").ToString & row("Lsign").ToString & row("Usign").ToString & row("Bsign").ToString & row("Esign").ToString & row("Nsign").ToString & row("Psign").ToString & row("Qsign").ToString & row("Asign").ToString, "APPROVED", CompareMethod.Text) <= 0 And readDocSign(row("iddoc").ToString, refresh) <> "" And
+            If InStr(row("Rsign").ToString & row("Lsign").ToString & row("Usign").ToString & row("Bsign").ToString & row("Esign").ToString & row("Nsign").ToString & row("Psign").ToString & row("Qsign").ToString & row("Asign").ToString & row("Ssign").ToString, "APPROVED", CompareMethod.Text) <= 0 And readDocSign(row("iddoc").ToString, refresh) <> "" And
                 row("confirm").ToString = "CONFIRMED" Then
 
                 Dim fileOpen As String = downloadFileWinPath(ParameterTable("plant") & "R_PRO_ECR_" & row("DESCRIPTION").ToString, ParameterTable("plant") & "R/" & ParameterTable("plant") & "R_PRO_ECR/")
@@ -394,7 +413,7 @@ Public Class FormAdministration
             Dim i As Integer
             i = Int(row("number").ToString)
 
-            If InStr(row("Rsign").ToString & row("Usign").ToString & row("Lsign").ToString & row("Bsign").ToString & row("Esign").ToString & row("Nsign").ToString & row("Psign").ToString & row("Qsign").ToString & row("Asign").ToString, "CHECKED", CompareMethod.Text) <= 0 And row("approve").ToString = "" Then
+            If InStr(row("Rsign").ToString & row("Usign").ToString & row("Lsign").ToString & row("Bsign").ToString & row("Esign").ToString & row("Nsign").ToString & row("Psign").ToString & row("Qsign").ToString & row("Asign").ToString & row("Ssign").ToString, "CHECKED", CompareMethod.Text) <= 0 And row("approve").ToString = "" Then
                 Try
                     Dim fileOpen As Object = downloadFileWinPath(ParameterTable("plant") & "R_PRO_ECR_" & row("DESCRIPTION").ToString, ParameterTable("plant") & "R/" & ParameterTable("plant") & "R_PRO_ECR/")
                     If mailSender("ECR_SignTo", "ECR_SignCopy", "Automatic SrvDoc Message:" & vbCrLf &
@@ -409,6 +428,7 @@ Public Class FormAdministration
                                vbCrLf & "Production Note: " & rtfTrans(row("pnote").ToString) & vbCrLf &
                                vbCrLf & "Time & Methods Note: " & rtfTrans(row("qnote").ToString) & vbCrLf &
                                vbCrLf & "Admin Note: " & rtfTrans(row("anote").ToString) & vbCrLf &
+                               vbCrLf & "Environment And Safety Note: " & rtfTrans(row("Snote").ToString) & vbCrLf &
                                vbCrLf & "For all details please download the ECR from server SrvDoc. ", "ECR Approval Notification:   " & " " & row("description").ToString, "SS" & row("number").ToString, False, fileOpen) Then
                         Dim builder As New Common.DbConnectionStringBuilder()
                         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
@@ -436,7 +456,7 @@ Public Class FormAdministration
             Dim i As Integer
             i = Int(row("number").ToString)
 
-            If row("sign").ToString = "" And InStr(row("Rsign").ToString & row("Usign").ToString & row("Lsign").ToString & row("Bsign").ToString & row("Esign").ToString & row("Nsign").ToString & row("Psign").ToString & row("Qsign").ToString & row("Asign").ToString, "APPROVED", CompareMethod.Text) <= 0 And InStr(row("Rsign").ToString & row("Lsign").ToString & row("Usign").ToString & row("Bsign").ToString & row("Esign").ToString & row("Nsign").ToString & row("Psign").ToString & row("Qsign").ToString & row("asign").ToString, "CHECKED", CompareMethod.Text) <= 0 And readDocSign(Int(row("iddoc").ToString), refresh) = "" Then
+            If row("sign").ToString = "" And InStr(row("Rsign").ToString & row("Usign").ToString & row("Lsign").ToString & row("Bsign").ToString & row("Esign").ToString & row("Nsign").ToString & row("Psign").ToString & row("Qsign").ToString & row("Asign").ToString & row("Ssign").ToString, "APPROVED", CompareMethod.Text) <= 0 And InStr(row("Rsign").ToString & row("Lsign").ToString & row("Usign").ToString & row("Bsign").ToString & row("Esign").ToString & row("Nsign").ToString & row("Psign").ToString & row("Qsign").ToString & row("asign").ToString & row("ssign").ToString, "CHECKED", CompareMethod.Text) <= 0 And readDocSign(Int(row("iddoc").ToString), refresh) = "" Then
                 Try
                     Dim fileOpen As Object = downloadFileWinPath(ParameterTable("plant") & "R_PRO_ECR_" & row("DESCRIPTION").ToString, ParameterTable("plant") & "R/" & ParameterTable("plant") & "R_PRO_ECR/")
                     If mailSender("ECR_SignTo", "ECR_SignCopy", "Automatic SrvDoc Message:" & vbCrLf &
@@ -451,6 +471,7 @@ Public Class FormAdministration
                                vbCrLf & "Production Note: " & rtfTrans(row("pnote").ToString) & vbCrLf &
                                vbCrLf & "Time & Methods Note: " & rtfTrans(row("qnote").ToString) & vbCrLf &
                                vbCrLf & "Administration Note: " & rtfTrans(row("anote").ToString) & vbCrLf &
+                               vbCrLf & "Environment And Safety Note: " & rtfTrans(row("snote").ToString) & vbCrLf &
                                vbCrLf & "For all details please download the ECR from server SrvDoc. ", "ECR Signature Notification:   " & " " & row("description").ToString, "SS" & row("number").ToString, False, fileOpen) Then
                         Dim builder As New Common.DbConnectionStringBuilder()
                         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
@@ -520,8 +541,8 @@ Public Class FormAdministration
             tblDoc = DsDoc.Tables("doc")
             Dim sql As String
             Dim RowSearchDoc = From p In tblDoc.Rows
-                                Where (p("header") <> (ParameterTable("plant") & "R_PRO_ECR")) And ((p("notification") = "" And p("sign") = "") Or (p("notification") = "SENT" And p("sign") = "" And (DateTime.Now.Date - DateTime.ParseExact(p("editor").Substring(p("editor").IndexOf("[") + 1, p("editor").LastIndexOf("]") - p("editor").IndexOf("[") - 1), "d/M/yyyy", CultureInfo.CurrentCulture).Date).TotalDays > 2))
-                                Select p
+                               Where (p("header") <> (ParameterTable("plant") & "R_PRO_ECR")) And ((p("notification") = "" And p("sign") = "") Or (p("notification") = "SENT" And p("sign") = "" And (DateTime.Now.Date - DateTime.ParseExact(p("editor").Substring(p("editor").IndexOf("[") + 1, p("editor").LastIndexOf("]") - p("editor").IndexOf("[") - 1), "d/M/yyyy", CultureInfo.CurrentCulture).Date).TotalDays > 2))
+                               Select p
             For Each row In RowSearchDoc
                 listFile = listFile & " " & vbCrLf & row("header").ToString & "_" & row("FileName").ToString & "_" & row("rev").ToString & "." & row("Extension").ToString & " " & vbCrLf
             Next
@@ -640,6 +661,7 @@ Public Class FormAdministration
         If dep = "Q" Then prevStatus = "PRODUCTION_APPROVED"
         If dep = "F" Then prevStatus = "TIME&METHODS_APPROVED"
         If dep = "N" Then prevStatus = "FINANCIAL_APPROVED"
+        If dep = "S" Then prevStatus = "ENVIRONMENT_AND_SAFETY"
     End Function
 
     Function mailSender(ByVal AddlistTo As String, ByVal AddlistCopy As String, ByVal bodyText As String, ByVal SubText As String, ByVal Necr As String, Optional ByVal freq As Boolean = True, Optional ByVal ATTACH As String = "") As Boolean

@@ -829,6 +829,7 @@ Partial Class FormECR
         'ComboBoxR
         '
         Me.ComboBoxR.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBoxR.Enabled = False
         Me.ComboBoxR.FormattingEnabled = True
         Me.ComboBoxR.Items.AddRange(New Object() {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52"})
         Me.ComboBoxR.Location = New System.Drawing.Point(118, 236)
@@ -839,6 +840,7 @@ Partial Class FormECR
         'ComboBoxL
         '
         Me.ComboBoxL.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBoxL.Enabled = False
         Me.ComboBoxL.FormattingEnabled = True
         Me.ComboBoxL.Items.AddRange(New Object() {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52"})
         Me.ComboBoxL.Location = New System.Drawing.Point(351, 236)
@@ -849,6 +851,7 @@ Partial Class FormECR
         'ComboBoxU
         '
         Me.ComboBoxU.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBoxU.Enabled = False
         Me.ComboBoxU.FormattingEnabled = True
         Me.ComboBoxU.Items.AddRange(New Object() {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52"})
         Me.ComboBoxU.Location = New System.Drawing.Point(234, 236)
@@ -859,6 +862,7 @@ Partial Class FormECR
         'ComboBoxB
         '
         Me.ComboBoxB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBoxB.Enabled = False
         Me.ComboBoxB.FormattingEnabled = True
         Me.ComboBoxB.Items.AddRange(New Object() {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52"})
         Me.ComboBoxB.Location = New System.Drawing.Point(466, 236)
@@ -869,6 +873,7 @@ Partial Class FormECR
         'ComboBoxE
         '
         Me.ComboBoxE.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBoxE.Enabled = False
         Me.ComboBoxE.FormattingEnabled = True
         Me.ComboBoxE.Items.AddRange(New Object() {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52"})
         Me.ComboBoxE.Location = New System.Drawing.Point(579, 236)
@@ -879,6 +884,7 @@ Partial Class FormECR
         'ComboBoxN
         '
         Me.ComboBoxN.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBoxN.Enabled = False
         Me.ComboBoxN.FormattingEnabled = True
         Me.ComboBoxN.Items.AddRange(New Object() {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52"})
         Me.ComboBoxN.Location = New System.Drawing.Point(690, 236)
@@ -889,6 +895,7 @@ Partial Class FormECR
         'ComboBoxP
         '
         Me.ComboBoxP.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBoxP.Enabled = False
         Me.ComboBoxP.FormattingEnabled = True
         Me.ComboBoxP.Items.AddRange(New Object() {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52"})
         Me.ComboBoxP.Location = New System.Drawing.Point(801, 236)
@@ -899,6 +906,7 @@ Partial Class FormECR
         'ComboBoxQ
         '
         Me.ComboBoxQ.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBoxQ.Enabled = False
         Me.ComboBoxQ.FormattingEnabled = True
         Me.ComboBoxQ.Items.AddRange(New Object() {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52"})
         Me.ComboBoxQ.Location = New System.Drawing.Point(913, 236)
@@ -929,6 +937,7 @@ Partial Class FormECR
         'ComboBoxS
         '
         Me.ComboBoxS.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBoxS.Enabled = False
         Me.ComboBoxS.FormattingEnabled = True
         Me.ComboBoxS.Items.AddRange(New Object() {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52"})
         Me.ComboBoxS.Location = New System.Drawing.Point(1024, 236)

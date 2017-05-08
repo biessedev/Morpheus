@@ -21,8 +21,21 @@ Public Class FormECR
     Dim MailSent As Boolean
 
     Private Sub FormECR_Disposed(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Disposed
-        checkSave()
         FormStart.Show()
+    End Sub
+
+    Private Sub FormECR_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        If needSave = True Then
+            Dim feedback As MsgBoxResult = MsgBox("Do you want to save changes before closing?", MsgBoxStyle.YesNoCancel)
+            If feedback = MsgBoxResult.Yes Then
+                ButtonSave_Click(Me, EventArgs.Empty)
+                ButtonSave.BackColor = Color.Green
+                ButtonSaveSend.BackColor = Color.Green
+                needSave = False
+            ElseIf feedback = MsgBoxResult.Cancel Then
+                e.Cancel = True
+            End If
+        End If
     End Sub
 
     Private Sub FormECR_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
@@ -80,7 +93,28 @@ Public Class FormECR
         CheckBoxOpen.Checked = True
         CheckBoxCLCV.Enabled = If(controlRight("R") = 3, True, False)
         UpdateComboDepartmentsNumbers()
-        CheckScheduledDateShouldChange()
+
+        'enabling correspondent department for LeadTime Combobox
+        Select Case userDep3
+            Case "R"
+                ComboBoxR.Enabled = True
+            Case "U"
+                ComboBoxU.Enabled = True
+            Case "L"
+                ComboBoxL.Enabled = True
+            Case "B"
+                ComboBoxB.Enabled = True
+            Case "E"
+                ComboBoxE.Enabled = True
+            Case "N"
+                ComboBoxN.Enabled = True
+            Case "P"
+                ComboBoxP.Enabled = True
+            Case "Q"
+                ComboBoxQ.Enabled = True
+            Case "S"
+                ComboBoxS.Enabled = True
+        End Select
     End Sub
 
     ' Fill the ECR combo with all ECR yet open
@@ -249,6 +283,7 @@ Public Class FormECR
                 End If
             End If
 
+            'set initial ButtonScheduledDate Text
             ButtonData.Text = Result(0).Item("date")
 
             'update dates (with DB values) on every Date Button
@@ -263,7 +298,6 @@ Public Class FormECR
             ButtonSL.Text = If(ButtonS.Text.Trim() = "NOT CHECKED", "", Result(0).Item("dateS"))
         End If
 
-        If Not AllSign() Then UpdateDate()
         Try
             If Not AllSign() Then
                 ComboBoxPay.Enabled = True
@@ -302,6 +336,9 @@ Public Class FormECR
         ButtonSave.BackColor = Color.Green
         ButtonSaveSend.BackColor = Color.Green
         needSave = False
+
+        'update CLCV checkbox
+        CheckBoxCLCV.Checked = If(readField("CLCV", EcrN) = "YES", True, False)
     End Sub
 
     Function AllSign(Optional ByVal EcrNumber As Integer = 0) As Boolean
@@ -640,7 +677,7 @@ Public Class FormECR
 
         RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & readField(but & "note", EcrN)
         TextBoxStepCost.Text = readField(but & "cost", EcrN)
-        UpdateDate()
+        UpdateScheduledDateDate()
 
         'update dates (with DB values) on every Date Button
         ButtonRL.Text = If(ButtonR.Text.Trim() = "NOT CHECKED", "", readField("dateR", EcrN))
@@ -695,61 +732,13 @@ Public Class FormECR
         ComboBoxS.SelectedItem = readField("leadTimeS", EcrN)
     End Sub
 
-    Sub ChangeScheduledDate()
-        Dim dateRL As String = ButtonRL.Text.Trim()
-        Dim dateLL As String = ButtonLL.Text.Trim()
-        Dim dateUL As String = ButtonUL.Text.Trim()
-        Dim dateBL As String = ButtonBL.Text.Trim()
-        Dim dateEL As String = ButtonEL.Text.Trim()
-        Dim dateNL As String = ButtonNL.Text.Trim()
-        Dim datePL As String = ButtonPL.Text.Trim()
-        Dim dateQL As String = ButtonQL.Text.Trim()
-        Dim dateSL As String = ButtonSL.Text.Trim()
-
-        Dim dates As List(Of DateTime) = New List(Of DateTime)
-        If Not String.IsNullOrEmpty(dateRL) Then
-            dates.Add(Convert.ToDateTime(dateRL))
-        End If
-        If Not String.IsNullOrEmpty(dateLL) Then
-            dates.Add(Convert.ToDateTime(dateLL))
-        End If
-        If Not String.IsNullOrEmpty(dateUL) Then
-            dates.Add(Convert.ToDateTime(dateUL))
-        End If
-        If Not String.IsNullOrEmpty(dateBL) Then
-            dates.Add(Convert.ToDateTime(dateBL))
-        End If
-        If Not String.IsNullOrEmpty(dateEL) Then
-            dates.Add(Convert.ToDateTime(dateEL))
-        End If
-        If Not String.IsNullOrEmpty(dateNL) Then
-            dates.Add(Convert.ToDateTime(dateNL))
-        End If
-        If Not String.IsNullOrEmpty(datePL) Then
-            dates.Add(Convert.ToDateTime(datePL))
-        End If
-        If Not String.IsNullOrEmpty(dateQL) Then
-            dates.Add(Convert.ToDateTime(dateQL))
-        End If
-        If Not String.IsNullOrEmpty(dateSL) Then
-            dates.Add(Convert.ToDateTime(dateSL))
-        End If
-
-        If dates.Count > 0 Then
-            Dim maxDate = dates.Max()
-            Dim weeksToAdd As Integer() = {ComboBoxR.SelectedItem, ComboBoxL.SelectedItem, ComboBoxU.SelectedItem, ComboBoxB.SelectedItem, ComboBoxE.SelectedItem, ComboBoxN.SelectedItem, ComboBoxP.SelectedItem, ComboBoxQ.SelectedItem, ComboBoxS.SelectedItem}
-            Dim maxLeadTime = weeksToAdd.Max()
-            ButtonData.Text = date_to_string(maxDate.AddDays(maxLeadTime * 7))
-
-            LabelComputeScheduledDate.Text = date_to_string(maxDate) & " + " & maxLeadTime & " weeks" & Environment.NewLine & "           (" & (maxLeadTime * 7) & " days)"
-        End If
-    End Sub
-
     Sub CheckScheduledDateShouldChange()
-        If (ButtonR.Text.Trim() = "CHECKED" And ButtonL.Text.Trim() = "CHECKED" And ButtonU.Text.Trim() = "CHECKED" And ButtonB.Text.Trim() = "CHECKED" And ButtonE.Text.Trim() = "CHECKED" And ButtonN.Text.Trim() = "CHECKED" And ButtonP.Text.Trim() = "CHECKED" And ButtonQ.Text.Trim() = "CHECKED" And ButtonS.Text.Trim() = "CHECKED") Then
-            ChangeScheduledDate()
+        If (ButtonR.Text.Trim() <> "NOT CHECKED" Or ButtonL.Text.Trim() <> "NOT CHECKED" Or ButtonU.Text.Trim() <> "NOT CHECKED" Or ButtonB.Text.Trim() <> "NOT CHECKED" Or ButtonE.Text.Trim() <> "NOT CHECKED" Or ButtonN.Text.Trim() <> "NOT CHECKED" Or ButtonP.Text.Trim() <> "NOT CHECKED" Or ButtonQ.Text.Trim() <> "NOT CHECKED" Or ButtonS.Text.Trim() <> "NOT CHECKED") Then
+            UpdateScheduledDateDate()
+        ElseIf (ButtonR.Text.Trim() = "CHECKED" And ButtonL.Text.Trim() = "CHECKED" And ButtonU.Text.Trim() = "CHECKED" And ButtonB.Text.Trim() = "CHECKED" And ButtonE.Text.Trim() = "CHECKED" And ButtonN.Text.Trim() = "CHECKED" And ButtonP.Text.Trim() = "CHECKED" And ButtonQ.Text.Trim() = "CHECKED" And ButtonS.Text.Trim() = "CHECKED") Then
+            UpdateScheduledDateDate()
         ElseIf ButtonR.Text.Trim() = "APPROVED" Or ButtonL.Text.Trim() = "APPROVED" Or ButtonU.Text.Trim() = "APPROVED" Or ButtonB.Text.Trim() = "APPROVED" Or ButtonE.Text.Trim() = "APPROVED" Or ButtonN.Text.Trim() = "APPROVED" Or ButtonP.Text.Trim() = "APPROVED" Or ButtonQ.Text.Trim() = "APPROVED" Or ButtonS.Text.Trim() = "APPROVED" Then
-            ChangeScheduledDate()
+            UpdateScheduledDateDate()
         ElseIf (ButtonR.Text.Trim() <> "NOT CHECKED" And ButtonR.Text.Trim() <> "CHECKED" And ButtonR.Text.Trim() <> "APPROVED") Or
             (ButtonL.Text.Trim() <> "NOT CHECKED" And ButtonL.Text.Trim() <> "CHECKED" And ButtonL.Text.Trim() <> "APPROVED") Or
             (ButtonU.Text.Trim() <> "NOT CHECKED" And ButtonU.Text.Trim() <> "CHECKED" And ButtonU.Text.Trim() <> "APPROVED") Or
@@ -759,9 +748,23 @@ Public Class FormECR
             (ButtonP.Text.Trim() <> "NOT CHECKED" And ButtonP.Text.Trim() <> "CHECKED" And ButtonP.Text.Trim() <> "APPROVED") Or
             (ButtonQ.Text.Trim() <> "NOT CHECKED" And ButtonQ.Text.Trim() <> "CHECKED" And ButtonQ.Text.Trim() <> "APPROVED") Or
             (ButtonS.Text.Trim() <> "NOT CHECKED" And ButtonS.Text.Trim() <> "CHECKED" And ButtonS.Text.Trim() <> "APPROVED") Then
-            ChangeScheduledDate()
+            UpdateScheduledDateDate()
         Else
             LabelComputeScheduledDate.Text = ""
+        End If
+    End Sub
+
+    Sub CheckPendingSave(ByVal formValue As String, DBValue As String)
+        Dim pos As Integer = InStr(1, ComboBoxEcr.Text, "-", CompareMethod.Text)
+        Dim EcrN As Integer = Val(Mid(ComboBoxEcr.Text, 1, pos))
+
+        If readField(formValue, EcrN) <> DBValue Then
+            ButtonSave.BackColor = Color.Red
+            ButtonSaveSend.BackColor = Color.Red
+            needSave = True
+        Else
+            ButtonSave.BackColor = Color.Green
+            ButtonSaveSend.BackColor = Color.Green
         End If
     End Sub
 
@@ -1001,23 +1004,38 @@ Public Class FormECR
         If ComboBoxEcr.Text <> "" Then Process.Start(fileOpen)
     End Sub
 
-    Sub UpdateDate() Handles DateTimePickerL.ValueChanged, DateTimePickerU.ValueChanged, DateTimePickerE.ValueChanged, DateTimePickerQ.ValueChanged, DateTimePickerp.ValueChanged, DateTimePickerR.ValueChanged, DateTimePickerS.ValueChanged
-        Dim maxVal As Date = string_to_date("2000/01/01")
-        If ButtonRL.Text <> "" Then If maxVal < string_to_date(ButtonRL.Text) Then maxVal = ButtonRL.Text
-        If ButtonUL.Text <> "" Then If maxVal < string_to_date(ButtonUL.Text) Then maxVal = ButtonUL.Text
-        If ButtonLL.Text <> "" Then If maxVal < string_to_date(ButtonLL.Text) Then maxVal = ButtonLL.Text
-        If ButtonBL.Text <> "" Then If maxVal < string_to_date(ButtonBL.Text) Then maxVal = ButtonBL.Text
-        If ButtonEL.Text <> "" Then If maxVal < string_to_date(ButtonEL.Text) Then maxVal = ButtonEL.Text
-        If ButtonNL.Text <> "" Then If maxVal < string_to_date(ButtonNL.Text) Then maxVal = ButtonNL.Text
-        If ButtonPL.Text <> "" Then If maxVal < string_to_date(ButtonPL.Text) Then maxVal = ButtonPL.Text
-        If ButtonQL.Text <> "" Then If maxVal < string_to_date(ButtonQL.Text) Then maxVal = ButtonQL.Text
-        If ButtonSL.Text <> "" Then If maxVal < string_to_date(ButtonSL.Text) Then maxVal = ButtonSL.Text
-        If maxVal < Now Then maxVal = Now
-        If maxVal <> string_to_date("2000/01/01") Then
-            ButtonData.Text = date_to_string(maxVal)
-            WriteField("date", date_to_string(maxVal))
+    Sub UpdateScheduledDateDate() Handles DateTimePickerL.ValueChanged, DateTimePickerU.ValueChanged, DateTimePickerE.ValueChanged, DateTimePickerQ.ValueChanged, DateTimePickerp.ValueChanged, DateTimePickerR.ValueChanged, DateTimePickerS.ValueChanged
+        Dim dateRL As String = ButtonRL.Text.Trim()
+        Dim dateLL As String = ButtonLL.Text.Trim()
+        Dim dateUL As String = ButtonUL.Text.Trim()
+        Dim dateBL As String = ButtonBL.Text.Trim()
+        Dim dateEL As String = ButtonEL.Text.Trim()
+        Dim dateNL As String = ButtonNL.Text.Trim()
+        Dim datePL As String = ButtonPL.Text.Trim()
+        Dim dateQL As String = ButtonQL.Text.Trim()
+        Dim dateSL As String = ButtonSL.Text.Trim()
+
+        Dim dates As List(Of DateTime) = New List(Of DateTime)
+        If dateRL <> "" Then dates.Add(Convert.ToDateTime(dateRL))
+        If dateLL <> "" Then dates.Add(Convert.ToDateTime(dateLL))
+        If dateUL <> "" Then dates.Add(Convert.ToDateTime(dateUL))
+        If dateBL <> "" Then dates.Add(Convert.ToDateTime(dateBL))
+        If dateEL <> "" Then dates.Add(Convert.ToDateTime(dateEL))
+        If dateNL <> "" Then dates.Add(Convert.ToDateTime(dateNL))
+        If datePL <> "" Then dates.Add(Convert.ToDateTime(datePL))
+        If dateQL <> "" Then dates.Add(Convert.ToDateTime(dateQL))
+        If dateSL <> "" Then dates.Add(Convert.ToDateTime(dateSL))
+
+        If dates.Count > 0 Then
+            Dim maxDate = dates.Max()
+            Dim weeksToAdd As Integer() = {ComboBoxR.SelectedItem, ComboBoxL.SelectedItem, ComboBoxU.SelectedItem, ComboBoxB.SelectedItem, ComboBoxE.SelectedItem, ComboBoxN.SelectedItem, ComboBoxP.SelectedItem, ComboBoxQ.SelectedItem, ComboBoxS.SelectedItem}
+            Dim maxLeadTime = weeksToAdd.Max()
+
+            ButtonData.Text = date_to_string(maxDate.AddDays(maxLeadTime * 7))
+            LabelComputeScheduledDate.Text = date_to_string(maxDate) & " + " & maxLeadTime & " weeks" & Environment.NewLine & "           (" & (maxLeadTime * 7) & " days)"
         Else
             ButtonData.Text = ""
+            LabelComputeScheduledDate.Text = ""
         End If
     End Sub
 
@@ -1028,6 +1046,11 @@ Public Class FormECR
     Private Sub ButtonSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSave.Click
         WriteField(userDep3 & "cost", TextBoxStepCost.Text)
         WriteField(userDep3 & "note", Replace(Replace(RichTextBoxStep.Rtf, "\", "\\"), "'", ""))
+
+        Dim pos As Integer = InStr(1, ComboBoxEcr.Text, "-", CompareMethod.Text)
+        Dim EcrN As Integer = Val(Mid(ComboBoxEcr.Text, 1, pos))
+        If readField("date", EcrN).Trim() <> ButtonData.Text.Trim() Then WriteField("date", ButtonData.Text.Trim())
+
         WriteField("leadTimeR", Integer.Parse(ComboBoxR.SelectedItem))
         WriteField("leadTimeU", Integer.Parse(ComboBoxU.SelectedItem))
         WriteField("leadTimeL", Integer.Parse(ComboBoxL.SelectedItem))
@@ -1037,6 +1060,8 @@ Public Class FormECR
         WriteField("leadTimeP", Integer.Parse(ComboBoxP.SelectedItem))
         WriteField("leadTimeQ", Integer.Parse(ComboBoxQ.SelectedItem))
         WriteField("leadTimeS", Integer.Parse(ComboBoxS.SelectedItem))
+        If controlRight("R") = 3 Then WriteField("CLCV", If(CheckBoxCLCV.Checked, "YES", "NO"))
+
         needSave = False
         ButtonSave.BackColor = Color.Green
         UpdateField()
@@ -1059,6 +1084,11 @@ Public Class FormECR
     Private Sub ButtonSaveSend_Click(sender As Object, e As EventArgs) Handles ButtonSaveSend.Click
         WriteField(userDep3 & "cost", TextBoxStepCost.Text)
         WriteField(userDep3 & "note", Replace(Replace(RichTextBoxStep.Rtf, "\", "\\"), "'", ""))
+
+        Dim pos As Integer = InStr(1, ComboBoxEcr.Text, "-", CompareMethod.Text)
+        Dim EcrN As Integer = Val(Mid(ComboBoxEcr.Text, 1, pos))
+        If readField("date", EcrN).Trim() <> ButtonData.Text.Trim() Then WriteField("date", ButtonData.Text.Trim())
+
         WriteField("leadTimeR", Integer.Parse(ComboBoxR.SelectedItem))
         WriteField("leadTimeU", Integer.Parse(ComboBoxU.SelectedItem))
         WriteField("leadTimeL", Integer.Parse(ComboBoxL.SelectedItem))
@@ -1068,6 +1098,8 @@ Public Class FormECR
         WriteField("leadTimeP", Integer.Parse(ComboBoxP.SelectedItem))
         WriteField("leadTimeQ", Integer.Parse(ComboBoxQ.SelectedItem))
         WriteField("leadTimeS", Integer.Parse(ComboBoxS.SelectedItem))
+        If controlRight("R") = 3 Then WriteField("CLCV", If(CheckBoxCLCV.Checked, "YES", "NO"))
+
         needSave = False
         ButtonSave.BackColor = Color.Green
         UpdateField()
@@ -1160,38 +1192,51 @@ Public Class FormECR
 
     Private Sub ComboBoxR_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxR.SelectionChangeCommitted
         CheckScheduledDateShouldChange()
+        CheckPendingSave("leadTimeR", ComboBoxR.SelectedItem)
     End Sub
 
     Private Sub ComboBoxU_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxU.SelectionChangeCommitted
         CheckScheduledDateShouldChange()
+        CheckPendingSave("leadTimeU", ComboBoxU.SelectedItem)
     End Sub
 
     Private Sub ComboBoxL_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxL.SelectionChangeCommitted
         CheckScheduledDateShouldChange()
+        CheckPendingSave("leadTimeL", ComboBoxL.SelectedItem)
     End Sub
 
     Private Sub ComboBoxB_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxB.SelectionChangeCommitted
         CheckScheduledDateShouldChange()
+        CheckPendingSave("leadTimeB", ComboBoxB.SelectedItem)
     End Sub
 
     Private Sub ComboBoxE_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxE.SelectionChangeCommitted
         CheckScheduledDateShouldChange()
+        CheckPendingSave("leadTimeE", ComboBoxE.SelectedItem)
     End Sub
 
     Private Sub ComboBoxN_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxN.SelectionChangeCommitted
         CheckScheduledDateShouldChange()
+        CheckPendingSave("leadTimeN", ComboBoxN.SelectedItem)
     End Sub
 
     Private Sub ComboBoxP_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxP.SelectionChangeCommitted
         CheckScheduledDateShouldChange()
+        CheckPendingSave("leadTimeP", ComboBoxP.SelectedItem)
     End Sub
 
     Private Sub ComboBoxQ_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxQ.SelectionChangeCommitted
         CheckScheduledDateShouldChange()
+        CheckPendingSave("leadTimeQ", ComboBoxQ.SelectedItem)
     End Sub
 
     Private Sub ComboBoxS_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBoxS.SelectionChangeCommitted
         CheckScheduledDateShouldChange()
+        CheckPendingSave("leadTimeS", ComboBoxS.SelectedItem)
+    End Sub
+
+    Private Sub CheckBoxCLCV_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxCLCV.CheckedChanged
+        CheckPendingSave("CLCV", If(CheckBoxCLCV.Checked, "YES", "NO"))
     End Sub
 
     Private Sub CheckConfirm_Click(ByVal sender As Object, ByVal e As EventArgs) Handles CheckConfirm.Click
@@ -1215,8 +1260,8 @@ Public Class FormECR
     End Sub
 
     Private Sub RichTextBoxStep_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles RichTextBoxStep.TextChanged
-        ButtonSave.BackColor = Color.OrangeRed
-        ButtonSaveSend.BackColor = Color.OrangeRed
+        ButtonSave.BackColor = Color.Red
+        ButtonSaveSend.BackColor = Color.Red
         needSave = True
     End Sub
 
