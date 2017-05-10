@@ -48,7 +48,6 @@ Public Class FormAdministration
             End Using
             tblmail = Dsmail.Tables("mail")
         End Using
-
         dep.Add("U")
         dep.Add("L")
         dep.Add("C")
@@ -197,10 +196,10 @@ Public Class FormAdministration
                     mailSender("ECR_" & "VerifyTo", "ECR_" & "VerifyCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please VERIFY the ECR: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
                 End If
 
-                Dim us As String = "RULBENPQAS"
+                Dim us As String = getAllDepartmentInitialsForAutomaticSrvDocMessage()
                 For Each c As String In us
-                    If ((row(us & "sign").ToString = "NOT CHECKED") And (row("ecrcheck").ToString = "YES")) Then
-                        mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the ECR: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
+                    If ((row(c & "sign").ToString = "NOT CHECKED") And (row("ecrcheck").ToString = "YES")) Then
+                        mailSender("ECR_" & c & "_SignTo", "ECR_" & c & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please CHECK the ECR: " & " " & row("description").ToString, "ECR Check Request " & " " & row("description").ToString, row("number").ToString)
                     End If
                 Next
 
@@ -217,10 +216,10 @@ Public Class FormAdministration
                 row("Ssign").ToString <> "NOT CHECKED" And
                 DateDiff(DateInterval.Day, Now, dt) < 2 Then
 
-                    us = "ARULBENPQS"
+                    us = getAllDepartmentInitialsForAutomaticSrvDocMessage()
                     For Each c As String In us
-                        If row(us & "sign").ToString = "CHECKED" Then
-                            mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please APPROVE the Ecr: " & " " & row("description").ToString, "ECR Approval Request " & row("description").ToString, row("number").ToString & "A")
+                        If row(c & "sign").ToString = "CHECKED" Then
+                            mailSender("ECR_" & c & "_SignTo", "ECR_" & c & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please APPROVE the Ecr: " & " " & row("description").ToString, "ECR Approval Request " & row("description").ToString, row("number").ToString & "A")
                         End If
                     Next
 
@@ -229,10 +228,10 @@ Public Class FormAdministration
                 If InStr(row("Rsign").ToString & row("Usign").ToString & row("Lsign").ToString & row("Bsign").ToString & row("Esign").ToString & row("Nsign").ToString & row("Psign").ToString & row("Qsign").ToString & row("Asign").ToString, "CHECKED", CompareMethod.Text) <= 0 And
                     DateDiff(DateInterval.Day, Now, dt) < 2 Then
 
-                    us = "ARULBENPQS"
+                    us = getAllDepartmentInitialsForAutomaticSrvDocMessage()
                     For Each c As String In us
-                        If row(us & "sign").ToString = "APPROVED" Then
-                            mailSender("ECR_" & us & "_SignTo", "ECR_" & us & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please SIGN the Ecr: " & " " & row("description").ToString, "ECR Sign Request " & row("description").ToString, row("number").ToString & "S")
+                        If row(c & "sign").ToString = "APPROVED" Then
+                            mailSender("ECR_" & c & "_SignTo", "ECR_" & c & "_SignCopy", "Automatic SrvDoc Message:" & vbCrLf & vbCrLf & "Please SIGN the Ecr: " & " " & row("description").ToString, "ECR Sign Request " & row("description").ToString, row("number").ToString & "S")
                         End If
                     Next
                 End If
@@ -240,6 +239,10 @@ Public Class FormAdministration
             refresh = False
         Next
     End Sub
+
+    Private Function getAllDepartmentInitialsForAutomaticSrvDocMessage() As String
+        Return "ARULBENPQS"
+    End Function
 
     Sub ecrDocConfirm()
         Dim sql As String, refresh = True
