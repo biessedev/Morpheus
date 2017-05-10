@@ -495,39 +495,48 @@ Public Class FormECR
     Private Sub ButtonR_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonR.Click
         ManagePushButton("R")
         CheckScheduledDateShouldChange()
+        WriteField("date", ButtonData.Text)
     End Sub
     Private Sub ButtonU_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonU.Click
         ManagePushButton("U")
         CheckScheduledDateShouldChange()
+        WriteField("date", ButtonData.Text)
     End Sub
     Private Sub ButtonL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonL.Click
         ManagePushButton("L")
         CheckScheduledDateShouldChange()
+        WriteField("date", ButtonData.Text)
     End Sub
     Private Sub ButtonB_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonB.Click
         ManagePushButton("B")
         CheckScheduledDateShouldChange()
+        WriteField("date", ButtonData.Text)
     End Sub
     Private Sub ButtonE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonE.Click
         ManagePushButton("E")
         CheckScheduledDateShouldChange()
+        WriteField("date", ButtonData.Text)
     End Sub
     Private Sub ButtonN_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonN.Click
         ManagePushButton("N")
         CheckScheduledDateShouldChange()
+        WriteField("date", ButtonData.Text)
     End Sub
     Private Sub ButtonP_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonP.Click
         ManagePushButton("P")
         CheckScheduledDateShouldChange()
+        WriteField("date", ButtonData.Text)
     End Sub
     Private Sub ButtonQ_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonQ.Click
         ManagePushButton("Q")
         CheckScheduledDateShouldChange()
+        WriteField("date", ButtonData.Text)
     End Sub
 
     Private Sub ButtonS_Click(sender As Object, e As EventArgs) Handles ButtonS.Click
         ManagePushButton("S")
         CheckScheduledDateShouldChange()
+        WriteField("date", ButtonData.Text)
     End Sub
 
     Private Sub ButtonA_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonA.Click
@@ -611,6 +620,10 @@ Public Class FormECR
                         WriteField(but & "sign", "NOT CHECKED")
                         Me.Controls("Button" & but).Text = "NOT CHECKED"
                         WriteField("date" & but, "")
+                        If (ButtonR.Text.Trim() = "NOT CHECKED" And ButtonL.Text.Trim() = "NOT CHECKED" And ButtonU.Text.Trim() = "NOT CHECKED" And ButtonB.Text.Trim() = "NOT CHECKED" And ButtonE.Text.Trim() = "NOT CHECKED" And ButtonN.Text.Trim() = "NOT CHECKED" And ButtonP.Text.Trim() = "NOT CHECKED" And ButtonQ.Text.Trim() = "NOT CHECKED" And ButtonS.Text.Trim() = "NOT CHECKED") Then
+                            ButtonData.Text = "01/01/2000"
+                            WriteField("date", "01/01/2000")
+                        End If
                     End If
 
                 ElseIf Me.Controls("Button" & but).Text = "NOT CHECKED" Then
@@ -632,6 +645,10 @@ Public Class FormECR
                             WriteField(but & "sign", "NOT CHECKED")
                             Me.Controls("Button" & but).Text = "NOT CHECKED"
                             WriteField("date" & but, "")
+                            If (ButtonR.Text.Trim() = "NOT CHECKED" And ButtonL.Text.Trim() = "NOT CHECKED" And ButtonU.Text.Trim() = "NOT CHECKED" And ButtonB.Text.Trim() = "NOT CHECKED" And ButtonE.Text.Trim() = "NOT CHECKED" And ButtonN.Text.Trim() = "NOT CHECKED" And ButtonP.Text.Trim() = "NOT CHECKED" And ButtonQ.Text.Trim() = "NOT CHECKED" And ButtonS.Text.Trim() = "NOT CHECKED") Then
+                                ButtonData.Text = "01/01/2000"
+                                WriteField("date", "01/01/2000")
+                            End If
                         Else
                             ListBoxLog.Items.Add("You can't remove your signature anymore!")
                         End If
@@ -677,7 +694,7 @@ Public Class FormECR
 
         RichTextBoxStep.Rtf = "{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Microsoft Sans Serif;}}" & readField(but & "note", EcrN)
         TextBoxStepCost.Text = readField(but & "cost", EcrN)
-        UpdateScheduledDateDate()
+        'UpdateScheduledDateDate()
 
         'update dates (with DB values) on every Date Button
         ButtonRL.Text = If(ButtonR.Text.Trim() = "NOT CHECKED", "", readField("dateR", EcrN))
@@ -1237,6 +1254,10 @@ Public Class FormECR
 
     Private Sub CheckBoxCLCV_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxCLCV.CheckedChanged
         CheckPendingSave("CLCV", If(CheckBoxCLCV.Checked, "YES", "NO"))
+    End Sub
+
+    Private Sub ButtonData_TextChanged(sender As Object, e As EventArgs) Handles ButtonData.TextChanged
+
     End Sub
 
     Private Sub CheckConfirm_Click(ByVal sender As Object, ByVal e As EventArgs) Handles CheckConfirm.Click
