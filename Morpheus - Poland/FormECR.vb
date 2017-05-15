@@ -1253,7 +1253,15 @@ Public Class FormECR
     End Sub
 
     Private Sub CheckBoxCLCV_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBoxCLCV.CheckedChanged
-        CheckPendingSave("CLCV", If(CheckBoxCLCV.Checked, "YES", "NO"))
+        Dim pos As Integer = InStr(1, ComboBoxEcr.Text, "-", CompareMethod.Text)
+        Dim EcrN As Integer = Val(Mid(ComboBoxEcr.Text, 1, pos))
+
+        If readField("CLCV", EcrN) <> If(CheckBoxCLCV.Checked, "YES", "NO") Then
+            ButtonSave.BackColor = Color.Red
+            needSave = True
+        Else
+            ButtonSave.BackColor = Color.Green
+        End If
     End Sub
 
     Private Sub ButtonData_TextChanged(sender As Object, e As EventArgs) Handles ButtonData.TextChanged
