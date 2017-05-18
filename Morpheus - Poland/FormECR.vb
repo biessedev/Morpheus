@@ -779,9 +779,6 @@ Public Class FormECR
             ButtonSave.BackColor = Color.Red
             ButtonSaveSend.BackColor = Color.Red
             needSave = True
-        Else
-            ButtonSave.BackColor = Color.Green
-            ButtonSaveSend.BackColor = Color.Green
         End If
     End Sub
 
@@ -1259,8 +1256,6 @@ Public Class FormECR
         If readField("CLCV", EcrN) <> If(CheckBoxCLCV.Checked, "YES", "NO") Then
             ButtonSave.BackColor = Color.Red
             needSave = True
-        Else
-            ButtonSave.BackColor = Color.Green
         End If
     End Sub
 
