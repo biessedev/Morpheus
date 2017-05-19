@@ -225,7 +225,7 @@ Public Class FormAdministration
 
                 End If
 
-                If InStr(row("Rsign").ToString & row("Usign").ToString & row("Lsign").ToString & row("Bsign").ToString & row("Esign").ToString & row("Nsign").ToString & row("Psign").ToString & row("Qsign").ToString & row("Asign").ToString, "CHECKED", CompareMethod.Text) <= 0 And
+                If InStr(row("Rsign").ToString & row("Usign").ToString & row("Lsign").ToString & row("Bsign").ToString & row("Esign").ToString & row("Nsign").ToString & row("Psign").ToString & row("Qsign").ToString & row("Asign").ToString & row("Ssign").ToString, "CHECKED", CompareMethod.Text) <= 0 And
                     DateDiff(DateInterval.Day, Now, dt) < 2 Then
 
                     us = getAllDepartmentInitialsForAutomaticSrvDocMessage()
