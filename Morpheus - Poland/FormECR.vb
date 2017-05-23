@@ -124,7 +124,7 @@ Public Class FormECR
         Dim builder As New Common.DbConnectionStringBuilder()
         builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
         Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-            Using AdapterEcr As New MySqlDataAdapter("SELECT * FROM Ecr", con)
+            Using AdapterEcr As New MySqlDataAdapter("SELECT * FROM Ecr where `number`> 0 and `Description` not like '%template%'", con)
                 AdapterEcr.Fill(DsEcr, "ecr")
             End Using
         End Using
@@ -618,6 +618,8 @@ Public Class FormECR
                         'End If 
                     ElseIf MsgBox("Do you want to remove the status CHECKED?", MsgBoxStyle.YesNo, "ECR Question") = MsgBoxResult.Yes Then
                         WriteField(but & "sign", "NOT CHECKED")
+                        WriteField("leadTime" & but, "0")
+                        Me.Controls("ComboBox" & but).Text = 0
                         Me.Controls("Button" & but).Text = "NOT CHECKED"
                         WriteField("date" & but, "")
                         If (ButtonR.Text.Trim() = "NOT CHECKED" And ButtonL.Text.Trim() = "NOT CHECKED" And ButtonU.Text.Trim() = "NOT CHECKED" And ButtonB.Text.Trim() = "NOT CHECKED" And ButtonE.Text.Trim() = "NOT CHECKED" And ButtonN.Text.Trim() = "NOT CHECKED" And ButtonP.Text.Trim() = "NOT CHECKED" And ButtonQ.Text.Trim() = "NOT CHECKED" And ButtonS.Text.Trim() = "NOT CHECKED") Then
@@ -643,7 +645,9 @@ Public Class FormECR
                     If MsgBox("Do you want to remove your signature?", MsgBoxStyle.YesNo, "ECR Question") = MsgBoxResult.Yes Then
                         If Not AllSign() Then
                             WriteField(but & "sign", "NOT CHECKED")
+                            WriteField("leadTime" & but, "0")
                             Me.Controls("Button" & but).Text = "NOT CHECKED"
+                            Me.Controls("ComboBox" & but).Text = 0
                             WriteField("date" & but, "")
                             If (ButtonR.Text.Trim() = "NOT CHECKED" And ButtonL.Text.Trim() = "NOT CHECKED" And ButtonU.Text.Trim() = "NOT CHECKED" And ButtonB.Text.Trim() = "NOT CHECKED" And ButtonE.Text.Trim() = "NOT CHECKED" And ButtonN.Text.Trim() = "NOT CHECKED" And ButtonP.Text.Trim() = "NOT CHECKED" And ButtonQ.Text.Trim() = "NOT CHECKED" And ButtonS.Text.Trim() = "NOT CHECKED") Then
                                 ButtonData.Text = "01/01/2000"
