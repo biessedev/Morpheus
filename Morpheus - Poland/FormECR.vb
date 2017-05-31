@@ -1093,7 +1093,7 @@ Public Class FormECR
         UpdateField()
 
         Dim bodyText As String, subject As String
-        bodyText = "Automatic SrvDoc Message:" & vbLf & vbLf & GetDepartamentName(userDep3) & vbLf & "LeadTime: " & Me.Controls("ComboBox" & userDep3).Text & vbLf & "Note: " & RichTextBoxStep.Text
+        bodyText = "Automatic SrvDoc Message:" & vbLf & vbLf & GetDepartamentName(userDep3) & vbLf & "LeadTime: " & Me.Controls("ComboBox" & userDep3).Text & If(Me.Controls("ComboBox" & userDep3).Text.Equals("1"), " week", " weeks") & vbLf & "Note: " & RichTextBoxStep.Text
         subject = "ECR Note Change Notification:    " & ComboBoxEcr.Text
         SendMail("ECR_VerifyTo; ECR_R_SignTo; ECR_U_SignTo; ECR_L_SignTo; ECR_B_SignTo; ECR_E_SignTo; ECR_N_SignTo; ECR_P_SignTo; ECR_Q_SignTo; ECR_S_SignTo",
                  "ECR_VerifyCopy; ECR_R_SignCopy; ECR_U_SignCopy; ECR_L_SignCopy; ECR_B_SignCopy; ECR_E_SignCopy; ECR_N_SignCopy; ECR_P_SignCopy; ECR_Q_SignCopy; ECR_S_SignCopy;",
