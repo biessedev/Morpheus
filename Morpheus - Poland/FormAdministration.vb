@@ -213,7 +213,7 @@ Public Class FormAdministration
                 row("Nsign").ToString <> "NOT CHECKED" And
                 row("Psign").ToString <> "NOT CHECKED" And
                 row("Qsign").ToString <> "NOT CHECKED" And
-                row("Ssign").ToString <> "NOT CHECKED"Then
+                row("Ssign").ToString <> "NOT CHECKED" Then
 
                     us = getAllDepartmentInitialsForAutomaticSrvDocMessage()
                     For Each c As String In us
@@ -287,6 +287,15 @@ Public Class FormAdministration
                 Try
                     Dim fileOpen As Object = downloadFileWinPath(ParameterTable("plant") & "R_PRO_ECR_" & row("DESCRIPTION").ToString, ParameterTable("plant") & "R/" & ParameterTable("plant") & "R_PRO_ECR/")
                     If mailSender("ECR_SignTo", "ECR_SignCopy", "Automatic SrvDoc Message:" & vbCrLf &
+                               vbCrLf & "R&D LT: " & row("leadTimeR").ToString & If(row("leadTimeR").ToString.Equals("1"), " week", " weeks") &
+                               vbCrLf & "Purchasing LT: " & row("leadTimeU").ToString & If(row("leadTimeU").ToString.Equals("1"), " week", " weeks") &
+                               vbCrLf & "Logistic LT: " & row("leadTimeL").ToString & If(row("leadTimeL").ToString.Equals("1"), " week", " weeks") &
+                               vbCrLf & "Process Engineering LT: " & row("leadTimeB").ToString & If(row("leadTimeB").ToString.Equals("1"), " week", " weeks") &
+                               vbCrLf & "Testing Engineering LT: " & row("leadTimeE").ToString & If(row("leadTimeE").ToString.Equals("1"), " week", " weeks") &
+                               vbCrLf & "Quality LT: " & row("leadTimeN").ToString & If(row("leadTimeN").ToString.Equals("1"), " week", " weeks") &
+                               vbCrLf & "Production LT: " & row("leadTimeP").ToString & If(row("leadTimeP").ToString.Equals("1"), " week", " weeks") &
+                               vbCrLf & "Time & Methods LT: " & row("leadTimeQ").ToString & If(row("leadTimeQ").ToString.Equals("1"), " week", " weeks") &
+                               vbCrLf & "Environment & Safety LT: " & row("leadTimeS").ToString & If(row("leadTimeS").ToString.Equals("1"), " week", " weeks") & vbCrLf &
                                vbCrLf & row("description").ToString & " -- > (Result: Approved) " &
                                vbCrLf & "Approval Data : " & row("date").ToString & "( yyyy/mm/dd )" & vbCrLf &
                                vbCrLf & vbCrLf & "R&D Note: " & rtfTrans(row("rnote").ToString) & vbCrLf &

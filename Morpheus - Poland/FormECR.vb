@@ -7,6 +7,7 @@ Imports System.Globalization
 Imports System.Net.Mail
 Imports System.Net
 Imports System.Configuration
+Imports System.Dynamic
 Imports System.Linq
 
 Public Class FormECR
@@ -1062,26 +1063,7 @@ Public Class FormECR
     End Sub
 
     Private Sub ButtonSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonSave.Click
-        WriteField(userDep3 & "cost", TextBoxStepCost.Text)
-        WriteField(userDep3 & "note", Replace(Replace(RichTextBoxStep.Rtf, "\", "\\"), "'", ""))
-
-        Dim pos As Integer = InStr(1, ComboBoxEcr.Text, "-", CompareMethod.Text)
-        Dim EcrN As Integer = Val(Mid(ComboBoxEcr.Text, 1, pos))
-        If readField("date", EcrN).Trim() <> ButtonData.Text.Trim() Then WriteField("date", ButtonData.Text.Trim())
-
-        WriteField("leadTimeR", Integer.Parse(ComboBoxR.SelectedItem))
-        WriteField("leadTimeU", Integer.Parse(ComboBoxU.SelectedItem))
-        WriteField("leadTimeL", Integer.Parse(ComboBoxL.SelectedItem))
-        WriteField("leadTimeB", Integer.Parse(ComboBoxB.SelectedItem))
-        WriteField("leadTimeE", Integer.Parse(ComboBoxE.SelectedItem))
-        WriteField("leadTimeN", Integer.Parse(ComboBoxN.SelectedItem))
-        WriteField("leadTimeP", Integer.Parse(ComboBoxP.SelectedItem))
-        WriteField("leadTimeQ", Integer.Parse(ComboBoxQ.SelectedItem))
-        WriteField("leadTimeS", Integer.Parse(ComboBoxS.SelectedItem))
-        If controlRight("R") = 3 Then WriteField("CLCV", If(CheckBoxCLCV.Checked, "YES", "NO"))
-
-        needSave = False
-        ButtonSave.BackColor = Color.Green
+        SaveData()
         UpdateField()
     End Sub
 
@@ -1100,6 +1082,20 @@ Public Class FormECR
     End Function
 
     Private Sub ButtonSaveSend_Click(sender As Object, e As EventArgs) Handles ButtonSaveSend.Click
+        SaveData()
+        UpdateField()
+
+        Dim bodyText As String, subject As String
+        bodyText = "Automatic SrvDoc Message:" & vbLf & vbLf & GetDepartamentName(userDep3) & vbLf & "LeadTime: " & Me.Controls("ComboBox" & userDep3).Text & vbLf & "Note: " & RichTextBoxStep.Text
+        subject = "ECR Note Change Notification:    " & ComboBoxEcr.Text
+        SendMail("ECR_VerifyTo; ECR_R_SignTo; ECR_U_SignTo; ECR_L_SignTo; ECR_B_SignTo; ECR_E_SignTo; ECR_N_SignTo; ECR_P_SignTo; ECR_Q_SignTo; ECR_S_SignTo",
+                 "ECR_VerifyCopy; ECR_R_SignCopy; ECR_U_SignCopy; ECR_L_SignCopy; ECR_B_SignCopy; ECR_E_SignCopy; ECR_N_SignCopy; ECR_P_SignCopy; ECR_Q_SignCopy; ECR_S_SignCopy;",
+                 bodyText, subject)
+
+    End Sub
+
+    Private Sub SaveData()
+
         WriteField(userDep3 & "cost", TextBoxStepCost.Text)
         WriteField(userDep3 & "note", Replace(Replace(RichTextBoxStep.Rtf, "\", "\\"), "'", ""))
 
@@ -1120,15 +1116,6 @@ Public Class FormECR
 
         needSave = False
         ButtonSave.BackColor = Color.Green
-        UpdateField()
-
-        Dim bodyText As String, subject As String
-        bodyText = "Automatic SrvDoc Message:" & vbLf & vbLf & GetDepartamentName(userDep3) & " Note: " & RichTextBoxStep.Text
-        subject = "ECR Note Change Notification:    " & ComboBoxEcr.Text
-        SendMail("ECR_VerifyTo; ECR_R_SignTo; ECR_U_SignTo; ECR_L_SignTo; ECR_B_SignTo; ECR_E_SignTo; ECR_N_SignTo; ECR_P_SignTo; ECR_Q_SignTo; ECR_S_SignTo",
-                 "ECR_VerifyCopy; ECR_R_SignCopy; ECR_U_SignCopy; ECR_L_SignCopy; ECR_B_SignCopy; ECR_E_SignCopy; ECR_N_SignCopy; ECR_P_SignCopy; ECR_Q_SignCopy; ECR_S_SignCopy;",
-                 bodyText, subject)
-
     End Sub
 
     Function GetEmails(ByVal emailsStr As String) As String
