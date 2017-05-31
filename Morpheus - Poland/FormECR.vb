@@ -116,6 +116,12 @@ Public Class FormECR
             Case "S"
                 ComboBoxS.Enabled = True
         End Select
+
+        setLeadTimeAvailability()
+    End Sub
+
+    Sub setLeadTimeAvailability()
+        Me.Controls("ComboBox" & userDep3).Enabled =Not Me.Controls("Button" & userDep3).Text.Contains("NOT CHECKED")
     End Sub
 
     ' Fill the ECR combo with all ECR yet open
@@ -716,6 +722,7 @@ Public Class FormECR
         ButtonSave.BackColor = Color.Green
         ButtonSaveSend.BackColor = Color.Green
         needSave = False
+        setLeadTimeAvailability()
     End Sub
     Sub ResetColorButton()
         ButtonR.BackColor = Color.LightGray
