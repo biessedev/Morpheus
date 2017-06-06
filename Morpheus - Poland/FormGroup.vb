@@ -166,7 +166,7 @@ Public Class FormGroup
     End Sub
 
     Private Sub ComboBoxGroup_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxGroup.TextChanged
-        PopulateComboBoxName()
+        PopulateComboBoxName(ComboBoxName.Text)
     End Sub
 
     Private Sub ButtonAddMch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonAdd.Click
@@ -286,10 +286,10 @@ Public Class FormGroup
 
             End Try
         End If
-        PopulateComboBoxName()
+        PopulateComboBoxName(ComboBoxName.Text)
     End Sub
 
-    Private Sub PopulateComboBoxName()
+    Private Sub PopulateComboBoxName(oldValue As String)
         Try
             Dim i As Integer
             ComboBoxName.Text = ""
@@ -306,8 +306,11 @@ Public Class FormGroup
                 For Each product In dictionaryForProd
                     If InStr(product.Value.ToString, header & "[" & fileName & "]") = 0 Then fileDocExist = False
                 Next
-                If fileDocExist = False or ListViewForProducts.SelectedItems.Count = 0 Then ComboBoxName.Items.Add(resultdoc(i).Item("filename").ToString)
+                If fileDocExist = False Or ListViewForProducts.SelectedItems.Count = 0 Then ComboBoxName.Items.Add(resultdoc(i).Item("filename").ToString)
             Next
+            If (ComboBoxName.Items.Contains(oldValue)) Then
+                ComboBoxName.Text = oldValue
+            End If
         Catch ex As Exception
             Debug.WriteLine(ex.Message)
         End Try
