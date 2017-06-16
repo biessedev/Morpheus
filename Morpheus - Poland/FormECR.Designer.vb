@@ -23,6 +23,7 @@ Partial Class FormECR
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("")
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormECR))
         Me.ButtonR = New System.Windows.Forms.Button()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
@@ -796,7 +797,7 @@ Partial Class FormECR
         '
         'PictureBox1
         '
-        Me.PictureBox1.Image = Global.MORPHEUS.My.Resources.Resources.BitronLogo
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
         Me.PictureBox1.Location = New System.Drawing.Point(1002, 8)
         Me.PictureBox1.Margin = New System.Windows.Forms.Padding(2)
         Me.PictureBox1.Name = "PictureBox1"

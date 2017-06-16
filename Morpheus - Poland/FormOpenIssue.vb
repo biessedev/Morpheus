@@ -89,13 +89,13 @@ Public Class FormOpenIssue
 
         Dim sql As String
         If TextBoxOpenIssueDescription.Text <> "" And ComboBoxGroup.Text <> "" Then
-            OpenIssue = Replace(OpenIssue, ComboBoxGroup.Text & "[" & TextBoxOpenIssueDescription.Text & "];", "")
-            OpenIssue = OpenIssue & ComboBoxGroup.Text & "[" & Now.Day & "/" & Now.Month & "/" & Now.Year & "(d/m/y) ; " & TextBoxOpenIssueDescription.Text & "];"
+            OpenIssue = Replace(OpenIssue, ComboBoxGroup.Text & "[" & Replace(TextBoxOpenIssueDescription.Text, ";", ".") & "];", "")
+            OpenIssue = OpenIssue & ComboBoxGroup.Text & "[" & Now.Day & "/" & Now.Month & "/" & Now.Year & " (d/m/y); " & Replace(TextBoxOpenIssueDescription.Text, ";", ".") & "];"
             Try
                 Dim  builder As  New Common.DbConnectionStringBuilder()
                 builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                 Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                sql = "UPDATE `" & DBName & "`.`product` SET `OpenIssue` = '" & UCase(OpenIssue) & "' WHERE `product`.`BitronPN` = '" & Replace(Replace(Trim(FormProduct.TextBoxProduct.Text), ";", ","), "R&D", "R & D") & "' ;"
+                    sql = "UPDATE `" & DBName & "`.`product` SET `OpenIssue` = '" & OpenIssue & "' WHERE `product`.`BitronPN` = '" & Replace(Replace(Trim(FormProduct.TextBoxProduct.Text), ";", ","), "R&D", "R & D") & "';"
                     Dim cmd = New MySqlCommand(sql, con)
                     cmd.ExecuteNonQuery()
                 End Using
@@ -131,8 +131,8 @@ Public Class FormOpenIssue
                 Dim  builder As  New Common.DbConnectionStringBuilder()
                 builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                 Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                sql = "UPDATE `" & DBName & "`.`product` SET `OpenIssue` = '" & OpenIssue &
-                        "' WHERE `product`.`BitronPN` = '" & Trim(FormProduct.TextBoxProduct.Text) & "' ;"
+                    sql = "UPDATE `" & DBName & "`.`product` SET `OpenIssue` = '" & OpenIssue &
+                        "' WHERE `product`.`BitronPN` = '" & Trim(FormProduct.TextBoxProduct.Text) & "';"
                     Dim cmd = New MySqlCommand(sql, con)
                     cmd.ExecuteNonQuery()
                 End Using
@@ -149,7 +149,7 @@ Public Class FormOpenIssue
         fillList()
 
         If oldOpenIssue <> OpenIssue Then
-            MsgBox("Deleted Issue : " & dept & "[" & opi & "]")
+            MsgBox("Deleted Issue: " & dept & "[" & opi & "]")
         End If
         Dim column As ColumnHeader
         For Each column In ListViewGRU.Columns
@@ -166,15 +166,15 @@ Public Class FormOpenIssue
         If ListViewGRU.SelectedItems.Count = 1 Then
 
             dept = ComboBoxGroup.Text
-            opi = dateFromDescription & TextBoxOpenIssueDescription.Text
+            opi = dateFromDescription & Replace(TextBoxOpenIssueDescription.Text, ";", ".")
 
             OpenIssue = Replace(OpenIssue, ListViewGRU.SelectedItems.Item(0).SubItems(0).Text & "[" & ListViewGRU.SelectedItems.Item(0).SubItems(1).Text & "];", dept & "[" & opi & "];", , , CompareMethod.Text)
             Try
                 Dim  builder As  New Common.DbConnectionStringBuilder()
                 builder.ConnectionString = ConfigurationManager.ConnectionStrings(hostName).ConnectionString
                 Using con = NewConnectionMySql(builder("host"), builder("database"), builder("username"), builder("password"))
-	                sql = "UPDATE `" & DBName & "`.`product` SET `OpenIssue` = '" & OpenIssue &
-                        "' WHERE `product`.`BitronPN` = '" & Trim(FormProduct.TextBoxProduct.Text) & "' ;"
+                    sql = "UPDATE `" & DBName & "`.`product` SET `OpenIssue` = '" & OpenIssue &
+                        "' WHERE `product`.`BitronPN` = '" & Trim(FormProduct.TextBoxProduct.Text) & "';"
                     Dim cmd = New MySqlCommand(sql, con)
                     cmd.ExecuteNonQuery()
                 End Using
@@ -191,7 +191,7 @@ Public Class FormOpenIssue
         fillList()
 
         If Len(oldOpenIssue) <> Len(OpenIssue) Then
-            MsgBox("Updated Issue : " & dept & "[" & opi & "]")
+            MsgBox("Updated Issue: " & dept & "[" & opi & "]")
         End If
         Dim column As ColumnHeader
         For Each column In ListViewGRU.Columns
@@ -232,4 +232,7 @@ Public Class FormOpenIssue
         End If
     End Sub
     
+    Private Sub TextBoxOpenIssueDescription_TextChanged(sender As Object, e As EventArgs) Handles TextBoxOpenIssueDescription.TextChanged
+
+    End Sub
 End Class

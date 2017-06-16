@@ -111,4 +111,8 @@ Public Class FormNPIDocMamagement
         FormSamples.Show()
         FormSamples.Focus()
     End Sub
+
+    Private Sub Cob_TypeDoc_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Cob_TypeDoc.SelectedIndexChanged
+
+    End Sub
 End Class

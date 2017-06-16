@@ -634,19 +634,19 @@ Partial Class FormProduct
         ListViewItem2.StateImageIndex = 0
         Me.ListViewMch.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
         Me.ListViewMch.Location = New System.Drawing.Point(43, 231)
-        Me.ListViewMch.MultiSelect = false
+        Me.ListViewMch.MultiSelect = False
         Me.ListViewMch.Name = "ListViewMch"
         Me.ListViewMch.Size = New System.Drawing.Size(312, 94)
         Me.ListViewMch.TabIndex = 212
-        Me.ListViewMch.UseCompatibleStateImageBehavior = false
+        Me.ListViewMch.UseCompatibleStateImageBehavior = False
         Me.ListViewMch.View = System.Windows.Forms.View.Details
-        Me.ListViewMch.Visible = false
+        Me.ListViewMch.Visible = False
         '
         'Label8
         '
-        Me.Label8.AutoSize = true
+        Me.Label8.AutoSize = True
         Me.Label8.BackColor = System.Drawing.Color.Transparent
-        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label8.Location = New System.Drawing.Point(379, 137)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(20, 13)
@@ -655,7 +655,7 @@ Partial Class FormProduct
         '
         'TextBoxLS
         '
-        Me.TextBoxLS.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.TextBoxLS.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TextBoxLS.Location = New System.Drawing.Point(380, 153)
         Me.TextBoxLS.Name = "TextBoxLS"
         Me.TextBoxLS.Size = New System.Drawing.Size(156, 22)
@@ -666,8 +666,8 @@ Partial Class FormProduct
         Me.ButtonExport.BackColor = System.Drawing.Color.Transparent
         Me.ButtonExport.FlatAppearance.BorderSize = 0
         Me.ButtonExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ButtonExport.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.ButtonExport.Image = CType(resources.GetObject("ButtonExport.Image"),System.Drawing.Image)
+        Me.ButtonExport.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ButtonExport.Image = CType(resources.GetObject("ButtonExport.Image"), System.Drawing.Image)
         Me.ButtonExport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.ButtonExport.Location = New System.Drawing.Point(562, 283)
         Me.ButtonExport.Name = "ButtonExport"
@@ -675,26 +675,26 @@ Partial Class FormProduct
         Me.ButtonExport.TabIndex = 236
         Me.ButtonExport.Text = "     Export List"
         Me.ButtonExport.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.ButtonExport.UseVisualStyleBackColor = false
+        Me.ButtonExport.UseVisualStyleBackColor = False
         '
         'CheckBoxVis
         '
-        Me.CheckBoxVis.AutoSize = true
+        Me.CheckBoxVis.AutoSize = True
         Me.CheckBoxVis.BackColor = System.Drawing.Color.Transparent
-        Me.CheckBoxVis.Checked = true
+        Me.CheckBoxVis.Checked = True
         Me.CheckBoxVis.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckBoxVis.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.CheckBoxVis.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CheckBoxVis.Location = New System.Drawing.Point(43, 337)
         Me.CheckBoxVis.Name = "CheckBoxVis"
         Me.CheckBoxVis.Size = New System.Drawing.Size(138, 17)
         Me.CheckBoxVis.TabIndex = 237
         Me.CheckBoxVis.Text = "Show Activity / Product"
-        Me.CheckBoxVis.UseVisualStyleBackColor = false
+        Me.CheckBoxVis.UseVisualStyleBackColor = False
         '
         'PictureBox1
         '
-        Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.PictureBox1.Image = Global.MORPHEUS.My.Resources.Resources.BitronLogo
+        Me.PictureBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
         Me.PictureBox1.Location = New System.Drawing.Point(899, 666)
         Me.PictureBox1.Margin = New System.Windows.Forms.Padding(2)
         Me.PictureBox1.Name = "PictureBox1"

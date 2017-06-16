@@ -88,7 +88,7 @@ Public Class FormProduct
         ComboBoxStatus.Items.Add("R&D_APPROVED")
         ComboBoxStatus.Items.Add("PURCHASING_APPROVED")
         ComboBoxStatus.Items.Add("LOGISTIC_APPROVED")
-        ComboBoxStatus.Items.Add("CUSTOMER_APPROVED")
+        ComboBoxStatus.Items.Add("CUSTOMER_SERVICE_APPROVED")
         ComboBoxStatus.Items.Add("PROCESS_ENG_APPROVED")
         ComboBoxStatus.Items.Add("TESTING_ENG_APPROVED")
         ComboBoxStatus.Items.Add("PRODUCTION_APPROVED")
@@ -647,9 +647,13 @@ Public Class FormProduct
                                    & result(i).Item("thirdtype").ToString)
             End If
         Next
-        If FormGroup.ComboBoxGroup.Items.Count > 0 Then FormGroup.ComboBoxGroup.Text = FormGroup.ComboBoxGroup.Items(FormGroup.ComboBoxGroup.Items.Count - 1)
+        If FormGroup.ComboBoxGroup.Items.Count > 0 Then
+            FormGroup.ComboBoxGroup.Text = FormGroup.ComboBoxGroup.Items(FormGroup.ComboBoxGroup.Items.Count - 1)
         FormGroup.ComboBoxGroup.Text = FormGroup.ComboBoxGroup.Items(FormGroup.ComboBoxGroup.Items.Count - 1)
+        End If
+
         FormGroup.Show()
+
     End Sub
 
     Private Sub ButtonOpenIssue_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonOpenIssue.Click
@@ -676,16 +680,16 @@ Public Class FormProduct
 
                 If controlRight("W") >= 2 Then
 
-                    If controlRight("C") >= 2 Then FormOpenIssue.ComboBoxGroup.Items.Add("CUSTOMER SERVICE")
-                    If controlRight("F") >= 2 Then FormOpenIssue.ComboBoxGroup.Items.Add("FINANCIAL")
-                    If controlRight("L") >= 2 Then FormOpenIssue.ComboBoxGroup.Items.Add("LOGISTIC")
-                    If controlRight("B") >= 2 Then FormOpenIssue.ComboBoxGroup.Items.Add("PROCESS ENGINEERING")
-                    If controlRight("P") >= 2 Then FormOpenIssue.ComboBoxGroup.Items.Add("PRODUCTION")
-                    If controlRight("U") >= 2 Then FormOpenIssue.ComboBoxGroup.Items.Add("PURCHASING")
-                    If controlRight("N") >= 2 Then FormOpenIssue.ComboBoxGroup.Items.Add("QUALITY")
                     If controlRight("R") >= 2 Then FormOpenIssue.ComboBoxGroup.Items.Add("R&D")
+                    If controlRight("U") >= 2 Then FormOpenIssue.ComboBoxGroup.Items.Add("PURCHASING")
+                    If controlRight("L") >= 2 Then FormOpenIssue.ComboBoxGroup.Items.Add("LOGISTIC")
+                    If controlRight("C") >= 2 Then FormOpenIssue.ComboBoxGroup.Items.Add("CUSTOMER SERVICE")
+                    If controlRight("B") >= 2 Then FormOpenIssue.ComboBoxGroup.Items.Add("PROCESS ENGINEERING")
                     If controlRight("E") >= 2 Then FormOpenIssue.ComboBoxGroup.Items.Add("TESTING ENGINEERING")
+                    If controlRight("N") >= 2 Then FormOpenIssue.ComboBoxGroup.Items.Add("QUALITY")
+                    If controlRight("P") >= 2 Then FormOpenIssue.ComboBoxGroup.Items.Add("PRODUCTION")
                     If controlRight("Q") >= 2 Then FormOpenIssue.ComboBoxGroup.Items.Add("TIME&METHODS")
+                    If controlRight("F") >= 2 Then FormOpenIssue.ComboBoxGroup.Items.Add("FINANCIAL")
 
                 End If
                 FormOpenIssue.ComboBoxGroup.Text = ""
@@ -725,21 +729,21 @@ Public Class FormProduct
                             If (ComboBoxStatus.Text = "LOGISTIC_APPROVED" Or ComboBoxStatus.Text = "PURCHASING_APPROVED") _
                             And (currentStatus = "LOGISTIC_APPROVED" Or currentStatus = "PURCHASING_APPROVED") Then
                                 StatusUpdate(result(0).Item("StatusUpdateDate").ToString)
-                            ElseIf (ComboBoxStatus.Text = "CUSTOMER_APPROVED" Or ComboBoxStatus.Text = "LOGISTIC_APPROVED") _
-                            And (currentStatus = "CUSTOMER_APPROVED" Or currentStatus = "LOGISTIC_APPROVED") Then
+                            ElseIf (ComboBoxStatus.Text = "CUSTOMER_SERVICE_APPROVED" Or ComboBoxStatus.Text = "LOGISTIC_APPROVED") _
+                            And (currentStatus = "CUSTOMER_SERVICE_APPROVED" Or currentStatus = "LOGISTIC_APPROVED") Then
                                 StatusUpdate(result(0).Item("StatusUpdateDate").ToString)
 
                             Else
-                                MsgBox("You can update only the product in status ""PURCHASING_APPROVED""; ""LOGISTIC_APPROVED""; ""CUSTOMER_APPROVED"" by following previous order")
+                                MsgBox("You can update only the product in status ""PURCHASING_APPROVED""; ""LOGISTIC_APPROVED""; ""CUSTOMER_SERVICE_APPROVED"" by following previous order")
                             End If
                         End If
 
                         If User3 = "B" Then
-                            If (ComboBoxStatus.Text = "PROCESS_ENG_APPROVED" Or ComboBoxStatus.Text = "CUSTOMER_APPROVED") _
-                                And (currentStatus = "PROCESS_ENG_APPROVED" Or currentStatus = "CUSTOMER_APPROVED") Then
+                            If (ComboBoxStatus.Text = "PROCESS_ENG_APPROVED" Or ComboBoxStatus.Text = "CUSTOMER_SERVICE_APPROVED") _
+                                And (currentStatus = "PROCESS_ENG_APPROVED" Or currentStatus = "CUSTOMER_SERVICE-APPROVED") Then
                                 StatusUpdate(result(0).Item("StatusUpdateDate").ToString)
                             Else
-                                MsgBox("You can update only the product in status ""CUSTOMER_APPROVED""; ""PROCESS_ENG_APPROVED"" ")
+                                MsgBox("You can update only the product in status ""CUSTOMER_SERVICE_APPROVED""; ""PROCESS_ENG_APPROVED"" ")
                             End If
                         End If
 
@@ -859,7 +863,7 @@ Public Class FormProduct
                 While j > 0
                     str(0) = Mid(OpenIssue, k, i - k)
                     str(1) = Mid(OpenIssue, i + 1, j - 1 - i)
-                    WriteFile(res("status").ToString & " ; " & str(0) & " ; " & res("bitronpn").ToString & " ; " & res("name").ToString & " ; " & str(1), True)
+                    WriteFile(res("status").ToString & ";" & str(0) & ";" & res("bitronpn").ToString & ";" & res("name").ToString & ";" & str(1), True)
                     k = j + 2
                     i = InStr(j, OpenIssue, "[", CompareMethod.Text)
                     j = InStr(j + 1, OpenIssue, "]", CompareMethod.Text)

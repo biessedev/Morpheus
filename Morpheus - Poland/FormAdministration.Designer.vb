@@ -119,7 +119,7 @@ Partial Class FormAdministration
         Me.ButtonDelDup.Name = "ButtonDelDup"
         Me.ButtonDelDup.Size = New System.Drawing.Size(164, 23)
         Me.ButtonDelDup.TabIndex = 105
-        Me.ButtonDelDup.Text = "Delete record Duplicate"
+        Me.ButtonDelDup.Text = "Delete duplicated records"
         Me.ButtonDelDup.UseVisualStyleBackColor = True
         '
         'Label1

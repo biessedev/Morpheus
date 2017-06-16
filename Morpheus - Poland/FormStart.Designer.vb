@@ -270,7 +270,7 @@ Partial Class FormStart
         '
         'PictureBox1
         '
-        Me.PictureBox1.Image = Global.MORPHEUS.My.Resources.Resources.BitronLogo
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
         Me.PictureBox1.Location = New System.Drawing.Point(631, 501)
         Me.PictureBox1.Margin = New System.Windows.Forms.Padding(2)
         Me.PictureBox1.Name = "PictureBox1"
@@ -307,7 +307,7 @@ Partial Class FormStart
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 246.0!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 64.0!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 248.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 6.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 58.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.ButtonRunning, 2, 8)
         Me.TableLayoutPanel1.Controls.Add(Me.ButtonSystem, 1, 8)
         Me.TableLayoutPanel1.Controls.Add(Me.ButtonMaterialRequest, 1, 7)

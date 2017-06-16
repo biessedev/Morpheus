@@ -37,26 +37,26 @@ Partial Class FormManageAccounts
         'ButtonSave
         '
         Me.ButtonSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.ButtonSave.Location = New System.Drawing.Point(380, 352)
+        Me.ButtonSave.Location = New System.Drawing.Point(365, 352)
         Me.ButtonSave.Name = "ButtonSave"
         Me.ButtonSave.Size = New System.Drawing.Size(87, 23)
         Me.ButtonSave.TabIndex = 1
         Me.ButtonSave.Text = "Update"
-        Me.ButtonSave.UseVisualStyleBackColor = true
+        Me.ButtonSave.UseVisualStyleBackColor = True
         '
         'ListViewForUsers
         '
         Me.ListViewForUsers.BackColor = System.Drawing.Color.Gainsboro
-        Me.ListViewForUsers.FullRowSelect = true
-        Me.ListViewForUsers.GridLines = true
-        Me.ListViewForUsers.HideSelection = false
+        Me.ListViewForUsers.FullRowSelect = True
+        Me.ListViewForUsers.GridLines = True
+        Me.ListViewForUsers.HideSelection = False
         Me.ListViewForUsers.Location = New System.Drawing.Point(12, 76)
-        Me.ListViewForUsers.MultiSelect = false
+        Me.ListViewForUsers.MultiSelect = False
         Me.ListViewForUsers.Name = "ListViewForUsers"
         Me.ListViewForUsers.Size = New System.Drawing.Size(536, 270)
         Me.ListViewForUsers.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.ListViewForUsers.TabIndex = 2
-        Me.ListViewForUsers.UseCompatibleStateImageBehavior = false
+        Me.ListViewForUsers.UseCompatibleStateImageBehavior = False
         Me.ListViewForUsers.View = System.Windows.Forms.View.Details
         '
         'TextBoxForUsername
@@ -82,7 +82,7 @@ Partial Class FormManageAccounts
         '
         'Username
         '
-        Me.Username.AutoSize = true
+        Me.Username.AutoSize = True
         Me.Username.Location = New System.Drawing.Point(12, 21)
         Me.Username.Name = "Username"
         Me.Username.Size = New System.Drawing.Size(55, 13)
@@ -91,7 +91,7 @@ Partial Class FormManageAccounts
         '
         'Label1
         '
-        Me.Label1.AutoSize = true
+        Me.Label1.AutoSize = True
         Me.Label1.Location = New System.Drawing.Point(154, 21)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(53, 13)
@@ -100,7 +100,7 @@ Partial Class FormManageAccounts
         '
         'Label2
         '
-        Me.Label2.AutoSize = true
+        Me.Label2.AutoSize = True
         Me.Label2.Location = New System.Drawing.Point(297, 21)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(28, 13)
@@ -109,18 +109,18 @@ Partial Class FormManageAccounts
         '
         'ButtonRemove
         '
-        Me.ButtonRemove.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
-        Me.ButtonRemove.Location = New System.Drawing.Point(473, 352)
+        Me.ButtonRemove.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.ButtonRemove.Location = New System.Drawing.Point(15, 352)
         Me.ButtonRemove.Name = "ButtonRemove"
         Me.ButtonRemove.Size = New System.Drawing.Size(75, 23)
         Me.ButtonRemove.TabIndex = 9
         Me.ButtonRemove.Text = "Remove"
-        Me.ButtonRemove.UseVisualStyleBackColor = true
+        Me.ButtonRemove.UseVisualStyleBackColor = True
         '
         'ButtonAdd
         '
-        Me.ButtonAdd.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.ButtonAdd.Location = New System.Drawing.Point(12, 352)
+        Me.ButtonAdd.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ButtonAdd.Location = New System.Drawing.Point(458, 352)
         Me.ButtonAdd.Name = "ButtonAdd"
         Me.ButtonAdd.Size = New System.Drawing.Size(90, 23)
         Me.ButtonAdd.TabIndex = 10

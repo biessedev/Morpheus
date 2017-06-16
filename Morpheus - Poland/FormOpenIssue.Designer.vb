@@ -117,7 +117,7 @@ Partial Class FormOpenIssue
         '
         Me.ButtonUpdate.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.ButtonUpdate.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.ButtonUpdate.Location = New System.Drawing.Point(131, 392)
+        Me.ButtonUpdate.Location = New System.Drawing.Point(689, 392)
         Me.ButtonUpdate.Name = "ButtonUpdate"
         Me.ButtonUpdate.Size = New System.Drawing.Size(82, 22)
         Me.ButtonUpdate.TabIndex = 226

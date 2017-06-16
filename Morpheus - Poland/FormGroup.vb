@@ -228,15 +228,21 @@ Public Class FormGroup
                         Dim filename As Object = ListViewGRU.SelectedItems.Item(i).SubItems(2).Text
                         Dim valueOfGroupList = dictionaryForProd.Item(productNumber)
                         GroupList = Replace(valueOfGroupList, type & "[" & filename & "];", "", , , CompareMethod.Text)
-                        Try
-                            Dim sql As String = "UPDATE `product` SET `grouplist` = '" & GroupList &
-                                                "' WHERE `product`.`BitronPN` = '" & productNumber & "' ;"
-                            Dim cmd As MySqlCommand = New MySqlCommand(sql, con)
-                            cmd.ExecuteNonQuery()
-                            dictionaryForProd.Item(productNumber) = GroupList
-                        Catch ex As Exception
-                            MsgBox("MySQL Update query failed!")
-                        End Try
+
+                        If controlRight(Mid(type.ToString, 3, 1)) >= 2 Then
+                            Try
+                                Dim sql As String = "UPDATE `product` SET `grouplist` = '" & GroupList &
+                                                    "' WHERE `product`.`BitronPN` = '" & productNumber & "' ;"
+                                Dim cmd As MySqlCommand = New MySqlCommand(sql, con)
+                                cmd.ExecuteNonQuery()
+                                dictionaryForProd.Item(productNumber) = GroupList
+
+                            Catch ex As Exception
+                                MsgBox("MySQL Update query failed!")
+                            End Try
+                        Else
+                            MsgBox("You don't have permission to perform this operation!")
+                        End If
                         i += 1
                     Next
                     trans.Commit()

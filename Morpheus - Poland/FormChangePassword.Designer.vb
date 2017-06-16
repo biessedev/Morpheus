@@ -87,27 +87,27 @@ Partial Class FormChangePassword
         '
         'ButtonCancel
         '
-        Me.ButtonCancel.Location = New System.Drawing.Point(237, 166)
+        Me.ButtonCancel.Location = New System.Drawing.Point(140, 166)
         Me.ButtonCancel.Name = "ButtonCancel"
         Me.ButtonCancel.Size = New System.Drawing.Size(66, 23)
         Me.ButtonCancel.TabIndex = 6
         Me.ButtonCancel.Text = "Cancel"
-        Me.ButtonCancel.UseVisualStyleBackColor = true
+        Me.ButtonCancel.UseVisualStyleBackColor = True
         '
         'ButtonSave
         '
-        Me.ButtonSave.Location = New System.Drawing.Point(140, 166)
+        Me.ButtonSave.Location = New System.Drawing.Point(235, 166)
         Me.ButtonSave.Name = "ButtonSave"
         Me.ButtonSave.Size = New System.Drawing.Size(68, 23)
         Me.ButtonSave.TabIndex = 7
         Me.ButtonSave.Text = "Save"
-        Me.ButtonSave.UseVisualStyleBackColor = true
+        Me.ButtonSave.UseVisualStyleBackColor = True
         '
         'LabelForValidation
         '
-        Me.LabelForValidation.AutoSize = true
+        Me.LabelForValidation.AutoSize = True
         Me.LabelForValidation.BackColor = System.Drawing.SystemColors.Control
-        Me.LabelForValidation.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.LabelForValidation.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelForValidation.Location = New System.Drawing.Point(12, 9)
         Me.LabelForValidation.Name = "LabelForValidation"
         Me.LabelForValidation.Size = New System.Drawing.Size(0, 13)
@@ -115,19 +115,19 @@ Partial Class FormChangePassword
         '
         'CheckBoxShowPassword
         '
-        Me.CheckBoxShowPassword.AutoSize = true
+        Me.CheckBoxShowPassword.AutoSize = True
         Me.CheckBoxShowPassword.Location = New System.Drawing.Point(140, 143)
         Me.CheckBoxShowPassword.Name = "CheckBoxShowPassword"
         Me.CheckBoxShowPassword.Size = New System.Drawing.Size(102, 17)
         Me.CheckBoxShowPassword.TabIndex = 9
         Me.CheckBoxShowPassword.Text = "Show Password"
-        Me.CheckBoxShowPassword.UseVisualStyleBackColor = true
+        Me.CheckBoxShowPassword.UseVisualStyleBackColor = True
         '
         'FormChangePassword
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(334, 208)
+        Me.ClientSize = New System.Drawing.Size(324, 191)
         Me.Controls.Add(Me.CheckBoxShowPassword)
         Me.Controls.Add(Me.LabelForValidation)
         Me.Controls.Add(Me.ButtonSave)

@@ -1846,11 +1846,11 @@ Public Class FormSamples
                         adapterMySql.Fill(dsMySql, "spu")
                     End Using
                 Case "68"
-                    Using adapterMySql As New MySqlDataAdapter(String.Format("SELECT SUM(`sagia`) AS sum FROM `" & DBName & "`.`spu` WHERE samgz='M' and bitronpn= '" & bitronCode & "' and pmstb= '" & productionPlant & "' "), con)
+                    Using adapterMySql As New MySqlDataAdapter(String.Format("SELECT SUM(`sagia`) AS sum FROM `" & DBName & "`.`spu` WHERE samgz='D' and bitronpn= '" & bitronCode & "' and pmstb= '" & productionPlant & "' "), con)
                         adapterMySql.Fill(dsMySql, "spu")
                     End Using
                 Case "65"
-                    Using adapterMySql As New MySqlDataAdapter(String.Format("SELECT SUM(`sagia`) AS sum FROM `" & DBName & "`.`spu` WHERE samgz='C' and bitronpn= '" & bitronCode & "' and pmstb= '" & productionPlant & "' "), con)
+                    Using adapterMySql As New MySqlDataAdapter(String.Format("SELECT SUM(`sagia`) AS sum FROM `" & DBName & "`.`spu` WHERE samgz='D' and bitronpn= '" & bitronCode & "' and pmstb= '" & productionPlant & "' "), con)
                         adapterMySql.Fill(dsMySql, "spu")
                     End Using
             End Select
@@ -1858,15 +1858,6 @@ Public Class FormSamples
         Dim tblMySql As DataTable = dsMySql.Tables("spu")
         Return Val(tblMySql.Rows(0).Item("sum").ToString)
     End Function
-
-
-
-
-
-
-
-
-
 
     'Public Function Stock_W(ByVal bitronpn As String) As Double
     '    Dim dsMySql As New DataSet
@@ -2583,5 +2574,9 @@ Public Class FormSamples
 
     Private Sub DTP_PlanCloseDate_ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles DTP_PlanCloseDate.ValueChanged
         DateClosed = DTP_PlanCloseDate.Value.Date
+    End Sub
+
+    Private Sub Txt_Area_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Txt_Area.SelectedIndexChanged
+
     End Sub
 End Class

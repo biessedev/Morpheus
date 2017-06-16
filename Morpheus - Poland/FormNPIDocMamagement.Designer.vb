@@ -22,6 +22,7 @@ Partial Class FormNPIDocMamagement
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormNPIDocMamagement))
         Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("")
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Cob_NameDoc = New System.Windows.Forms.ComboBox()
@@ -31,12 +32,12 @@ Partial Class FormNPIDocMamagement
         Me.Cob_TypeDoc = New System.Windows.Forms.ComboBox()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.ListViewNPI = New System.Windows.Forms.ListView()
-        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.SuspendLayout
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.SuspendLayout()
         '
         'PictureBox1
         '
-        Me.PictureBox1.Image = Global.MORPHEUS.My.Resources.Resources.BitronLogo
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
         Me.PictureBox1.Location = New System.Drawing.Point(744, 286)
         Me.PictureBox1.Margin = New System.Windows.Forms.Padding(2)
         Me.PictureBox1.Name = "PictureBox1"
