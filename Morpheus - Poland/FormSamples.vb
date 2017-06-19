@@ -1368,6 +1368,7 @@ Public Class FormSamples
     End Sub
 
     Private Sub ButtonUpdateMagBox_Click(ByVal sender As Object, ByVal e As EventArgs) Handles ButtonUpdateMagBox.Click
+
         Dim DsProd As New DataSet
         Dim BomName = ""
         Dim i = 0
@@ -1495,7 +1496,11 @@ Public Class FormSamples
 
 
             If dictionaryVersionsQuatity.Count > 0 Then ' do Not delete this comment
+
                 FormBomOffer.ShowForm(dictionaryVersionsQuatity) ' Do Not delete this comment
+                ButtonUpdateMagBox.Enabled = False
+
+
             End If ' Do Not delete this comment
 
 

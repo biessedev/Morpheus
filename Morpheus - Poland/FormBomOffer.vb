@@ -10,6 +10,9 @@ Public Class FormBomOffer
     Private m_lastNode As TreeNode, m_firstNode As TreeNode
     Dim myImageList As New ImageList()
     Dim VersionsWithQuatity As Dictionary(Of String, Integer)
+    Public Event CustomFormClosed As FormClosedDelegate
+    Public Delegate Sub FormClosedDelegate()
+
 
     Property SelectedNodes() As ArrayList
         Get
@@ -40,7 +43,7 @@ Public Class FormBomOffer
                                                                 "   else 'BEQS_' + cast(a.offerId as varchar(10)) + '_' +  cast(d.componentid as CHAR(10))  end as BitronPN, " &
                                                                 "   b.BitronPNMatch, a.offerId, d.componentid , d.quantity " &
                                                                 "   from quotegeneralinformation a " &
-                                                                "   join offerversion c on a.offerId = c.offerId and c.offerVersionName = " & offerid.Parent.Text & " " &
+                                                                "   join offerversion c on a.offerId = c.offerId and c.offerVersionName = '" & offerid.Parent.Text.Trim & "' " &
                                                                 "   join bomdetailed b on a.offerId = b.offerId " &
                                                                 "   join componentversion d on d.offerid = a.offerid and d.offerversionid = c.offerVersionId and d.componentid = b.componentId " &
                                                                 "   where a.offerid = " & offerid.Name & " ) a", conBEQS)
@@ -103,9 +106,8 @@ Public Class FormBomOffer
     End Sub
 
     Public Sub ShowForm(Versions As Dictionary(Of String, Integer))
-        Dim tblBomOffer As DataTable
+
         Dim builderBEQS As New Common.DbConnectionStringBuilder()
-        Dim DsBomOffer As New DataSet
 
         myImageList.Images.Add(My.Resources.check_icon)
         myImageList.Images.Add(My.Resources.uncheck_icon)
@@ -121,8 +123,9 @@ Public Class FormBomOffer
                                                              "   join customer c on b.customerId = c.customerId " &
                                                               "  where offerversionname = '" & item.Key & "'", conBEQS)
 
+                    Dim DsBomOffer As New DataSet
                     AdapterBomOffer.Fill(DsBomOffer, "BomOffer")
-                    tblBomOffer = DsBomOffer.Tables("BomOffer")
+                    Dim tblBomOffer = DsBomOffer.Tables("BomOffer")
                     Dim VersionNode = New TreeNode(item.Key, myImageList.Images.Count, myImageList.Images.Count)
                     VersionNode.Name = "bitronpn"
 
@@ -219,4 +222,8 @@ Public Class FormBomOffer
         End While
         Return bFound
     End Function
+
+    Private Sub FormBomOffer_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
+        My.Forms.FormSamples.ButtonUpdateMagBox.Enabled = True
+    End Sub
 End Class
