@@ -121,7 +121,10 @@ Public Class FormECR
     End Sub
 
     Sub setLeadTimeAvailability()
-        Me.Controls("ComboBox" & userDep3).Enabled =Not Me.Controls("Button" & userDep3).Text.Contains("NOT CHECKED")
+        If userDep3 = "" Then
+        Else
+            Me.Controls("ComboBox" & userDep3).Enabled = Not Me.Controls("Button" & userDep3).Text.Contains("NOT CHECKED")
+        End If
     End Sub
 
     ' Fill the ECR combo with all ECR yet open
