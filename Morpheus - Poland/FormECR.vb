@@ -121,7 +121,7 @@ Public Class FormECR
     End Sub
 
     Sub setLeadTimeAvailability()
-        If userDep3 = "" Then
+        If userDep3 = "" Or userDep3 = "A" Then
         Else
             Me.Controls("ComboBox" & userDep3).Enabled = Not Me.Controls("Button" & userDep3).Text.Contains("NOT CHECKED")
         End If
@@ -767,20 +767,20 @@ Public Class FormECR
     Sub CheckScheduledDateShouldChange()
         If (ButtonR.Text.Trim() <> "NOT CHECKED" Or ButtonL.Text.Trim() <> "NOT CHECKED" Or ButtonU.Text.Trim() <> "NOT CHECKED" Or ButtonB.Text.Trim() <> "NOT CHECKED" Or ButtonE.Text.Trim() <> "NOT CHECKED" Or ButtonN.Text.Trim() <> "NOT CHECKED" Or ButtonP.Text.Trim() <> "NOT CHECKED" Or ButtonQ.Text.Trim() <> "NOT CHECKED" Or ButtonS.Text.Trim() <> "NOT CHECKED") Then
             UpdateScheduledDateDate()
-        ElseIf (ButtonR.Text.Trim() = "CHECKED" And ButtonL.Text.Trim() = "CHECKED" And ButtonU.Text.Trim() = "CHECKED" And ButtonB.Text.Trim() = "CHECKED" And ButtonE.Text.Trim() = "CHECKED" And ButtonN.Text.Trim() = "CHECKED" And ButtonP.Text.Trim() = "CHECKED" And ButtonQ.Text.Trim() = "CHECKED" And ButtonS.Text.Trim() = "CHECKED") Then
-            UpdateScheduledDateDate()
-        ElseIf ButtonR.Text.Trim() = "APPROVED" Or ButtonL.Text.Trim() = "APPROVED" Or ButtonU.Text.Trim() = "APPROVED" Or ButtonB.Text.Trim() = "APPROVED" Or ButtonE.Text.Trim() = "APPROVED" Or ButtonN.Text.Trim() = "APPROVED" Or ButtonP.Text.Trim() = "APPROVED" Or ButtonQ.Text.Trim() = "APPROVED" Or ButtonS.Text.Trim() = "APPROVED" Then
-            UpdateScheduledDateDate()
-        ElseIf (ButtonR.Text.Trim() <> "NOT CHECKED" And ButtonR.Text.Trim() <> "CHECKED" And ButtonR.Text.Trim() <> "APPROVED") Or
-            (ButtonL.Text.Trim() <> "NOT CHECKED" And ButtonL.Text.Trim() <> "CHECKED" And ButtonL.Text.Trim() <> "APPROVED") Or
-            (ButtonU.Text.Trim() <> "NOT CHECKED" And ButtonU.Text.Trim() <> "CHECKED" And ButtonU.Text.Trim() <> "APPROVED") Or
-            (ButtonB.Text.Trim() <> "NOT CHECKED" And ButtonB.Text.Trim() <> "CHECKED" And ButtonB.Text.Trim() <> "APPROVED") Or
-            (ButtonE.Text.Trim() <> "NOT CHECKED" And ButtonE.Text.Trim() <> "CHECKED" And ButtonE.Text.Trim() <> "APPROVED") Or
-            (ButtonN.Text.Trim() <> "NOT CHECKED" And ButtonN.Text.Trim() <> "CHECKED" And ButtonN.Text.Trim() <> "APPROVED") Or
-            (ButtonP.Text.Trim() <> "NOT CHECKED" And ButtonP.Text.Trim() <> "CHECKED" And ButtonP.Text.Trim() <> "APPROVED") Or
-            (ButtonQ.Text.Trim() <> "NOT CHECKED" And ButtonQ.Text.Trim() <> "CHECKED" And ButtonQ.Text.Trim() <> "APPROVED") Or
-            (ButtonS.Text.Trim() <> "NOT CHECKED" And ButtonS.Text.Trim() <> "CHECKED" And ButtonS.Text.Trim() <> "APPROVED") Then
-            UpdateScheduledDateDate()
+            'ElseIf (ButtonR.Text.Trim() = "CHECKED" And ButtonL.Text.Trim() = "CHECKED" And ButtonU.Text.Trim() = "CHECKED" And ButtonB.Text.Trim() = "CHECKED" And ButtonE.Text.Trim() = "CHECKED" And ButtonN.Text.Trim() = "CHECKED" And ButtonP.Text.Trim() = "CHECKED" And ButtonQ.Text.Trim() = "CHECKED" And ButtonS.Text.Trim() = "CHECKED") Then
+            '    UpdateScheduledDateDate()
+            'ElseIf ButtonR.Text.Trim() = "APPROVED" Or ButtonL.Text.Trim() = "APPROVED" Or ButtonU.Text.Trim() = "APPROVED" Or ButtonB.Text.Trim() = "APPROVED" Or ButtonE.Text.Trim() = "APPROVED" Or ButtonN.Text.Trim() = "APPROVED" Or ButtonP.Text.Trim() = "APPROVED" Or ButtonQ.Text.Trim() = "APPROVED" Or ButtonS.Text.Trim() = "APPROVED" Then
+            '    UpdateScheduledDateDate()
+            'ElseIf (ButtonR.Text.Trim() <> "NOT CHECKED" And ButtonR.Text.Trim() <> "CHECKED" And ButtonR.Text.Trim() <> "APPROVED") Or
+            '    (ButtonL.Text.Trim() <> "NOT CHECKED" And ButtonL.Text.Trim() <> "CHECKED" And ButtonL.Text.Trim() <> "APPROVED") Or
+            '    (ButtonU.Text.Trim() <> "NOT CHECKED" And ButtonU.Text.Trim() <> "CHECKED" And ButtonU.Text.Trim() <> "APPROVED") Or
+            '    (ButtonB.Text.Trim() <> "NOT CHECKED" And ButtonB.Text.Trim() <> "CHECKED" And ButtonB.Text.Trim() <> "APPROVED") Or
+            '    (ButtonE.Text.Trim() <> "NOT CHECKED" And ButtonE.Text.Trim() <> "CHECKED" And ButtonE.Text.Trim() <> "APPROVED") Or
+            '    (ButtonN.Text.Trim() <> "NOT CHECKED" And ButtonN.Text.Trim() <> "CHECKED" And ButtonN.Text.Trim() <> "APPROVED") Or
+            '    (ButtonP.Text.Trim() <> "NOT CHECKED" And ButtonP.Text.Trim() <> "CHECKED" And ButtonP.Text.Trim() <> "APPROVED") Or
+            '    (ButtonQ.Text.Trim() <> "NOT CHECKED" And ButtonQ.Text.Trim() <> "CHECKED" And ButtonQ.Text.Trim() <> "APPROVED") Or
+            '    (ButtonS.Text.Trim() <> "NOT CHECKED" And ButtonS.Text.Trim() <> "CHECKED" And ButtonS.Text.Trim() <> "APPROVED") Then
+            '    UpdateScheduledDateDate()
         Else
             LabelComputeScheduledDate.Text = ""
         End If
@@ -1045,27 +1045,71 @@ Public Class FormECR
         Dim dateSL As String = ButtonSL.Text.Trim()
 
         Dim dates As List(Of DateTime) = New List(Of DateTime)
-        If dateRL <> "" Then dates.Add(Convert.ToDateTime(dateRL))
-        If dateLL <> "" Then dates.Add(Convert.ToDateTime(dateLL))
-        If dateUL <> "" Then dates.Add(Convert.ToDateTime(dateUL))
-        If dateBL <> "" Then dates.Add(Convert.ToDateTime(dateBL))
-        If dateEL <> "" Then dates.Add(Convert.ToDateTime(dateEL))
-        If dateNL <> "" Then dates.Add(Convert.ToDateTime(dateNL))
-        If datePL <> "" Then dates.Add(Convert.ToDateTime(datePL))
-        If dateQL <> "" Then dates.Add(Convert.ToDateTime(dateQL))
-        If dateSL <> "" Then dates.Add(Convert.ToDateTime(dateSL))
+
+        If dateRL <> "" Then
+            Dim scheduledDateRL = Convert.ToDateTime(dateRL)
+            scheduledDateRL = scheduledDateRL.AddDays(ComboBoxR.SelectedItem * 7)
+            dates.Add(scheduledDateRL)
+        End If
+
+        If dateLL <> "" Then
+            Dim scheduledDateLL = Convert.ToDateTime(dateLL)
+            scheduledDateLL = scheduledDateLL.AddDays(ComboBoxL.SelectedItem * 7)
+            dates.Add(scheduledDateLL)
+        End If
+
+        If dateUL <> "" Then
+            Dim scheduledDateUL = Convert.ToDateTime(dateUL)
+            scheduledDateUL = scheduledDateUL.AddDays(ComboBoxU.SelectedItem * 7)
+            dates.Add(scheduledDateUL)
+        End If
+
+        If dateBL <> "" Then
+            Dim scheduledDateBL = Convert.ToDateTime(dateBL)
+            scheduledDateBL = scheduledDateBL.AddDays(ComboBoxB.SelectedItem * 7)
+            dates.Add(scheduledDateBL)
+        End If
+
+        If dateEL <> "" Then
+            Dim scheduledDateEL = Convert.ToDateTime(dateEL)
+            scheduledDateEL = scheduledDateEL.AddDays(ComboBoxE.SelectedItem * 7)
+            dates.Add(scheduledDateEL)
+        End If
+
+        If dateNL <> "" Then
+            Dim scheduledDateNL = Convert.ToDateTime(dateNL)
+            scheduledDateNL = scheduledDateNL.AddDays(ComboBoxN.SelectedItem * 7)
+            dates.Add(scheduledDateNL)
+        End If
+
+        If datePL <> "" Then
+            Dim scheduledDatePL = Convert.ToDateTime(datePL)
+            scheduledDatePL = scheduledDatePL.AddDays(ComboBoxP.SelectedItem * 7)
+            dates.Add(scheduledDatePL)
+        End If
+
+        If dateQL <> "" Then
+            Dim scheduledDateQL = Convert.ToDateTime(dateQL)
+            scheduledDateQL = scheduledDateQL.AddDays(ComboBoxQ.SelectedItem * 7)
+            dates.Add(scheduledDateQL)
+        End If
+
+        If dateSL <> "" Then
+            Dim scheduledDateSL = Convert.ToDateTime(dateSL)
+            scheduledDateSL = scheduledDateSL.AddDays(ComboBoxS.SelectedItem * 7)
+            dates.Add(scheduledDateSL)
+        End If
+
 
         If dates.Count > 0 Then
             Dim maxDate = dates.Max()
-            Dim weeksToAdd As Integer() = {ComboBoxR.SelectedItem, ComboBoxL.SelectedItem, ComboBoxU.SelectedItem, ComboBoxB.SelectedItem, ComboBoxE.SelectedItem, ComboBoxN.SelectedItem, ComboBoxP.SelectedItem, ComboBoxQ.SelectedItem, ComboBoxS.SelectedItem}
-            Dim maxLeadTime = weeksToAdd.Max()
-
-            ButtonData.Text = date_to_string(maxDate.AddDays(maxLeadTime * 7))
-            LabelComputeScheduledDate.Text = date_to_string(maxDate) & " + " & maxLeadTime & " weeks" & Environment.NewLine & "           (" & (maxLeadTime * 7) & " days)"
+            ButtonData.Text = date_to_string(maxDate)
+            LabelComputeScheduledDate.Text = date_to_string(maxDate)
         Else
             ButtonData.Text = ""
             LabelComputeScheduledDate.Text = ""
         End If
+
     End Sub
 
     Private Sub ComboBoxPay_LostFocus(ByVal sender As Object, ByVal e As EventArgs) Handles ComboBoxPay.LostFocus
@@ -1350,5 +1394,13 @@ Public Class FormECR
         Else
             MsgBox("To approve need to have rights as R&D (R3) and supervisor (J3)! and need to select one ECR!", MsgBoxStyle.Information)
         End If
+    End Sub
+
+    Private Sub ComboBoxR_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxR.SelectedIndexChanged
+
+    End Sub
+
+    Private Sub ButtonData_Click(sender As Object, e As EventArgs) Handles ButtonData.Click
+
     End Sub
 End Class
